@@ -4,6 +4,8 @@
 html,
 body {
   scroll-behavior: smooth;
+  background-color: #0F0F10;
+  overflow-x: hidden;
 }
 
 a {
@@ -24,6 +26,15 @@ a {
 button {
   cursor: pointer;
 }
+
+  .MuiCheckbox-root{
+    color: #6D4EEA;
+  }
+
+  .MuiCheckbox-root.Mui-checked{
+    color: #6D4EEA;
+
+  }
 
 textarea {
   resize: none;
@@ -46,4 +57,12 @@ li {
 
 .MuiTabs-indicator {
   width: 4px;
+}
+
+.MuiSelect-icon{
+  color: #828282;
+}
+
+.MuiOutlinedInput-notchedOutline{
+  border: none;
 }

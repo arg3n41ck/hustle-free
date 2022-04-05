@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Autocomplete, Avatar, Box, Popover, TextField } from "@mui/material"
+import {
+  Autocomplete,
+  Avatar,
+  Box,
+  Popover,
+  TextField,
+  MenuItem,
+  FormControl,
+  Select,
+} from "@mui/material"
 import Notifications from "./components/Notifications"
 import { useDispatch, useSelector } from "react-redux"
 import { change, changeAuthCheck } from "../../redux/components/navigations"
@@ -45,6 +54,7 @@ const Header = ({ onMenu }) => {
   const { avatar, firstName, lastName } = useSelector(
     (state) => state.user.user
   )
+  const [localization, setLocalization] = React.useState("ru")
   const { authCheck } = useSelector((state) => state.profileMenu)
 
   useEffect(() => {
@@ -58,6 +68,10 @@ const Header = ({ onMenu }) => {
 
   const handleClick = (event, setState) => {
     setState(event.currentTarget)
+  }
+
+  const handleChange = (event) => {
+    setLocalization(event.target.value)
   }
 
   const handleClose = (setState) => {
@@ -97,14 +111,13 @@ const Header = ({ onMenu }) => {
     createNotificationInterval()
   }, [])
 
-  useEffect(() => {
-
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <Wrapper>
-      <Left>
-        <Box
+      <WrapperItems>
+        <Left>
+          {/* <Box
           onClick={onMenu}
           sx={{ marginRight: 2.2, cursor: "pointer", minWidth: 32 }}
         >
@@ -134,225 +147,380 @@ const Header = ({ onMenu }) => {
               strokeLinecap="round"
             />
           </svg>
-        </Box>
-        <Box sx={{ minWidth: 50 }}>
-          <Link href={"/"} passHref>
-            <a>
-              <svg
-                width="72"
-                height="32"
-                viewBox="0 0 72 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g clipPath="url(#clip0_1113_12502)">
+        </Box> */}
+          <Box sx={{ minWidth: 50 }}>
+            <Link href={"/"} passHref>
+              <a>
+                <svg
+                  width="230"
+                  height="38"
+                  viewBox="0 0 230 38"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
-                    d="M28.7233 1.93652L28.7263 10.4716H28.7233V17.6432C28.7108 25.575 22.2934 31.9993 14.3665 31.9993C6.43969 31.9993 0.0124121 25.573 0 17.6412H7.20365C7.20365 21.6012 10.4106 24.8113 14.3666 24.8113C18.3226 24.8113 21.5295 21.6012 21.5295 17.6412V9.14974H14.3326V1.93652H28.7233Z"
-                    fill="#27AE60"
+                    d="M9.64098 35.1038L4.603 31.586C2.34651 30.0104 1.21826 29.2226 0.609132 28.0655C0 26.9084 0 25.553 0 22.8422V15.9929C0 15.1296 0 14.4038 0.0196709 13.7781L13.2819 23.0386V37.5C12.3016 36.9616 11.1577 36.1629 9.64098 35.1038Z"
+                    fill="#4081E1"
                   />
                   <path
-                    d="M47.831 11.0424L47.1174 12.61C45.4451 11.2289 43.3147 10.4316 40.9295 10.4316C34.7374 10.4316 30.311 14.8999 30.311 21.1779C30.311 27.4777 34.7373 31.9996 40.9295 31.9996C43.2817 31.9996 45.3817 31.2249 47.0401 29.8802L47.7909 31.3139H52.102V11.0428L47.831 11.0424V11.0424ZM41.2065 26.7029C38.0923 26.7029 35.8034 24.3476 35.8034 21.1925C35.8034 18.0565 38.0736 15.7012 41.2065 15.7012C44.3205 15.7012 46.6096 18.0565 46.6096 21.1925C46.6096 24.3476 44.3205 26.7029 41.2065 26.7029Z"
-                    fill="#27AE60"
+                    d="M18.7779 37.5C19.7583 36.9616 20.9021 36.1629 22.4189 35.1038L27.4568 31.586C29.7133 30.0104 30.8416 29.2226 31.4507 28.0655C32.0598 26.9084 32.0598 25.553 32.0598 22.8422V15.9929C32.0598 15.1296 32.0598 14.4038 32.0402 13.7781L18.7779 23.0386V37.5Z"
+                    fill="#4081E1"
                   />
                   <path
-                    d="M64.3127 20.9099C64.7063 21.4631 64.9393 22.1382 64.9393 22.869C64.9393 24.7389 63.4252 26.2548 61.5568 26.2548C59.8327 26.2548 58.413 24.9626 58.2041 23.2936L53.5532 25.1083V31.3197H58.0228V29.8132C59.4319 31.1666 61.3435 31.9997 63.451 31.9997C67.785 31.9997 71.2983 28.4828 71.2983 24.1446C71.2983 22.1524 70.5561 20.3349 69.3351 18.9502L64.3127 20.91V20.9099Z"
-                    fill="#27AE60"
+                    d="M29.6624 8.83599L16.0299 18.3549L2.39746 8.83599C2.97806 8.38372 3.70024 7.87946 4.603 7.2491L9.64098 3.7313C12.7261 1.5771 14.2687 0.5 16.0299 0.5C17.7912 0.5 19.3337 1.5771 22.4189 3.73129L27.4568 7.24909C28.3596 7.87946 29.0818 8.38372 29.6624 8.83599Z"
+                    fill="#4081E1"
                   />
                   <path
-                    d="M60.3929 20.8068C60.1032 20.3314 59.9331 19.7748 59.9331 19.1771C59.9331 17.4446 61.336 16.0401 63.0669 16.0401C64.5883 16.0401 65.8553 17.1252 66.14 18.5642L70.849 16.7272V11.0432H66.3791V12.1832C65.0368 11.0596 63.3077 10.3833 61.4208 10.3833C57.148 10.3833 53.6838 13.8508 53.6838 18.1282C53.6838 19.8878 54.2711 21.5096 55.2587 22.8102L60.3929 20.8068V20.8068Z"
-                    fill="#27AE60"
+                    d="M95.9301 13.5909C96.3751 13.9621 96.6241 14.4792 96.6773 15.142H101.977C101.97 13.8097 101.638 12.6463 100.981 11.652C100.33 10.651 99.4035 9.87547 98.2014 9.32528C96.9994 8.77509 95.5748 8.5 93.9278 8.5C92.314 8.5 90.8828 8.77178 89.6343 9.31534C88.3924 9.8589 87.4195 10.6179 86.7155 11.5923C86.0182 12.5601 85.6728 13.6903 85.6795 14.983C85.6728 16.5739 86.1875 17.83 87.2235 18.7514C88.2662 19.6662 89.6907 20.3191 91.4971 20.7102L93.5294 21.1477C94.2864 21.3134 94.8875 21.4924 95.3324 21.6847C95.7774 21.8703 96.0962 22.0824 96.2888 22.321C96.488 22.553 96.5909 22.8248 96.5976 23.1364C96.5909 23.4678 96.4847 23.7628 96.2788 24.0213C96.0729 24.2798 95.7707 24.482 95.3723 24.6278C94.9738 24.7737 94.479 24.8466 93.888 24.8466C93.184 24.8466 92.5763 24.7372 92.065 24.5185C91.5602 24.2997 91.1684 23.9782 90.8895 23.554C90.6105 23.1297 90.4545 22.6061 90.4213 21.983H85.1615C85.1681 23.6866 85.5334 25.0852 86.2572 26.179C86.9878 27.2661 88.0105 28.0715 89.3255 28.5952C90.6471 29.1188 92.1945 29.3807 93.9677 29.3807C95.6944 29.3807 97.172 29.1387 98.4007 28.6548C99.6359 28.1709 100.586 27.465 101.25 26.5369C101.914 25.6089 102.249 24.4754 102.256 23.1364C102.249 22.3608 102.123 21.6449 101.877 20.9886C101.638 20.3324 101.263 19.7424 100.752 19.2188C100.24 18.6884 99.5828 18.2277 98.7792 17.8366C97.9756 17.4455 97.0093 17.1307 95.8803 16.892L94.2067 16.5341C93.7219 16.4347 93.3035 16.322 92.9516 16.196C92.5996 16.0701 92.3107 15.9309 92.0849 15.7784C91.8591 15.6193 91.6931 15.4437 91.5868 15.2514C91.4872 15.0526 91.444 14.8305 91.4573 14.5852C91.4639 14.2869 91.5536 14.0218 91.7263 13.7898C91.8989 13.5578 92.1646 13.3755 92.5232 13.2429C92.8885 13.1037 93.3567 13.0341 93.9278 13.0341C94.8244 13.0341 95.4918 13.2197 95.9301 13.5909Z"
+                    fill="url(#paint0_linear_1447_4472)"
                   />
                   <path
-                    d="M17.6228 22.5787C18.9104 23.1848 19.8928 23.4225 21.2946 23.0328C22.8339 22.6049 23.861 21.3462 24.0439 19.9343C24.2801 18.1099 23.3361 17.0973 22.9486 16.758C22.1713 16.0775 20.0996 15.9338 19.3821 17.1993C18.1837 19.3133 20.0734 20.6926 20.0734 20.6926C20.0734 20.6926 17.0173 20.3265 17.3253 17.2447C17.4679 15.8182 18.5674 14.7286 19.4782 14.4039C20.8205 13.9255 22.1498 13.9623 23.4379 14.6005C24.6164 15.1846 25.5778 16.1657 25.9071 17.4343C26.2461 18.7403 26.6759 21.6518 24.9274 27.3608C25.0325 27.247 25.1335 27.1296 25.2349 27.0125C25.2872 26.9518 25.341 26.8924 25.3922 26.8308C25.4521 26.7593 25.5094 26.6855 25.5679 26.6129C25.6598 26.4981 25.752 26.3835 25.8406 26.2659C25.8665 26.2315 25.8913 26.1963 25.9169 26.1617C27.6757 23.7791 28.7184 20.8339 28.7234 17.6436V10.4721H28.7265L28.7239 0C28.0087 0.548834 25.6785 3.35107 25.0567 5.55189C24.3217 8.95427 25.7946 11.7798 25.9212 12.0358C24.0372 11.1881 22.2615 10.6984 20.3709 10.8966C18.5569 11.0869 17.0805 11.879 15.9197 13.2803C14.8099 14.6198 14.3484 16.2933 14.5047 18.0647C14.7253 20.5659 16.5648 22.0804 17.6227 22.5785L17.6228 22.5787Z"
-                    fill="#F2994A"
+                    d="M44.3954 8.77841V29.142H49.9341V21.1875H57.266V29.142H62.8047V8.77841H57.266V16.733H49.9341V8.77841H44.3954Z"
+                    fill="url(#paint1_linear_1447_4472)"
                   />
                   <path
-                    d="M70.8581 9.14341H31.5134V1.99414H70.8581V9.14341Z"
-                    fill="#F2994A"
+                    d="M197.846 8.77856V29.1422H212.51V24.6877H203.385V21.1877H211.792V16.7331H203.385V13.2331H212.549V8.77856H197.846Z"
+                    fill="url(#paint2_linear_1447_4472)"
                   />
                   <path
-                    d="M38.5853 4.37493L39.4613 6.75252H40.3658L41.2418 4.37493H40.4263L39.9135 5.97537L39.4007 4.37493H38.5852H38.5853ZM42.2781 4.37493V6.75252H44.0799V6.15367H42.9974V5.85068H44.055V5.25189H42.9974V4.97385H44.0799V4.37499H42.2781V4.37493ZM46.0278 5.47639L46.9038 6.75252H47.5946V4.37493H46.8753V5.57264L46.0492 4.37493H45.3085V6.75252H46.0278V5.47639ZM49.3965 5.00229V6.75252H50.1159V5.00229H50.7497V4.37493H48.7591V5.00229H49.3965H49.3965ZM51.9142 4.37493V5.77579C51.9142 6.08597 52.0067 6.33545 52.1955 6.52083C52.3842 6.7062 52.6691 6.79889 53.0536 6.79889C53.4347 6.79889 53.7231 6.7062 53.9119 6.52083C54.1006 6.33551 54.1931 6.08597 54.1931 5.77579V4.37493H53.4631V5.75384C53.4631 5.8751 53.4275 5.97548 53.3598 6.05026C53.2922 6.12515 53.1889 6.16428 53.05 6.16428C52.9111 6.16428 52.8078 6.12869 52.7402 6.0538C52.6726 5.97896 52.6369 5.87853 52.6369 5.75378V4.37846L51.9141 4.37486L51.9142 4.37493ZM56.4689 5.98963L56.7962 6.75247H57.6153L57.1847 5.9112C57.2986 5.8577 57.398 5.76861 57.4873 5.6474C57.5726 5.52974 57.6153 5.38006 57.6153 5.19115C57.6153 5.03787 57.5833 4.89884 57.5159 4.77408C57.448 4.65291 57.352 4.55665 57.22 4.48178C57.092 4.4105 56.9388 4.37486 56.7608 4.37486H55.493V6.75247H56.2123V5.98963H56.4689ZM56.8141 5.03081C56.8602 5.07004 56.8815 5.11994 56.8815 5.18049C56.8815 5.2411 56.8568 5.29453 56.8108 5.33377C56.7642 5.373 56.7108 5.39079 56.6429 5.39079H56.205V4.97372H56.6429C56.7075 4.97372 56.7608 4.9915 56.8068 5.03074H56.8141V5.03081ZM58.8116 4.37493V6.75252H60.6137V6.15367H59.5313V5.85068H60.589V5.25189H59.5313V4.97385H60.6137V4.37499H58.8116V4.37493ZM62.0346 5.88274L61.6607 6.41742C61.942 6.6705 62.3086 6.7953 62.7645 6.7953C63.085 6.7953 63.3343 6.724 63.5162 6.57787C63.6975 6.43168 63.7868 6.22851 63.7868 5.96824C63.7868 5.80072 63.7368 5.66531 63.6369 5.56552C63.5375 5.46573 63.4196 5.39438 63.2843 5.35162C63.1457 5.30885 62.9924 5.27322 62.8111 5.2411C62.6791 5.21973 62.5865 5.19834 62.5365 5.17696C62.4871 5.15557 62.4619 5.12347 62.4619 5.07717C62.4619 4.99517 62.5332 4.9524 62.6791 4.9524C62.7751 4.9524 62.8857 4.97379 63.0104 5.01302C63.1316 5.05225 63.2417 5.10928 63.3416 5.18415L63.7261 4.67442C63.5942 4.56391 63.441 4.48191 63.2669 4.42489C63.0957 4.36786 62.9144 4.33936 62.7184 4.33936C62.5085 4.33936 62.3299 4.37499 62.1806 4.44627C62.0273 4.52114 61.9173 4.6138 61.8426 4.72785C61.7674 4.84549 61.7287 4.97379 61.7287 5.11281C61.7287 5.2946 61.7781 5.43715 61.8814 5.54053C61.9847 5.64392 62.0986 5.71522 62.2272 5.75794C62.3552 5.80072 62.5191 5.83996 62.7184 5.87561C62.8397 5.897 62.925 5.92198 62.975 5.95039C63.0244 5.97891 63.0497 6.01456 63.0497 6.06093C63.0497 6.1073 63.0244 6.13936 62.975 6.16428C62.9211 6.18921 62.861 6.20352 62.7858 6.20352C62.6331 6.20352 62.4905 6.17501 62.3586 6.11802C62.2272 6.06098 62.1132 5.98609 62.0167 5.89346L62.0346 5.88274Z"
-                    fill="white"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M179.034 29.1456V8.78198H187.841C189.355 8.78198 190.68 9.05708 191.815 9.60727C192.951 10.1575 193.834 10.9496 194.465 11.9837C195.096 13.0178 195.412 14.2574 195.412 15.7024C195.412 17.1608 195.086 18.3904 194.435 19.3914C193.834 20.3256 193.004 21.0463 191.946 21.5532L196.089 29.1456H190.072L186.49 22.424H184.573V29.1456H179.034ZM184.573 13.1968V18.1286H186.526C187.176 18.1286 187.731 18.049 188.189 17.8899C188.654 17.7242 189.009 17.4624 189.255 17.1044C189.508 16.7465 189.634 16.2791 189.634 15.7024C189.634 15.1191 189.508 14.6451 189.255 14.2806C189.009 13.9094 188.654 13.6376 188.189 13.4652C187.731 13.2862 187.176 13.1968 186.526 13.1968H184.573Z"
+                    fill="url(#paint3_linear_1447_4472)"
                   />
-                </g>
-                <defs>
-                  <clipPath id="clip0_1113_12502">
-                    <rect width="71.2982" height="32" fill="white" />
-                  </clipPath>
-                </defs>
-              </svg>
-            </a>
-          </Link>
-        </Box>
-      </Left>
-      <WrapperCenter>
-        {authCheck && (
-          <Autocomplete
-            sx={{
-              "& .MuiSvgIcon-root": {
-                width: 0,
-              },
-            }}
-            noOptionsText={"Ничего не найдено"}
-            fullWidth
-            // onChange={(e, value) => searchHandler(e, value)}
-            options={skills.map((option) => option.title)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                fullWidth
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                  <path
+                    d="M215.296 29.1422V8.77856H230V13.2331H220.835V16.7331H229.243V21.1877H220.835V24.6877H229.96V29.1422H215.296Z"
+                    fill="url(#paint4_linear_1447_4472)"
+                  />
+                  <path
+                    d="M77.5083 8.77841H83.0471V21.8239C83.0471 23.375 82.6752 24.7173 81.9314 25.8509C81.1942 26.9777 80.1648 27.8494 78.8432 28.4659C77.5216 29.0758 75.9875 29.3807 74.2409 29.3807C72.4809 29.3807 70.9402 29.0758 69.6186 28.4659C68.297 27.8494 67.2676 26.9777 66.5304 25.8509C65.7999 24.7173 65.4346 23.375 65.4346 21.8239V8.77841H70.9734V21.3466C70.9734 21.9763 71.1129 22.5398 71.3918 23.0369C71.6707 23.5275 72.0559 23.9119 72.5474 24.1903C73.0454 24.4688 73.6099 24.608 74.2409 24.608C74.8784 24.608 75.4429 24.4688 75.9344 24.1903C76.4258 23.9119 76.811 23.5275 77.0899 23.0369C77.3689 22.5398 77.5083 21.9763 77.5083 21.3466V8.77841Z"
+                    fill="url(#paint5_linear_1447_4472)"
+                  />
+                  <path
+                    d="M103.805 13.233V8.77841H121.537V13.233H115.4V29.142H109.941V13.233H103.805Z"
+                    fill="url(#paint6_linear_1447_4472)"
+                  />
+                  <path
+                    d="M123.621 8.77841V29.142H137.408V24.6875H129.16V8.77841H123.621Z"
+                    fill="url(#paint7_linear_1447_4472)"
+                  />
+                  <path
+                    d="M139.647 29.142V8.77841H154.351V13.233H145.186V16.733H153.594V21.1875H145.186V24.6875H154.311V29.142H139.647Z"
+                    fill="url(#paint8_linear_1447_4472)"
+                  />
+                  <path
+                    d="M162.686 8.77841V29.142H168.225V21.1875H176.155V16.733H168.225V13.233H177.031V8.77841H162.686Z"
+                    fill="url(#paint9_linear_1447_4472)"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="paint0_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
                     >
-                      <circle
-                        cx="11"
-                        cy="11"
-                        r="7"
-                        stroke="#828282"
-                        strokeWidth="2"
-                      />
-                      <path
-                        d="M20 20L17 17"
-                        stroke="#828282"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  ),
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint1_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint2_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint3_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint4_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint5_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint6_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint7_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint8_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                    <linearGradient
+                      id="paint9_linear_1447_4472"
+                      x1="0"
+                      y1="19"
+                      x2="230"
+                      y2="19"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stop-color="#3F82E1" />
+                      <stop offset="1" stop-color="#7A3FED" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </a>
+            </Link>
+          </Box>
+        </Left>
+        <WrapperCenter>
+          {/* {authCheck && (
+            <Autocomplete
+              sx={{
+                "& .MuiSvgIcon-root": {
+                  width: 0,
+                },
+              }}
+              noOptionsText={"Ничего не найдено"}
+              fullWidth
+              // onChange={(e, value) => searchHandler(e, value)}
+              options={skills.map((option) => option.title)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="11"
+                          cy="11"
+                          r="7"
+                          stroke="#828282"
+                          strokeWidth="2"
+                        />
+                        <path
+                          d="M20 20L17 17"
+                          stroke="#828282"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    ),
+                  }}
+                />
+              )}
+            />
+          )} */}
+          <NavbarTextList>
+            <NavbarText>Турниры</NavbarText>
+            <NavbarText>Подробнее</NavbarText>
+            <NavbarText>Сообщество</NavbarText>
+          </NavbarTextList>
+        </WrapperCenter>
+        <Right>
+          {authCheck && (
+            <>
+              <Localization>
+                {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
+                <LocalizationSelect
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={localization}
+                  label="Age"
+                  onChange={handleChange}
+                >
+                  <MenuItem value={"ru"}>RU</MenuItem>
+                  <MenuItem value={"en"}>EN</MenuItem>
+                  <MenuItem value={"kz"}>KZ</MenuItem>
+                </LocalizationSelect>
+              </Localization>
+              <Notification>
+                <svg
+                  onClick={(e) => handleClick(e, setAnchorNotifications)}
+                  width="32"
+                  height="32"
+                  viewBox="0 0 32 32"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8.66993 9.30021C9.04652 5.53439 12.2154 2.66663 16 2.66663V2.66663C19.7846 2.66663 22.9534 5.5344 23.33 9.30021L23.7121 13.1217C23.8011 14.0111 23.8455 14.4558 23.9375 14.8873C24.0865 15.5872 24.3288 16.2639 24.6579 16.8994C24.8608 17.2912 25.1087 17.6631 25.6045 18.4067L27.2604 20.8906C28.1729 22.2593 28.6291 22.9437 28.3465 23.4718C28.0638 24 27.2413 24 25.5963 24H6.40366C4.75863 24 3.93612 24 3.65347 23.4718C3.37082 22.9437 3.82706 22.2593 4.73956 20.8906L6.39544 18.4067C6.89123 17.6631 7.13913 17.2912 7.34201 16.8994C7.67107 16.2639 7.91339 15.5872 8.06246 14.8873C8.15438 14.4558 8.19885 14.0111 8.28778 13.1217L8.66993 9.30021Z"
+                    fill="#828282"
+                  />
+                  <path
+                    d="M13.4242 27.5059C13.5761 27.6476 13.9109 27.7729 14.3766 27.8622C14.8423 27.9516 15.4129 28 16 28C16.587 28 17.1576 27.9516 17.6233 27.8622C18.089 27.7729 18.4238 27.6476 18.5758 27.5059"
+                    stroke="#828282"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+
+                <Popover
+                  id={idNotifications}
+                  open={!!anchorNotifications}
+                  anchorEl={anchorNotifications}
+                  onClose={() => handleClose(setAnchorNotifications)}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  sx={{
+                    "& .MuiPaper-root": {
+                      maxWidth: 480,
+                      width: "100%",
+                      borderRadius: "12px",
+                    },
+                  }}
+                >
+                  <Box sx={{ p: 2 }}>
+                    <Notifications
+                      setView={setNotificationView}
+                      view={notificationView}
+                      userNotification={userNotification}
+                      startupNotification={startupNotification}
+                    />
+                  </Box>
+                </Popover>
+              </Notification>
+              <UserMenu
+                onClick={(e) => {
+                  setUserMenu(true)
+                  handleClick(e, setAnchorUserMenu)
                 }}
-              />
-            )}
-          />
-        )}
-      </WrapperCenter>
-      <Right>
-        {authCheck && (
-          <>
-            <Notification>
-              <svg
-                onClick={(e) => handleClick(e, setAnchorNotifications)}
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                aria-describedby={idUserMenu}
               >
-                <path
-                  d="M8.59712 10.6259C9.01625 6.85376 12.2047 4 16 4V4C19.7953 4 22.9838 6.85376 23.4029 10.6259L23.7386 13.6475C23.8068 14.2616 23.841 14.5686 23.8978 14.8691C24.0354 15.5959 24.2731 16.3 24.6041 16.9614C24.741 17.2349 24.8999 17.4998 25.2178 18.0297L26.1826 19.6377C26.9884 20.9806 27.3912 21.6521 27.104 22.1594C26.8168 22.6667 26.0337 22.6667 24.4676 22.6667H7.53238C5.96627 22.6667 5.18322 22.6667 4.89599 22.1594C4.60876 21.6521 5.01164 20.9806 5.81739 19.6377L6.78221 18.0297C7.10009 17.4998 7.25904 17.2349 7.39591 16.9614C7.72691 16.3 7.96459 15.5959 8.10216 14.8691C8.15904 14.5686 8.19316 14.2616 8.26139 13.6475L8.59712 10.6259Z"
-                  stroke="#828282"
-                  strokeWidth="2"
+                <Avatar
+                  src={avatar}
+                  sx={{ marginRight: 1.2, objectFit: "cover" }}
+                  alt={`${firstName} ${lastName}`}
                 />
-                <path
-                  d="M12.1363 23.5529C12.3642 24.8287 12.8664 25.9561 13.565 26.7601C14.2635 27.5642 15.1195 28 16 28C16.8805 28 17.7365 27.5642 18.435 26.7601C19.1336 25.9561 19.6358 24.8287 19.8637 23.5529"
-                  stroke="#828282"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
+                <UserInfo>
+                  <UserName>Argen Alimbaev</UserName>
+                  <UserRole>Боец</UserRole>
+                </UserInfo>
+                <svg
+                  width="18"
+                  height="11"
+                  viewBox="0 0 18 11"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 9L9.70711 9.70711L9 10.4142L8.29289 9.70711L9 9ZM17.7071 1.70711L9.70711 9.70711L8.29289 8.29289L16.2929 0.292892L17.7071 1.70711ZM8.29289 9.70711L0.292892 1.70711L1.70711 0.292893L9.70711 8.29289L8.29289 9.70711Z"
+                    fill="#828282"
+                  />
+                </svg>
+              </UserMenu>
               <Popover
-                id={idNotifications}
-                open={!!anchorNotifications}
-                anchorEl={anchorNotifications}
-                onClose={() => handleClose(setAnchorNotifications)}
+                id={idUserMenu}
+                open={!!anchorUserMenu && openUserMenu}
+                anchorEl={anchorUserMenu}
+                onClose={() => {
+                  setUserMenu(false)
+                  handleClose(setAnchorUserMenu)
+                }}
                 anchorOrigin={{
                   vertical: "bottom",
                   horizontal: "left",
                 }}
-                sx={{
-                  "& .MuiPaper-root": {
-                    maxWidth: 480,
-                    width: "100%",
-                    borderRadius: "12px",
-                  },
-                }}
               >
-                <Box sx={{ p: 2 }}>
-                  <Notifications
-                    setView={setNotificationView}
-                    view={notificationView}
-                    userNotification={userNotification}
-                    startupNotification={startupNotification}
-                  />
-                </Box>
+                <WrapperUserMenu>
+                  <Box sx={{ p: 2 }}>
+                    <UserMenuItem onClick={() => changeMenu("profile")}>
+                      Мой профиль
+                    </UserMenuItem>
+                    {/*<UserMenuItemOfProfile onClick={() => changeMenu("vacancy")}>*/}
+                    {/*  Мои вакансии*/}
+                    {/*</UserMenuItemOfProfile>*/}
+                    {/*<UserMenuItemOfProfile onClick={() => changeMenu("tasks")}>*/}
+                    {/*  Мои задачи*/}
+                    {/*</UserMenuItemOfProfile>*/}
+                    <UserMenuItemOfProfile
+                      onClick={() => changeMenu("favorites")}
+                    >
+                      Избранное
+                    </UserMenuItemOfProfile>
+                    <UserMenuItemOfProfile onClick={outHandler}>
+                      Выйти
+                    </UserMenuItemOfProfile>
+                    <Line />
+                    <UserMenuItem onClick={() => changeMenu("startups")}>
+                      Стартапы
+                    </UserMenuItem>
+                    {/*<UserMenuItem onClick={() => changeMenu("settings")}>*/}
+                    {/*  Настройки*/}
+                    {/*</UserMenuItem>*/}
+                  </Box>
+                </WrapperUserMenu>
               </Popover>
-            </Notification>
-            <UserMenu
-              onClick={(e) => {
-                setUserMenu(true)
-                handleClick(e, setAnchorUserMenu)
-              }}
-              aria-describedby={idUserMenu}
-            >
-              <Avatar
-                src={avatar}
-                sx={{ marginRight: 1.2, objectFit: "cover" }}
-                alt={`${firstName} ${lastName}`}
-              />
-              <svg
-                width="18"
-                height="11"
-                viewBox="0 0 18 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9 9L9.70711 9.70711L9 10.4142L8.29289 9.70711L9 9ZM17.7071 1.70711L9.70711 9.70711L8.29289 8.29289L16.2929 0.292892L17.7071 1.70711ZM8.29289 9.70711L0.292892 1.70711L1.70711 0.292893L9.70711 8.29289L8.29289 9.70711Z"
-                  fill="#828282"
-                />
-              </svg>
-            </UserMenu>
-            <Popover
-              id={idUserMenu}
-              open={!!anchorUserMenu && openUserMenu}
-              anchorEl={anchorUserMenu}
-              onClose={() => {
-                setUserMenu(false)
-                handleClose(setAnchorUserMenu)
-              }}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-            >
-              <WrapperUserMenu>
-                <Box sx={{ p: 2 }}>
-                  <UserMenuItem onClick={() => changeMenu("profile")}>
-                    Мой профиль
-                  </UserMenuItem>
-                  {/*<UserMenuItemOfProfile onClick={() => changeMenu("vacancy")}>*/}
-                  {/*  Мои вакансии*/}
-                  {/*</UserMenuItemOfProfile>*/}
-                  {/*<UserMenuItemOfProfile onClick={() => changeMenu("tasks")}>*/}
-                  {/*  Мои задачи*/}
-                  {/*</UserMenuItemOfProfile>*/}
-                  <UserMenuItemOfProfile
-                    onClick={() => changeMenu("favorites")}
-                  >
-                    Избранное
-                  </UserMenuItemOfProfile>
-                  <UserMenuItemOfProfile onClick={outHandler}>
-                    Выйти
-                  </UserMenuItemOfProfile>
-                  <Line />
-                  <UserMenuItem onClick={() => changeMenu("startups")}>
-                    Стартапы
-                  </UserMenuItem>
-                  {/*<UserMenuItem onClick={() => changeMenu("settings")}>*/}
-                  {/*  Настройки*/}
-                  {/*</UserMenuItem>*/}
-                </Box>
-              </WrapperUserMenu>
-            </Popover>
-          </>
-        )}
-      </Right>
+            </>
+          )}
+        </Right>
+      </WrapperItems>
     </Wrapper>
   )
 }
@@ -361,15 +529,76 @@ const Wrapper = styled.div`
   position: fixed;
   width: 100%;
   height: 80px;
+  border: 1px solid #333333;
+  background: rgba(25, 26, 31, 0.9);
+  z-index: 1;
+`
+
+const WrapperItems = styled.div`
+  max-width: 1408px;
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   grid-gap: 10px;
   align-items: center;
   padding: 16px 38px;
-  border: 1px solid #d8d8d8;
-  background: #fff;
-  z-index: 1;
 `
+
+const Localization = styled(FormControl)`
+  min-width: 72px;
+`
+
+const LocalizationSelect = styled(Select)`
+  border: 1px solid #333333;
+  border-radius: 8px;
+  color: #828282;
+  height: 44px;
+`
+
+const UserInfo = styled.div`
+  max-width: 180px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 15px;
+`
+
+const UserName = styled.p`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  // line-height: 24px;
+  color: #f2f2f2;
+`
+
+const UserRole = styled.p`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  // line-height: 20px;
+  color: #828282;
+`
+
+const NavbarTextList = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+`
+
+const NavbarText = styled.div`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 32px;
+  color: #828282;
+  cursor: pointer;
+`
+
 const Left = styled.div`
   display: flex;
   align-items: center;
@@ -379,8 +608,8 @@ const Left = styled.div`
 `
 const WrapperCenter = styled.div`
   width: 100%;
-  max-width: 832px;
-  margin-right: 134px;
+  max-width: 690px;
+  // margin-right: 134px;
   ${theme.mqMax("xl")} {
     margin: 0 10px;
   }

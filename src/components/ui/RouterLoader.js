@@ -10,11 +10,11 @@ const RouterLoader = () => {
   Router.onRouteChangeComplete = () => setRouterLoading(false)
   return (
     <Modal
-      sx={{
-        "& .MuiBackdrop-root": {
-          backgroundColor: "rgba(255, 255, 255, 0.78) !important",
-        },
-      }}
+      // sx={{
+      //   "& .MuiBackdrop-root": {
+      //     backgroundColor: "rgba(255, 255, 255, 0.78) !important",
+      //   },
+      // }}
       open={routeLoading}
     >
       <LDSRing>
@@ -52,10 +52,10 @@ const LDSRing = styled.div`
       width: 98px;
       height: 98px;
       margin: 8px;
-      border: 8px solid #27ae60;
+      border: 8px solid #6d4eea;
       border-radius: 50%;
       animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-      border-color: #27ae60 transparent transparent transparent;
+      border-color: #6d4eea transparent transparent transparent;
     }
 
     & div:nth-child(1) {

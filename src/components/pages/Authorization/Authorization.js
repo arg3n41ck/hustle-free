@@ -255,7 +255,7 @@ const Form = styled(motion.form)`
 `
 export const AuthButton = styled.button`
   width: 100%;
-  background: #${(p) => (p.active ? "27AE60" : "F2F2F2")};
+  background: #${(p) => (p.active ? "6D4EEA" : "F2F2F2")};
   border-radius: 12px;
   height: 64px;
 

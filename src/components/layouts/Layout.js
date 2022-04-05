@@ -64,7 +64,7 @@ const Layout = ({ children }) => {
       </Head>
       <Header pageNotAuth={pageNotAuth} onMenu={menuHandler} />
       <Box sx={{ display: "flex" }}>
-        {!pageNotAuth && (
+        {/* {!pageNotAuth && (
           <Box
             sx={{
               margin: "80px 0 0 0",
@@ -72,7 +72,7 @@ const Layout = ({ children }) => {
           >
             <Navbar lg={lg} open={openMenu} onMenu={menuHandler} />
           </Box>
-        )}
+        )} */}
 
         <ChildrenWrapper lg={lg} pageNotAuth={pageNotAuth} openMenu={openMenu}>
           {children}
