@@ -1,0 +1,41 @@
+stages:
+  - prepare_env_vars
+  - deploy
+
+prepare_env_vars:
+  stage: prepare_env_vars
+  only:
+    - main
+    - dev
+  script:
+    - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" > .env
+    - echo "NEXT_PUBLIC_API_MEDIA_URL=$NEXT_PUBLIC_API_MEDIA_URL" >> .env
+  artifacts:
+    paths: 
+      - .env
+
+deploy-dev:
+  stage: deploy
+  before_script:
+    - sudo docker info
+    - sudo docker images
+    - sudo docker ps -a
+  tags:
+    - dev
+  only:
+    - dev
+  script:
+    - sudo docker-compose up -d --build
+
+deploy-prod:
+  stage: deploy
+  before_script:
+    - sudo docker info
+    - sudo docker images
+    - sudo docker ps -a
+  tags:
+    - prod
+  only:
+    - main
+  script:
+    - sudo docker-compose up -d --build

@@ -1,0 +1,56 @@
+.auth {
+  &-container {
+    margin: calc(14vh + 100px) auto 0 auto;
+    width: 100%;
+    max-width: 592px;
+  }
+  &-wrapper {
+    padding: 64px 48px;
+    border: 1px solid #d8d8d8;
+    box-sizing: border-box;
+    box-shadow: 0px 12px 40px rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+  }
+  &-title {
+    font-family: Inter, sans-serif;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 40px;
+    color: #333333;
+    margin-bottom: 16px;
+  }
+  &-description {
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #828282;
+    margin-bottom: 24px;
+  }
+  &-wrapper__input {
+    margin-bottom: 24px;
+    flex-grow: 1;
+  }
+  &-title__input {
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    color: #333333;
+    margin-bottom: 12px;
+  }
+  &-additionally {
+    margin-top: 32px;
+    &__text {
+      font-family: Inter, sans-serif;
+      font-size: 16px;
+      line-height: 24px;
+      color: #333333;
+    }
+  }
+  &-link {
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    color: #27ae60;
+    cursor: pointer;
+  }
+}
