@@ -27,11 +27,11 @@ const Index = () => {
     }
   }, [user])
 
-  useEffect(async () => {
-    if (!cookies.token) {
-      await router.push("/login")
-    }
-  }, [cookies])
+  // useEffect(async () => {
+  //   if (!cookies.token) {
+  //     await router.push("/login")
+  //   }
+  // }, [cookies]) // раскомментировать после подключения регистрации
 
   return (
     <Container>
@@ -51,25 +51,18 @@ const Index = () => {
   )
 }
 const Container = styled.div`
-  max-width: 1120px;
+  max-width: 1408px;
   margin: 0 auto;
 `
 const Wrapper = styled.div`
-  display: flex;
-  margin: 0;
-  ${theme.mqMax("xl")} {
-    margin-right: 10px;
-  }
-  ${theme.mqMax("lg")} {
-    margin-right: 0;
-  }
+  border: 1px solid #333333;
+  border-radius: 24px;
+`
+const Sidebar = styled.div`
+  
 `
 const Content = styled.div`
-  flex-grow: 1;
-  margin-right: 32px;
-  ${theme.mqMax("lg")} {
-    margin-right: 0;
-  }
+
 `
 
 export default Index
