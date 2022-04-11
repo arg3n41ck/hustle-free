@@ -41,12 +41,12 @@ const validationSchema = yup.object({
       (value) => !!(value || " ").replace(/\s/g, "")
     )
     .required("Заполните поле"),
-  birthDate: yup
-    .mixed()
+  email: yup
+    .string()
     .test(
-      "birthDate",
-      "Укажите действительную дату",
-      (value) => new Date() > new Date(value)
+      "email",
+      "Заполните поле",
+      (value) => !!(value || " ").replace(/\s/g, "")
     )
     .required("Заполните поле"),
   password: yup
@@ -56,21 +56,17 @@ const validationSchema = yup.object({
       "Пароль должен состоять из [A-z] [0-9] и не быть слишком простым..."
     )
     .required("Заполните поле"),
-  phone: yup.string().test("phone", "phone min.", (value) => {
-    if (typeof value === "undefined") return true
-    return value?.replace(/[^0-9]/g, "")?.length >= 11
-  }),
 })
 
 const InputPersonalData = ({ onView, query }) => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
+  const [tok, setTok] = useState(null)
   const formik = useFormik({
     initialValues: {
       lastName: "",
       firstName: "",
-      birthDate: null,
-      phone: "",
+      email: "",
       password: "",
     },
     onSubmit: async (values) => {
@@ -79,8 +75,8 @@ const InputPersonalData = ({ onView, query }) => {
         !Boolean(formik.errors.firstName) &&
         formik.values.lastName &&
         !Boolean(formik.errors.lastName) &&
-        formik.values.birthDate &&
-        !Boolean(formik.errors.birthDate) &&
+        formik.values.email &&
+        !Boolean(formik.errors.email) &&
         formik.values.password &&
         !Boolean(formik.errors.password)
       ) {
@@ -88,30 +84,38 @@ const InputPersonalData = ({ onView, query }) => {
         try {
           const { uid, token } = query
           const data = {
-            ...values,
-            birth_date: format(values.birthDate, "yyyy-MM-dd"),
-            first_name: values.firstName,
-            last_name: values.lastName,
-            phone_number: `+${values.phone.replace(/[^0-9]/g, "")}`,
+            // ...values,
+            // email: values.email,
+            // first_name: values.firstName,
+            // last_name: values.lastName,
             uid,
             token,
           }
-          if (data.phone_number === "+") {
-            delete data.phone_number
-          }
-          await $api.post("/accounts/auth/users/activation/", data)
-          toast.success("Вы успешно активировали свои учетные данные!")
-          dispatch(
-            saveUserItem({ userItem: "password", value: values.password })
-          )
           try {
-            const { data: _data } = await $api.post(
-              "/accounts/auth/jwt/create/",
+            const { data: _data } = await $api
+              .post("/accounts/auth/users/activation/", { uid, token })
+              .then(({ data }) => {
+                setTok(data)
+              })
+            toast.success("Вы успешно активировали свои учетные данные!")
+            dispatch(
+              saveUserItem({ userItem: "password", value: values.password })
+            )
+            const { data: _data2 } = await $api.post(
+              "/accounts/athlete/",
               {
-                email: query.email,
+                first_name: values.firstName,
+                last_name: values.lastName,
                 password: values.password,
+              },
+              {
+                headers: {
+                  Authorization: `Token ${_data?.access}`,
+                },
               }
             )
+            console.log("_data",_data)
+            console.log("_data2",_data2)
             setCookie("token", _data.access, 999)
             setCookie("refresh", _data.refresh, 999999)
             onView("skills")
@@ -121,8 +125,6 @@ const InputPersonalData = ({ onView, query }) => {
     },
     validationSchema,
   })
-
-  console.log(formik.errors)
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
@@ -195,86 +197,16 @@ const InputPersonalData = ({ onView, query }) => {
               />
             </div>
           </Box>
-          <Box
-            sx={{
-              "& .MuiFormControl-root": {
-                display: "flex",
-              },
-            }}
-            className="auth-wrapper__input"
-          >
-            <p className="auth-title__input">День рождения</p>
-            <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-              <MobileDatePicker
-                toolbarTitle={"Выбрать дату"}
-                cancelText={"Отмена"}
-                value={formik.values.birthDate}
-                onChange={(value) => formik.setFieldValue("birthDate", value)}
-                inputFormat="dd/MM/yyyy"
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    error={
-                      Boolean(formik.touched.birthDate) &&
-                      formik.errors.birthDate
-                    }
-                    helperText={
-                      formik.touched.birthDate && formik.errors.birthDate
-                    }
-                    inputProps={{
-                      ...params.inputProps,
-                      placeholder: "ДД/ММ/ГГГГ",
-                    }}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-          </Box>
-          <div className="auth-wrapper__input">
-            <p className="auth-title__input">Контакты</p>
-            <InputMask
-              mask="+7 (999) 999 99 99"
-              name={"phone"}
-              onChange={formik.handleChange}
-            >
-              {(inputProps) => (
-                <TextField
-                  {...inputProps}
-                  sx={{ width: "100%" }}
-                  id="outlined-basic"
-                  variant="outlined"
-                  placeholder={"+7 (7"}
-                  error={formik.touched.phone && Boolean(formik.errors.phone)}
-                  InputProps={{
-                    endAdornment: (
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M17.7071 13.7071L20.3552 16.3552C20.7113 16.7113 20.7113 17.2887 20.3552 17.6448C18.43 19.57 15.3821 19.7866 13.204 18.153L11.6286 16.9714C9.88504 15.6638 8.33622 14.115 7.02857 12.3714L5.84701 10.796C4.21341 8.61788 4.43001 5.56999 6.35523 3.64477C6.71133 3.28867 7.28867 3.28867 7.64477 3.64477L10.2929 6.29289C10.6834 6.68342 10.6834 7.31658 10.2929 7.70711L9.27175 8.72825C9.10946 8.89054 9.06923 9.13846 9.17187 9.34373C10.3585 11.7171 12.2829 13.6415 14.6563 14.8281C14.8615 14.9308 15.1095 14.8905 15.2717 14.7283L16.2929 13.7071C16.6834 13.3166 17.3166 13.3166 17.7071 13.7071Z"
-                          stroke="#828282"
-                          strokeWidth="2"
-                        />
-                      </svg>
-                    ),
-                  }}
-                />
-              )}
-            </InputMask>
-          </div>
           <div className="auth-wrapper__input">
             <p className="auth-title__input">Электронный адрес</p>
             <TextField
-              disabled
-              sx={{ width: "100%", background: "#F2F2F2" }}
-              value={query.email}
+              sx={{ width: "100%" }}
+              value={formik.values.email}
               id="outlined-basic"
               placeholder="Электронный адрес"
+              name="email"
               variant="outlined"
+              onChange={(e) => formik.setFieldValue("email", e.target.value)}
               InputProps={{
                 endAdornment: (
                   <svg
@@ -301,6 +233,8 @@ const InputPersonalData = ({ onView, query }) => {
                   </svg>
                 ),
               }}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
           </div>
           <div className="auth-wrapper__input">

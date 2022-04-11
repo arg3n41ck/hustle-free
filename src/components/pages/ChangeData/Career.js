@@ -633,7 +633,6 @@ const Title = styled.h3`
   font-weight: bold;
   font-size: 24px;
   line-height: 32px;
-  color: #333333;
   padding: 32px;
 `
 const Line = styled.div`

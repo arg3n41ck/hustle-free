@@ -25,9 +25,9 @@ const InputSkillsData = () => {
   const router = useRouter()
   const [token] = useCookie("token")
 
-  useEffect(() => {
-    dispatch(fetchSkills())
-  }, [])
+  // useEffect(() => {
+  //   dispatch(fetchSkills())
+  // }, [])
 
   const searchHandler = (e, value) => {
     const item = allSkills.skills.find((item) => item.title === value)

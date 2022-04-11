@@ -78,7 +78,7 @@ const Header = ({ onMenu }) => {
     setState(null)
   }
 
-  const changeMenu = (value) => {
+  const changeMenu = (value) => {  и
     router.push("/profile")
     dispatch(change(value))
     handleClose(setAnchorUserMenu)
