@@ -39,6 +39,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@svgr/webpack": "^6.2.1",
     "babel-plugin-styled-components": "^1.12.0"
   }
 }
