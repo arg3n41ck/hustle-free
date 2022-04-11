@@ -21,8 +21,8 @@ const Login = () => {
 
   return (
     <>
-      {(view === "login" && <Authorization onView={viewHandler}/>) ||
-      (view === "recover" && <Recover onView={viewHandler}/>)}
+      {(view === "login" && <Authorization onView={viewHandler} />) ||
+        (view === "recover" && <Recover onView={viewHandler} />)}
       {/* || (view === "newPassword" && <NewPassword />)}*/}
     </>
   )
