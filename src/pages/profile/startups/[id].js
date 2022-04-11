@@ -53,30 +53,30 @@ const removeServicesFromFavorites = async (id) => {
   }
 }
 
-const getServices = async (id, userID) => {
-  try {
-    const { data: unsortedByFavorites } = await $api.get(
-      `/startup/startups/${id}/startup_services/`
-    )
-    const { data: sortedByFavorites } = await $api.get(
-      `/accounts/users/${userID}/service_favorites/`
-    )
-    const fav = sortedByFavorites.map(({ id, ...others }) => ({
-      id: others.service.id,
-      favID: id,
-    }))
-    return (unsortedByFavorites.length ? unsortedByFavorites : []).map(
-      (service) => {
-        return {
-          ...service,
-          favorite: fav.find(({ id }) => id === service.id),
-        }
-      }
-    )
-  } catch (e) {
-    console.log(e)
-  }
-}
+// const getServices = async (id, userID) => {
+//   try {
+//     const { data: unsortedByFavorites } = await $api.get(
+//       `/startup/startups/${id}/startup_services/`
+//     )
+//     const { data: sortedByFavorites } = await $api.get(
+//       `/accounts/users/${userID}/service_favorites/`
+//     )
+//     const fav = sortedByFavorites.map(({ id, ...others }) => ({
+//       id: others.service.id,
+//       favID: id,
+//     }))
+//     return (unsortedByFavorites.length ? unsortedByFavorites : []).map(
+//       (service) => {
+//         return {
+//           ...service,
+//           favorite: fav.find(({ id }) => id === service.id),
+//         }
+//       }
+//     )
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
 
 const Startup = ({ startup, startupTeamMembers }) => {
   const { changeStartUpValue } = useSelector((state) => state.profileMenu)
@@ -139,11 +139,11 @@ const Startup = ({ startup, startupTeamMembers }) => {
     setVacancies(vacancies)
   }, [])
 
-  const updateServices = () => {
-    getServices(startup.id, user.id).then((data) => {
-      setServices(data)
-    })
-  }
+  // const updateServices = () => {
+  //   getServices(startup.id, user.id).then((data) => {
+  //     setServices(data)
+  //   })
+  // }
 
   useEffect(() => {
     updateServices()

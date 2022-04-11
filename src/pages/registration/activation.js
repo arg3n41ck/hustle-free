@@ -17,12 +17,14 @@ const InputData = ({ query }) => {
 
   useEffect(() => {
     return () => {
-      dispatch(fetchSkills())
-      dispatch(fetchTechnologies())
+      // dispatch(fetchSkills())
+      // dispatch(fetchTechnologies())
       dispatch(fetchUser())
-      dispatch(fetchStartups())
+      // dispatch(fetchStartups())
     }
   }, [])
+
+  console.log(query)
 
   return (
     <>

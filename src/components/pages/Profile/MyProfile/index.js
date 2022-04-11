@@ -333,6 +333,7 @@ const UserInfoBodyInfoName = styled.h2`
   font-weight: 700;
   font-style: normal;
   line-height: 32px;
+  color: #828282;
 `
 const UserInfoBodyInfoSocialNetworks = styled.div`
   display: flex;
@@ -366,6 +367,7 @@ const UserInfoBodyInfoBirthdayContent = styled.p`
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
+  color: #828282;
   margin-left: 34px;
 `
 const UserInfoBodyInfoContactsWrapper = styled.div`
@@ -387,6 +389,7 @@ const UserInfoBodyInfoContactsContent = styled.p`
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
+  color: #828282;
   line-height: 24px;
   margin-left: 34px;
 `

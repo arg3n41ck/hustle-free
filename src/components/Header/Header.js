@@ -23,19 +23,19 @@ import clearCookies from "../../helpers/clearCookies"
 
 let notificationInterval
 
-const getNotifications = async () => {
-  try {
-    const {
-      data: { results: userNotification },
-    } = await $api.get(`/notifications/?source=user`)
-    const {
-      data: { results: startupNotification },
-    } = await $api.get(`/notifications/?source=startup`)
-    return !!userNotification?.length && !!startupNotification?.length
-      ? { userNotification, startupNotification }
-      : null
-  } catch (e) {}
-}
+// const getNotifications = async () => {
+//   try {
+//     const {
+//       data: { results: userNotification },
+//     } = await $api.get(`/notifications/?source=user`)
+//     const {
+//       data: { results: startupNotification },
+//     } = await $api.get(`/notifications/?source=startup`)
+//     return !!userNotification?.length && !!startupNotification?.length
+//       ? { userNotification, startupNotification }
+//       : null
+//   } catch (e) {}
+// }
 
 const Header = ({ onMenu }) => {
   const dispatch = useDispatch()
@@ -51,7 +51,7 @@ const Header = ({ onMenu }) => {
   const [notificationView, setNotificationView] = useState("user")
   const [userNotification, setUserNotifications] = useState([])
   const [startupNotification, setStartupNotifications] = useState([])
-  const { avatar, firstName, lastName } = useSelector(
+  const { avatar, firstName, lastName, role } = useSelector(
     (state) => state.user.user
   )
   const [localization, setLocalization] = React.useState("ru")
@@ -91,25 +91,25 @@ const Header = ({ onMenu }) => {
     await router.push("/login")
   }
 
-  const createNotificationInterval = () => {
-    if (token) {
-      notificationInterval = setInterval(() => {
-        getNotifications().then((res) => {
-          if (res) {
-            setUserNotifications(res.userNotification)
-            setStartupNotifications(res.startupNotification)
-          }
-        })
-      }, 60000)
-    } else {
-      clearInterval(notificationInterval)
-    }
-  }
+  // const createNotificationInterval = () => {
+  //   if (token) {
+  //     notificationInterval = setInterval(() => {
+  //       getNotifications().then((res) => {
+  //         if (res) {
+  //           setUserNotifications(res.userNotification)
+  //           setStartupNotifications(res.startupNotification)
+  //         }
+  //       })
+  //     }, 60000)
+  //   } else {
+  //     clearInterval(notificationInterval)
+  //   }
+  // }
 
-  useEffect(() => {
-    clearInterval(notificationInterval)
-    createNotificationInterval()
-  }, [])
+  // useEffect(() => {
+  //   clearInterval(notificationInterval)
+  //   createNotificationInterval()
+  // }, [])
 
   useEffect(() => {}, [])
 
@@ -459,8 +459,10 @@ const Header = ({ onMenu }) => {
                   alt={`${firstName} ${lastName}`}
                 />
                 <UserInfo>
-                  <UserName>Argen Alimbaev</UserName>
-                  <UserRole>Боец</UserRole>
+                  <UserName>
+                    {firstName} {lastName}
+                  </UserName>
+                  <UserRole>{role}</UserRole>
                 </UserInfo>
                 <svg
                   width="18"

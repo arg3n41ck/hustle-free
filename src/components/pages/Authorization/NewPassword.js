@@ -166,7 +166,7 @@ const Form = styled(motion.form)`
 `
 export const AuthButton = styled.button`
   width: 100%;
-  background: #${(p) => (p.active ? "27AE60" : "F2F2F2")};
+  background: ${(p) => (p.active ? "linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)" : "#F2F2F2")};
   border-radius: 12px;
   height: 64px;
 
