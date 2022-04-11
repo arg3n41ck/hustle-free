@@ -22,6 +22,7 @@ import { saveUserItem } from "../../../redux/components/user"
 import { setCookie } from "../../../services/JWTService"
 import { MobileDatePicker } from "@mui/lab"
 import { ru } from "date-fns/locale"
+import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
 const validationSchema = yup.object({
@@ -61,6 +62,7 @@ const validationSchema = yup.object({
 const InputPersonalData = ({ onView, query }) => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
   const [tok, setTok] = useState(null)
   const formik = useFormik({
     initialValues: {
@@ -75,51 +77,39 @@ const InputPersonalData = ({ onView, query }) => {
         !Boolean(formik.errors.firstName) &&
         formik.values.lastName &&
         !Boolean(formik.errors.lastName) &&
-        formik.values.email &&
-        !Boolean(formik.errors.email) &&
         formik.values.password &&
         !Boolean(formik.errors.password)
       ) {
         toast.info("Ожидайте ответа от сервера")
         try {
           const { uid, token } = query
-          const data = {
-            // ...values,
-            // email: values.email,
-            // first_name: values.firstName,
-            // last_name: values.lastName,
-            uid,
-            token,
-          }
-          try {
-            const { data: _data } = await $api
-              .post("/accounts/auth/users/activation/", { uid, token })
-              .then(({ data }) => {
-                setTok(data)
-              })
-            toast.success("Вы успешно активировали свои учетные данные!")
-            dispatch(
-              saveUserItem({ userItem: "password", value: values.password })
-            )
-            const { data: _data2 } = await $api.post(
-              "/accounts/athlete/",
-              {
-                first_name: values.firstName,
-                last_name: values.lastName,
-                password: values.password,
-              },
-              {
-                headers: {
-                  Authorization: `Token ${_data?.access}`,
-                },
-              }
-            )
-            console.log("_data",_data)
-            console.log("_data2",_data2)
-            setCookie("token", _data.access, 999)
-            setCookie("refresh", _data.refresh, 999999)
-            onView("skills")
-          } catch (e) {}
+          await $api
+            .post("/accounts/auth/users/activation/", { uid, token })
+            .then(({ data }) => {
+              try {
+                const { data: _data } = $api.post(
+                  "/accounts/athlete/",
+                  {
+                    first_name: values.firstName,
+                    last_name: values.lastName,
+                    password: values.password,
+                  },
+                  {
+                    headers: {
+                      Authorization: `Token ${data?.access}`,
+                    },
+                  }
+                )
+                setCookie("token", _data.access, 999)
+                setCookie("refresh", _data.refresh, 999999)
+                // onView("skills")
+              } catch (e) {}
+            })
+          toast.success("Вы успешно активировали свои учетные данные!")
+          router.push("/profile")
+          dispatch(
+            saveUserItem({ userItem: "password", value: values.password })
+          )
         } catch (e) {}
       }
     },
@@ -202,6 +192,7 @@ const InputPersonalData = ({ onView, query }) => {
             <TextField
               sx={{ width: "100%" }}
               value={formik.values.email}
+              disabled
               id="outlined-basic"
               placeholder="Электронный адрес"
               name="email"
@@ -328,8 +319,6 @@ const InputPersonalData = ({ onView, query }) => {
               !Boolean(formik.errors.firstName) &&
               formik.values.lastName &&
               !Boolean(formik.errors.lastName) &&
-              formik.values.birthDate &&
-              !Boolean(formik.errors.birthDate) &&
               formik.values.password &&
               !Boolean(formik.errors.password)
             }

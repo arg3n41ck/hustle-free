@@ -43,7 +43,7 @@ const Layout = ({ children }) => {
   useEffect(() => {
     // dispatch(fetchSkills())
     // dispatch(fetchTechnologies())
-    // dispatch(fetchUser())
+    dispatch(fetchUser())
     // dispatch(fetchStartups())
   }, [cookies])
 

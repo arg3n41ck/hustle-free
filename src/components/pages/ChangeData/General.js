@@ -177,7 +177,7 @@ const General = ({ user, onTabs }) => {
             </div>
           </Box>
 
-          <Box
+          {/* <Box
             sx={{
               "& .MuiFormControl-root": {
                 display: "flex",
@@ -215,7 +215,7 @@ const General = ({ user, onTabs }) => {
                 )}
               />
             </LocalizationProvider>{" "}
-          </Box>
+          </Box> */}
 
           <div className="auth-wrapper__input">
             <p className="auth-title__input">Контакты</p>

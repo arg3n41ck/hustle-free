@@ -20,7 +20,7 @@ $api.interceptors.request.use(
   (config) => {
     let token = getCookie("token")
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Token ${token}`
     }
     config.data = decamelizeKeys(config.data)
     return config

@@ -20,12 +20,12 @@ const Index = () => {
   const { user } = useSelector((state) => state.user)
   const [startupsState, setStartupsState] = useState([])
 
-  useEffect(async () => {
-    if (user.id) {
-      const res = await $api.get(`/accounts/users/${user.id}/startups_owner/`)
-      setStartupsState(res.data)
-    }
-  }, [user])
+  // useEffect(async () => {
+  //   if (user.id) {
+  //     const res = await $api.get(`/accounts/users/${user.id}/startups_owner/`)
+  //     setStartupsState(res.data)
+  //   }
+  // }, [user])
 
   useEffect(async () => {
     if (!cookies.token) {

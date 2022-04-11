@@ -19,7 +19,7 @@ const InputData = ({ query }) => {
     return () => {
       // dispatch(fetchSkills())
       // dispatch(fetchTechnologies())
-      // dispatch(fetchUser())
+      dispatch(fetchUser())
       // dispatch(fetchStartups())
     }
   }, [])

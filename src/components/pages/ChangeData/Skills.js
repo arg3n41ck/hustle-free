@@ -29,20 +29,20 @@ const ProfileSkills = ({ onTabs }) => {
     }
   }
 
-  const submitHandler = async (e) => {
-    toast.info("Ожидайте ответа от сервера...")
-    e.preventDefault()
-    if (skillsState !== user.skills) {
-      dispatch(saveUserItem({ userItem: "skills", value: skillsState }))
-      try {
-        await $api.put("accounts/users/me/", {
-          skills: skillsState.map((skill) => skill.id),
-        })
-        toast.success("Добавление навыка прошло успешно")
-        onTabs("certificates")
-      } catch (e) {}
-    }
-  }
+  // const submitHandler = async (e) => {
+  //   toast.info("Ожидайте ответа от сервера...")
+  //   e.preventDefault()
+  //   if (skillsState !== user.skills) {
+  //     dispatch(saveUserItem({ userItem: "skills", value: skillsState }))
+  //     try {
+  //       await $api.put("accounts/users/me/", {
+  //         skills: skillsState.map((skill) => skill.id),
+  //       })
+  //       toast.success("Добавление навыка прошло успешно")
+  //       onTabs("certificates")
+  //     } catch (e) {}
+  //   }
+  // }
 
   const deleteHandler = (id) => {
     const index = skillsState.findIndex((skill) => skill.id === id)
@@ -164,7 +164,7 @@ const ProfileSkills = ({ onTabs }) => {
         </Content>
       </Wrapper>
       <AuthButton
-        onClick={submitHandler}
+        // onClick={submitHandler}
         active={skillsState !== user.skills}
         disabled={skillsState === user.skills}
         type="submit"

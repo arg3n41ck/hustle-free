@@ -41,6 +41,7 @@ const tabs = [
 const ChangeDataProfile = () => {
   const { changeProfileValue } = useSelector((state) => state.profileMenu)
   const { user, progress } = useSelector((state) => state.user)
+  console.log(user)
   const [countries, setCountries] = useState([])
   const dispatch = useDispatch()
   const router = useRouter()
