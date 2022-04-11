@@ -3,11 +3,11 @@ import styled from "styled-components"
 import { theme } from "/src/styles/theme"
 import GeneralCreateStartup from "/src/components/pages/CreateStartups/General"
 import VerticalTab from "/src/components/ui/tabs/VerticalTabs"
-import DetailsCreateStartup from "../../../../components/pages/CreateStartups/Details"
+import DetailsCreateStartup from "../../../../../components/pages/CreateStartups/Details"
 import { useDispatch, useSelector } from "react-redux"
-import { saveChangeStartup } from "../../../../redux/components/startups"
-import $api from "../../../../services/axios"
-import { changeCreateStartupTabsValue } from "../../../../redux/components/navigations"
+import { saveChangeStartup } from "../../../../../redux/components/startups"
+import $api from "../../../../../services/axios"
+import { changeCreateStartupTabsValue } from "../../../../../redux/components/navigations"
 
 export async function getServerSideProps(context) {
   return {

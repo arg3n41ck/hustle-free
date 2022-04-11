@@ -9,14 +9,14 @@ import {
 } from "/src/redux/components/navigations"
 import General from "/src/components/pages/Startup/General/General"
 import VerticalTabs from "/src/components/ui/tabs/VerticalTabs"
-import Vacancies from "../../../components/pages/Startup/Vacancies/Vacancies"
-import CreateVacancy from "../../../components/pages/Startup/Vacancies/Create"
-import Services from "../../../components/pages/Startup/Services/Services"
-import CreateService from "../../../components/pages/Startup/Services/Create"
-import TeamMembers from "../../../components/pages/Startup/TeamMembers/TeamMembers"
-import Gallery from "../../../components/pages/Startup/Gallery/Gallery"
+import Vacancies from "../../../../components/pages/Startup/Vacancies/Vacancies"
+import CreateVacancy from "../../../../components/pages/Startup/Vacancies/Create"
+import Services from "../../../../components/pages/Startup/Services/Services"
+import CreateService from "../../../../components/pages/Startup/Services/Create"
+import TeamMembers from "../../../../components/pages/Startup/TeamMembers/TeamMembers"
+import Gallery from "../../../../components/pages/Startup/Gallery/Gallery"
 import { toast } from "react-toastify"
-import sliceText from "../../../helpers/sliceText"
+import sliceText from "../../../../helpers/sliceText"
 
 export async function getServerSideProps(context) {
   const { data: startup } = await $api.get(

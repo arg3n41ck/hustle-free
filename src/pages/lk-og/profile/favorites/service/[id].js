@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react"
-import $api from "../../../../services/axios"
+import $api from "../../../../../services/axios"
 import styled from "styled-components"
 import Image from "next/image"
 import { Box } from "@mui/material"
 import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
-import { change } from "../../../../redux/components/navigations"
+import { change } from "../../../../../redux/components/navigations"
 import LogoCompany from "/src/public/png/logo.png"
 import { format, parseISO } from "date-fns"
-import sliceText from "../../../../helpers/sliceText"
+import sliceText from "../../../../../helpers/sliceText"
 
 export const getServerSideProps = async (ctx) => {
   const { data: startup } = await $api.get(

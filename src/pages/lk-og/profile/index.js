@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { useSelector } from "react-redux"
-import ProfileMain from "../../components/pages/Profile/MyProfile"
+import ProfileMain from "../../../components/pages/Profile/MyProfile"
 
-import VerticalTab from "../../components/pages/Profile/MyProfile/VerticalTabs"
+import VerticalTab from "../../../components/pages/Profile/MyProfile/VerticalTabs"
 import { Box, useMediaQuery } from "@mui/material"
-import { theme } from "../../styles/theme"
-import Startups from "../../components/pages/Profile/Startups"
-import $api from "../../services/axios"
+import { theme } from "../../../styles/theme"
+import Startups from "../../../components/pages/Profile/Startups"
+import $api from "../../../services/axios"
 import { useRouter } from "next/router"
 import { useCookies } from "react-cookie"
-import Favorites from "../../components/pages/Profile/MyProfile/Favorites/Favorites"
+import Favorites from "../../../components/pages/Profile/MyProfile/Favorites/Favorites"
 
 const Index = () => {
   const { value } = useSelector((state) => state.profileMenu)
