@@ -59,9 +59,10 @@ const Info = ({ onToggleSidebar }) => {
             День рождения:
           </Item>
           <Item>
-            {format(parseISO(user?.dateBirthday), "dd MMMM yyyy г.", {
-              locale: ru,
-            })}
+            {!!user?.dateBirthday &&
+              format(parseISO(user?.dateBirthday), "dd MMMM yyyy г.", {
+                locale: ru,
+              })}
           </Item>
           <Item>
             <WrapperIcon>
