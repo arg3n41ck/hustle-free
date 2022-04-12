@@ -8,14 +8,14 @@ const tabs = [
     value: "services",
     name: "Услуги",
   },
-  // {
-  //   value: "vacancies",
-  //   name: "Вакансии",
-  // },
-  // {
-  //   value: "tasks",
-  //   name: "Задачи",
-  // },
+  {
+    value: "vacancies",
+    name: "Вакансии",
+  },
+  {
+    value: "tasks",
+    name: "Задачи",
+  },
 ]
 
 const Favorites = () => {

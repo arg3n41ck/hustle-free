@@ -6,8 +6,15 @@ import { getCookie } from "../../services/JWTService"
 import { toast } from "react-toastify"
 
 // async actions
-export const fetchUser = createAsyncThunk("user/get", async () => {
-  const { data } = await $api.get(`/accounts/users/me/`)
+export const fetchUser = createAsyncThunk("user/get", async (token) => {
+  const { data } = await $api.get(
+    `/accounts/users/me/`,
+    !!token && {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
   return camelizeKeys(data)
 })
 
