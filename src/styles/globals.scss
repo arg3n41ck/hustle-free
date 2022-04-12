@@ -1,4 +1,5 @@
 @import "auth.scss";
+@import "main_page_slider";
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
 html,
@@ -45,14 +46,25 @@ li {
   list-style: none;
 }
 
+.MuiPaper-root {
+  background: unset;
+  .MuiPopover-paper {
+    background: unset;
+  }
+}
+
 .MuiButtonBase-root {
   text-transform: inherit !important;
 }
 
 .MuiOutlinedInput-root {
   border-radius: 8px !important;
-  //border: 1.5px solid #e0e0e0;
   grid-gap: 14px;
+  color: #fff;
+
+  &:hover fieldset {
+    border-color: #333 !important;
+  }
 }
 
 .MuiTabs-indicator {
@@ -64,5 +76,5 @@ li {
 }
 
 .MuiOutlinedInput-notchedOutline {
-  border: none;
+  border: 1.5px solid #333333;
 }

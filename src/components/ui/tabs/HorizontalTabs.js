@@ -8,7 +8,7 @@ const useStyle = makeStyles({
   indicator: {
     width: "115%",
     height: 4,
-    borderRadius: "20px 20px 0px 0px",
+    borderRadius: "20px 20px 0 0px",
   },
 })
 

@@ -225,7 +225,7 @@ const TextPrev = styled.div`
   color: #828282;
   display: flex;
   align-items: center;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -260,19 +260,19 @@ const RegistrationInfoContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   // width: 100%;
-  box-shadow: 0px 8px 32px rgba(74, 74, 74, 0.12);
+  box-shadow: 0 8px 32px rgba(74, 74, 74, 0.12);
   // height: 100%;
   max-width: 506px;
   // margin: 0 auto;
   border-radius: 8px;
-  padding: 24px 24px 24px 0px;
+  padding: 24px 24px 24px 0;
   background: #191a1f;
   position: relative;
 `
 
 const RegistrationInfoContainerHeader = styled.p`
   color: #f2f2f2;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -281,7 +281,7 @@ const RegistrationInfoContainerHeader = styled.p`
 
 const RegistrationInfoContainerText = styled.p`
   color: #f2f2f2;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
