@@ -4,8 +4,9 @@
 html,
 body {
   scroll-behavior: smooth;
-  background-color: #0F0F10;
+  background-color: #0f0f10;
   overflow-x: hidden;
+  color: #f2f2f2;
 }
 
 a {
@@ -27,14 +28,13 @@ button {
   cursor: pointer;
 }
 
-  .MuiCheckbox-root{
-    color: #6D4EEA;
-  }
+.MuiCheckbox-root {
+  color: #6d4eea;
+}
 
-  .MuiCheckbox-root.Mui-checked{
-    color: #6D4EEA;
-
-  }
+.MuiCheckbox-root.Mui-checked {
+  color: #6d4eea;
+}
 
 textarea {
   resize: none;
@@ -59,10 +59,10 @@ li {
   width: 4px;
 }
 
-.MuiSelect-icon{
+.MuiSelect-icon {
   color: #828282;
 }
 
-.MuiOutlinedInput-notchedOutline{
+.MuiOutlinedInput-notchedOutline {
   border: none;
 }

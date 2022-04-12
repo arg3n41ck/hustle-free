@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
-import InputPersonalData from "../../components/pages/Registration/InputPersonalData"
-import InputSkillsData from "../../components/pages/Registration/inputSkillsData"
-import { fetchSkills } from "../../redux/components/skills"
-import { fetchTechnologies } from "../../redux/components/technologies"
-import { fetchUser } from "../../redux/components/user"
-import { fetchStartups } from "../../redux/components/startups"
+import InputPersonalData from "../components/pages/Registration/InputPersonalData"
+import InputSkillsData from "../components/pages/Registration/inputSkillsData"
+import { fetchSkills } from "../redux/components/skills"
+import { fetchTechnologies } from "../redux/components/technologies"
+import { fetchUser } from "../redux/components/user"
+import { fetchStartups } from "../redux/components/startups"
 import { useDispatch } from "react-redux"
 
 const InputData = ({ query }) => {

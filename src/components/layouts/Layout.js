@@ -5,14 +5,11 @@ import hfIcon from "../../public/svg/hfIcon.svg"
 import Navbar from "../Navbar"
 import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
-import { fetchSkills } from "../../redux/components/skills"
 import Head from "next/head"
 import { checkProgress, fetchUser } from "../../redux/components/user"
 import { useCookies } from "react-cookie"
 import { theme } from "../../styles/theme"
 import styled from "styled-components"
-import { fetchStartups } from "../../redux/components/startups"
-import { fetchTechnologies } from "../../redux/components/technologies"
 
 const Layout = ({ children }) => {
   const lg = useMediaQuery("(max-width:992px)")
