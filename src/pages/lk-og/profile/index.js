@@ -11,6 +11,7 @@ import $api from "../../../services/axios"
 import { useRouter } from "next/router"
 import { useCookies } from "react-cookie"
 import Favorites from "../../../components/pages/Profile/MyProfile/Favorites/Favorites"
+import { Container } from "../../../components/ui/Wrappers/Container"
 
 const Index = () => {
   const { value } = useSelector((state) => state.profileMenu)
@@ -35,34 +36,21 @@ const Index = () => {
 
   return (
     <Container>
-      <Wrapper>
-        <Content>
-          {(value === "profile" && <ProfileMain />) ||
-            (value === "startups" && <Startups startups={startupsState} />) ||
-            (value === "favorites" && <Favorites />)}
-        </Content>
-        {!lg && (
-          <Box sx={{ maxHeight: 359 }}>
-            <VerticalTab />
-          </Box>
-        )}
-      </Wrapper>
+      <Content>
+        {(value === "profile" && <ProfileMain />) ||
+          (value === "startups" && <Startups startups={startupsState} />) ||
+          (value === "favorites" && <Favorites />)}
+      </Content>
+      {!lg && (
+        <Box sx={{ maxHeight: 359 }}>
+          <VerticalTab />
+        </Box>
+      )}
     </Container>
   )
 }
-const Container = styled.div`
-  max-width: 1408px;
-  margin: 0 auto;
-`
-const Wrapper = styled.div`
-  border: 1px solid #333333;
-  border-radius: 24px;
-`
-const Sidebar = styled.div`
-  
-`
-const Content = styled.div`
 
-`
+const Sidebar = styled.div``
+const Content = styled.div``
 
 export default Index

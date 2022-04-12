@@ -1,153 +1,48 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import {
-  Autocomplete,
-  Avatar,
-  Box,
-  Popover,
-  TextField,
-  MenuItem,
-  FormControl,
-  Select,
-} from "@mui/material"
+import { Avatar, Box, Popover } from "@mui/material"
 import Notifications from "./components/Notifications"
 import { useDispatch, useSelector } from "react-redux"
-import { change, changeAuthCheck } from "../../redux/components/navigations"
-import { useRouter } from "next/router"
+import { changeAuthCheck } from "../../redux/components/navigations"
 import { useCookies } from "react-cookie"
 import Link from "next/link"
 import { theme } from "../../styles/theme"
-import $api from "../../services/axios"
-import { useCookie } from "react-use"
-import clearCookies from "../../helpers/clearCookies"
+import HeaderLocalizationPopover from "./components/HeaderLocalizationPopover"
+import UserNav from "./components/UserNav"
 
-let notificationInterval
-
-// const getNotifications = async () => {
-//   try {
-//     const {
-//       data: { results: userNotification },
-//     } = await $api.get(`/notifications/?source=user`)
-//     const {
-//       data: { results: startupNotification },
-//     } = await $api.get(`/notifications/?source=startup`)
-//     return !!userNotification?.length && !!startupNotification?.length
-//       ? { userNotification, startupNotification }
-//       : null
-//   } catch (e) {}
-// }
-
-const Header = ({ onMenu }) => {
+const Header = () => {
+  //TODO СОЗДАТЬ ДР. ФАЙЛ И ВЫВЕСТИ компененты уведомлений и смена языка в эти файлы
   const dispatch = useDispatch()
-  const router = useRouter()
   const [anchorUserMenu, setAnchorUserMenu] = useState(null)
   const [openUserMenu, setUserMenu] = useState(false)
-  const [token] = useCookie("token")
-  const idUserMenu = !!anchorUserMenu ? "simple-popover" : undefined
   const [anchorNotifications, setAnchorNotifications] = useState(null)
-  const idNotifications = !!anchorNotifications ? "simple-popover" : undefined
   const [cookies] = useCookies(["token", "refresh"])
-  const { skills } = useSelector((state) => state.skills)
   const [notificationView, setNotificationView] = useState("user")
   const [userNotification, setUserNotifications] = useState([])
   const [startupNotification, setStartupNotifications] = useState([])
+  const idNotifications = !!anchorNotifications ? "simple-popover" : undefined
+  const idUserMenu = !!anchorUserMenu ? "simple-popover" : undefined
   const { avatar, firstName, lastName, role } = useSelector(
     (state) => state.user.user
   )
-  const [localization, setLocalization] = React.useState("ru")
   const { authCheck } = useSelector((state) => state.profileMenu)
 
   useEffect(() => {
-    // setAuthCheck(!!cookies.token)
     dispatch(changeAuthCheck(!!cookies.token))
   }, [cookies.token])
 
-  useEffect(() => {
-    setUserMenu(false)
-  }, [authCheck])
-
   const handleClick = (event, setState) => {
     setState(event.currentTarget)
-  }
-
-  const handleChange = (event) => {
-    setLocalization(event.target.value)
   }
 
   const handleClose = (setState) => {
     setState(null)
   }
 
-  const changeMenu = (value) => {
-    router.push("/profile")
-    dispatch(change(value))
-    handleClose(setAnchorUserMenu)
-  }
-
-  const outHandler = async () => {
-    clearCookies()
-    dispatch(changeAuthCheck(false))
-
-    await router.push("/login")
-  }
-
-  // const createNotificationInterval = () => {
-  //   if (token) {
-  //     notificationInterval = setInterval(() => {
-  //       getNotifications().then((res) => {
-  //         if (res) {
-  //           setUserNotifications(res.userNotification)
-  //           setStartupNotifications(res.startupNotification)
-  //         }
-  //       })
-  //     }, 60000)
-  //   } else {
-  //     clearInterval(notificationInterval)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   clearInterval(notificationInterval)
-  //   createNotificationInterval()
-  // }, [])
-
-  useEffect(() => {}, [])
-
   return (
     <Wrapper>
       <WrapperItems>
         <Left>
-          {/* <Box
-          onClick={onMenu}
-          sx={{ marginRight: 2.2, cursor: "pointer", minWidth: 32 }}
-        >
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 32 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6 9.3335H26"
-              stroke="#27AE60"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M6 16H26"
-              stroke="#27AE60"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M6 22.667H26"
-              stroke="#27AE60"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </Box> */}
           <Box sx={{ minWidth: 50 }}>
             <Link href={"/"} passHref>
               <a>
@@ -183,8 +78,8 @@ const Header = ({ onMenu }) => {
                     fill="url(#paint2_linear_1447_4472)"
                   />
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M179.034 29.1456V8.78198H187.841C189.355 8.78198 190.68 9.05708 191.815 9.60727C192.951 10.1575 193.834 10.9496 194.465 11.9837C195.096 13.0178 195.412 14.2574 195.412 15.7024C195.412 17.1608 195.086 18.3904 194.435 19.3914C193.834 20.3256 193.004 21.0463 191.946 21.5532L196.089 29.1456H190.072L186.49 22.424H184.573V29.1456H179.034ZM184.573 13.1968V18.1286H186.526C187.176 18.1286 187.731 18.049 188.189 17.8899C188.654 17.7242 189.009 17.4624 189.255 17.1044C189.508 16.7465 189.634 16.2791 189.634 15.7024C189.634 15.1191 189.508 14.6451 189.255 14.2806C189.009 13.9094 188.654 13.6376 188.189 13.4652C187.731 13.2862 187.176 13.1968 186.526 13.1968H184.573Z"
                     fill="url(#paint3_linear_1447_4472)"
                   />
@@ -330,51 +225,6 @@ const Header = ({ onMenu }) => {
           </Box>
         </Left>
         <WrapperCenter>
-          {/* {authCheck && (
-            <Autocomplete
-              sx={{
-                "& .MuiSvgIcon-root": {
-                  width: 0,
-                },
-              }}
-              noOptionsText={"Ничего не найдено"}
-              fullWidth
-              // onChange={(e, value) => searchHandler(e, value)}
-              options={skills.map((option) => option.title)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: (
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle
-                          cx="11"
-                          cy="11"
-                          r="7"
-                          stroke="#828282"
-                          strokeWidth="2"
-                        />
-                        <path
-                          d="M20 20L17 17"
-                          stroke="#828282"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    ),
-                  }}
-                />
-              )}
-            />
-          )} */}
           <NavbarTextList>
             <NavbarText>Турниры</NavbarText>
             <NavbarText>Подробнее</NavbarText>
@@ -384,20 +234,7 @@ const Header = ({ onMenu }) => {
         <Right>
           {authCheck && (
             <>
-              <Localization>
-                {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
-                <LocalizationSelect
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={localization}
-                  label="Age"
-                  onChange={handleChange}
-                >
-                  <MenuItem value={"ru"}>RU</MenuItem>
-                  <MenuItem value={"en"}>EN</MenuItem>
-                  <MenuItem value={"kz"}>KZ</MenuItem>
-                </LocalizationSelect>
-              </Localization>
+              <HeaderLocalizationPopover />
               <Notification>
                 <svg
                   onClick={(e) => handleClick(e, setAnchorNotifications)}
@@ -418,7 +255,6 @@ const Header = ({ onMenu }) => {
                     stroke-linecap="round"
                   />
                 </svg>
-
                 <Popover
                   id={idNotifications}
                   open={!!anchorNotifications}
@@ -477,48 +313,14 @@ const Header = ({ onMenu }) => {
                   />
                 </svg>
               </UserMenu>
-              <Popover
-                id={idUserMenu}
-                open={!!anchorUserMenu && openUserMenu}
-                anchorEl={anchorUserMenu}
-                onClose={() => {
-                  setUserMenu(false)
-                  handleClose(setAnchorUserMenu)
-                }}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-              >
-                <WrapperUserMenu>
-                  <Box sx={{ p: 2 }}>
-                    <UserMenuItem onClick={() => changeMenu("profile")}>
-                      Мой профиль
-                    </UserMenuItem>
-                    {/*<UserMenuItemOfProfile onClick={() => changeMenu("vacancy")}>*/}
-                    {/*  Мои вакансии*/}
-                    {/*</UserMenuItemOfProfile>*/}
-                    {/*<UserMenuItemOfProfile onClick={() => changeMenu("tasks")}>*/}
-                    {/*  Мои задачи*/}
-                    {/*</UserMenuItemOfProfile>*/}
-                    <UserMenuItemOfProfile
-                      onClick={() => changeMenu("favorites")}
-                    >
-                      Избранное
-                    </UserMenuItemOfProfile>
-                    <UserMenuItemOfProfile onClick={outHandler}>
-                      Выйти
-                    </UserMenuItemOfProfile>
-                    <Line />
-                    <UserMenuItem onClick={() => changeMenu("startups")}>
-                      Стартапы
-                    </UserMenuItem>
-                    {/*<UserMenuItem onClick={() => changeMenu("settings")}>*/}
-                    {/*  Настройки*/}
-                    {/*</UserMenuItem>*/}
-                  </Box>
-                </WrapperUserMenu>
-              </Popover>
+              <UserNav
+                setUserMenu={setUserMenu}
+                setAnchorUserMenu={setAnchorUserMenu}
+                idUserMenu={idUserMenu}
+                handleClose={handleClose}
+                openUserMenu={openUserMenu}
+                anchorUserMenu={anchorUserMenu}
+              />
             </>
           )}
         </Right>
@@ -545,17 +347,10 @@ const WrapperItems = styled.div`
   grid-gap: 10px;
   align-items: center;
   padding: 16px 38px;
-`
 
-const Localization = styled(FormControl)`
-  min-width: 72px;
-`
-
-const LocalizationSelect = styled(Select)`
-  border: 1px solid #333333;
-  border-radius: 8px;
-  color: #828282;
-  height: 44px;
+  ${theme.mqMax("lg")} {
+    padding: 16px 20px;
+  }
 `
 
 const UserInfo = styled.div`
@@ -568,7 +363,7 @@ const UserInfo = styled.div`
 `
 
 const UserName = styled.p`
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -577,7 +372,7 @@ const UserName = styled.p`
 `
 
 const UserRole = styled.p`
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -589,10 +384,11 @@ const NavbarTextList = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  grid-column-gap: 64px;
 `
 
 const NavbarText = styled.div`
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -609,12 +405,9 @@ const Left = styled.div`
   }
 `
 const WrapperCenter = styled.div`
-  width: 100%;
-  max-width: 690px;
-  // margin-right: 134px;
-  ${theme.mqMax("xl")} {
-    margin: 0 10px;
-  }
+  box-sizing: border-box;
+  display: flex;
+  background: #1b1c22;
 `
 
 const Right = styled.div`
@@ -636,31 +429,6 @@ const UserMenu = styled.button`
   cursor: pointer;
   background: transparent;
   border: none;
-`
-const UserMenuItem = styled.p`
-  font-family: Inter, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: #333333;
-  cursor: pointer;
-  padding: 10px 5px;
-`
-const UserMenuItemOfProfile = styled(UserMenuItem)`
-  padding: 10px 15px;
-  color: #828282;
-`
-const WrapperUserMenu = styled.div`
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  width: 256px;
-`
-const Line = styled.div`
-  background: #d8d8d8;
-  height: 1px;
-  width: 100%;
-  margin: 10px 0;
 `
 
 export default Header
