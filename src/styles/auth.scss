@@ -6,7 +6,7 @@
   }
   &-wrapper {
     padding: 64px 48px;
-    background-color: #1B1C22;
+    background-color: #1b1c22;
     box-sizing: border-box;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
     border-radius: 32px;
@@ -27,11 +27,11 @@
     margin-bottom: 24px;
   }
   &-wrapper__input {
-    margin-bottom: 24px;
+    margin-bottom: 32px;
     flex-grow: 1;
 
-    .MuiOutlinedInput-root{
-      background-color: #0F0F10 !important;
+    .MuiOutlinedInput-root {
+      background-color: #1b1c22 !important;
       color: #fff;
     }
   }
@@ -39,7 +39,7 @@
     font-family: Inter, sans-serif;
     font-size: 18px;
     line-height: 24px;
-    color: #F2F2F2;
+    color: #f2f2f2;
     margin-bottom: 12px;
   }
   &-additionally {
@@ -55,7 +55,7 @@
     font-family: Inter, sans-serif;
     font-size: 16px;
     line-height: 24px;
-    color: #6D4EEA;
+    color: #6d4eea;
     cursor: pointer;
   }
 }

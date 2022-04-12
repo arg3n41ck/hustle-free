@@ -52,10 +52,10 @@ $api.interceptors.response.use(
           },
         })
       } catch (e) {
+        clearCookies()
         if (getCookie("token")) {
           location.href = "/login"
         }
-        clearCookies()
         refreshToken &&
           toast.error(
             "Выполните авторизацию для получения полного доступа к сайту"

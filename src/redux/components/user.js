@@ -4,12 +4,23 @@ import { camelizeKeys } from "humps"
 import axios from "axios"
 import { getCookie } from "../../services/JWTService"
 import { toast } from "react-toastify"
+import { changeOgTabValue } from "./navigations"
 
 // async actions
 export const fetchUser = createAsyncThunk("user/get", async () => {
+  let newData = {}
   const { data } = await $api.get(`/accounts/users/me/`)
-  console.log(data)
-  return camelizeKeys(data)
+  newData = { ...newData, ...data }
+  // if (data.role === "organizer") {
+  //   const { data: organizerData } = await $api.get(`/organizer/profile/`)
+  //   console.log(organizerData)
+  //   newData = { ...newData, ...organizerData }
+  // } else if (data.role === "athlete") {
+  // } else if (data.role === "team") {
+  // }
+  //
+  // console.log(newData)
+  return camelizeKeys(newData)
 })
 
 export const changeUserItemThunk = createAsyncThunk(

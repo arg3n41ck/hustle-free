@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import HeaderContent, { TitleHeader } from "../HeaderContent"
 import EditsIcon from "../../../../../public/svg/edits-icon.svg"
@@ -15,8 +15,28 @@ import phoneFormatter from "../../../../../helpers/phoneFormatter"
 import { format, parseISO } from "date-fns"
 import { ru } from "date-fns/locale"
 
-const Info = ({ onToggleSidebar }) => {
+const Info = ({ onToggleSidebar, onView }) => {
   const { user } = useSelector((state) => state.user)
+  const { countries } = useSelector((state) => state.locations)
+  const [currentLocations, setCurrentLocations] = useState({
+    country: "",
+    city: "",
+  })
+
+  useEffect(() => {
+    if (user.country) {
+      const currentCountry = countries.find(
+          (country) => country.id === user.country
+        ),
+        currentCity = currentCountry.cityCountry.find(
+          (country) => country.id === user.city
+        )
+      setCurrentLocations({
+        country: currentCountry.name,
+        city: currentCity.name,
+      })
+    }
+  }, [])
 
   return (
     <>
@@ -36,7 +56,7 @@ const Info = ({ onToggleSidebar }) => {
             <FullName>
               {user?.firstName} {user?.lastName}
             </FullName>
-            <Button>
+            <Button onClick={() => onView("edit")}>
               <IconWrapper>
                 <EditsIcon />
               </IconWrapper>
@@ -78,7 +98,7 @@ const Info = ({ onToggleSidebar }) => {
             Страна, город
           </Item>
           <Item>
-            {user.country}, г. {user.city}
+            {currentLocations.country}, г. {currentLocations.city}
           </Item>
           <Item>
             <WrapperIcon>

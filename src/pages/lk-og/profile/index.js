@@ -74,7 +74,7 @@ const Index = () => {
 }
 const Container = styled.div`
   max-width: 1408px;
-  margin: 0 auto;
+  margin: 64px auto;
 `
 const Wrapper = styled.div`
   border: 1px solid #333333;
