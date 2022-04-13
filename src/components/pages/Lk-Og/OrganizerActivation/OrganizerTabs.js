@@ -16,6 +16,8 @@ const tabs = [
 
 function OrganizerTabs() {
   const [view, setView] = React.useState("contactInfo") // contactInfo | legalInfo
+  const [dataPersonal, setDataPersonal] = React.useState(null)
+  const [dataLegal, setDataLegal] = React.useState("null")
 
   return (
     <div className="auth-container">
@@ -29,8 +31,16 @@ function OrganizerTabs() {
           valueTab={view}
           onChangeHandler={setView}
         >
-          {view === "contactInfo" && <OrganizerPersonalData />}
-          {view === "legalInfo" && <OrganizerLegalData />}
+          {view === "contactInfo" && (
+            <OrganizerPersonalData
+              data={dataPersonal}
+              setData={setDataPersonal}
+              setView={setView}
+            />
+          )}
+          {view === "legalInfo" && (
+            <OrganizerLegalData dataPersonal={dataPersonal} data={dataLegal} />
+          )}
         </HorizontalTabs>
       </div>
     </div>

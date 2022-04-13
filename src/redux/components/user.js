@@ -18,6 +18,7 @@ export const fetchUser = createAsyncThunk("user/get", async (token) => {
   return camelizeKeys(data)
 })
 
+
 export const changeUserItemThunk = createAsyncThunk(
   "user/details-item",
   async ({ pathItem, values }) => {

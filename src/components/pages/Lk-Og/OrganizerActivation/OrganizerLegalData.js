@@ -19,7 +19,7 @@ import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
 import $api from "../../../../services/axios"
 import { format } from "date-fns"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { saveUserItem } from "../../../../redux/components/user"
 import { setCookie } from "../../../../services/JWTService"
 import { MobileDatePicker } from "@mui/lab"
@@ -31,6 +31,7 @@ import { styled as styl } from "@mui/material/styles"
 import RadioGroup, { useRadioGroup } from "@mui/material/RadioGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Radio from "@mui/material/Radio"
+import { useRouter } from "next/router"
 
 const StyledFormControlLabel = styl((props) => <FormControlLabel {...props} />)(
   ({ theme, checked }) => ({
@@ -79,21 +80,26 @@ const validationSchema = yup.object({
     .required("Заполните поле"),
 })
 
-const OrganizerLegalData = ({ onView }) => {
+const OrganizerLegalData = ({ dataPersonal, data }) => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
+  const { cities, countries } = useSelector((state) => state.auth)
+  console.log("cities", cities)
+  console.log("countries", countries)
+
+  const router = useRouter()
   const formik = useFormik({
     initialValues: {
-      nameOrganizer: "",
-      country: "default",
-      city: "default",
-      actualAddress: "",
-      legalName: "",
-      legalAddress: "",
-      bin: "",
-      number: "",
-      swift: "",
-      bankName: "",
+      nameOrganizer: !!data?.name_organization ? data.name_organization : "",
+      country: !!data?.country ? data.country : 1,
+      city: !!data?.city ? data.city : 1,
+      actualAddress: !!data?.actual_address ? data.actual_address : "",
+      legalName: !!data?.legal_name ? data.legal_name : "",
+      legalAddress: !!data?.legal_address ? data.legal_address : "",
+      bin: !!data?.bin ? data.bin : "",
+      number: !!data?.number ? data.number : "",
+      swift: !!data?.swift ? data.swift : "",
+      bankName: !!data?.bank_name ? data.bank_name : "",
     },
     onSubmit: async (values) => {
       if (
@@ -106,8 +112,8 @@ const OrganizerLegalData = ({ onView }) => {
       ) {
         toast.info("Ожидайте ответа от сервера")
         try {
-          //   const { uid, token } = query
           const data = {
+            ...dataPersonal,
             name_organization: values.nameOrganizer,
             country: values.country,
             city: values.city,
@@ -118,28 +124,34 @@ const OrganizerLegalData = ({ onView }) => {
             number: values.number,
             swift: values.swift,
             bank_name: values.bankName,
+            email: values.email,
           }
           if (data.phone_number === "+") delete data.phone_number
+
           for (let key in data) {
             if (!data[key]) delete data[key]
           }
-          console.log(data)
+
+          //   for (let key in data) {
+          // setData((prev) =>
+          //   !!prev?.length ? [...prev, { key: data[key] }] : data
+          // )
+          //   }
+
+          //   setView("legalInfo")
           //   await $api.post("/accounts/auth/users/activation/", data)
           //   toast.success("Вы успешно активировали свои учетные данные!")
-          //   dispatch(
-          //     saveUserItem({ userItem: "password", value: values.password })
-          //   )
+          dispatch(
+            saveUserItem({ userItem: "password", value: values.password })
+          )
           try {
-            // const { data: _data } = await $api.post(
-            //   "/accounts/auth/jwt/create/"
-            //   {
-            //     email: query.email,
-            //     password: values.password,
-            //   }
-            // )
-            // setCookie("token", _data.access, 999)
-            // setCookie("refresh", _data.refresh, 999999)
-            // onView("skills")
+            const { data: _data } = await $api.post(
+              "/accounts/auth/jwt/create/",
+              data
+            )
+            setCookie("token", _data.access, 999)
+            setCookie("refresh", _data.refresh, 999999)
+            router.push("/login")
           } catch (e) {}
         } catch (e) {}
       }

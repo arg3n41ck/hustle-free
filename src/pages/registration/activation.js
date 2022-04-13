@@ -11,37 +11,37 @@ import OrganizerPersonalData from "../../components/pages/Lk-Og/OrganizerActivat
 import { setCookie } from "../../services/JWTService"
 
 const InputData = ({ query }) => {
-  const [view, setView] = useState("personal") // personal | skills
+  const [view, setView] = useState("organizer") // personal | skills
   const dispatch = useDispatch()
-  const [role, setRole] = useState("organizer")
-  console.log(role)
+  const [role, setRole] = useState(null)
 
   const viewHandler = (type) => {
     setView(type)
   }
 
-  // const activationUser = async (uid, token) => {
-  //   await $api
-  //     .post("/accounts/auth/users/activation/", {
-  //       uid,
-  //       token,
-  //     })
-  //     .then(({ data }) => {
-  //       setCookie("token", data.access, 999)
-  //       setCookie("refresh", data.refresh, 999999)
-  //       setRole(data.role)
-  //     })
-  // }
+  const activationUser = async (uid, token) => {
+    await $api
+      .post("/accounts/auth/users/activation/", {
+        uid,
+        token,
+      })
+      .then(({ data }) => {
+        setCookie("token", data.access, 999)
+        setCookie("refresh", data.refresh, 999999)
+        setCookie("email", data.email)
+        setRole(data.role)
+      })
+  }
 
-  // useEffect(() => {
-  //   !role && activationUser(query?.uid, query?.token)
-  //   return () => {
-  //     // dispatch(fetchSkills())
-  //     // dispatch(fetchTechnologies())
-  //     // dispatch(fetchUser())
-  //     // dispatch(fetchStartups())
-  //   }
-  // }, [])
+  useEffect(() => {
+    !role && activationUser(query?.uid, query?.token)
+    return () => {
+      // dispatch(fetchSkills())
+      // dispatch(fetchTechnologies())
+      // dispatch(fetchUser())
+      // dispatch(fetchStartups())
+    }
+  }, [])
 
   return (
     <>

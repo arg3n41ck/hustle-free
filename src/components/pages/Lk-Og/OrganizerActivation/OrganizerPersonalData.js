@@ -20,7 +20,7 @@ import $api from "../../../../services/axios"
 import { format } from "date-fns"
 import { useDispatch } from "react-redux"
 import { saveUserItem } from "../../../../redux/components/user"
-import { setCookie } from "../../../../services/JWTService"
+import { getCookie, setCookie } from "../../../../services/JWTService"
 import { MobileDatePicker } from "@mui/lab"
 import { ru } from "date-fns/locale"
 import { toast } from "react-toastify"
@@ -84,18 +84,19 @@ const validationSchema = yup.object({
     .required("Заполните поле"),
 })
 
-const OrganizerPersonalData = ({ onView }) => {
+const OrganizerPersonalData = ({ data, setData, setView }) => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
   const formik = useFormik({
     initialValues: {
-      lastName: "",
-      firstName: "",
-      birthDate: null,
-      phone: "",
-      password: "",
-      gender: "",
-      position: "",
+      lastName: !!data?.last_name ? data.last_name : "",
+      firstName: !!data?.first_name ? data.first_name : "",
+      birthDate: !!data?.birth_date ? data.birth_date : null,
+      phone: !!data?.phone_number ? data.phone_number : "",
+      password: !!data?.password ? data.password : "",
+      gender: !!data?.gender ? data.gender : "",
+      position: !!data?.position ? data.position : "",
+      email: !!data?.email ? data.email : getCookie("email"),
     },
     onSubmit: async (values) => {
       if (
@@ -104,54 +105,35 @@ const OrganizerPersonalData = ({ onView }) => {
         formik.values.lastName &&
         !Boolean(formik.errors.lastName) &&
         formik.values.phone &&
-        !Boolean(formik.error.phone) &&
+        !Boolean(formik.errors.phone) &&
         formik.values.password &&
         !Boolean(formik.errors.password)
       ) {
-        toast.info("Ожидайте ответа от сервера")
-        try {
-          //   const { uid, token } = query
-          const data = {
-            // ...values,
-            birth_date: format(values.birthDate, "yyyy-MM-dd"),
-            first_name: values.firstName,
-            last_name: values.lastName,
-            phone_number: `+${values.phone.replace(/[^0-9]/g, "")}`,
-            gender: values.gender,
-            position: values.position,
-            password: values.password,
-            // uid,
-            // token,
-          }
-          if (data.phone_number === "+") delete data.phone_number
-          if (!data.position) delete data.position
-          if (!data.gender) delete data.gender
+        const data = {
+          birth_date:
+            !!values.birthDate && format(values.birthDate, "yyyy-MM-dd"),
+          first_name: values.firstName,
+          last_name: values.lastName,
+          phone_number: `+${values.phone.replace(/[^0-9]/g, "")}`,
+          gender: values.gender,
+          position: values.position,
+          password: values.password,
+          email: values.email,
+        }
+        if (data.phone_number === "+") delete data.phone_number
+        if (!data.position) delete data.position
+        if (!data.gender) delete data.gender
+        if (!data.birth_date) delete data.birth_date
 
-          console.log(data)
-          //   await $api.post("/accounts/auth/users/activation/", data)
-          //   toast.success("Вы успешно активировали свои учетные данные!")
-          //   dispatch(
-          //     saveUserItem({ userItem: "password", value: values.password })
-          //   )
-          try {
-            // const { data: _data } = await $api.post(
-            //   "/accounts/auth/jwt/create/"
-            //   {
-            //     email: query.email,
-            //     password: values.password,
-            //   }
-            // )
-            // setCookie("token", _data.access, 999)
-            // setCookie("refresh", _data.refresh, 999999)
-            // onView("skills")
-          } catch (e) {}
-        } catch (e) {}
+        console.log(data)
+        // setData(data)
+        // setView("legalInfo")
       }
     },
     validationSchema,
   })
 
-  console.log(formik.errors)
+  console.log(formik.values)
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
@@ -217,7 +199,10 @@ const OrganizerPersonalData = ({ onView }) => {
         }}
         className="auth-wrapper__input"
       >
-        <p className="auth-title__input">День рождения</p>
+        <p className="auth-title__input">
+          День рождения{" "}
+          <span style={{ color: "#828282" }}>(не обязательно)</span>
+        </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
           <MobileDatePicker
             toolbarTitle={"Выбрать дату"}
@@ -228,10 +213,6 @@ const OrganizerPersonalData = ({ onView }) => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                error={
-                  Boolean(formik.touched.birthDate) && formik.errors.birthDate
-                }
-                helperText={formik.touched.birthDate && formik.errors.birthDate}
                 inputProps={{
                   ...params.inputProps,
                   placeholder: "ДД/ММ/ГГГГ",
@@ -285,6 +266,7 @@ const OrganizerPersonalData = ({ onView }) => {
         <InputMask
           mask="+7 (999) 999 99 99"
           name={"phone"}
+          value={formik.values.phone}
           onChange={formik.handleChange}
         >
           {(inputProps) => (
@@ -320,9 +302,8 @@ const OrganizerPersonalData = ({ onView }) => {
       <div className="auth-wrapper__input">
         <p className="auth-title__input">Электронный адрес</p>
         <TextField
-          disabled
           sx={{ width: "100%" }}
-          //   value={query.email}
+          value={formik.values.email}
           id="outlined-basic"
           placeholder="Электронный адрес"
           variant="outlined"
@@ -401,6 +382,7 @@ const OrganizerPersonalData = ({ onView }) => {
           <OutlinedInput
             placeholder="Пароль"
             name="password"
+            value={formik.values.password}
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
             id="outlined-adornment-password"
@@ -478,8 +460,8 @@ const OrganizerPersonalData = ({ onView }) => {
           !Boolean(formik.errors.firstName) &&
           formik.values.lastName &&
           !Boolean(formik.errors.lastName) &&
-          formik.values.birthDate &&
-          !Boolean(formik.errors.birthDate) &&
+          formik.values.phone &&
+          !Boolean(formik.errors.phone) &&
           formik.values.password &&
           !Boolean(formik.errors.password)
         }
