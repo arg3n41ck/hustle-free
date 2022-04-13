@@ -8,6 +8,7 @@ import { fetchUser } from "../../redux/components/user"
 import { useCookies } from "react-cookie"
 import { theme } from "../../styles/theme"
 import styled from "styled-components"
+import { fetchLocations } from "../../redux/components/locations"
 
 const Layout = ({ children }) => {
   const lg = useMediaQuery("(max-width:992px)")
@@ -17,6 +18,7 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     dispatch(fetchUser())
+    dispatch(fetchLocations())
   }, [cookies])
 
   return (

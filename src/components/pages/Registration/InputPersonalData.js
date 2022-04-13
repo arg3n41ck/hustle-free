@@ -16,12 +16,9 @@ import InputMask from "react-input-mask"
 import { motion } from "framer-motion"
 import { AuthButton } from "../Authorization/Authorization"
 import $api from "../../../services/axios"
-import { format } from "date-fns"
 import { useDispatch } from "react-redux"
 import { saveUserItem } from "../../../redux/components/user"
 import { setCookie } from "../../../services/JWTService"
-import { MobileDatePicker } from "@mui/lab"
-import { ru } from "date-fns/locale"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
@@ -208,18 +205,29 @@ const InputPersonalData = ({ onView, query }) => {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <rect
-                      x="4"
+                      x="3"
                       y="6"
-                      width="16"
-                      height="12"
+                      width="18"
+                      height="15"
                       rx="2"
-                      stroke="#828282"
-                      strokeWidth="1.5"
+                      stroke="#F2F2F2"
+                      stroke-width="2"
                     />
                     <path
-                      d="M4 9L11.1056 12.5528C11.6686 12.8343 12.3314 12.8343 12.8944 12.5528L20 9"
-                      stroke="#828282"
-                      strokeWidth="1.5"
+                      d="M3 10C3 8.11438 3 7.17157 3.58579 6.58579C4.17157 6 5.11438 6 7 6H17C18.8856 6 19.8284 6 20.4142 6.58579C21 7.17157 21 8.11438 21 10V10H3V10Z"
+                      fill="#F2F2F2"
+                    />
+                    <path
+                      d="M7 3L7 6"
+                      stroke="#F2F2F2"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M17 3L17 6"
+                      stroke="#F2F2F2"
+                      stroke-width="2"
+                      stroke-linecap="round"
                     />
                   </svg>
                 ),

@@ -64,8 +64,10 @@ const Item = styled.li`
   border-radius: 16px;
   width: 100%;
   height: 72px;
-  &:hover ${IconWrapper} {
-    svg * {
+  &:hover {
+    transition: 0.3s;
+    background: ${(p) => (p.active ? "rgba(109, 78, 234, 0.07)" : "#0f0f10")};
+    ${IconWrapper} svg * {
       transition: 0.3s;
       fill: ${(p) => (p.active ? "#6D4EEA" : "#fff")};
       stroke: ${(p) => (p.active ? "#6D4EEA" : "#fff")};
