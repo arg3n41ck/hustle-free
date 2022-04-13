@@ -5,6 +5,11 @@
     width: 100%;
     height: 100%;
     overflow: visible !important;
+    z-index: unset;
+
+    .swiper-wrapper {
+      z-index: unset;
+    }
 
     &:after {
       content: "";
@@ -54,6 +59,7 @@
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-items: center;
+    z-index: unset;
   }
 
   .swiper-slide {
