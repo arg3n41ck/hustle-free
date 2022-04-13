@@ -17,7 +17,9 @@ import { ru } from "date-fns/locale"
 
 const Info = ({ onToggleSidebar, onView }) => {
   const { user } = useSelector((state) => state.user)
-  const { countries } = useSelector((state) => state.locations)
+  const {
+    countries: { data: countries },
+  } = useSelector((state) => state.countries)
   const [currentLocations, setCurrentLocations] = useState({
     country: "",
     city: "",

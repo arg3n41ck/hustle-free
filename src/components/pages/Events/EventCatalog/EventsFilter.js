@@ -36,11 +36,6 @@ function EventsFilter() {
   const query = useQuery()
   const { push: routerPush } = useRouter()
 
-  useEffect(() => {
-    dispatch(fetchCountries())
-    dispatch(fetchSportTypes())
-  }, [])
-
   const sortHandler = (_, value) => {}
 
   const handleCountriesFilter = useCallback(

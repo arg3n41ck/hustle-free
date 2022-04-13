@@ -35,7 +35,12 @@ const validationSchema = yup.object({
   factAddress: yup.string().nullable(),
 })
 const Edits = ({ onView }) => {
-  const { user, locations } = useSelector((state) => state)
+  const {
+    user,
+    countries: {
+      countries: { data: countries },
+    },
+  } = useSelector((state) => state)
   const dispatch = useDispatch()
   const [currentCities, setCurrentCities] = useState([])
   const formik = useFormik({
@@ -43,7 +48,7 @@ const Edits = ({ onView }) => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const currentCountry = locations.countries.find(
+        const currentCountry = countries.find(
             (country) => country.name === values.country
           ),
           currentCity = currentCountry.cityCountry.find(
@@ -64,7 +69,7 @@ const Edits = ({ onView }) => {
   })
 
   const changeCurrentCities = (changeCountry) => {
-    const findObj = locations.countries.find(
+    const findObj = countries.find(
       (country) => country.name === changeCountry
     )
     if (findObj) setCurrentCities(findObj.cityCountry)
@@ -72,7 +77,7 @@ const Edits = ({ onView }) => {
 
   useEffect(() => {
     if (typeof formik.values.country === "number") {
-      const currentCountry = locations.countries.find(
+      const currentCountry = countries.find(
         (country) => country.id === formik.values.country
       )
       const currentCity = currentCountry.cityCountry.find(
@@ -293,7 +298,7 @@ const Edits = ({ onView }) => {
             >
               {!!formik.values.country ? formik.values.country : "Страна"}
             </option>
-            {locations.countries
+            {countries
               .filter((country) => country.name !== formik.values.country)
               .map((country) => (
                 <option key={country.id} value={country.name}>
@@ -341,7 +346,9 @@ const Edits = ({ onView }) => {
             value={formik.values.factAddress}
             placeholder="Фактический Адрес"
             variant="outlined"
-            error={formik.touched.factAddress && Boolean(formik.errors.factAddress)}
+            error={
+              formik.touched.factAddress && Boolean(formik.errors.factAddress)
+            }
             helperText={formik.touched.factAddress && formik.errors.factAddress}
           />
         </div>

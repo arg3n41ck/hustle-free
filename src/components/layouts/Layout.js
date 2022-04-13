@@ -8,7 +8,8 @@ import { fetchUser } from "../../redux/components/user"
 import { useCookies } from "react-cookie"
 import { theme } from "../../styles/theme"
 import styled from "styled-components"
-import { fetchLocations } from "../../redux/components/locations"
+import { fetchCountries } from "../../redux/components/countriesAndCities"
+import { fetchSportTypes } from "../../redux/components/sportTypes"
 
 const Layout = ({ children }) => {
   const lg = useMediaQuery("(max-width:992px)")
@@ -18,7 +19,8 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     dispatch(fetchUser())
-    dispatch(fetchLocations())
+    dispatch(fetchCountries())
+    dispatch(fetchSportTypes())
   }, [cookies])
 
   return (

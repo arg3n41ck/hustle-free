@@ -9,20 +9,92 @@ import { Box, TextField } from "@mui/material"
 import SelectUI from "../../../../ui/Selects/Select"
 import InputMask from "react-input-mask"
 import PhoneIcon from "../../../../../public/svg/phone-icon.svg"
-import EmailIcon from "../../../../../public/svg/profile-email-edit.svg"
+import EmailIcon from "../../../../../public/svg/email-profile.svg"
+import CustomButton from "../../../../ui/CustomButton"
+import { objToFormData } from "../../../../../helpers/formData"
+import axios from "axios"
+import { getCookie } from "../../../../../services/JWTService"
 
-const validationSchema = yup.object().shape({
-  careers: yup.array().of(yup.object({})),
-})
+const me = {
+  id: 1,
+  email: "admin@qwe.qwe",
+  first_name: "Azamat",
+  last_name: "Askarov",
+  phone_number: "+73422343243",
+  gender: "male",
+  date_birthday: "2021-03-12",
+  age: 1,
+  role: "team",
+  country: 1,
+  city: 1,
+  avatar: null,
+  name_organization: null,
+  address: null,
+}
+
+const profile = {
+  id: 1,
+  user: {
+    id: 1,
+    full_name: "Азамат Аскаров",
+    country: 1,
+    city: 1,
+    email: "admin@qwe.qwe",
+    avatar: null,
+    phone_number: "+73422343243",
+  },
+  web_site: "http://asdf.ru",
+  full_name_coach: "asdf",
+  phone_coach: "+996555555555",
+  email_coach: "lev@lev.lev",
+  sports: [1],
+  description: "fasd",
+}
+
+const validationSchema = yup.object({})
 const Edits = ({ onView }) => {
-  const { user, locations } = useSelector((state) => state)
+  const {
+    user,
+    countries: {
+      countries: { data: countries },
+    },
+    sportTypes: {
+      sportTypes: { data: sportTypes },
+    },
+  } = useSelector((state) => state)
   const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: user.user,
     validationSchema,
     onSubmit: async (values) => {
       try {
-        console.log(values)
+        const { country, city, avatar, ...rstValues } = values,
+          currentCountry = countries.find(
+            (countryItem) => countryItem.name === country
+          ),
+          currentCity = currentCountry.cityCountry.find(
+            (cityItem) => cityItem.name === city
+          )
+        // const newValues = {
+        //   ...rstValues,
+        //   user: { country, city, avatar },
+        // }
+        await axios.put(
+          `${process.env.NEXT_PUBLIC_API_URL}teams/profile/edit/`,
+          objToFormData({
+            ...rstValues,
+            sports: currentSportTypes.map((CSportItem) => CSportItem.id),
+            user: { country: currentCountry.id, city: currentCity.id, avatar },
+          }),
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie("token")}`,
+              "Content-type":
+                "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+            },
+          }
+        )
+
         // const currentCountry = locations.countries.find(
         //     (country) => country.name === values.country
         //   ),
@@ -36,24 +108,23 @@ const Edits = ({ onView }) => {
         //   }
         // const { data } = await $api.put(`/organizer/profile/edit/`, newValues)
         // dispatch(saveUser({ ...newValues, ...data }))
-        // onView("general")
+        onView("general")
       } catch (e) {
         throw e
       }
     },
   })
   const [currentCities, setCurrentCities] = useState([])
+  const [currentSportTypes, setCurrentSportTypes] = useState([])
 
   const changeCurrentCities = (changeCountry) => {
-    const findObj = locations.countries.find(
-      (country) => country.name === changeCountry
-    )
+    const findObj = countries.find((country) => country.name === changeCountry)
     if (findObj) setCurrentCities(findObj.cityCountry)
   }
 
   useEffect(() => {
     if (typeof formik.values.country === "number") {
-      const currentCountry = locations.countries.find(
+      const currentCountry = countries.find(
         (country) => country.id === formik.values.country
       )
       const currentCity = currentCountry.cityCountry.find(
@@ -63,6 +134,13 @@ const Edits = ({ onView }) => {
       formik.setFieldValue("country", currentCountry.name)
       formik.setFieldValue("city", currentCity.name)
     }
+
+    const newSportTypes = []
+    formik.values.sports.map((sportId) => {
+      const obj = sportTypes.find((sportType) => sportType.id === sportId)
+      newSportTypes.push(obj)
+    })
+    setCurrentSportTypes(newSportTypes)
   }, [])
 
   return (
@@ -111,7 +189,7 @@ const Edits = ({ onView }) => {
             >
               {!!formik.values.country ? formik.values.country : "Страна"}
             </option>
-            {locations.countries
+            {countries
               .filter((country) => country.name !== formik.values.country)
               .map((country) => (
                 <option key={country.id} value={country.name}>
@@ -240,8 +318,51 @@ const Edits = ({ onView }) => {
           </div>
         </Box>
 
+        <div className="auth-wrapper__input">
+          <p className="auth-title__input">Вид спорта</p>
+          <SelectUI
+            error={!!(formik.touched.sports && formik.errors.sports)}
+            onChange={(e) => {
+              if (e.target.value) {
+                const obj = sportTypes.find(
+                  (sportType) => sportType.name === e.target.value
+                )
+                setCurrentSportTypes((prev) => [...prev, obj])
+              }
+            }}
+          >
+            <option style={{ color: "#BDBDBD" }} selected value={""}>
+              Вид спорта
+            </option>
+            {sportTypes
+              .filter(
+                (sportType) =>
+                  !currentSportTypes.some(
+                    (CSportType) => CSportType.id === sportType.id
+                  )
+              )
+              .map((sportType) => (
+                <option key={sportType.id} value={sportType.name}>
+                  {sportType.name}
+                </option>
+              ))}
+          </SelectUI>
+        </div>
 
+        {currentSportTypes.map((CSportType) => CSportType.name)}
       </Content>
+      <Footer>
+        <ButtonWrapper onClick={() => onView("general")}>
+          <CustomButton type={"button"} typeButton={"secondary"}>
+            Отмена
+          </CustomButton>
+        </ButtonWrapper>
+        <ButtonWrapper>
+          <CustomButton type={"submit"} typeButton={"primary"}>
+            Сохранить
+          </CustomButton>
+        </ButtonWrapper>
+      </Footer>
     </form>
   )
 }
