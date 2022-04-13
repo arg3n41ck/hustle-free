@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   ogTabValue: "profile",
+  tmTabValue: "profile",
   changeProfileValue: "general",
   changeStartUpValue: "",
   teamMembersValue: "all",
@@ -15,6 +16,9 @@ export const navigationsSlice = createSlice({
   reducers: {
     changeOgTabValue: (state, action) => {
       state.ogTabValue = action.payload
+    },
+    changeTmTabValue: (state, action) => {
+      state.tmTabValue = action.payload
     },
     changeProfile: (state, action) => {
       state.changeProfileValue = action.payload
@@ -36,11 +40,12 @@ export const navigationsSlice = createSlice({
 
 export const {
   changeOgTabValue,
+  changeTmTabValue,
   changeProfile,
   changeStartUp,
   changeTeamMembers,
   changeAuthCheck,
-  changeCreateStartupTabsValue
+  changeCreateStartupTabsValue,
 } = navigationsSlice.actions
 
 export default navigationsSlice.reducer

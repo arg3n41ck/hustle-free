@@ -17,6 +17,7 @@ import EmailIcon from "../../../../../public/svg/profile-email-edit.svg"
 import SelectUI from "../../../../ui/Selects/Select"
 import $api from "../../../../../services/axios"
 import { saveUser } from "../../../../../redux/components/user"
+import { format } from "date-fns"
 
 const validationSchema = yup.object({
   email: yup
@@ -155,7 +156,12 @@ const Edits = ({ onView }) => {
               toolbarTitle={"Выбрать дату"}
               cancelText={"Отмена"}
               value={formik.values.dateBirthday}
-              onChange={(value) => formik.setFieldValue("dateBirthday", value)}
+              onChange={(value) =>
+                formik.setFieldValue(
+                  "dateBirthday",
+                  format(value, "yyyy-MM-dd")
+                )
+              }
               inputFormat="dd/MM/yyyy"
               renderInput={(params) => (
                 <TextField
