@@ -25,7 +25,7 @@ const validationSchema = yup.object({
     .required("Заполните поле почты"),
   firstName: yup.string().required("Обязательное поле"),
   lastName: yup.string().required("Обязательное поле"),
-  phoneNumber: yup.string().required("Обязательное поле"),
+  phoneNumber: yup.string().min(12).required("Обязательное поле"),
   gender: yup.string(),
   dateBirthday: yup.mixed().nullable(),
   country: yup.string().required("Обязательное поле"),
@@ -53,7 +53,7 @@ const Edits = ({ onView }) => {
             country: currentCountry.id,
             city: currentCity.id,
           }
-        const { data } = await $api.put(`/organizer/profile/edit/`, newValues)
+        const { data } = await $api.put(`/accounts/users/me/`, newValues)
         dispatch(saveUser({ ...newValues, ...data }))
         onView("general")
       } catch (e) {
@@ -77,6 +77,7 @@ const Edits = ({ onView }) => {
       const currentCity = currentCountry.cityCountry.find(
         (city) => city.id === formik.values.city
       )
+      setCurrentCities(currentCountry.cityCountry)
       formik.setFieldValue("country", currentCountry.name)
       formik.setFieldValue("city", currentCity.name)
     }
@@ -286,11 +287,13 @@ const Edits = ({ onView }) => {
             >
               {!!formik.values.country ? formik.values.country : "Страна"}
             </option>
-            {locations.countries.map((country) => (
-              <option key={country.id} value={country.name}>
-                {country.name}
-              </option>
-            ))}
+            {locations.countries
+              .filter((country) => country.name !== formik.values.country)
+              .map((country) => (
+                <option key={country.id} value={country.name}>
+                  {country.name}
+                </option>
+              ))}
           </SelectUI>
         </div>
 
@@ -310,11 +313,13 @@ const Edits = ({ onView }) => {
             >
               {!!formik.values.city ? formik.values.city : "Город"}
             </option>
-            {currentCities.map((city) => (
-              <option key={city.id} value={city.name}>
-                {city.name}
-              </option>
-            ))}
+            {currentCities
+              .filter((city) => city.name !== formik.values.city)
+              .map((city) => (
+                <option key={city.id} value={city.name}>
+                  {city.name}
+                </option>
+              ))}
           </SelectUI>
         </div>
 

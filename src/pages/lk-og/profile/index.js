@@ -15,7 +15,7 @@ import {
 } from "../../../redux/components/navigations"
 import ProfileOg from "../../../components/pages/LkOg/Tabs/Profile/Profile"
 
-const Index = () => {
+const OgProfile = () => {
   const { ogTabValue } = useSelector((state) => state.navigations)
   const router = useRouter()
   const [cookies] = useCookies(["token", "refresh"])
@@ -90,4 +90,4 @@ const Content = styled.div`
   flex-grow: 1;
 `
 
-export default Index
+export default OgProfile

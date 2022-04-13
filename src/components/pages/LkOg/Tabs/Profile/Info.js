@@ -24,7 +24,7 @@ const Info = ({ onToggleSidebar, onView }) => {
   })
 
   useEffect(() => {
-    if (user.country) {
+    if (user.country && countries.length) {
       const currentCountry = countries.find(
           (country) => country.id === user.country
         ),
@@ -36,7 +36,7 @@ const Info = ({ onToggleSidebar, onView }) => {
         city: currentCity.name,
       })
     }
-  }, [])
+  }, [user, countries])
 
   return (
     <>
@@ -90,7 +90,7 @@ const Info = ({ onToggleSidebar, onView }) => {
             </WrapperIcon>
             Пол
           </Item>
-          <Item>{user?.gender}</Item>
+          <Item>{user?.gender === "male" ? "Мужской" : "Женский"}</Item>
           <Item>
             <WrapperIcon>
               <LocationIcon />
