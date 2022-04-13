@@ -48,7 +48,7 @@ const ChildrenWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 76px 38px 0;
+  padding: 76px 38px 130px;
 
   ${theme.mqMax("lg")} {
     margin: 117px auto 160px auto;

@@ -374,7 +374,7 @@ const Wrapper = styled.div`
   height: 80px;
   border: 1px solid #333333;
   background: rgba(25, 26, 31, 0.9);
-  z-index: 1;
+  z-index: 11;
 `
 
 const WrapperItems = styled.div`
