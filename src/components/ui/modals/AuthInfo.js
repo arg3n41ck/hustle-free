@@ -41,7 +41,7 @@ const Rectangle = styled.div`
 
 const Wrapper = styled.div`
   background: #ffffff;
-  box-shadow: 0px 8px 32px rgba(74, 74, 74, 0.12);
+  box-shadow: 0 8px 32px rgba(74, 74, 74, 0.12);
   border-radius: 8px;
   position: relative;
   //min-height: 128px;

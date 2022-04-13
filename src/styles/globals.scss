@@ -1,16 +1,20 @@
 @import "auth.scss";
+@import "main_page_slider";
 @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
 html,
 body {
   scroll-behavior: smooth;
-  background-color: #0F0F10;
+  background-color: #0f0f10;
   overflow-x: hidden;
+  color: #f2f2f2;
 }
 
-a {
+a,
+button {
   color: inherit;
   text-decoration: none;
+  background: transparent;
 }
 
 * {
@@ -27,14 +31,13 @@ button {
   cursor: pointer;
 }
 
-  .MuiCheckbox-root{
-    color: #6D4EEA;
-  }
+.MuiCheckbox-root {
+  color: #6d4eea;
+}
 
-  .MuiCheckbox-root.Mui-checked{
-    color: #6D4EEA;
-
-  }
+.MuiCheckbox-root.Mui-checked {
+  color: #6d4eea;
+}
 
 textarea {
   resize: none;
@@ -45,24 +48,47 @@ li {
   list-style: none;
 }
 
+.MuiPaper-root {
+  // background: #333;
+  .MuiPopover-paper {
+    background: unset;
+    color: #fff;
+  }
+}
+
+.MuiAutocomplete-option {
+  color: #fff;
+}
+.MuiAutocomplete-noOptions {
+  color: #fff;
+}
+
+.MuiSvgIcon-root {
+  color: #fff;
+}
+
 .MuiButtonBase-root {
   text-transform: inherit !important;
 }
 
 .MuiOutlinedInput-root {
   border-radius: 8px !important;
-  //border: 1.5px solid #e0e0e0;
   grid-gap: 14px;
+  color: #fff;
+
+  &:hover fieldset {
+    border-color: #333 !important;
+  }
 }
 
 .MuiTabs-indicator {
   width: 4px;
 }
 
-.MuiSelect-icon{
+.MuiSelect-icon {
   color: #828282;
 }
 
-.MuiOutlinedInput-notchedOutline{
-  border: none;
+.MuiOutlinedInput-notchedOutline {
+  border: 1.5px solid #333333;
 }

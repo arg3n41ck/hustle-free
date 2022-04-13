@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react"
-import InputPersonalData from "../../components/pages/Lk-Og/AthleteActivation/InputPersonalData"
-import InputSkillsData from "../../components/pages/Lk-Og/AthleteActivation/inputSkillsData"
-import { fetchSkills } from "../../redux/components/skills"
+import InputPersonalData from "../../components/pages/LkAh/AthleteActivation/InputPersonalData"
+import InputSkillsData from "../../components/pages/LkAh/AthleteActivation/inputSkillsData"
+// import { fetchSkills } from "../../redux/components/skills"
 import { fetchTechnologies } from "../../redux/components/technologies"
 import { fetchUser } from "../../redux/components/user"
 import { fetchStartups } from "../../redux/components/startups"
 import { useDispatch } from "react-redux"
 import $api from "../../services/axios"
-import OrganizerPersonalData from "../../components/pages/Lk-Og/OrganizerActivation/OrganizerTabs"
+import OrganizerPersonalData from "../../components/pages/LkOg/OrganizerActivation/OrganizerTabs"
 import { setCookie } from "../../services/JWTService"
+import { fetchCountries } from "../../redux/components/countriesAndCities"
 
 const InputData = ({ query }) => {
-  const [view, setView] = useState("organizer") // personal | skills
+  const [view, setView] = useState("personal") // personal | skills
   const dispatch = useDispatch()
-  const [role, setRole] = useState(null)
+  const [role, setRole] = useState("organizer")
 
   const viewHandler = (type) => {
     setView(type)
@@ -35,6 +36,7 @@ const InputData = ({ query }) => {
 
   useEffect(() => {
     !role && activationUser(query?.uid, query?.token)
+    dispatch(fetchCountries())
     return () => {
       // dispatch(fetchSkills())
       // dispatch(fetchTechnologies())

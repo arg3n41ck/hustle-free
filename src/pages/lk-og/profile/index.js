@@ -1,24 +1,42 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { useSelector } from "react-redux"
-import ProfileMain from "../../../components/pages/Profile/MyProfile"
-
-import VerticalTab from "../../../components/pages/Profile/MyProfile/VerticalTabs"
+import { useDispatch, useSelector } from "react-redux"
 import { Box, useMediaQuery } from "@mui/material"
 import { theme } from "../../../styles/theme"
-import Startups from "../../../components/pages/Profile/Startups"
 import $api from "../../../services/axios"
 import { useRouter } from "next/router"
 import { useCookies } from "react-cookie"
-import Favorites from "../../../components/pages/Profile/MyProfile/Favorites/Favorites"
+import Sidebar from "../../../components/ui/Sidebar"
+import { lkOgTabs } from "../../../components/pages/LkOg/Tabs/tabConstants"
+import clearCookies from "../../../helpers/clearCookies"
+import {
+  changeAuthCheck,
+  changeOgTabValue,
+} from "../../../redux/components/navigations"
+import ProfileOg from "../../../components/pages/LkOg/Tabs/Profile/Profile"
 
 const Index = () => {
-  const { value } = useSelector((state) => state.profileMenu)
-  const lg = useMediaQuery("(max-width:992px)")
+  const { ogTabValue } = useSelector((state) => state.navigations)
   const router = useRouter()
   const [cookies] = useCookies(["token", "refresh"])
   const { user } = useSelector((state) => state.user)
   const [startupsState, setStartupsState] = useState([])
+  const [openSidebar, setOpenSidebar] = useState(true)
+  const dispatch = useDispatch()
+
+  const tabHandler = (value) => {
+    if (value === "exit") {
+      router.push("/login").then(() => {
+        dispatch(changeAuthCheck(false))
+        clearCookies()
+      })
+    }
+    dispatch(changeOgTabValue(value))
+  }
+
+  const toggleSidebarHandler = () => {
+    setOpenSidebar((prev) => !prev)
+  }
 
   // useEffect(async () => {
   //   if (user.id) {
@@ -36,16 +54,20 @@ const Index = () => {
   return (
     <Container>
       <Wrapper>
+        <SidebarWrapper open={openSidebar}>
+          <Sidebar
+            open={openSidebar}
+            array={lkOgTabs}
+            value={ogTabValue}
+            onChangeValue={tabHandler}
+          />
+        </SidebarWrapper>
         <Content>
-          {(value === "profile" && <ProfileMain />) ||
-            (value === "startups" && <Startups startups={startupsState} />) ||
-            (value === "favorites" && <Favorites />)}
+          {(ogTabValue === "profile" && (
+            <ProfileOg onToggleSidebar={toggleSidebarHandler} />
+          )) ||
+            (ogTabValue === "myTournaments" && <h1>tset</h1>)}
         </Content>
-        {!lg && (
-          <Box sx={{ maxHeight: 359 }}>
-            <VerticalTab />
-          </Box>
-        )}
       </Wrapper>
     </Container>
   )
@@ -57,12 +79,15 @@ const Container = styled.div`
 const Wrapper = styled.div`
   border: 1px solid #333333;
   border-radius: 24px;
+  background: #1b1c22;
+  display: flex;
 `
-const Sidebar = styled.div`
-  
+const SidebarWrapper = styled.div`
+  border-right: 1px solid #333333;
+  padding: ${(p) => (p.open ? "32px" : 0)};
 `
 const Content = styled.div`
-
+  flex-grow: 1;
 `
 
 export default Index

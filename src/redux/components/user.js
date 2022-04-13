@@ -6,15 +6,9 @@ import { getCookie } from "../../services/JWTService"
 import { toast } from "react-toastify"
 
 // async actions
-export const fetchUser = createAsyncThunk("user/get", async (token) => {
-  const { data } = await $api.get(
-    `/accounts/users/me/`,
-    !!token && {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  )
+export const fetchUser = createAsyncThunk("user/get", async () => {
+  const { data } = await $api.get(`/accounts/users/me/`)
+  console.log(data)
   return camelizeKeys(data)
 })
 
@@ -167,61 +161,31 @@ export const saveUserThunk = createAsyncThunk(
 const initialState = {
   user: {
     id: null,
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    birthDate: "",
     email: "",
-    instagram: "",
-    facebook: "",
-    vk: "",
+    firstName: null,
+    lastName: null,
+    phoneNumber: "",
+    gender: null,
+    dateBirthday: null,
+    age: null,
+    role: "",
+    country: null,
+    city: null,
     avatar: null,
-    careers: [],
-    educations: [],
-    certifications: [],
-    skills: [],
+    nameOrganization: null,
+    address: null,
   },
-  progress: 0,
 }
-
-const countStringProgress = [
-  "firstName",
-  "lastName",
-  "phoneNumber",
-  "birthDate",
-  "email",
-  "instagram",
-  "facebook",
-  "linkedin",
-  "vk",
-  "avatar",
-]
-const countArrayProgress = ["careers", "educations", "certifications", "skills"]
 
 export const profileMenuSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    deleteSkills(state, { payload }) {},
     saveUserItem(state, { payload }) {
       state.user[`${payload.userItem}`] = payload.value
     },
     saveUser(state, { payload }) {
       state.user = payload
-    },
-    checkProgress(state) {
-      let count = 0
-      countStringProgress.forEach((countItem) => {
-        if (state.user[countItem]) {
-          count = count + 4
-        }
-      })
-      countArrayProgress.forEach((countItem) => {
-        if (state.user[countItem].length) {
-          count = count + 15
-        }
-      })
-      state.progress = count
     },
   },
   extraReducers: (builder) => {

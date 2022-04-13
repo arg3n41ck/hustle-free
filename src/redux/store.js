@@ -1,15 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit"
-import profileMenu from "./components/navigations"
-import skills from "./components/skills"
+import navigations from "./components/navigations"
 import technologies from "./components/technologies"
 import startups from "./components/startups"
 import user from "./components/user"
-import auth from "./components/auth"
+import events from "./components/events"
+import countries from "./components/countriesAndCities"
+import sportTypes from "./components/sportTypes"
 
 export function makeStore() {
   return configureStore({
     devTools: true,
-    reducer: { profileMenu, skills, user, startups, technologies, auth },
+    reducer: {
+      navigations,
+      user,
+      startups,
+      technologies,
+      events,
+      countries,
+      sportTypes,
+    },
   })
 }
 

@@ -39,7 +39,7 @@ const tabs = [
 ]
 
 const ChangeDataProfile = () => {
-  const { changeProfileValue } = useSelector((state) => state.profileMenu)
+  const { changeProfileValue } = useSelector((state) => state.navigations)
   const { user, progress } = useSelector((state) => state.user)
   console.log(user)
   const [countries, setCountries] = useState([])

@@ -29,7 +29,7 @@ const tabs = [
 const CreateStartups = ({ id }) => {
   const dispatch = useDispatch()
   const { changeStartup } = useSelector((state) => state.startups)
-  const { createStartupTabsValue } = useSelector((state) => state.profileMenu)
+  const { createStartupTabsValue } = useSelector((state) => state.navigations)
 
   const startupChangeHandler = (value) => {
     dispatch(saveChangeStartup({ ...changeStartup, ...value }))

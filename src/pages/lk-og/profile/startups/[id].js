@@ -79,7 +79,7 @@ const removeServicesFromFavorites = async (id) => {
 // }
 
 const Startup = ({ startup, startupTeamMembers }) => {
-  const { changeStartUpValue } = useSelector((state) => state.profileMenu)
+  const { changeStartUpValue } = useSelector((state) => state.navigations)
   const dispatch = useDispatch()
   const tabsRef = React.useRef([
     {

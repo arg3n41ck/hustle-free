@@ -84,7 +84,7 @@ function TeamMembers({ startupID, openModal, closeModal, startupOwner }) {
   const [startupTeamMembers, setStartupTeamMembers] = useState(null)
   const [allTeamMembersId, setAllTeamMembersId] = useState([])
   const currentUser = useSelector((state) => state.user.user)
-  const { teamMembersValue } = useSelector((state) => state.profileMenu)
+  const { teamMembersValue } = useSelector((state) => state.navigations)
   const dispatch = useDispatch()
 
   const tabs = [
