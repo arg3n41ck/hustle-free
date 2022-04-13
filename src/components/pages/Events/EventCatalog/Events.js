@@ -1,0 +1,52 @@
+import React from "react"
+
+function Events(props) {
+  return (
+    <div>
+      <div>
+        <h3>Турниры</h3>
+        <button>
+          <MenuIcon />
+          Карточки
+        </button>
+        <button>
+          <LocationIcon />
+          Карточки
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default Events
+
+const MenuIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M4.16669 5.8335H15.8334" stroke="white" strokeLinecap="round" />
+    <path d="M4.16669 10H15.8334" stroke="white" strokeLinecap="round" />
+    <path d="M4.16669 14.1665H15.8334" stroke="white" strokeLinecap="round" />
+  </svg>
+)
+
+const LocationIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M12.398 19.804C13.881 19.0348 19 16.0163 19 11C19 7.13401 15.866 4 12 4C8.13401 4 5 7.13401 5 11C5 16.0163 10.119 19.0348 11.602 19.804C11.8548 19.9351 12.1452 19.9351 12.398 19.804ZM12 14C13.6569 14 15 12.6569 15 11C15 9.34315 13.6569 8 12 8C10.3431 8 9 9.34315 9 11C9 12.6569 10.3431 14 12 14Z"
+      fill="#828282"
+    />
+  </svg>
+)

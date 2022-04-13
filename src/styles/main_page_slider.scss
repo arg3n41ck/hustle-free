@@ -32,7 +32,7 @@
       background: linear-gradient(
         270deg,
         #0f0f10 13.53%,
-        rgba(15, 15, 16, 0) 100%
+        rgba(15, 15, 16, 0.2) 100%
       );
     }
   }
@@ -54,7 +54,6 @@
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-items: center;
-    background: transparent;
   }
 
   .swiper-slide {
@@ -71,25 +70,24 @@
     border: 1px solid #333333;
     box-sizing: border-box;
     border-radius: 800px;
+
+    background: no-repeat url("../public/png/swiper-arrow.png") center / cover;
+  }
+
+  .swiper-button-lock {
+    display: block !important;
   }
 
   .swiper-button-prev:after,
   .swiper-button-next:after {
-    font-size: 25px;
-    font-weight: 600;
-    color: #fff;
+    display: none;
   }
   .swiper-button-prev {
     left: -27px;
-    &:after {
-      transform: translateX(-2px);
-    }
   }
   .swiper-button-next {
     right: -27px;
-    &:after {
-      transform: translateX(2px);
-    }
+    transform: rotate(-180deg);
   }
   .swiper-slide-content {
     position: relative;
@@ -99,25 +97,5 @@
 
     border: 1px solid #333;
     border-radius: 20px;
-
-    //h3 {
-    //  font-size: 40px;
-    //  line-height: 48px;
-    //  color: #ffffff;
-    //  text-align: start;
-    //}
-    //
-    //div {
-    //  display: block;
-    //  align-items: center;
-    //  grid-gap: 16px;
-    //  span {
-    //    font-weight: 600;
-    //    font-size: 18px;
-    //    line-height: 24px;
-    //
-    //    color: #f2f2f2;
-    //  }
-    //}
   }
 }

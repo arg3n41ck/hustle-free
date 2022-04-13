@@ -1,6 +1,20 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
 import $api from "../../services/axios"
 
+export const fetchEventsByParams = createAsyncThunk(
+  "products/fetchGoodsByCategory",
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/events/events/`, {
+        params,
+      })
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  }
+)
+
 export const fetchEvents = createAsyncThunk(
   "events/fetchEvent",
   async (params, { rejectWithValue }) => {
@@ -51,6 +65,21 @@ export const eventsSlice = createSlice({
   },
   extraReducers: (builder) => {
     // FILTERING EVENTS
+    builder.addCase(fetchEventsByParams.pending, ({ events }) => {
+      events.isLoading = true
+    })
+    builder.addCase(fetchEventsByParams.fulfilled, ({ events }, action) => {
+      events.isLoading = false
+      events.data = action.payload
+      events.count = action.payload.count ?? action.payload.length
+      events.error = null
+    })
+    builder.addCase(fetchEventsByParams.rejected, ({ events }, action) => {
+      events.isLoading = false
+      events.error = action.payload
+      events.data = []
+    })
+    // EVENTS
     builder.addCase(fetchEvents.pending, ({ events }) => {
       events.isLoading = true
     })

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react"
 import { useCookies } from "react-cookie"
 import { Container } from "../../ui/Wrappers/Container"
-import EventsSlider from "./EventsSlider"
-import EventsGlobalSearch from "./EventsGlobalSearch/EventsGlobalSearch"
+import EventsSlider from "../Events/EventsSlider"
+import EventsGlobalSearch from "../Events/EventsGlobalSearch/EventsGlobalSearch"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchEvents, selectEvents } from "../../../redux/components/events"
+import EventsCatalog from "../Events/EventCatalog/EventsCatalog"
 
 const MainPage = () => {
   const [cookies] = useCookies(["token", "refresh"])
@@ -23,7 +24,7 @@ const MainPage = () => {
         <EventsGlobalSearch />
         <MainPageTitle>Популярные</MainPageTitle>
         <EventsSlider events={events} />
-
+        <EventsCatalog />
       </MainPageWrapper>
     </Container>
   )
