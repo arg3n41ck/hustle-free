@@ -7,7 +7,7 @@ const useFetch = (url, config = {}, deps) => {
   const [data, setData] = useState(null)
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       try {
         setLoading(true)
         const { data } = await axios(url, config)
