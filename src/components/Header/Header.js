@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux"
 import {
   changeAuthCheck,
   changeOgTabValue,
+  changeTmTabValue,
 } from "../../redux/components/navigations"
 import { useRouter } from "next/router"
 import { useCookies } from "react-cookie"
@@ -92,7 +93,11 @@ const Header = ({ onMenu }) => {
       router.push("/lk-og/profile")
       dispatch(changeOgTabValue(value))
     } else if (role === "athlete") {
+      router.push("/lk-ah/profile")
+      // dispatch(changeTmTabValue(value))
     } else if (role === "team") {
+      router.push("/lk-tm/profile")
+      dispatch(changeTmTabValue(value))
     }
 
     if (value === "exit") {

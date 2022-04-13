@@ -159,6 +159,7 @@ const Button = styled.button`
   font-size: 18px;
   line-height: 40px;
   color: #bdbdbd;
+  height: 40px;
 `
 const IconWrapper = styled.div`
   width: 15px;

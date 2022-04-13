@@ -27,12 +27,12 @@ const validationSchema = yup.object({
   firstName: yup.string().required("Обязательное поле"),
   lastName: yup.string().required("Обязательное поле"),
   phoneNumber: yup.string().min(12).required("Обязательное поле"),
-  gender: yup.string(),
+  gender: yup.mixed(),
   dateBirthday: yup.mixed().nullable(),
   country: yup.string().required("Обязательное поле"),
   city: yup.string().required("Обязательное поле"),
   nameOrganization: yup.string().nullable().required("Обязательное поле"),
-  address: yup.string().nullable(),
+  factAddress: yup.string().nullable(),
 })
 const Edits = ({ onView }) => {
   const { user, locations } = useSelector((state) => state)
@@ -54,7 +54,7 @@ const Edits = ({ onView }) => {
             country: currentCountry.id,
             city: currentCity.id,
           }
-        const { data } = await $api.put(`/accounts/users/me/`, newValues)
+        const { data } = await $api.put(`/organizer/profile/edit/`, newValues)
         dispatch(saveUser({ ...newValues, ...data }))
         onView("general")
       } catch (e) {
@@ -147,7 +147,7 @@ const Edits = ({ onView }) => {
           }}
           className="auth-wrapper__input"
         >
-          <p className="auth-title__input">День рождения</p>
+          <p className="auth-title__input">Дата рождения (не обязательно)</p>
           <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
             <DatePicker
               components={{
@@ -335,14 +335,14 @@ const Edits = ({ onView }) => {
           </p>
           <TextField
             sx={{ width: "100%" }}
-            name="address"
+            name="factAddress"
             onChange={formik.handleChange}
             id="outlined-basic"
-            value={formik.values.address}
+            value={formik.values.factAddress}
             placeholder="Фактический Адрес"
             variant="outlined"
-            error={formik.touched.address && Boolean(formik.errors.address)}
-            helperText={formik.touched.address && formik.errors.address}
+            error={formik.touched.factAddress && Boolean(formik.errors.factAddress)}
+            helperText={formik.touched.factAddress && formik.errors.factAddress}
           />
         </div>
       </Content>

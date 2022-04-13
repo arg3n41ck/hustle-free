@@ -11,15 +11,17 @@ export const fetchUser = createAsyncThunk("user/get", async () => {
   let newData = {}
   const { data } = await $api.get(`/accounts/users/me/`)
   newData = { ...newData, ...data }
-  // if (data.role === "organizer") {
-  //   const { data: organizerData } = await $api.get(`/organizer/profile/`)
-  //   console.log(organizerData)
-  //   newData = { ...newData, ...organizerData }
-  // } else if (data.role === "athlete") {
-  // } else if (data.role === "team") {
-  // }
-  //
-  // console.log(newData)
+  if (data.role === "organizer") {
+    const { data: organizerData } = await $api.get(`/organizer/profile/`)
+    newData = { ...newData, ...organizerData[0].user }
+  } else if (data.role === "athlete") {
+  } else if (data.role === "team") {
+    const { data: teamData } = await $api.get(`/teams/profile/`)
+    console.log(teamData[0])
+    const { user, ...rst } = teamData[0]
+    newData = { ...newData, ...user, ...rst }
+  }
+
   return camelizeKeys(newData)
 })
 
