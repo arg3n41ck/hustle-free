@@ -2,12 +2,12 @@ export const getEventStatus = (status) => {
   switch (status) {
     case "soon":
       return "скоро"
-    case "end":
-      return "скоро"
-    case "after":
-      return "скоро"
+    case "continue":
+      return "сейчас"
+    case "past":
+      return "прошел"
     default:
-      return ""
+      return "Не известно"
   }
 }
 

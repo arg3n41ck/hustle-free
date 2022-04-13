@@ -37,11 +37,13 @@ function EventsFilter() {
   const { push: routerPush } = useRouter()
 
   useEffect(() => {
+    query.delete("ordering")
+    dispatch(fetchEventsByParams(query))
     dispatch(fetchCountries())
     dispatch(fetchSportTypes())
   }, [])
 
-  const sortHandler = (_, value) => {}
+  const sortHandler = (_) => {}
 
   const handleCountriesFilter = useCallback(
     (_, value) => {
@@ -69,6 +71,18 @@ function EventsFilter() {
     dispatch(fetchEventsByParams(query))
   }, [query])
 
+  const sportTypesValue =
+    sportTypes.length &&
+    sportTypes.find((type) => type.name === query.get("type_sport"))
+
+  const countriesValue =
+    countries.length &&
+    countries.find((type) => type.name === query.get("country"))
+
+  const orderingValue =
+    query.get("ordering") &&
+    dateTypes.find((type) => type.value === query.get("ordering"))
+
   return (
     <div>
       <BtnsWrapper>
@@ -90,6 +104,7 @@ function EventsFilter() {
               options={sportTypes.map((option) => option)}
               getOptionLabel={(option) => option.name}
               fullWidth
+              value={sportTypesValue}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -109,6 +124,7 @@ function EventsFilter() {
               onChange={(e, value) => handleCountriesFilter(e, value)}
               options={countries.map((option) => option)}
               getOptionLabel={(option) => option.name}
+              value={countriesValue}
               fullWidth
               renderInput={(params) => (
                 <TextField
@@ -128,6 +144,7 @@ function EventsFilter() {
             onChange={(e, value) => handleDateFilter(e, value)}
             options={dateTypes.map((option) => option)}
             getOptionLabel={(option) => option.name}
+            value={orderingValue}
             fullWidth
             renderInput={(params) => (
               <TextField
@@ -177,6 +194,7 @@ const BtnsWrapper = styled.div`
 const SoonBtn = styled.button`
   width: 175px;
   height: 64px;
+  font-weight: 600;
   font-size: 18px;
   background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
   border-radius: 32px;
@@ -185,6 +203,7 @@ const SoonBtn = styled.button`
 const LiveBtn = styled.button`
   color: #eb5757;
   font-size: 18px;
+  font-weight: 600;
 
   padding: 0 24px;
   border-radius: 32px;
@@ -193,6 +212,7 @@ const LiveBtn = styled.button`
 const PastEventsBtn = styled.button`
   height: 100%;
   color: #bdbdbd;
+  font-weight: 600;
   font-size: 18px;
   padding: 0 24px;
 `
@@ -203,6 +223,9 @@ const FilterBtn = styled.button`
   background: #333333;
   border: 1px solid #333333;
   box-sizing: border-box;
+  font-weight: 600;
+  font-size: 20px;
+  color: #f2f2f2;
   border-radius: 16px;
   display: flex;
   align-items: center;

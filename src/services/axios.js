@@ -36,7 +36,10 @@ $api.interceptors.response.use(
   async (error) => {
     const refreshToken = await getCookie("refresh")
 
-    if (error?.response?.status === 401) {
+    if (
+      error?.response?.status === 401 &&
+      error?.config?.url !== "/accounts/auth/jwt/refresh/"
+    ) {
       try {
         const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}accounts/auth/jwt/refresh/`,
