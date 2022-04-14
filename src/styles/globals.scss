@@ -72,13 +72,21 @@ li {
 }
 
 .MuiOutlinedInput-root {
-  border-radius: 8px !important;
+  border-radius: 16px !important;
   grid-gap: 14px;
   color: #fff;
+  height: 64px;
+  box-sizing: border-box;
 
   &:hover fieldset {
     border-color: #333 !important;
   }
+}
+.MuiOutlinedInput-root {
+  padding: 20px !important;
+}
+.MuiOutlinedInput-input {
+  padding: 0 !important;
 }
 
 .MuiTabs-indicator {
