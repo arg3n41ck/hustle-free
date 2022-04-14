@@ -14,7 +14,7 @@ import { fetchCountries } from "../../redux/components/countriesAndCities"
 const InputData = ({ query }) => {
   const [view, setView] = useState("personal") // personal | skills
   const dispatch = useDispatch()
-  const [role, setRole] = useState("organizer")
+  const [role, setRole] = useState(null)
 
   const viewHandler = (type) => {
     setView(type)

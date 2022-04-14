@@ -110,7 +110,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         !Boolean(formik.errors.password)
       ) {
         const data = {
-          birth_date:
+          date_birthday:
             !!values.birthDate && format(values.birthDate, "yyyy-MM-dd"),
           first_name: values.firstName,
           last_name: values.lastName,
@@ -126,8 +126,9 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         if (!data.birth_date) delete data.birth_date
 
         console.log(data)
-        // setData(data)
-        // setView("legalInfo")
+
+        setData(data)
+        setView("legalInfo")
       }
     },
     validationSchema,

@@ -84,11 +84,10 @@ const validationSchema = yup.object({
 const OrganizerLegalData = ({ dataPersonal, data }) => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
+  const [cities, setCities] = useState(null)
   // const { cities, countries } = useSelector((state) => state.auth)
   // console.log("cities", cities)
   const [countries] = useSelector(selectCountries)
-
-  // console.log("countries", countries)
 
   const router = useRouter()
   const formik = useFormik({
@@ -120,14 +119,13 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
             name_organization: values.nameOrganizer,
             country: values.country,
             city: values.city,
-            actual_address: values.actualAddress,
+            address: values.actualAddress,
             legal_name: values.legalName,
             legal_address: values.legalAddress,
             bin: values.bin,
             number: values.number,
             swift: values.swift,
             bank_name: values.bankName,
-            email: values.email,
           }
           if (data.phone_number === "+") delete data.phone_number
 
@@ -149,7 +147,7 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
           )
           try {
             const { data: _data } = await $api.post(
-              "/accounts/auth/jwt/create/",
+              "/accounts/organizer/",
               data
             )
             setCookie("token", _data.access, 999)
@@ -163,6 +161,10 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
   })
 
   console.log(formik.errors)
+
+  const handleClickCities = (item) => {
+    setCities(item)
+  }
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
@@ -201,10 +203,16 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
           error={formik.touched.country && Boolean(formik.errors.country)}
           helperText={formik.touched.country && formik.errors.country}
         >
-          <MenuItem value="default">Страна</MenuItem>
-          <MenuItem value="athlete">Атлет</MenuItem>
-          <MenuItem value="organizer">Организатор</MenuItem>
-          <MenuItem value="team">Команда</MenuItem>
+          {!!countries &&
+            countries.map((item) => (
+              <MenuItem
+                onClick={() => handleClickCities(item)}
+                key={item.id}
+                value={item.id}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
         </TextField>
       </div>
 
@@ -215,7 +223,7 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
           select
           sx={{
             width: "100%",
-            color: "white"
+            color: "white",
           }}
           name="city"
           value={formik.values.city}
@@ -223,10 +231,18 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
           error={formik.touched.city && Boolean(formik.errors.city)}
           helperText={formik.touched.city && formik.errors.city}
         >
-          <MenuItem value="default">Город</MenuItem>
-          <MenuItem value="athlete">Атлет</MenuItem>
-          <MenuItem value="organizer">Организатор</MenuItem>
-          <MenuItem value="team">Команда</MenuItem>
+          {!!cities
+            ? cities.cityCountry.map((item) => (
+                <MenuItem value={item.id}>{item.name}</MenuItem>
+              ))
+            : !!countries &&
+              countries.map(
+                ({ cityCountry }) =>
+                  !!cityCountry &&
+                  cityCountry.map((item) => (
+                    <MenuItem value={item.id}>{item.name}</MenuItem>
+                  ))
+              )}
         </TextField>
       </div>
 
