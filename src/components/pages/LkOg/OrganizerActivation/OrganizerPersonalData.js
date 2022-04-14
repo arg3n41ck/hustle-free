@@ -16,16 +16,11 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider"
 import InputMask from "react-input-mask"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
-import $api from "../../../../services/axios"
 import { format } from "date-fns"
 import { useDispatch } from "react-redux"
-import { saveUserItem } from "../../../../redux/components/user"
 import { getCookie, setCookie } from "../../../../services/JWTService"
 import { MobileDatePicker } from "@mui/lab"
 import { ru } from "date-fns/locale"
-import { toast } from "react-toastify"
-
-import PropTypes from "prop-types"
 import { styled as styl } from "@mui/material/styles"
 import RadioGroup, { useRadioGroup } from "@mui/material/RadioGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
@@ -141,11 +136,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
   }
 
   return (
-    <Form
-      //   animate={{ translateX: ["20%", "0%"] }}
-      //   transition={{ duration: 0.5 }}
-      onSubmit={formik.handleSubmit}
-    >
+    <Form onSubmit={formik.handleSubmit}>
       <Box
         sx={{
           display: "grid",

@@ -2,35 +2,17 @@ import React, { useState } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
 import styled from "styled-components"
-import {
-  Box,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  OutlinedInput,
-  TextField,
-  Typography,
-  MenuItem,
-} from "@mui/material"
-import AdapterDateFns from "@mui/lab/AdapterDateFns"
-import LocalizationProvider from "@mui/lab/LocalizationProvider"
-import InputMask from "react-input-mask"
+import { TextField, MenuItem } from "@mui/material"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
 import $api from "../../../../services/axios"
-import { format } from "date-fns"
 import { useDispatch, useSelector } from "react-redux"
 import { saveUserItem } from "../../../../redux/components/user"
 import { setCookie } from "../../../../services/JWTService"
-import { MobileDatePicker } from "@mui/lab"
-import { ru } from "date-fns/locale"
 import { toast } from "react-toastify"
-
-import PropTypes from "prop-types"
 import { styled as styl } from "@mui/material/styles"
-import RadioGroup, { useRadioGroup } from "@mui/material/RadioGroup"
+import { useRadioGroup } from "@mui/material/RadioGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
-import Radio from "@mui/material/Radio"
 import { useRouter } from "next/router"
 import { selectCountries } from "../../../../redux/components/countriesAndCities"
 
@@ -83,10 +65,7 @@ const validationSchema = yup.object({
 
 const OrganizerLegalData = ({ dataPersonal, data }) => {
   const dispatch = useDispatch()
-  const [showPassword, setShowPassword] = useState(false)
   const [cities, setCities] = useState(null)
-  // const { cities, countries } = useSelector((state) => state.auth)
-  // console.log("cities", cities)
   const [countries] = useSelector(selectCountries)
 
   const router = useRouter()
@@ -133,15 +112,6 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
             if (!data[key]) delete data[key]
           }
 
-          //   for (let key in data) {
-          // setData((prev) =>
-          //   !!prev?.length ? [...prev, { key: data[key] }] : data
-          // )
-          //   }
-
-          //   setView("legalInfo")
-          //   await $api.post("/accounts/auth/users/activation/", data)
-          //   toast.success("Вы успешно активировали свои учетные данные!")
           dispatch(
             saveUserItem({ userItem: "password", value: values.password })
           )
@@ -152,6 +122,7 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
             )
             setCookie("token", _data.access, 999)
             setCookie("refresh", _data.refresh, 999999)
+            toast.success("Вы успешно активировали свои учетные данные!")
             router.push("/login")
           } catch (e) {}
         } catch (e) {}
