@@ -28,6 +28,12 @@ const HorizontalTabs = ({ valueTab, arrayTab, onChangeHandler, children }) => {
           classes={{
             indicator: classes.indicator,
           }}
+          sx={{
+            "& .Mui-selected": {
+              color: "#F1FBF5 !important",
+              transition: "all 0.3s ease 0s",
+            },
+          }}
         >
           {arrayTab.map((item) => (
             <TabItem value={item.value} label={item.name} />
@@ -52,7 +58,7 @@ const Header = styled.div`
   border-bottom: 1px solid #e5e5e5;
 `
 const Content = styled.div`
-  padding: 32px;
+  padding: 32px 0;
 `
 const TabItem = styled(Tab)`
   font-family: Inter, sans-serif;

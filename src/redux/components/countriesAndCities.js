@@ -44,7 +44,7 @@ export const countriesSlice = createSlice({
 
 export const selectCountries = createSelector(
   (state) => state.countries.countries.data,
-  (counties) => [counties]
+  (countries) => [countries]
 )
 
 export default countriesSlice.reducer
