@@ -10,10 +10,11 @@ import clearCookies from "../../../helpers/clearCookies"
 import { useRouter } from "next/router"
 import { lkTmTabs } from "../../../components/pages/LkTm/Tabs/tabConstants"
 import ProfileTm from "../../../components/pages/LkTm/Tabs/Profile/Profile"
+import Athletes from "../../../components/pages/LkTm/Tabs/Athletes/Athletes"
 
 const TmProfile = () => {
   const { tmTabValue } = useSelector((state) => state.navigations)
-  const [openSidebar, setOpenSidebar] = useState(true)
+  const [openSidebar, setOpenSidebar] = useState(false)
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -46,7 +47,9 @@ const TmProfile = () => {
           {(tmTabValue === "profile" && (
             <ProfileTm onToggleSidebar={toggleSidebarHandler} />
           )) ||
-            (tmTabValue === "myTournaments" && <h1>tset</h1>)}
+            (tmTabValue === "athletes" && (
+              <Athletes onToggleSidebar={toggleSidebarHandler} />
+            ))}
         </Content>
       </Wrapper>
     </Container>

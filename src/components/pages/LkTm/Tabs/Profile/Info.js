@@ -52,16 +52,8 @@ const Info = ({ onToggleSidebar, onView }) => {
             sx={{ width: 112, height: 112 }}
           />
           <CenterText>
-            <CenterTitle>Checkmat Kazakhstan BJJ</CenterTitle>
-            <CenterDescription>
-              Команда была основана в 2008 году Бек-Али Ержаном (черный пояс
-              первый дан, чемпион мира и Азии, главные тренер) для
-              распространения здорового образа жизни, воспитания, образования и
-              положительного влияния в обществе. Академия джиу-джитсу
-              предоставляет качественное обучение для всех уровней, используя
-              традиционный и современный подходы, в атмосфере дружбы и
-              постоянного совершенствования.
-            </CenterDescription>
+            <CenterTitle>{user.nameOrganization}</CenterTitle>
+            <CenterDescription>{user.description}</CenterDescription>
           </CenterText>
           <Button onClick={() => onView("edit")}>
             <IconWrapper>

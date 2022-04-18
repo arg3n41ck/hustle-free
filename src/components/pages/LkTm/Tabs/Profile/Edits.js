@@ -1,57 +1,22 @@
 import React, { useEffect, useState } from "react"
 import { Formik, Form, FieldArray, getIn, useFormik } from "formik"
 import * as yup from "yup"
-import { useDispatch, useSelector } from "react-redux"
-import $api from "../../../../../services/axios"
-import { saveUser } from "../../../../../redux/components/user"
-import styled from "styled-components"
-import { Box, TextField } from "@mui/material"
-import SelectUI from "../../../../ui/Selects/Select"
 import InputMask from "react-input-mask"
+import { useDispatch, useSelector } from "react-redux"
+import { formDataHttp } from "../../../../../helpers/formDataHttp"
+import { fetchUser, saveUser } from "../../../../../redux/components/user"
+import styled from "styled-components"
+import { Box, Checkbox, TextField } from "@mui/material"
+import SelectUI from "../../../../ui/Selects/Select"
+import CustomButton from "../../../../ui/CustomButton"
+import $api from "../../../../../services/axios"
+import Image from "next/image"
+import { decamelizeKeys } from "humps"
+
 import PhoneIcon from "../../../../../public/svg/phone-icon.svg"
 import EmailIcon from "../../../../../public/svg/email-profile.svg"
-import CustomButton from "../../../../ui/CustomButton"
-import { objToFormData } from "../../../../../helpers/formData"
-import axios from "axios"
-import { getCookie } from "../../../../../services/JWTService"
+import UploadIcon from "../../../../../public/svg/upload-profile-icon.svg"
 
-const me = {
-  id: 1,
-  email: "admin@qwe.qwe",
-  first_name: "Azamat",
-  last_name: "Askarov",
-  phone_number: "+73422343243",
-  gender: "male",
-  date_birthday: "2021-03-12",
-  age: 1,
-  role: "team",
-  country: 1,
-  city: 1,
-  avatar: null,
-  name_organization: null,
-  address: null,
-}
-
-const profile = {
-  id: 1,
-  user: {
-    id: 1,
-    full_name: "Азамат Аскаров",
-    country: 1,
-    city: 1,
-    email: "admin@qwe.qwe",
-    avatar: null,
-    phone_number: "+73422343243",
-  },
-  web_site: "http://asdf.ru",
-  full_name_coach: "asdf",
-  phone_coach: "+996555555555",
-  email_coach: "lev@lev.lev",
-  sports: [1],
-  description: "fasd",
-}
-
-const validationSchema = yup.object({})
 const Edits = ({ onView }) => {
   const {
     user,
@@ -63,51 +28,67 @@ const Edits = ({ onView }) => {
     },
   } = useSelector((state) => state)
   const dispatch = useDispatch()
+  const [currentSportTypes, setCurrentSportTypes] = useState([])
+  const validationSchema = yup.object({
+    nameOrganization: yup.string().nullable().required("Обязательное поле"),
+    country: yup.mixed().required("Обязательное поле"),
+    city: yup.mixed().required("Обязательное поле"),
+    webSite: yup.string().url().required("Обязательное поле"),
+    fullNameCoach: yup.string().required("Обязательное поле"),
+    phoneCoach: yup.string().min(12).required("Обязательное поле"),
+    emailCoach: yup
+      .string()
+      .email("Введите верно")
+      .required("Обязательное поле"),
+    sports: yup.array().test({
+      message: "Обязательное поле",
+      test: () => !!currentSportTypes.length,
+    }),
+    avatar: yup
+      .mixed()
+      .test(
+        "FILE_SIZE",
+        "Размер файла должен быть – не более 4 МБ.",
+        (value) => {
+          if (!value) return true
+          if (typeof value !== "string") {
+            return !!value && (value.size / 1024 / 1024).toFixed(2) <= 4
+          }
+          return true
+        }
+      ),
+  })
   const formik = useFormik({
     initialValues: user.user,
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const { country, city, avatar, ...rstValues } = values,
+        const { nameOrganization, country, avatar, city, ...rstValues } =
+            values,
           currentCountry = countries.find(
             (countryItem) => countryItem.name === country
           ),
           currentCity = currentCountry.cityCountry.find(
             (cityItem) => cityItem.name === city
           )
-        // const newValues = {
-        //   ...rstValues,
-        //   user: { country, city, avatar },
-        // }
-        await axios.put(
-          `${process.env.NEXT_PUBLIC_API_URL}teams/profile/edit/`,
-          objToFormData({
+        const newValues = {
+          ...decamelizeKeys({
             ...rstValues,
             sports: currentSportTypes.map((CSportItem) => CSportItem.id),
-            user: { country: currentCountry.id, city: currentCity.id, avatar },
+            country: currentCountry.id,
+            city: currentCity.id,
           }),
-          {
-            headers: {
-              Authorization: `Bearer ${getCookie("token")}`,
-              "Content-type":
-                "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-            },
-          }
-        )
+          avatar,
+        }
+        if (typeof newValues.avatar === "string") delete newValues.avatar
+        const { data } = await formDataHttp(newValues, "teams/profile/edit/")
 
-        // const currentCountry = locations.countries.find(
-        //     (country) => country.name === values.country
-        //   ),
-        //   currentCity = currentCountry.cityCountry.find(
-        //     (country) => country.name === values.city
-        //   ),
-        //   newValues = {
-        //     ...values,
-        //     country: currentCountry.id,
-        //     city: currentCity.id,
-        //   }
-        // const { data } = await $api.put(`/organizer/profile/edit/`, newValues)
-        // dispatch(saveUser({ ...newValues, ...data }))
+        // await $api.put(`/accounts/users/me/`, {
+        //   ...newValues,
+        //   nameOrganization,
+        // })
+        dispatch(saveUser({ ...values, ...data }))
+        dispatch(fetchUser())
         onView("general")
       } catch (e) {
         throw e
@@ -115,7 +96,6 @@ const Edits = ({ onView }) => {
     },
   })
   const [currentCities, setCurrentCities] = useState([])
-  const [currentSportTypes, setCurrentSportTypes] = useState([])
 
   const changeCurrentCities = (changeCountry) => {
     const findObj = countries.find((country) => country.name === changeCountry)
@@ -142,6 +122,16 @@ const Edits = ({ onView }) => {
     })
     setCurrentSportTypes(newSportTypes)
   }, [])
+
+  const deleteSport = (value) => {
+    const index = currentSportTypes.findIndex(
+      (CSportItem) => CSportItem.id === value.id
+    )
+    setCurrentSportTypes((prev) => [
+      ...prev.slice(0, index),
+      ...prev.slice(index + 1),
+    ])
+  }
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -270,14 +260,17 @@ const Edits = ({ onView }) => {
           <div className="auth-wrapper__input">
             <p className="auth-title__input">Номер телефона</p>
             <InputMask
-              name={"phoneNumber"}
+              name={"phoneCoach"}
               onChange={(e) =>
                 formik.setFieldValue(
-                  "phoneNumber",
+                  "phoneCoach",
                   `+${e.target.value.replace(/\D/gi, "")}`
                 )
               }
-              value={`${formik.values.phoneNumber}`.replace(/\D/gi, "")}
+              error={
+                Boolean(formik.touched.phoneCoach) && formik.errors.phoneCoach
+              }
+              value={`${formik.values.phoneCoach}`.replace(/\D/gi, "")}
               mask="+7(999) 999 99 99"
             >
               {(inputProps) => (
@@ -287,10 +280,6 @@ const Edits = ({ onView }) => {
                   id="outlined-basic"
                   variant="outlined"
                   placeholder={"Контакты"}
-                  error={
-                    Boolean(formik.touched.phoneNumber) &&
-                    formik.errors.phoneNumber
-                  }
                   InputProps={{
                     endAdornment: <PhoneIcon />,
                   }}
@@ -303,14 +292,16 @@ const Edits = ({ onView }) => {
             <p className="auth-title__input">Электронная почта тренера</p>
             <TextField
               sx={{ width: "100%" }}
-              name="email"
-              value={formik.values.email}
+              name="emailCoach"
+              value={formik.values.emailCoach}
               onChange={formik.handleChange}
               id="outlined-basic"
               placeholder="Электронная почта"
               variant="outlined"
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              error={
+                formik.touched.emailCoach && Boolean(formik.errors.emailCoach)
+              }
+              helperText={formik.touched.emailCoach && formik.errors.emailCoach}
               InputProps={{
                 endAdornment: <EmailIcon />,
               }}
@@ -318,7 +309,7 @@ const Edits = ({ onView }) => {
           </div>
         </Box>
 
-        <div className="auth-wrapper__input">
+        <div style={{ marginBottom: 16 }} className="auth-wrapper__input">
           <p className="auth-title__input">Вид спорта</p>
           <SelectUI
             error={!!(formik.touched.sports && formik.errors.sports)}
@@ -349,7 +340,79 @@ const Edits = ({ onView }) => {
           </SelectUI>
         </div>
 
-        {currentSportTypes.map((CSportType) => CSportType.name)}
+        {currentSportTypes.map((CSportType) => (
+          <SportItem>
+            <Checkbox
+              defaultChecked
+              onChange={() => deleteSport(CSportType)}
+              sx={{
+                padding: 0,
+                "& .MuiSvgIcon-root": {
+                  color: "#6D4EEA",
+                },
+              }}
+            />
+            <p>{CSportType.name}</p>
+          </SportItem>
+        ))}
+
+        <div className="auth-wrapper__input" style={{ marginTop: 32 }}>
+          <p className="auth-title__input">Электронная почта тренера</p>
+          <Textarea
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            rows={4}
+            placeholder={"Описание"}
+            error={
+              formik.touched.description && Boolean(formik.errors.description)
+            }
+          />
+        </div>
+
+        <Gallery>
+          <Title>Фотография профиля</Title>
+          <GrayText style={{ marginTop: 4 }}>
+            Фотография показывается, например, рядом с вашими профилем
+          </GrayText>
+          <GalleryBlock>
+            <GalleryLabel
+              error={formik.touched.avatar && Boolean(formik.errors.avatar)}
+            >
+              {!!formik.values.avatar ? (
+                <ImageWrapper>
+                  <Image
+                    src={
+                      typeof formik.values.avatar === "string"
+                        ? formik.values.avatar
+                        : URL.createObjectURL(formik.values.avatar)
+                    }
+                    width={128}
+                    height={128}
+                    objectFit={"cover"}
+                  />
+                </ImageWrapper>
+              ) : (
+                <UploadIconWrapper>
+                  <UploadIcon />
+                </UploadIconWrapper>
+              )}
+
+              <GalleryInput
+                name="avatar"
+                type={"file"}
+                accept="image/*"
+                onChange={(e) =>
+                  formik.setFieldValue("avatar", e.target.files[0])
+                }
+              />
+            </GalleryLabel>
+            <GrayText>
+              Рекомендуем использовать изображение размером не менее 600х600
+              пикселей в формате PNG. Размер файла – не более 4 МБ.
+            </GrayText>
+          </GalleryBlock>
+        </Gallery>
       </Content>
       <Footer>
         <ButtonWrapper onClick={() => onView("general")}>
@@ -374,7 +437,7 @@ const Header = styled.div`
 const Title = styled.h4`
   font-style: normal;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 24px;
   line-height: 32px;
   color: #f2f2f2;
 `
@@ -393,6 +456,81 @@ const ButtonWrapper = styled.div`
   &:first-child {
     margin-right: 32px;
   }
+`
+const SportItem = styled.div`
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  p {
+    margin-left: 16px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #f2f2f2;
+  }
+`
+const Textarea = styled.textarea`
+  background: #1b1c22;
+  box-sizing: border-box;
+  padding: 20px;
+  border: 1.5px solid #333333;
+  border-radius: 16px;
+  height: 160px;
+  width: 100%;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 24px;
+  color: #f2f2f2;
+`
+const GrayText = styled.p`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #bdbdbd;
+`
+const WhiteText = styled(GrayText)`
+  color: #f2f2f2;
+`
+const Gallery = styled.div`
+  padding-bottom: 32px;
+  border-bottom: 1px solid #333333;
+`
+const GalleryBlock = styled.div`
+  display: flex;
+  margin-top: 24px;
+`
+const GalleryLabel = styled.div`
+  min-width: 128px;
+  margin-right: 24px;
+  height: 128px;
+  background: #1b1c22;
+  border: 2px dashed ${(p) => (p.error ? "##EB5757" : "#6d4eea")};
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+`
+const GalleryInput = styled.input`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+`
+const UploadIconWrapper = styled.div`
+  position: absolute;
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+const ImageWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 `
 
 export default Edits

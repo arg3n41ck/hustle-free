@@ -7,16 +7,25 @@ import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchEvents, selectEvents } from "../../../redux/components/events"
 import EventsCatalog from "../Events/EventCatalog/EventsCatalog"
+import { useRouter } from "next/router"
 
 const MainPage = () => {
   const [cookies] = useCookies(["token", "refresh"])
   const [loading, events, count] = useSelector(selectEvents)
   const dispatch = useDispatch()
+  const { authCheck } = useSelector((state) => state.navigations)
+  const router = useRouter()
 
   useEffect(() => {
     dispatch(fetchEvents())
     console.log({ eventsLoading: loading, events, eventsCount: count })
   }, [])
+
+  useEffect(async () => {
+    if (!authCheck) {
+      await router.push("/login")
+    }
+  }, [authCheck])
 
   return (
     <Container>
