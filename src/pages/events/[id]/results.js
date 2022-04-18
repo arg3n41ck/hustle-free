@@ -1,18 +1,12 @@
 import React from "react"
-import { Event as Content } from "../../../components/pages/Event/Event/Event"
-import $api from "../../../services/axios"
 import EdMainLayout from "../../../components/pages/Event/EDMainLayout"
+import $api from "../../../services/axios"
 
-function EventsDetail({event}) {
-
-  return (
-    <EdMainLayout event={event}>
-      <Content event={event}/>
-    </EdMainLayout>
-  )
+function Results({ event }) {
+  return <EdMainLayout event={event}>results</EdMainLayout>
 }
 
-export default EventsDetail
+export default Results
 
 export async function getServerSideProps(context) {
   const { query } = context

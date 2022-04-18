@@ -6,7 +6,7 @@ import EventsGlobalSearch from "../Events/EventsGlobalSearch/EventsGlobalSearch"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchEvents, selectEvents } from "../../../redux/components/events"
-import EventsCatalog from "../Events/EventCatalog/EventsCatalog"
+import EventsCatalog from "../Events/EventsCatalog/EventsCatalog"
 
 const MainPage = () => {
   const [cookies] = useCookies(["token", "refresh"])

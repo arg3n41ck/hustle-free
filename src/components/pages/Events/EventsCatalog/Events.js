@@ -2,21 +2,12 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { selectEvents } from "../../../../redux/components/events"
 import styled from "styled-components"
-import Image from "next/image"
 import { getEventStatus, getRusBetweenDate } from "../../../../helpers/helpers"
-
-//city: "Москва"
-// country: "Россия"
-// dateEnd: "2022-05-15T06:11:00+06:00"
-// dateStart: "2022-03-14T06:11:00+06:00"
-// id: 4
-// image: "http://api.dev.hustlefree.pro/media/events/images/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA4.jpeg"
-// name: "Чемпионат мира по Борьбе Бишкек"
-// status: "continue"
-// typeSport: "Борьба"
+import { useRouter } from "next/router"
 
 function Events() {
   const [, events] = useSelector(selectEvents)
+  const { push: routerPush } = useRouter()
 
   return (
     <EventsWrapper>
@@ -45,7 +36,10 @@ function Events() {
               name,
               status,
             }) => (
-              <EventCard key={`mainPageEvents${id}`}>
+              <EventCard
+                onClick={() => routerPush(`/events/${id}`)}
+                key={`mainPageEvents${id}`}
+              >
                 <EventImg src={image} />
                 <Texts>
                   <h4>{name}</h4>
@@ -138,6 +132,7 @@ const EventCard = styled.div`
   grid-gap: 16px;
   border-radius: 16px;
   background: #1b1c22;
+  cursor: pointer;
 `
 
 const Texts = styled.div`
@@ -238,23 +233,18 @@ const CalendarIcon = () => (
       height="15"
       rx="2"
       stroke="#F4F4F4"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <path
       d="M3 10C3 8.11438 3 7.17157 3.58579 6.58579C4.17157 6 5.11438 6 7 6H17C18.8856 6 19.8284 6 20.4142 6.58579C21 7.17157 21 8.11438 21 10H3Z"
       fill="#F4F4F4"
     />
-    <path
-      d="M7 3L7 6"
-      stroke="#F4F4F4"
-      stroke-width="2"
-      stroke-linecap="round"
-    />
+    <path d="M7 3L7 6" stroke="#F4F4F4" strokeWidth="2" strokeLinecap="round" />
     <path
       d="M17 3L17 6"
       stroke="#F4F4F4"
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth="2"
+      strokeLinecap="round"
     />
   </svg>
 )

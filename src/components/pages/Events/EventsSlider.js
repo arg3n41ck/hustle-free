@@ -9,6 +9,7 @@ import styled from "styled-components"
 
 import { Navigation } from "swiper"
 import { getRusBetweenDate } from "../../../helpers/helpers"
+import { useRouter } from "next/router"
 
 const LocationIcon = () => (
   <svg
@@ -59,6 +60,8 @@ const CalendarIcon = () => (
 )
 
 function EventsSlider({ events }) {
+  const { push: routerPush } = useRouter()
+
   return (
     <div className="main-page-swiper">
       {!!events?.length && (
@@ -72,7 +75,10 @@ function EventsSlider({ events }) {
           {events.map(
             ({ name, id, image, country, city, dateStart, dateEnd }) => (
               <SwiperSlide key={`swiper-slide-content-${id}`}>
-                <div className="swiper-slide-content">
+                <div
+                  onClick={() => routerPush(`/events/${id}`)}
+                  className="swiper-slide-content"
+                >
                   <Event src={image}>
                     <h3>{name}</h3>
                     <div>
