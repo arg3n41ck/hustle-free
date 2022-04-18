@@ -78,6 +78,7 @@ const NewPassword = ({ query }) => {
                   formik.touched.password && Boolean(formik.errors.password)
                 }
                 id="outlined-adornment-password"
+                value={formik.values.password}
                 type={showPassword ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">

@@ -1,6 +1,5 @@
 import React from "react"
 import Test from "../../../public/svg/logo.svg"
-
 import styled from "styled-components"
 import { Avatar } from "@mui/material"
 import { Skeleton } from "@mui/lab"

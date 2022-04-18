@@ -21,7 +21,7 @@ const validationSchema = yup.object({
 })
 
 const Recover = ({ onView }) => {
-  const [toggleInfoModal, setToggleInfoModal] = useState(false)
+  const [toggleInfoModal, setToggleInfoModal] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const formik = useFormik({
     initialValues: {

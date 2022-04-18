@@ -14,11 +14,14 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import LocalizationProvider from "@mui/lab/LocalizationProvider"
 import InputMask from "react-input-mask"
 import { motion } from "framer-motion"
-import { AuthButton } from "../Authorization/Authorization"
-import $api from "../../../services/axios"
+import { AuthButton } from "../../Authorization/Authorization"
+import $api from "../../../../services/axios"
+import { format } from "date-fns"
 import { useDispatch } from "react-redux"
-import { saveUserItem } from "../../../redux/components/user"
-import { setCookie } from "../../../services/JWTService"
+import { saveUserItem } from "../../../../redux/components/user"
+import { setCookie } from "../../../../services/JWTService"
+import { MobileDatePicker } from "@mui/lab"
+import { ru } from "date-fns/locale"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
@@ -39,14 +42,14 @@ const validationSchema = yup.object({
       (value) => !!(value || " ").replace(/\s/g, "")
     )
     .required("Заполните поле"),
-  email: yup
-    .string()
-    .test(
-      "email",
-      "Заполните поле",
-      (value) => !!(value || " ").replace(/\s/g, "")
-    )
-    .required("Заполните поле"),
+  // email: yup
+  //   .string()
+  //   .test(
+  //     "email",
+  //     "Заполните поле",
+  //     (value) => !!(value || " ").replace(/\s/g, "")
+  //   )
+  //   .required("Заполните поле"),
   password: yup
     .string()
     .matches(
@@ -56,7 +59,7 @@ const validationSchema = yup.object({
     .required("Заполните поле"),
 })
 
-const InputPersonalData = ({ onView, query }) => {
+const InputPersonalData = ({ onView }) => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
@@ -79,31 +82,22 @@ const InputPersonalData = ({ onView, query }) => {
       ) {
         toast.info("Ожидайте ответа от сервера")
         try {
-          const { uid, token } = query
-          await $api
-            .post("/accounts/auth/users/activation/", { uid, token })
-            .then(({ data }) => {
-              try {
-                const { data: _data } = $api.post(
-                  "/accounts/athlete/",
-                  {
-                    first_name: values.firstName,
-                    last_name: values.lastName,
-                    password: values.password,
-                  },
-                  {
-                    headers: {
-                      Authorization: `Token ${data?.access}`,
-                    },
-                  }
-                )
-                setCookie("token", _data.access, 999)
-                setCookie("refresh", _data.refresh, 999999)
-                // onView("skills")
-              } catch (e) {}
+          // await $api.post("/accounts/auth/users/activation/", { uid, token })
+          // .then(({ data }) => {
+
+          // })
+          try {
+            const { data: _data } = $api.post("/accounts/athlete/", {
+              first_name: values.firstName,
+              last_name: values.lastName,
+              password: values.password,
             })
+            setCookie("token", _data.access, 999)
+            setCookie("refresh", _data.refresh, 999999)
+            // onView("skills")
+          } catch (e) {}
           toast.success("Вы успешно активировали свои учетные данные!")
-          router.push("/profile")
+          router.push("/login")
           dispatch(
             saveUserItem({ userItem: "password", value: values.password })
           )
@@ -232,8 +226,8 @@ const InputPersonalData = ({ onView, query }) => {
                   </svg>
                 ),
               }}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              // error={formik.touched.email && Boolean(formik.errors.email)}
+              // helperText={formik.touched.email && formik.errors.email}
             />
           </div>
           <div className="auth-wrapper__input">
