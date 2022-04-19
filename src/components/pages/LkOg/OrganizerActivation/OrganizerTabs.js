@@ -18,6 +18,7 @@ function OrganizerTabs() {
   const [view, setView] = React.useState("contactInfo") // contactInfo | legalInfo
   const [dataPersonal, setDataPersonal] = React.useState(null)
   const [dataLegal, setDataLegal] = React.useState("null")
+  console.log(dataPersonal)
 
   return (
     <div className="auth-container">

@@ -86,7 +86,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
     initialValues: {
       lastName: !!data?.last_name ? data.last_name : "",
       firstName: !!data?.first_name ? data.first_name : "",
-      birthDate: !!data?.birth_date ? data.birth_date : null,
+      birthDate: !!data?.date_birthday ? data.date_birthday : null,
       phone: !!data?.phone_number ? data.phone_number : "",
       password: !!data?.password ? data.password : "",
       gender: !!data?.gender ? data.gender : "",
@@ -116,11 +116,10 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
           email: values.email,
         }
         if (data.phone_number === "+") delete data.phone_number
-        if (!data.position) delete data.position
-        if (!data.gender) delete data.gender
-        if (!data.birth_date) delete data.birth_date
 
-        console.log(data)
+        for (let key in data) {
+          if (!data[key]) delete data[key]
+        }
 
         setData(data)
         setView("legalInfo")
