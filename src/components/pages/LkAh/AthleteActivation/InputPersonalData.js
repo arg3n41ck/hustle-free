@@ -10,18 +10,12 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material"
-import AdapterDateFns from "@mui/lab/AdapterDateFns"
-import LocalizationProvider from "@mui/lab/LocalizationProvider"
-import InputMask from "react-input-mask"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
 import $api from "../../../../services/axios"
-import { format } from "date-fns"
 import { useDispatch } from "react-redux"
 import { saveUserItem } from "../../../../redux/components/user"
 import { setCookie } from "../../../../services/JWTService"
-import { MobileDatePicker } from "@mui/lab"
-import { ru } from "date-fns/locale"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
 
@@ -42,14 +36,6 @@ const validationSchema = yup.object({
       (value) => !!(value || " ").replace(/\s/g, "")
     )
     .required("Заполните поле"),
-  // email: yup
-  //   .string()
-  //   .test(
-  //     "email",
-  //     "Заполните поле",
-  //     (value) => !!(value || " ").replace(/\s/g, "")
-  //   )
-  //   .required("Заполните поле"),
   password: yup
     .string()
     .matches(
@@ -59,11 +45,10 @@ const validationSchema = yup.object({
     .required("Заполните поле"),
 })
 
-const InputPersonalData = ({ onView }) => {
+const InputPersonalData = () => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
-  const [tok, setTok] = useState(null)
   const formik = useFormik({
     initialValues: {
       lastName: "",
@@ -82,10 +67,6 @@ const InputPersonalData = ({ onView }) => {
       ) {
         toast.info("Ожидайте ответа от сервера")
         try {
-          // await $api.post("/accounts/auth/users/activation/", { uid, token })
-          // .then(({ data }) => {
-
-          // })
           try {
             const { data: _data } = $api.post("/accounts/athlete/", {
               first_name: values.firstName,
@@ -94,7 +75,6 @@ const InputPersonalData = ({ onView }) => {
             })
             setCookie("token", _data.access, 999)
             setCookie("refresh", _data.refresh, 999999)
-            // onView("skills")
           } catch (e) {}
           toast.success("Вы успешно активировали свои учетные данные!")
           router.push("/login")

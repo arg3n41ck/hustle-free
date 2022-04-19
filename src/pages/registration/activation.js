@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react"
 import InputPersonalData from "../../components/pages/LkAh/AthleteActivation/InputPersonalData"
-import InputSkillsData from "../../components/pages/LkAh/AthleteActivation/inputSkillsData"
-import { fetchUser } from "../../redux/components/user"
 import { useDispatch } from "react-redux"
 import $api from "../../services/axios"
 import OrganizerPersonalData from "../../components/pages/LkOg/OrganizerActivation/OrganizerTabs"
