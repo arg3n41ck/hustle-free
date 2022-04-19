@@ -7,7 +7,7 @@ module.exports = {
     includePaths: [path.join(__dirname, "src/styles")],
   },
   images: {
-    domains: ["assets.vercel.com", "api.dev.main.jva.vc", "unsplash.com"],
+    domains: ["assets.vercel.com", "api.dev.hustlefree.pro", "unsplash.com"],
     formats: ["image/avif", "image/webp"],
   },
   i18n,

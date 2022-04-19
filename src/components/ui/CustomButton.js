@@ -2,9 +2,20 @@ import React from "react"
 import styled from "styled-components"
 
 // typeButton = primary | secondary
-const CustomButton = ({ typeButton = "primary", children, ...props }) => {
+const CustomButton = ({
+  typeButton = "primary",
+  borderRadius = "16px",
+  height = "64px",
+  children,
+  ...props
+}) => {
   return (
-    <Button typeButton={typeButton} {...props}>
+    <Button
+      height={height}
+      borderRadius={borderRadius}
+      typeButton={typeButton}
+      {...props}
+    >
       {children}
     </Button>
   )
@@ -12,11 +23,11 @@ const CustomButton = ({ typeButton = "primary", children, ...props }) => {
 
 const Button = styled.button`
   width: 100%;
-  height: 64px;
+  height: ${(p) => p.height};
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: ${(p) => p.borderRadius};
   font-style: normal;
   font-weight: 600;
   font-size: 18px;

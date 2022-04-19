@@ -87,10 +87,18 @@ li {
   }
 }
 .MuiOutlinedInput-root {
-  padding: 20px !important;
+  input {
+    height: 100%;
+    padding: 20px !important;
+    box-sizing: border-box;
+  }
 }
+
 .MuiOutlinedInput-input {
   padding: 0 !important;
+}
+.MuiSelect-outlined {
+  padding: 0 20px !important;
 }
 
 .MuiTabs-indicator {

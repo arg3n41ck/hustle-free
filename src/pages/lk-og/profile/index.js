@@ -21,7 +21,7 @@ const OgProfile = () => {
   const [cookies] = useCookies(["token", "refresh"])
   const { user } = useSelector((state) => state.user)
   const [startupsState, setStartupsState] = useState([])
-  const [openSidebar, setOpenSidebar] = useState(true)
+  const [openSidebar, setOpenSidebar] = useState(false)
   const dispatch = useDispatch()
 
   const tabHandler = (value) => {

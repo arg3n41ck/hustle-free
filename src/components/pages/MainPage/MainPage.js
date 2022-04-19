@@ -10,12 +10,11 @@ import EventsCatalog from "../Events/EventsCatalog/EventsCatalog"
 
 const MainPage = () => {
   const [cookies] = useCookies(["token", "refresh"])
-  const [loading, events, count] = useSelector(selectEvents)
+  const [, events] = useSelector(selectEvents)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchEvents())
-    console.log({ eventsLoading: loading, events, eventsCount: count })
   }, [])
 
   return (
