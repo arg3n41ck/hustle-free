@@ -9,12 +9,6 @@ import AuthInfo from "../../components/ui/modals/AuthInfo"
 import Link from "next/link"
 import $api from "../../services/axios"
 
-// import InputLabel from "@mui/material/InputLabel"
-// import MenuItem from "@mui/material/MenuItem"
-// import FormControl from "@mui/material/FormControl"
-// import Select from "@mui/material/Select"
-// import Button from "@mui/material/Button"
-
 const variants = {
   open: { opacity: 1, transaction: 5 },
   closed: { opacity: 0, transaction: 5 },
@@ -33,7 +27,7 @@ const Index = () => {
   const [loading, setLoading] = useState(false)
   const [toggleInfoModal, setToggleInfoModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [registationInfoModal, setRegistationInfoModal] = useState(null)
+  const [registrationInfoModal, setRegistationInfoModal] = useState(null)
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -60,8 +54,6 @@ const Index = () => {
     validationSchema,
   })
 
-  console.log(formik.values)
-
   useEffect(() => {
     setErrorMessage(null)
   }, [formik.values.email])
@@ -81,9 +73,8 @@ const Index = () => {
             fill="#828282"
           />
         </svg>
-        asdasd
       </TextPrev>
-      {!registationInfoModal ? (
+      {!registrationInfoModal ? (
         <Form
           animate={{ translateX: ["20%", "0%"] }}
           transition={{ duration: 0.5 }}
@@ -147,11 +138,13 @@ const Index = () => {
                   }}
                 />
                 <div>
+                  <p className="auth-title__input">Ваша роль</p>
                   <TextField
                     id="outlined-select-currency"
                     select
                     sx={{ width: "100%", color: "white" }}
                     name="role"
+                    placeholder="asdasdasd"
                     value={formik.values.role}
                     onChange={formik.handleChange}
                     // error={touched.cities && errors.cities}
@@ -238,7 +231,7 @@ const Index = () => {
                 Отлично
               </RegistrationInfoContainerHeader>
               <RegistrationInfoContainerText>
-                на ваш электронный адрес {registationInfoModal?.email}{" "}
+                на ваш электронный адрес {registrationInfoModal?.email}{" "}
                 отправлено сообщение со ссылкой для подтверждения!
               </RegistrationInfoContainerText>
             </RegistrationInfoContainerInnerTexts>

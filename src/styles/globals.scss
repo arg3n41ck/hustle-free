@@ -49,7 +49,6 @@ li {
 }
 
 .MuiPaper-root {
-  // background: #333;
   .MuiPopover-paper {
     background: unset;
     color: #fff;
@@ -125,7 +124,7 @@ select:-webkit-autofill:focus {
   border: none;
   color: unset;
   background-color: transparent !important;
-  -webkit-box-shadow: 0 0 0 40px black inset !important;
+  -webkit-box-shadow: 0 0 0 40px #1b1c22 inset !important;
   -webkit-text-fill-color: white !important;
 }
 

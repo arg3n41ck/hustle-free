@@ -34,24 +34,15 @@ const InputData = ({ query }) => {
   useEffect(() => {
     !role && activationUser(query?.uid, query?.token)
     dispatch(fetchCountries())
-    return () => {
-      // dispatch(fetchSkills())
-      // dispatch(fetchTechnologies())
-      // dispatch(fetchUser())
-      // dispatch(fetchStartups())
-    }
   }, [])
 
   return (
     <>
-      {/* {(view === "personal" && ( */}
       {!!role && role === "athlete" && (
         <InputPersonalData onView={viewHandler} />
       )}
       {!!role && role === "organizer" && <OrganizerPersonalData />}
       {!!role && role === "team" && alert(role)}
-      {/* )) || */}
-      {/* (view === "skills" && <InputSkillsData />)} */}
     </>
   )
 }
