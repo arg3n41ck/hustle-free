@@ -94,10 +94,6 @@ const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
             avatar: values.avatar,
           }
 
-          for (let key in data) {
-            if (!data[key]) delete data[key]
-          }
-
           dispatch(
             saveUserItem({ userItem: "password", value: values.password })
           )
@@ -105,7 +101,8 @@ const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
             let formData = new FormData()
 
             await Object.keys(data).forEach((key) => {
-              const value = values[key]
+              if (!data[key]) delete data[key]
+              const value = data[key]
               if (key === "avatar") {
                 formData.append(key, value, value.name)
               } else {
