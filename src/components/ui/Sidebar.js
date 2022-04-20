@@ -1,29 +1,56 @@
 import React from "react"
 import styled from "styled-components"
 import { motion } from "framer-motion"
+import { useRouter } from "next/router"
+import { changeAuthCheck } from "../../redux/components/navigations"
+import clearCookies from "../../helpers/clearCookies"
+import { useDispatch } from "react-redux"
 
 const variants = {
-  open: { opacity: 1, x: 0, pointerEvents: "auto" },
-  closed: { opacity: 0, x: "100%", pointerEvents: "auto" },
+  open: { display: "block", x: 0, pointerEvents: "auto" },
+  closed: { display: "none", x: "100%", pointerEvents: "auto" },
 }
 
 const variantsSidebar = {
   open: { width: 328 },
-  closed: { width: 88 },
+  closed: { width: 72 },
 }
 
-const Sidebar = ({ open, value, array, onChangeValue }) => {
+const contentVariants = {
+  open: { gridGap: "18px", justifyContent: "flex-start" },
+  closed: { gridGap: 0, justifyContent: "center" },
+}
+
+const Sidebar = ({ open, array }) => {
+  const { push: routerPush, pathname } = useRouter()
+  const dispatch = useDispatch()
+
+  const handleOnClickTab = (path) => {
+    if (path === "exit") {
+      routerPush("/login").then(() => {
+        dispatch(changeAuthCheck(false))
+        clearCookies()
+      })
+    }
+    routerPush(path)
+  }
+
   return (
     <Wrapper animate={open ? "open" : "closed"} variants={variantsSidebar}>
-      {array.map((item) => {
-        const active = item.value === value
+      {array.map((item, i) => {
+        const active = !!item.children?.length
+          ? item.children.includes(pathname) || item.href === pathname
+          : pathname === item.href
         return (
           <Item
-            onClick={() => onChangeValue(item.value)}
-            key={item.value}
+            key={`${item.value}_${i}`}
             active={active}
+            onClick={() => handleOnClickTab(item.href)}
           >
-            <ItemContent>
+            <ItemContent
+              animate={open ? "open" : "closed"}
+              variants={contentVariants}
+            >
               <IconWrapper active={active}>{item.icon}</IconWrapper>
               <Text animate={open ? "open" : "closed"} variants={variants}>
                 {item.name}
@@ -37,7 +64,6 @@ const Sidebar = ({ open, value, array, onChangeValue }) => {
 }
 
 const IconWrapper = styled.div`
-  margin-right: 28px;
   height: 100%;
   svg * {
     fill: ${(p) => (p.active ? "#6D4EEA" : "#828282")};
@@ -47,13 +73,13 @@ const IconWrapper = styled.div`
 const Wrapper = styled(motion.ul)`
   display: flex;
   flex-direction: column;
+  grid-row-gap: 24px;
   overflow: hidden;
-  padding: 0 8px;
 `
 const Item = styled.li`
-  margin: 12px 0;
   display: flex;
   align-items: center;
+  padding: 0 18px;
   cursor: pointer;
   font-style: normal;
   font-weight: 600;
@@ -74,11 +100,11 @@ const Item = styled.li`
     }
   }
 `
-const ItemContent = styled.div`
+
+const ItemContent = styled(motion.div)`
+  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-left: 20px;
   div {
     display: flex;
     align-items: center;
