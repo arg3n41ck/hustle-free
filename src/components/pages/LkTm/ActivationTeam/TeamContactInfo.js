@@ -9,44 +9,17 @@ import {
   InputAdornment,
   OutlinedInput,
   TextField,
-  Typography,
   MenuItem,
 } from "@mui/material"
-import AdapterDateFns from "@mui/lab/AdapterDateFns"
-import LocalizationProvider from "@mui/lab/LocalizationProvider"
 import InputMask from "react-input-mask"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
-import { format } from "date-fns"
 import { useDispatch, useSelector } from "react-redux"
-import { getCookie, setCookie } from "../../../../services/JWTService"
-import { MobileDatePicker } from "@mui/lab"
-import { ru } from "date-fns/locale"
+import { getCookie } from "../../../../services/JWTService"
 import { styled as styl } from "@mui/material/styles"
-import RadioGroup, { useRadioGroup } from "@mui/material/RadioGroup"
+import { useRadioGroup } from "@mui/material/RadioGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
-import Radio from "@mui/material/Radio"
 import { selectCountries } from "../../../../redux/components/countriesAndCities"
-
-const StyledFormControlLabel = styl((props) => <FormControlLabel {...props} />)(
-  ({ theme, checked }) => ({
-    ".MuiFormControlLabel-label": checked && {
-      color: theme.palette.primary.main,
-    },
-  })
-)
-
-function MyFormControlLabel(props) {
-  const radioGroup = useRadioGroup()
-
-  let checked = false
-
-  if (radioGroup) {
-    checked = radioGroup.value === props.value
-  }
-
-  return <StyledFormControlLabel checked={checked} {...props} />
-}
 
 const regMatch =
   /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
@@ -96,6 +69,7 @@ const validationSchema = yup.object({
       "Заполните поле",
       (value) => !!(value || "").replace(/\s/g, "")
     )
+    .email("Неверный адрес электронной почты")
     .required("Заполните поле"),
   password: yup
     .string()
@@ -194,32 +168,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
           id="outlined-basic"
           placeholder="Название команды"
           variant="outlined"
-          InputProps={{
-            endAdornment: (
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19.7274 20.4471C19.2716 19.1713 18.2672 18.0439 16.8701 17.2399C15.4729 16.4358 13.7611 16 12 16C10.2389 16 8.52706 16.4358 7.12991 17.2399C5.73276 18.0439 4.72839 19.1713 4.27259 20.4471"
-                  stroke="#828282"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-                <circle
-                  cx="12"
-                  cy="8"
-                  r="4"
-                  stroke="#828282"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            ),
-          }}
           error={formik.touched.full_name && Boolean(formik.errors.full_name)}
           helperText={formik.touched.full_name && formik.errors.full_name}
         />
@@ -296,32 +244,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
           id="outlined-basic"
           placeholder="Веб-сайт"
           variant="outlined"
-          InputProps={{
-            endAdornment: (
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19.7274 20.4471C19.2716 19.1713 18.2672 18.0439 16.8701 17.2399C15.4729 16.4358 13.7611 16 12 16C10.2389 16 8.52706 16.4358 7.12991 17.2399C5.73276 18.0439 4.72839 19.1713 4.27259 20.4471"
-                  stroke="#828282"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-                <circle
-                  cx="12"
-                  cy="8"
-                  r="4"
-                  stroke="#828282"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            ),
-          }}
           error={formik.touched.web_site && Boolean(formik.errors.web_site)}
           helperText={formik.touched.web_site && formik.errors.web_site}
         />
@@ -336,32 +258,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
           id="outlined-basic"
           placeholder="ФИО"
           variant="outlined"
-          InputProps={{
-            endAdornment: (
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19.7274 20.4471C19.2716 19.1713 18.2672 18.0439 16.8701 17.2399C15.4729 16.4358 13.7611 16 12 16C10.2389 16 8.52706 16.4358 7.12991 17.2399C5.73276 18.0439 4.72839 19.1713 4.27259 20.4471"
-                  stroke="#828282"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-                <circle
-                  cx="12"
-                  cy="8"
-                  r="4"
-                  stroke="#828282"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            ),
-          }}
           error={
             formik.touched.full_name_coach &&
             Boolean(formik.errors.full_name_coach)

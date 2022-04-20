@@ -5,37 +5,15 @@ import styled from "styled-components"
 import { TextField, MenuItem, Checkbox, Box } from "@mui/material"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
-import $api from "../../../../services/axios"
 import { useDispatch, useSelector } from "react-redux"
 import { saveUserItem } from "../../../../redux/components/user"
-import { setCookie } from "../../../../services/JWTService"
+import { getCookie, setCookie } from "../../../../services/JWTService"
 import { toast } from "react-toastify"
 import { styled as styl } from "@mui/material/styles"
-import { useRadioGroup } from "@mui/material/RadioGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import { useRouter } from "next/router"
-import { selectCountries } from "../../../../redux/components/countriesAndCities"
 import { theme } from "../../../../styles/theme"
-
-const StyledFormControlLabel = styl((props) => <FormControlLabel {...props} />)(
-  ({ theme, checked }) => ({
-    ".MuiFormControlLabel-label": checked && {
-      color: theme.palette.primary.main,
-    },
-  })
-)
-
-function MyFormControlLabel(props) {
-  const radioGroup = useRadioGroup()
-
-  let checked = false
-
-  if (radioGroup) {
-    checked = radioGroup.value === props.value
-  }
-
-  return <StyledFormControlLabel checked={checked} {...props} />
-}
+import axios from "axios"
 
 const validationSchema = yup.object({
   sports: yup
@@ -99,23 +77,24 @@ const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
           )
           try {
             let formData = new FormData()
+            const token = getCookie("token")
 
             await Object.keys(data).forEach((key) => {
               if (!data[key]) delete data[key]
-              const value = data[key]
               if (key === "avatar") {
-                formData.append(key, value, value.name)
+                formData.append(key, data[key], data[key]?.name)
               } else {
-                formData.append(key, value)
+                formData.append(key, data[key])
               }
             })
 
-            const { data: _data } = await $api.post(
-              "/accounts/team/",
+            const { data: _data } = await axios.post(
+              "http://api.dev.hustlefree.pro/en/api/v1/accounts/team/",
               formData,
               {
                 headers: {
                   "Content-Type": "multipart/form-data",
+                  Authorization: `Token ${token}`,
                 },
               }
             )
@@ -136,10 +115,6 @@ const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
     if (event.target.files[0]) {
       setImageUrl(URL.createObjectURL(event.target.files[0]))
     }
-  }
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault()
   }
 
   return (
@@ -172,11 +147,11 @@ const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
           name="description"
           onChange={formik.handleChange}
           value={formik.values.description}
-          error={
-            formik.touched.description && Boolean(formik.errors.description)
-          }
-          helperText={formik.touched.description && formik.errors.description}
         />
+
+        {formik.touched.description && Boolean(formik.errors.description) && (
+          <Error>Заполните поле</Error>
+        )}
       </div>
 
       <h3 className="auth-title">Фотография профиля</h3>
@@ -255,6 +230,9 @@ const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
           </Description>
         </div>
       </AvatarWrapper>
+      {formik.touched.avatar && Boolean(formik.errors.avatar) && (
+        <Error>Заполните поле</Error>
+      )}
 
       <Line />
 
@@ -297,8 +275,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
           formik.values.description &&
           !Boolean(formik.errors.description) &&
           formik.values.avatar &&
-          !Boolean(formik.errors.avatar) &&
-          checked
+          !Boolean(formik.errors.avatar)
         }
         type="submit"
       >
