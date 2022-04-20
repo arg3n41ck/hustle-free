@@ -1,63 +1,38 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import {
-  Autocomplete,
   Avatar,
   Box,
   Popover,
-  TextField,
   MenuItem,
   FormControl,
   Select,
 } from "@mui/material"
 import Notifications from "./components/Notifications"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  changeAuthCheck,
-  changeOgTabValue,
-  changeTmTabValue,
-} from "../../redux/components/navigations"
+import { changeAuthCheck } from "../../redux/components/navigations"
 import { useRouter } from "next/router"
 import { useCookies } from "react-cookie"
 import Link from "next/link"
 import { theme } from "../../styles/theme"
-import $api from "../../services/axios"
-import { useCookie } from "react-use"
 import clearCookies from "../../helpers/clearCookies"
 import LogoIcon from "../../public/svg/logo.svg"
 import { lkOgTabs } from "../pages/LkOg/Tabs/tabConstants"
 import { lkTmTabs } from "../pages/LkTm/Tabs/tabConstants"
 import { lkAhTabs } from "../pages/LkAh/Tabs/tabConstants"
 
-let notificationInterval
-
-// const getNotifications = async () => {
-//   try {
-//     const {
-//       data: { results: userNotification },
-//     } = await $api.get(`/notifications/?source=user`)
-//     const {
-//       data: { results: startupNotification },
-//     } = await $api.get(`/notifications/?source=startup`)
-//     return !!userNotification?.length && !!startupNotification?.length
-//       ? { userNotification, startupNotification }
-//       : null
-//   } catch (e) {}
-// }
-
-const Header = ({ onMenu }) => {
+const Header = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const [anchorUserMenu, setAnchorUserMenu] = useState(null)
   const [openUserMenu, setUserMenu] = useState(false)
-  const [token] = useCookie("token")
   const idUserMenu = !!anchorUserMenu ? "simple-popover" : undefined
   const [anchorNotifications, setAnchorNotifications] = useState(null)
   const idNotifications = !!anchorNotifications ? "simple-popover" : undefined
   const [cookies] = useCookies(["token", "refresh"])
   const [notificationView, setNotificationView] = useState("user")
-  const [userNotification, setUserNotifications] = useState([])
-  const [startupNotification, setStartupNotifications] = useState([])
+  const [userNotification] = useState([])
+  const [startupNotification] = useState([])
   const { avatar, firstName, lastName, role } = useSelector(
     (state) => state.user.user
   )
@@ -91,13 +66,10 @@ const Header = ({ onMenu }) => {
   const changeMenu = (value) => {
     if (role === "organizer") {
       router.push("/lk-og/profile")
-      dispatch(changeOgTabValue(value))
     } else if (role === "athlete") {
       router.push("/lk-ah/profile")
-      // dispatch(changeTmTabValue(value))
     } else if (role === "team") {
       router.push("/lk-tm/profile")
-      dispatch(changeTmTabValue(value))
     }
 
     if (value === "exit") {
@@ -114,63 +86,12 @@ const Header = ({ onMenu }) => {
     await router.push("/login")
   }
 
-  // const createNotificationInterval = () => {
-  //   if (token) {
-  //     notificationInterval = setInterval(() => {
-  //       getNotifications().then((res) => {
-  //         if (res) {
-  //           setUserNotifications(res.userNotification)
-  //           setStartupNotifications(res.startupNotification)
-  //         }
-  //       })
-  //     }, 60000)
-  //   } else {
-  //     clearInterval(notificationInterval)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   clearInterval(notificationInterval)
-  //   createNotificationInterval()
-  // }, [])
-
   useEffect(() => {}, [])
 
   return (
     <Wrapper>
       <WrapperItems>
         <Left>
-          {/* <Box
-          onClick={onMenu}
-          sx={{ marginRight: 2.2, cursor: "pointer", minWidth: 32 }}
-        >
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 32 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6 9.3335H26"
-              stroke="#27AE60"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M6 16H26"
-              stroke="#27AE60"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              d="M6 22.667H26"
-              stroke="#27AE60"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </Box> */}
           <Box sx={{ minWidth: 50 }}>
             <Link href={"/"} passHref>
               <a>
@@ -180,51 +101,6 @@ const Header = ({ onMenu }) => {
           </Box>
         </Left>
         <WrapperCenter>
-          {/* {authCheck && (
-            <Autocomplete
-              sx={{
-                "& .MuiSvgIcon-root": {
-                  width: 0,
-                },
-              }}
-              noOptionsText={"Ничего не найдено"}
-              fullWidth
-              // onChange={(e, value) => searchHandler(e, value)}
-              options={skills.map((option) => option.title)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: (
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle
-                          cx="11"
-                          cy="11"
-                          r="7"
-                          stroke="#828282"
-                          strokeWidth="2"
-                        />
-                        <path
-                          d="M20 20L17 17"
-                          stroke="#828282"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    ),
-                  }}
-                />
-              )}
-            />
-          )} */}
           <NavbarTextList>
             <NavbarText>Турниры</NavbarText>
             <NavbarText>Подробнее</NavbarText>
@@ -264,8 +140,8 @@ const Header = ({ onMenu }) => {
                   <path
                     d="M13.4242 27.5059C13.5761 27.6476 13.9109 27.7729 14.3766 27.8622C14.8423 27.9516 15.4129 28 16 28C16.587 28 17.1576 27.9516 17.6233 27.8622C18.089 27.7729 18.4238 27.6476 18.5758 27.5059"
                     stroke="#828282"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
                   />
                 </svg>
 
@@ -350,7 +226,10 @@ const Header = ({ onMenu }) => {
                   <Box sx={{ padding: "32px" }}>
                     {!!activeTabs &&
                       activeTabs.map((tab) => (
-                        <UserMenuItem onClick={() => changeMenu(tab.value)}>
+                        <UserMenuItem
+                          key={`headerActiveTabs_${tab.id}`}
+                          onClick={() => changeMenu(tab.value)}
+                        >
                           <UserMenuItemContent>
                             <IconWrapper>{tab.icon}</IconWrapper>
                             <p>{tab.name}</p>

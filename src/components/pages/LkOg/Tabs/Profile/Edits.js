@@ -5,7 +5,7 @@ import * as yup from "yup"
 import styled from "styled-components"
 import { Box, TextField } from "@mui/material"
 import { ru } from "date-fns/locale"
-import { DatePicker, LocalizationProvider, MobileDatePicker } from "@mui/lab"
+import { DatePicker, LocalizationProvider } from "@mui/lab"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import Radio from "../../../../ui/Radio"
 import InputMask from "react-input-mask"
@@ -18,6 +18,7 @@ import SelectUI from "../../../../ui/Selects/Select"
 import $api from "../../../../../services/axios"
 import { saveUser } from "../../../../../redux/components/user"
 import { format } from "date-fns"
+import { useRouter } from "next/router"
 
 const validationSchema = yup.object({
   email: yup
@@ -34,6 +35,7 @@ const validationSchema = yup.object({
   nameOrganization: yup.string().nullable().required("Обязательное поле"),
   factAddress: yup.string().nullable(),
 })
+
 const Edits = ({ onView }) => {
   const {
     user,
@@ -42,6 +44,7 @@ const Edits = ({ onView }) => {
     },
   } = useSelector((state) => state)
   const dispatch = useDispatch()
+  const { push: routerPush } = useRouter()
   const [currentCities, setCurrentCities] = useState([])
   const formik = useFormik({
     initialValues: user.user,
@@ -61,7 +64,7 @@ const Edits = ({ onView }) => {
           }
         const { data } = await $api.put(`/organizer/profile/edit/`, newValues)
         dispatch(saveUser({ ...newValues, ...data }))
-        onView("general")
+        routerPush("/lk-og/profile")
       } catch (e) {
         throw e
       }
@@ -69,9 +72,7 @@ const Edits = ({ onView }) => {
   })
 
   const changeCurrentCities = (changeCountry) => {
-    const findObj = countries.find(
-      (country) => country.name === changeCountry
-    )
+    const findObj = countries.find((country) => country.name === changeCountry)
     if (findObj) setCurrentCities(findObj.cityCountry)
   }
 
@@ -114,7 +115,6 @@ const Edits = ({ onView }) => {
                   e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
                 )
               }
-              id="outlined-basic"
               placeholder="Фамилия"
               variant="outlined"
               error={formik.touched.lastName && Boolean(formik.errors.lastName)}
@@ -133,7 +133,6 @@ const Edits = ({ onView }) => {
                   e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
                 )
               }
-              id="outlined-basic"
               placeholder="Имя"
               variant="outlined"
               error={
@@ -246,7 +245,7 @@ const Edits = ({ onView }) => {
             sx={{ width: "100%" }}
             name="email"
             value={formik.values.email}
-            onChange={(e) => {}}
+            onChange={() => {}}
             id="outlined-basic"
             placeholder="Электронный адрес"
             variant="outlined"

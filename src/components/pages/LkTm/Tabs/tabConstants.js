@@ -7,27 +7,27 @@ import StatisticsIcon from "../../../../public/svg/statistics.svg"
 export const lkTmTabs = [
   {
     name: "Профиль",
-    value: "profile",
+    href: "/lk-tm/profile",
     icon: <ProfileIcon />,
   },
   {
     name: "Атлеты",
-    value: "athletes",
+    href: "/lk-tm/profile/athletes",
     icon: <AthletesIcon />,
   },
   {
     name: "Статистика",
-    value: "statistics",
+    href: "/lk-tm/profile/statistics",
     icon: <StatisticsIcon />,
   },
   {
     name: "Настройки",
-    value: "settings",
+    href: "/lk-tm/profile/settings",
     icon: <SettingsIcon />,
   },
   {
     name: "Выйти",
-    value: "exit",
+    href: "exit",
     icon: <ExitIcon />,
   },
 ]

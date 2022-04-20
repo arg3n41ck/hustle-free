@@ -131,3 +131,7 @@ select:-webkit-autofill:focus {
 .activeEDLink {
   border-bottom: 8px solid #6d4eea !important;
 }
+
+.MuiInputLabel-root {
+  color: unset;
+}

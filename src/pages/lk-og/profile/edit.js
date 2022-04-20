@@ -1,12 +1,12 @@
 import React from "react"
 import { lkOgTabs } from "../../../components/pages/LkOg/Tabs/tabConstants"
-import ProfileOg from "../../../components/pages/LkOg/Tabs/Profile/Profile"
 import LkLayout from "../../../components/layouts/LkLayout"
+import Edits from "../../../components/pages/LkOg/Tabs/Profile/Edits"
 
 const OgProfile = () => {
   return (
     <LkLayout tabs={lkOgTabs}>
-      <ProfileOg />
+      <Edits />
     </LkLayout>
   )
 }

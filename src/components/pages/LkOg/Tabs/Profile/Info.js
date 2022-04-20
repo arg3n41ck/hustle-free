@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import HeaderContent, { TitleHeader } from "../HeaderContent"
 import EditsIcon from "../../../../../public/svg/edits-icon.svg"
 import { Avatar } from "@mui/material"
 import { useSelector } from "react-redux"
@@ -14,9 +13,13 @@ import { theme } from "../../../../../styles/theme"
 import phoneFormatter from "../../../../../helpers/phoneFormatter"
 import { format, parseISO } from "date-fns"
 import { ru } from "date-fns/locale"
+import LkDefaultHeader from "../../../../ui/LKui/LKDefaultHeader"
+import { TitleHeader } from "../../../../ui/LKui/HeaderContent"
+import { useRouter } from "next/router"
 
-const Info = ({ onToggleSidebar, onView }) => {
+const Info = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
+  const { push: routerPush } = useRouter()
   const {
     countries: { data: countries },
   } = useSelector((state) => state.countries)
@@ -42,11 +45,9 @@ const Info = ({ onToggleSidebar, onView }) => {
 
   return (
     <>
-      <HeaderWrapper>
-        <HeaderContent onToggle={onToggleSidebar}>
-          <TitleHeader>Профиль</TitleHeader>
-        </HeaderContent>
-      </HeaderWrapper>
+      <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
+        <TitleHeader>Профиль</TitleHeader>
+      </LkDefaultHeader>
       <Content>
         <Center>
           <Avatar
@@ -58,7 +59,7 @@ const Info = ({ onToggleSidebar, onView }) => {
             <FullName>
               {user?.firstName} {user?.lastName}
             </FullName>
-            <Button onClick={() => onView("edit")}>
+            <Button onClick={() => routerPush("/lk-og/profile/edit")}>
               <IconWrapper>
                 <EditsIcon />
               </IconWrapper>
@@ -122,10 +123,6 @@ const Info = ({ onToggleSidebar, onView }) => {
   )
 }
 
-const HeaderWrapper = styled.div`
-  border-bottom: 1px solid #333333;
-  width: 100%;
-`
 const Content = styled.div`
   margin: 32px 32px 0 32px;
 `

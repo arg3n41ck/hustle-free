@@ -10,9 +10,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { saveUserItem } from "../../../../redux/components/user"
 import { setCookie } from "../../../../services/JWTService"
 import { toast } from "react-toastify"
-import { styled as styl } from "@mui/material/styles"
-import { useRadioGroup } from "@mui/material/RadioGroup"
-import FormControlLabel from "@mui/material/FormControlLabel"
 import { useRouter } from "next/router"
 import { selectCountries } from "../../../../redux/components/countriesAndCities"
 
@@ -111,14 +108,8 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
     validationSchema,
   })
 
-  console.log(formik.errors)
-
   const handleClickCities = (item) => {
     setCities(item)
-  }
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault()
   }
 
   return (
@@ -327,18 +318,5 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
 }
 
 const Form = styled(motion.form)``
-
-const Error = styled.p`
-  color: #d32f2f;
-  font-weight: 400;
-  font-size: 0.75rem;
-  line-height: 1.66;
-  letter-spacing: 0.03333em;
-  text-align: left;
-  margin-top: 3px;
-  margin-right: 14px;
-  margin-bottom: 0;
-  margin-left: 14px;
-`
 
 export default OrganizerLegalData

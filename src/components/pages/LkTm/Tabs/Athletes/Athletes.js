@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Teams from "./Teams"
 import Applications from "./Applications"
-import HeaderContent, { TitleHeader } from "../../../LkOg/Tabs/HeaderContent"
+import HeaderContent, { TitleHeader } from "../../../../ui/LKui/HeaderContent"
 import $api from "../../../../../services/axios"
 import HorizontalTabsBorder from "../../../../ui/tabs/HorizontalTabsBorder"
 import { useSelector } from "react-redux"
