@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import { Container } from "../../ui/Wrappers/Container"
 import twoDude from "../../../public/jpg/twodude.jpg"
 import Image from "next/image"
 
