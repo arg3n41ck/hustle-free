@@ -16,9 +16,6 @@ import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
 import { useDispatch, useSelector } from "react-redux"
 import { getCookie } from "../../../../services/JWTService"
-import { styled as styl } from "@mui/material/styles"
-import { useRadioGroup } from "@mui/material/RadioGroup"
-import FormControlLabel from "@mui/material/FormControlLabel"
 import { selectCountries } from "../../../../redux/components/countriesAndCities"
 
 const regMatch =

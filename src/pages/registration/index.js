@@ -19,7 +19,6 @@ const validationSchema = yup.object({
     .string()
     .email("Введите поле почты корректно")
     .required("Заполните поле почты"),
-  role: yup.string().required("Заполните поле почты"),
 })
 
 const Index = () => {
@@ -31,7 +30,7 @@ const Index = () => {
   const formik = useFormik({
     initialValues: {
       email: "",
-      role: "",
+      role: window.localStorage.getItem("role"),
     },
     onSubmit: async (values) => {
       setLoading(true)
@@ -137,39 +136,18 @@ const Index = () => {
                     ),
                   }}
                 />
-                <div>
-                  <p className="auth-title__input">Ваша роль</p>
-                  <TextField
-                    id="outlined-select-currency"
-                    select
-                    sx={{ width: "100%", color: "white" }}
-                    name="role"
-                    placeholder="asdasdasd"
-                    value={formik.values.role}
-                    onChange={formik.handleChange}
-                    // error={touched.cities && errors.cities}
-                  >
-                    <MenuItem value="athlete">Атлет</MenuItem>
-                    <MenuItem value="organizer">Организатор</MenuItem>
-                    <MenuItem value="team">Команда</MenuItem>
-                  </TextField>
-                </div>
               </div>
               <ErrorMessage>{!!errorMessage && errorMessage}</ErrorMessage>
               <AuthButton
                 active={
                   formik.values.email &&
                   !Boolean(formik.errors.email) &&
-                  formik.values.role &&
-                  !Boolean(formik.errors.role) &&
                   agreement &&
                   !errorMessage
                 }
                 disabled={
                   !formik.values.email ||
                   Boolean(formik.errors.email) ||
-                  !formik.values.role ||
-                  Boolean(formik.errors.role) ||
                   !agreement ||
                   loading ||
                   errorMessage
