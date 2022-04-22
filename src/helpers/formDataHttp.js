@@ -2,7 +2,7 @@ import axios from "axios"
 import { objToFormData } from "./formData"
 import { getCookie } from "../services/JWTService"
 
-export function formDataHttp(
+export async function formDataHttp(
   data,
   url,
   method = "put",
@@ -12,10 +12,11 @@ export function formDataHttp(
     Authorization: `Bearer ${getCookie("token")}`,
   }
 ) {
+  const formData = await objToFormData(data)
   return axios({
     method,
     url: `${process.env.NEXT_PUBLIC_API_URL}${url}`,
-    data: objToFormData(data),
+    data: formData,
     headers,
   })
 }

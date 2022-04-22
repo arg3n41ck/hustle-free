@@ -42,9 +42,15 @@ export const countriesSlice = createSlice({
   },
 })
 
-export const selectCountries = createSelector(
+export const selectCountriesAndCities = createSelector(
   (state) => state.countries.countries.data,
-  (countries) => [countries]
+  (state) =>
+    state.countries.countries.data.reduce(
+      (arr, { cityCountry }) =>
+        !!cityCountry.length ? [...arr, ...cityCountry] : arr,
+      []
+    ),
+  (countries, cities) => [countries, cities]
 )
 
 export default countriesSlice.reducer

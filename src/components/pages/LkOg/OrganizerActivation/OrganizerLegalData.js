@@ -11,7 +11,7 @@ import { saveUserItem } from "../../../../redux/components/user"
 import { setCookie } from "../../../../services/JWTService"
 import { toast } from "react-toastify"
 import { useRouter } from "next/router"
-import { selectCountries } from "../../../../redux/components/countriesAndCities"
+import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
 
 const validationSchema = yup.object({
   nameOrganizer: yup
@@ -43,7 +43,7 @@ const validationSchema = yup.object({
 const OrganizerLegalData = ({ dataPersonal, data }) => {
   const dispatch = useDispatch()
   const [cities, setCities] = useState(null)
-  const [countries] = useSelector(selectCountries)
+  const [countries] = useSelector(selectCountriesAndCities)
 
   const router = useRouter()
   const formik = useFormik({

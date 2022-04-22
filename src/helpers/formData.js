@@ -1,15 +1,17 @@
+import { camelizeKeys, decamelizeKeys } from "humps"
 
-function buildFormData(formData, data, parentKey) {
+async function buildFormData(formData, data, parentKey) {
   if (
     data &&
     typeof data === "object" &&
     !(data instanceof Date) &&
     !(data instanceof File)
   ) {
-    Object.keys(data).forEach((key) => {
+    const snakeCaseData = await decamelizeKeys(camelizeKeys(data))
+    Object.keys(snakeCaseData).forEach((key) => {
       buildFormData(
         formData,
-        data[key],
+        snakeCaseData[key],
         parentKey ? `${parentKey}[${key}]` : key
       )
     })
@@ -19,10 +21,10 @@ function buildFormData(formData, data, parentKey) {
     formData.append(parentKey, value)
   }
 }
-export function objToFormData(data) {
+export async function objToFormData(data) {
   const formData = new FormData()
 
-  buildFormData(formData, data)
+  await buildFormData(formData, data)
 
   return formData
 }

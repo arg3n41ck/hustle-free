@@ -4,7 +4,7 @@ import { Collapse, TextField } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
 import {
   fetchCountries,
-  selectCountries,
+  selectCountriesAndCities,
 } from "../../../../redux/components/countriesAndCities"
 import { Autocomplete } from "@mui/material"
 import {
@@ -30,7 +30,7 @@ const dateTypes = [
 
 function EventsFilter() {
   const [isFiltersOpen, setFilter] = useState(false)
-  const [countries] = useSelector(selectCountries)
+  const [countries] = useSelector(selectCountriesAndCities)
   const [sportTypes] = useSelector(selectSportTypes)
   const dispatch = useDispatch()
   const query = useQuery()
@@ -312,7 +312,7 @@ const Filters = styled.div`
   margin: 34px 0 0;
 `
 
-const BoxIcon = () => (
+export const BoxIcon = () => (
   <svg
     width="24"
     height="24"
@@ -331,7 +331,7 @@ const BoxIcon = () => (
   </svg>
 )
 
-const LocationIcon = () => (
+export const LocationIcon = () => (
   <svg
     width="24"
     height="24"
