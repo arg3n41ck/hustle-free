@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Header from "../Header/Header"
 import { Box, useMediaQuery } from "@mui/material"
 import hfIcon from "../../public/svg/hfIcon.svg"
@@ -8,19 +8,14 @@ import { fetchUser } from "../../redux/components/user"
 import { useCookies } from "react-cookie"
 import { theme } from "../../styles/theme"
 import styled from "styled-components"
-import { fetchCountries } from "../../redux/components/countriesAndCities"
-import { fetchSportTypes } from "../../redux/components/sportTypes"
 
 const Layout = ({ children }) => {
   const lg = useMediaQuery("(max-width:992px)")
-  const [pageNotAuth, setPageNotAuth] = useState(false)
   const dispatch = useDispatch()
   const [cookies] = useCookies(["token", "refresh"])
 
   useEffect(() => {
     dispatch(fetchUser())
-    dispatch(fetchCountries())
-    dispatch(fetchSportTypes())
   }, [cookies])
 
   return (
@@ -35,7 +30,7 @@ const Layout = ({ children }) => {
           rel="stylesheet"
         />
       </Head>
-      <Header pageNotAuth={pageNotAuth} />
+      <Header />
       <Box sx={{ display: "flex" }}>
         <ChildrenWrapper lg={lg}>{children}</ChildrenWrapper>
       </Box>

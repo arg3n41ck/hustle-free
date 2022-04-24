@@ -4,6 +4,7 @@ import { selectEvents } from "../../../../redux/components/events"
 import styled from "styled-components"
 import { getEventStatus, getRusBetweenDate } from "../../../../helpers/helpers"
 import { useRouter } from "next/router"
+import EventsArray from "../../../ui/Events"
 
 function Events() {
   const [, events] = useSelector(selectEvents)
@@ -23,49 +24,7 @@ function Events() {
         </SortByMap>
       </HeadPart>
 
-      <EventsLWrapper>
-        {!!events?.length ? (
-          events.map(
-            ({
-              city,
-              country,
-              dateEnd,
-              dateStart,
-              id,
-              image,
-              name,
-              status,
-            }) => (
-              <EventCard
-                onClick={() => routerPush(`/events/${id}`)}
-                key={`mainPageEvents${id}`}
-              >
-                <EventImg src={image} />
-                <Texts>
-                  <h4>{name}</h4>
-                  <Content>
-                    <ContentLeftSide>
-                      <ContentItems>
-                        <LocationIcon />
-                        <span>{`${country}, ${city}`}</span>
-                      </ContentItems>
-                      <ContentItems>
-                        <CalendarIcon />
-                        <span>{getRusBetweenDate(dateStart, dateEnd)}</span>
-                      </ContentItems>
-                    </ContentLeftSide>
-                    <ContentRightSide>
-                      {getEventStatus(status)}
-                    </ContentRightSide>
-                  </Content>
-                </Texts>
-              </EventCard>
-            )
-          )
-        ) : (
-          <Empty>Турниров не найдено</Empty>
-        )}
-      </EventsLWrapper>
+      <EventsArray data={events} />
     </EventsWrapper>
   )
 }

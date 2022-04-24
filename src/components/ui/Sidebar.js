@@ -2,9 +2,8 @@ import React from "react"
 import styled from "styled-components"
 import { motion } from "framer-motion"
 import { useRouter } from "next/router"
-import { changeAuthCheck } from "../../redux/components/navigations"
-import clearCookies from "../../helpers/clearCookies"
 import { useDispatch } from "react-redux"
+import { exitUser } from "../../redux/components/user"
 
 const variants = {
   open: { display: "block", x: 0, pointerEvents: "auto" },
@@ -28,8 +27,7 @@ const Sidebar = ({ open, array }) => {
   const handleOnClickTab = (path) => {
     if (path === "exit") {
       routerPush("/login").then(() => {
-        dispatch(changeAuthCheck(false))
-        clearCookies()
+        dispatch(exitUser())
       })
     }
     routerPush(path)

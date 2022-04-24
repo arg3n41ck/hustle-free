@@ -1,5 +1,5 @@
-import MainPage from "../components/pages/MainPage/MainPage"
+import MainPageForNotAuthUser from "../components/pages/MainPageForNotAuthUser/MainPageForNotAuthUser"
 
 export default function Home() {
-  return <MainPage />
+  return <MainPageForNotAuthUser />
 }

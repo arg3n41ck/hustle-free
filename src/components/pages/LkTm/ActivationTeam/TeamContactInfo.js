@@ -14,9 +14,9 @@ import {
 import InputMask from "react-input-mask"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { getCookie } from "../../../../services/JWTService"
-import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
+import { selectCountries } from "../../../../redux/components/countriesAndCities"
 
 const regMatch =
   /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
@@ -85,20 +85,20 @@ const validationSchema = yup.object({
 })
 
 const TeamContactInfo = ({ data, setData, setView }) => {
-  const dispatch = useDispatch()
-  const [countries] = useSelector(selectCountriesAndCities)
+  const [countries] = useSelector(selectCountries)
   const [cities, setCities] = useState(null)
   const [showPassword, setShowPassword] = useState(false)
   const formik = useFormik({
     initialValues: {
       full_name: !!data?.full_name ? data.full_name : "",
-      country: !!data?.country ? data.country : 1,
-      city: !!data?.city ? data.city : 1,
+      country: !!data?.country ? data.country : null,
+      city: !!data?.city ? data.city : null,
       web_site: !!data?.web_site ? data.web_site : "",
       full_name_coach: !!data?.full_name_coach ? data.full_name_coach : "",
       phone_coach: !!data?.phone_coach ? data.phone_coach : "",
-      email_coach: !!data?.email_coach ? data.email_coach : "",
-      email: !!data?.email ? data.email : getCookie("email") || "",
+      email_coach: !!data?.email_coach
+        ? data.email_coach
+        : getCookie("email") || "",
       password: !!data?.password ? data.password : "",
     },
     onSubmit: async (values) => {
@@ -142,8 +142,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
     },
     validationSchema,
   })
-
-  console.log(formik.values)
 
   const handleClickCities = (item) => {
     setCities(item)
@@ -218,14 +216,18 @@ const TeamContactInfo = ({ data, setData, setView }) => {
           >
             {!!cities
               ? cities.cityCountry.map((item) => (
-                  <MenuItem value={item.id}>{item.name}</MenuItem>
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.name}
+                  </MenuItem>
                 ))
               : !!countries &&
                 countries.map(
                   ({ cityCountry }) =>
                     !!cityCountry &&
                     cityCountry.map((item) => (
-                      <MenuItem value={item.id}>{item.name}</MenuItem>
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.name}
+                      </MenuItem>
                     ))
                 )}
           </TextField>
@@ -324,6 +326,7 @@ const TeamContactInfo = ({ data, setData, setView }) => {
             id="outlined-basic"
             placeholder="Электронная почта"
             variant="outlined"
+            disabled
             InputProps={{
               endAdornment: (
                 <svg
@@ -357,44 +360,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
           />
         </div>
       </Box>
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">Электронный адрес</p>
-        <TextField
-          sx={{ width: "100%" }}
-          value={formik.values.email}
-          name="email"
-          onChange={formik.handleChange}
-          id="outlined-basic"
-          placeholder="Электронный адрес"
-          variant="outlined"
-          InputProps={{
-            endAdornment: (
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="4"
-                  y="6"
-                  width="16"
-                  height="12"
-                  rx="2"
-                  stroke="#828282"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M4 9L11.1056 12.5528C11.6686 12.8343 12.3314 12.8343 12.8944 12.5528L20 9"
-                  stroke="#828282"
-                  strokeWidth="1.5"
-                />
-              </svg>
-            ),
-          }}
-        />
-      </div>
       <div className="auth-wrapper__input">
         <p className="auth-title__input">Пароль</p>
         <FormControl sx={{ width: "100%", marginBottom: 7 }} variant="outlined">

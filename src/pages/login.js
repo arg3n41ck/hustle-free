@@ -1,23 +1,16 @@
 import React, { useState } from "react"
 import Authorization from "../components/pages/Authorization/Authorization"
 import Recover from "../components/pages/Authorization/Recover"
-import NewPassword from "../components/pages/Authorization/NewPassword"
-import { useCookies } from "react-cookie"
 import { useRouter } from "next/router"
-import { Head } from "next/document"
 import { useSelector } from "react-redux"
+import { selectIsUserAuth } from "../redux/components/user"
 
 const Login = () => {
-  const [view, setView] = useState("login") // login | recover | newPassword
+  const [view, setView] = useState("login")
   const router = useRouter()
-  const [cookies] = useCookies(["token"])
-  const { authCheck } = useSelector((state) => state.navigations)
+  const [userAuthenticated] = useSelector(selectIsUserAuth)
 
-  // React.useEffect(() => {
-  //   if (!cookies.token) router.push("/")
-  // }, [cookies.token])
-
-  if (authCheck) {
+  if (userAuthenticated) {
     router.push("/")
   }
 
@@ -29,7 +22,6 @@ const Login = () => {
     <>
       {(view === "login" && <Authorization onView={viewHandler} />) ||
         (view === "recover" && <Recover onView={viewHandler} />)}
-      {/* || (view === "newPassword" && <NewPassword />)}*/}
     </>
   )
 }

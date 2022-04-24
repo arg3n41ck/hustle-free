@@ -29,12 +29,12 @@ const Info = ({ onToggleSidebar }) => {
   })
 
   useEffect(() => {
-    if (user.country && countries.length) {
+    if (user?.country && countries.length) {
       const currentCountry = countries.find(
-          (country) => country.id === user.country
+          (country) => country.id === user?.country
         ),
         currentCity = currentCountry.cityCountry.find(
-          (country) => country.id === user.city
+          (country) => country.id === user?.city
         )
       setCurrentLocations({
         country: currentCountry.name,
@@ -52,7 +52,7 @@ const Info = ({ onToggleSidebar }) => {
         <Center>
           <Avatar
             alt={`${user?.firstName} ${user?.lastName}`}
-            src={user.avatar}
+            src={user?.avatar}
             sx={{ width: 112, height: 112 }}
           />
           <CenterRight>
@@ -109,14 +109,14 @@ const Info = ({ onToggleSidebar }) => {
             </WrapperIcon>
             Контакты
           </Item>
-          <Item>{phoneFormatter(user.phoneNumber)}</Item>
+          <Item>{phoneFormatter(user?.phoneNumber)}</Item>
           <Item>
             <WrapperIcon>
               <EmailIcon />
             </WrapperIcon>
             E-mail
           </Item>
-          <Item>{user.email}</Item>
+          <Item>{user?.email}</Item>
         </List>
       </Content>
     </>

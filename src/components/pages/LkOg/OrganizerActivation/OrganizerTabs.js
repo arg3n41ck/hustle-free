@@ -1,7 +1,12 @@
-import React from "react"
+import React, { useCallback, useEffect } from "react"
 import HorizontalTabs from "../../../ui/tabs/HorizontalTabs"
 import OrganizerLegalData from "./OrganizerLegalData"
 import OrganizerPersonalData from "./OrganizerPersonalData"
+import { useDispatch } from "react-redux"
+import { fetchCountries } from "../../../../redux/components/countriesAndCities"
+import { toast } from "react-toastify"
+import { formDataHttp } from "../../../../helpers/formDataHttp"
+import { useRouter } from "next/router"
 
 const tabs = [
   {
@@ -17,8 +22,24 @@ const tabs = [
 function OrganizerTabs() {
   const [view, setView] = React.useState("contactInfo") // contactInfo | legalInfo
   const [dataPersonal, setDataPersonal] = React.useState(null)
-  const [dataLegal, setDataLegal] = React.useState("null")
-  console.log(dataPersonal)
+  const [dataLegal] = React.useState("null")
+  const router = useRouter()
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchCountries())
+  }, [])
+
+  const onSubmit = useCallback(async (values) => {
+    try {
+      await formDataHttp(
+        values,
+        "accounts/organizer/",
+        "post"
+      )
+      toast.success("Вы успешно активировали свои учетные данные!")
+      router.push("/login")
+    } catch (e) {}
+  }, [])
 
   return (
     <div className="auth-container">
@@ -40,7 +61,11 @@ function OrganizerTabs() {
             />
           )}
           {view === "legalInfo" && (
-            <OrganizerLegalData dataPersonal={dataPersonal} data={dataLegal} />
+            <OrganizerLegalData
+              onSubmit={onSubmit}
+              dataPersonal={dataPersonal}
+              data={dataLegal}
+            />
           )}
         </HorizontalTabs>
       </div>

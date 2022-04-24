@@ -1,5 +1,4 @@
 import React, { useEffect } from "react"
-import { useCookies } from "react-cookie"
 import { Container } from "../../ui/Wrappers/Container"
 import EventsSlider from "../Events/EventsSlider"
 import EventsGlobalSearch from "../Events/EventsGlobalSearch/EventsGlobalSearch"
@@ -9,7 +8,6 @@ import { fetchEvents, selectEvents } from "../../../redux/components/events"
 import EventsCatalog from "../Events/EventsCatalog/EventsCatalog"
 
 const MainPage = () => {
-  const [cookies] = useCookies(["token", "refresh"])
   const [, events] = useSelector(selectEvents)
   const dispatch = useDispatch()
 
@@ -31,7 +29,7 @@ const MainPage = () => {
 
 export default MainPage
 
-const MainPageWrapper = styled.div`
+export const MainPageWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-row-gap: 40px;

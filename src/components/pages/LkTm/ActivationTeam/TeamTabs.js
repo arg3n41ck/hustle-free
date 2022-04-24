@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
   selectSportTypes,
@@ -7,6 +7,10 @@ import {
 import HorizontalTabs from "../../../ui/tabs/HorizontalTabs"
 import TeamContactInfo from "./TeamContactInfo"
 import TeamInfo from "./TeamInfo"
+import { fetchCountries } from "../../../../redux/components/countriesAndCities"
+import { toast } from "react-toastify"
+import { formDataHttp } from "../../../../helpers/formDataHttp"
+import { useRouter } from "next/router"
 
 const tabs = [
   {
@@ -25,12 +29,21 @@ function TeamTabs() {
   const [dataContactInfo, setDataContactInfo] = React.useState(null)
   const [dataInfo, setDataInfo] = React.useState(null)
   const [sportTypes] = useSelector(selectSportTypes)
-
-  console.log(dataContactInfo)
-  console.log(dataInfo)
-
+  const router = useRouter()
   React.useEffect(() => {
     dispatch(fetchSportTypes())
+    dispatch(fetchCountries())
+  }, [])
+
+  const onSubmit = useCallback(async (data) => {
+    try {
+      await formDataHttp(data, "accounts/team/", "post")
+      toast.success("Вы успешно активировали свои учетные данные!")
+      router.push("/login")
+    } catch (e) {
+      console.log(e.response)
+      toast.error("Что-то пошло не так!")
+    }
   }, [])
 
   return (
@@ -57,6 +70,8 @@ function TeamTabs() {
               dataPersonal={dataContactInfo}
               data={dataInfo}
               sportTypes={sportTypes}
+              setDataInfo={setDataInfo}
+              onSubmit={onSubmit}
             />
           )}
         </HorizontalTabs>
