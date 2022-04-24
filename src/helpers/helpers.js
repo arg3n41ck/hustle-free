@@ -41,3 +41,27 @@ export const getRusBetweenDate = (start, end) => {
 
   return `${startDate} ${rusMonth[startMonth]} - ${endDate} ${rusMonth[endMonth]}`
 }
+
+export const getRoleInRu = (role) => {
+  switch (role) {
+    case "organizer":
+      return "Организатор"
+    case "athlete":
+      return "Атлет"
+    case "team":
+      return "Команда"
+    default:
+      return null
+  }
+}
+
+export const localStorageGetItem = (key) => {
+  return typeof window !== "undefined" && window.localStorage.getItem(key)
+}
+
+export const localStorageSetItem = (key, value) => {
+  typeof window !== "undefined" && window.localStorage.setItem(key, value)
+}
+export const localStorageRemoveItem = (key) => {
+  typeof window !== "undefined" && window.localStorage.removeItem(key)
+}

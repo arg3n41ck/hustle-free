@@ -1,6 +1,9 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { useRouter } from "next/router"
+import { localStorageSetItem } from "../../../helpers/helpers"
+import { useDispatch } from "react-redux"
+import { exitUser } from "../../../redux/components/user"
 
 const array = [
   {
@@ -25,10 +28,15 @@ const array = [
 
 function MainPageAuth() {
   const router = useRouter()
-  const handleClick = async (role) => {
-    await window.localStorage.setItem("role", role)
+  const dispatch = useDispatch();
+  const handleClick = (role) => {
+    localStorageSetItem("role", role)
     router.push("/registration")
   }
+
+  useEffect(() => {
+    dispatch(exitUser())
+  }, [])
 
   return (
     <ContainerCards>
@@ -46,8 +54,10 @@ function MainPageAuth() {
               fill="#6D4EEA"
             />
           </svg>
-          <CardTextHeading>{item.heading}</CardTextHeading>
-          <CardTextDesc>{item.description}</CardTextDesc>
+          <div>
+            <CardTextHeading>{item.heading}</CardTextHeading>
+            <CardTextDesc>{item.description}</CardTextDesc>
+          </div>
           <CardButton onClick={() => handleClick(item.value)}>
             Зарегестрироваться
           </CardButton>
@@ -61,7 +71,6 @@ const ContainerCards = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 32px;
-  margin-bottom: 80px;
 `
 
 const Card = styled.div`
@@ -71,14 +80,14 @@ const Card = styled.div`
   max-width: 448px;
   border-radius: 16px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template: 128px auto 48px / 1fr;
+  grid-row-gap: 24px;
+  justify-items: center;
 `
 
 const CardTextHeading = styled.h3`
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -86,27 +95,25 @@ const CardTextHeading = styled.h3`
   color: #f2f2f2;
   text-align: center;
   text-transform: uppercase;
-  margin-top: 30px;
 `
 
 const CardTextDesc = styled.p`
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-size: 21px;
   line-height: 32px;
   color: #f2f2f2;
   text-align: center;
   text-transform: lowercase;
-  margin-bottom: 24px;
 `
 
 const CardButton = styled.button`
   background: rgba(109, 78, 234, 0.07);
   border-radius: 8px;
   width: 100%;
-  padding: 0px 24px;
+  padding: 0 24px;
   color: #6d4eea;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;

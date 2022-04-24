@@ -5,15 +5,8 @@ import styled from "styled-components"
 import { TextField, MenuItem, Checkbox, Box } from "@mui/material"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
-import { useDispatch, useSelector } from "react-redux"
-import { saveUserItem } from "../../../../redux/components/user"
-import { getCookie, setCookie } from "../../../../services/JWTService"
 import { toast } from "react-toastify"
-import { styled as styl } from "@mui/material/styles"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import { useRouter } from "next/router"
 import { theme } from "../../../../styles/theme"
-import axios from "axios"
 
 const validationSchema = yup.object({
   sports: yup
@@ -42,12 +35,16 @@ const validationSchema = yup.object({
     .required("Заполните поле"),
 })
 
-const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
-  const dispatch = useDispatch()
+const TeamInfo = ({
+  dataPersonal,
+  data,
+  sportTypes,
+  setDataInfo,
+  onSubmit,
+}) => {
   const [checked, setChecked] = useState(false)
   const [imageUrl, setImageUrl] = useState(null)
 
-  const router = useRouter()
   const formik = useFormik({
     initialValues: {
       sports: !!data?.sports ? data.sports : 1,
@@ -55,6 +52,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
       avatar: !!data?.avatar ? data.avatar : "",
     },
     onSubmit: async (values) => {
+      toast.info("Ожидайте ответа от сервера")
       if (
         formik.values.sports &&
         !Boolean(formik.errors.sports) &&
@@ -63,53 +61,18 @@ const TeamInfo = ({ dataPersonal, data, sportTypes }) => {
         formik.values.avatar &&
         !Boolean(formik.errors.avatar)
       ) {
-        toast.info("Ожидайте ответа от сервера")
-        try {
-          const data = {
-            ...dataPersonal,
-            sports: [values.sports],
-            description: values.description,
-            avatar: values.avatar,
-          }
-
-          dispatch(
-            saveUserItem({ userItem: "password", value: values.password })
-          )
-          try {
-            let formData = new FormData()
-            const token = getCookie("token")
-
-            await Object.keys(data).forEach((key) => {
-              if (!data[key]) delete data[key]
-              if (key === "avatar") {
-                formData.append(key, data[key], data[key]?.name)
-              } else {
-                formData.append(key, data[key])
-              }
-            })
-
-            const { data: _data } = await axios.post(
-              "http://api.dev.hustlefree.pro/en/api/v1/accounts/team/",
-              formData,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                  Authorization: `Token ${token}`,
-                },
-              }
-            )
-            setCookie("token", _data.access, 999)
-            setCookie("refresh", _data.refresh, 999999)
-            toast.success("Вы успешно активировали свои учетные данные!")
-            router.push("/login")
-          } catch (e) {}
-        } catch (e) {}
+        const _data = {
+          ...dataPersonal,
+          sports: [values.sports],
+          description: values.description,
+          avatar: values.avatar,
+        }
+        setDataInfo(_data)
+        await onSubmit({ ...dataPersonal, ..._data })
       }
     },
     validationSchema,
   })
-
-  console.log(formik.errors)
 
   const uploadImageToClient = (event) => {
     if (event.target.files[0]) {
@@ -306,7 +269,6 @@ const CheckboxDescriptions = styled.div`
 
 const CheckboxText = styled.p`
   color: #f2f2f2;
-  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -315,7 +277,6 @@ const CheckboxText = styled.p`
 
 const CheckboxDescription = styled.p`
   color: #f2f2f2;
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -324,7 +285,6 @@ const CheckboxDescription = styled.p`
 
 const CheckboxDescription2 = styled.p`
   color: #828282;
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

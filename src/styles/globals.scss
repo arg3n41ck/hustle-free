@@ -108,8 +108,16 @@ li {
   color: #828282;
 }
 
-.MuiOutlinedInput-notchedOutline {
-  border: 1.5px solid #333333;
+.MuiOutlinedInput-notchedOutline,
+.Mui-disabled.MuiOutlinedInput-notchedOutline {
+  border-width: 1.5px;
+  border-style: solid;
+  border-color: #333 !important;
+}
+
+.MuiOutlinedInput-input.MuiInputBase-input.Mui-disabled {
+  color: #333;
+  -webkit-text-fill-color: #a6a6a6;
 }
 
 input:-webkit-autofill,
@@ -122,7 +130,7 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   border: none;
-  color: unset;
+  border-radius: 0 !important;
   background-color: transparent !important;
   -webkit-box-shadow: 0 0 0 40px #1b1c22 inset !important;
   -webkit-text-fill-color: white !important;

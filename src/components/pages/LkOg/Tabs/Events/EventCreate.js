@@ -3,10 +3,9 @@ import { useFormik } from "formik"
 import * as yup from "yup"
 import { TextField } from "@mui/material"
 import styled from "styled-components"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import {
   fetchSportTypes,
-  selectSportTypes,
 } from "../../../../../redux/components/sportTypes"
 
 const emptyInitialValues = {
@@ -22,7 +21,7 @@ const emptyInitialValues = {
 }
 
 function EventCreate() {
-  const { touched, errors, values, handleChange, isValid, handleSubmit } =
+  const { touched, errors, values, handleChange, handleSubmit } =
     useFormik({
       initialValues: emptyInitialValues,
       validationSchema,
@@ -31,15 +30,12 @@ function EventCreate() {
       },
     })
 
-  const [sportTypes] = useSelector(selectSportTypes)
-
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchSportTypes())
   }, [])
 
-  console.log({ errors, touched, values, isValid, sportTypes })
   return (
     <Form onSubmit={handleSubmit}>
       <p className="auth-title__input">Название турнира</p>
