@@ -73,7 +73,6 @@ const HeroInfo = styled.div`
 `
 
 const HeroInfoButtons = styled.div`
-  max-width: 481px;
   width: 100%;
   display: flex;
   align-items: center;
