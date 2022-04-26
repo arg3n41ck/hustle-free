@@ -77,12 +77,12 @@ const Edits = ({ onView }) => {
   }
 
   useEffect(() => {
-    if (typeof formik.values.country === "number") {
+    if (typeof formik.values?.country === "number") {
       const currentCountry = countries.find(
-        (country) => country.id === formik.values.country
+        (country) => country.id === formik.values?.country
       )
       const currentCity = currentCountry.cityCountry.find(
-        (city) => city.id === formik.values.city
+        (city) => city.id === formik.values?.city
       )
       setCurrentCities(currentCountry.cityCountry)
       formik.setFieldValue("country", currentCountry.name)
@@ -108,7 +108,7 @@ const Edits = ({ onView }) => {
             <TextField
               sx={{ width: "100%" }}
               name="lastName"
-              value={formik.values.lastName}
+              value={formik.values?.lastName}
               onChange={(e) =>
                 formik.setFieldValue(
                   "lastName",
@@ -117,8 +117,8 @@ const Edits = ({ onView }) => {
               }
               placeholder="Фамилия"
               variant="outlined"
-              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-              helperText={formik.touched.lastName && formik.errors.lastName}
+              error={formik.touched?.lastName && Boolean(formik.errors?.lastName)}
+              helperText={formik.touched?.lastName && formik.errors?.lastName}
             />
           </div>
           <div className="auth-wrapper__input">
@@ -126,7 +126,7 @@ const Edits = ({ onView }) => {
             <TextField
               sx={{ width: "100%" }}
               name="firstName"
-              value={formik.values.firstName}
+              value={formik.values?.firstName}
               onChange={(e) =>
                 formik.setFieldValue(
                   "firstName",
@@ -136,9 +136,9 @@ const Edits = ({ onView }) => {
               placeholder="Имя"
               variant="outlined"
               error={
-                formik.touched.firstName && Boolean(formik.errors.firstName)
+                formik.touched?.firstName && Boolean(formik.errors?.firstName)
               }
-              helperText={formik.touched.firstName && formik.errors.firstName}
+              helperText={formik.touched?.firstName && formik.errors?.firstName}
             />
           </div>
         </Box>
@@ -159,7 +159,7 @@ const Edits = ({ onView }) => {
               }}
               toolbarTitle={"Выбрать дату"}
               cancelText={"Отмена"}
-              value={formik.values.dateBirthday}
+              value={formik.values?.dateBirthday}
               onChange={(value) =>
                 formik.setFieldValue(
                   "dateBirthday",
@@ -171,11 +171,11 @@ const Edits = ({ onView }) => {
                 <TextField
                   {...params}
                   error={
-                    Boolean(formik.touched.dateBirthday) &&
-                    formik.errors.dateBirthday
+                    Boolean(formik.touched?.dateBirthday) &&
+                    formik.errors?.dateBirthday
                   }
                   helperText={
-                    formik.touched.dateBirthday && formik.errors.dateBirthday
+                    formik.touched?.dateBirthday && formik.errors?.dateBirthday
                   }
                   inputProps={{
                     ...params.inputProps,
@@ -217,7 +217,7 @@ const Edits = ({ onView }) => {
                 `+${e.target.value.replace(/\D/gi, "")}`
               )
             }
-            value={`${formik.values.phoneNumber}`.replace(/\D/gi, "")}
+            value={`${formik.values?.phoneNumber}`.replace(/\D/gi, "")}
             mask="+7(999) 999 99 99"
           >
             {(inputProps) => (
@@ -228,8 +228,8 @@ const Edits = ({ onView }) => {
                 variant="outlined"
                 placeholder={"+7 (7"}
                 error={
-                  Boolean(formik.touched.phoneNumber) &&
-                  formik.errors.phoneNumber
+                  Boolean(formik.touched?.phoneNumber) &&
+                  formik.errors?.phoneNumber
                 }
                 InputProps={{
                   endAdornment: <PhoneIcon />,
@@ -244,13 +244,13 @@ const Edits = ({ onView }) => {
           <TextField
             sx={{ width: "100%" }}
             name="email"
-            value={formik.values.email}
+            value={formik.values?.email}
             onChange={() => {}}
             id="outlined-basic"
             placeholder="Электронный адрес"
             variant="outlined"
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            error={formik.touched?.email && Boolean(formik.errors?.email)}
+            helperText={formik.touched?.email && formik.errors?.email}
             InputProps={{
               endAdornment: <EmailIcon />,
             }}
@@ -264,15 +264,15 @@ const Edits = ({ onView }) => {
             name="nameOrganization"
             onChange={formik.handleChange}
             id="outlined-basic"
-            value={formik.values.nameOrganization}
+            value={formik.values?.nameOrganization}
             placeholder="Название организации"
             variant="outlined"
             error={
-              formik.touched.nameOrganization &&
-              Boolean(formik.errors.nameOrganization)
+              formik.touched?.nameOrganization &&
+              Boolean(formik.errors?.nameOrganization)
             }
             helperText={
-              formik.touched.nameOrganization && formik.errors.nameOrganization
+              formik.touched?.nameOrganization && formik.errors?.nameOrganization
             }
           />
         </div>
@@ -280,25 +280,25 @@ const Edits = ({ onView }) => {
         <div className="auth-wrapper__input">
           <p className="auth-title__input">Страна</p>
           <SelectUI
-            error={!!(formik.touched.country && formik.errors.country)}
+            error={!!(formik.touched?.country && formik.errors?.country)}
             onChange={(e) => {
               formik.setFieldValue("city", "")
               changeCurrentCities(e.target.value)
               formik.setFieldValue("country", e.target.value)
             }}
-            value={formik.values.country}
+            value={formik.values?.country}
             name={"country"}
           >
             <option
               style={{ color: "#BDBDBD" }}
               disabled
               selected
-              value={formik.values.country ?? ""}
+              value={formik.values?.country ?? ""}
             >
-              {!!formik.values.country ? formik.values.country : "Страна"}
+              {!!formik.values?.country ? formik.values?.country : "Страна"}
             </option>
             {countries
-              .filter((country) => country.name !== formik.values.country)
+              .filter((country) => country.name !== formik.values?.country)
               .map((country) => (
                 <option key={country.id} value={country.name}>
                   {country.name}
@@ -310,21 +310,21 @@ const Edits = ({ onView }) => {
         <div className="auth-wrapper__input">
           <p className="auth-title__input">Город</p>
           <SelectUI
-            error={!!(formik.touched.city && formik.errors.city)}
+            error={!!(formik.touched?.city && formik.errors?.city)}
             onChange={formik.handleChange}
-            value={formik.values.city}
+            value={formik.values?.city}
             name={"city"}
           >
             <option
               style={{ color: "#BDBDBD" }}
               disabled
               selected
-              value={formik.values.city ?? ""}
+              value={formik.values?.city ?? ""}
             >
-              {!!formik.values.city ? formik.values.city : "Город"}
+              {!!formik.values?.city ? formik.values?.city : "Город"}
             </option>
             {currentCities
-              .filter((city) => city.name !== formik.values.city)
+              .filter((city) => city.name !== formik.values?.city)
               .map((city) => (
                 <option key={city.id} value={city.name}>
                   {city.name}
@@ -342,13 +342,13 @@ const Edits = ({ onView }) => {
             name="factAddress"
             onChange={formik.handleChange}
             id="outlined-basic"
-            value={formik.values.factAddress}
+            value={formik.values?.factAddress}
             placeholder="Фактический Адрес"
             variant="outlined"
             error={
-              formik.touched.factAddress && Boolean(formik.errors.factAddress)
+              formik.touched?.factAddress && Boolean(formik.errors?.factAddress)
             }
-            helperText={formik.touched.factAddress && formik.errors.factAddress}
+            helperText={formik.touched?.factAddress && formik.errors?.factAddress}
           />
         </div>
       </Content>

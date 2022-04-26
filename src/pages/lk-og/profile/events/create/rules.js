@@ -1,14 +1,14 @@
 import React from "react"
 import LkLayout from "../../../../../components/layouts/LkLayout"
 import { lkOgTabs } from "../../../../../components/pages/LkOg/Tabs/tabConstants"
-import EventCreate from "../../../../../components/pages/LkOg/Tabs/Events/EventForm"
 import EventsCreateLayout from "../../../../../components/layouts/EventsCreateLayout"
+import EventRules from "../../../../../components/pages/LkOg/Tabs/Events/EventRules"
 
 function Rules() {
   return (
     <LkLayout tabs={lkOgTabs}>
       <EventsCreateLayout>
-        <EventCreate />
+        <EventRules />
       </EventsCreateLayout>
     </LkLayout>
   )

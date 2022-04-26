@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
 import { useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import { selectCountries } from "../../../../redux/components/countriesAndCities"
+import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
 
 const validationSchema = yup.object({
   nameOrganizer: yup
@@ -38,7 +38,7 @@ const validationSchema = yup.object({
 
 const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
   const [cities, setCities] = useState(null)
-  const [countries] = useSelector(selectCountries)
+  const [countries] = useSelector(selectCountriesAndCities)
   const formik = useFormik({
     initialValues: {
       nameOrganizer: !!data?.name_organization ? data.name_organization : "",

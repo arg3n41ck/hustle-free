@@ -17,7 +17,7 @@ import { ru } from "date-fns/locale"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import { MobileDatePicker } from "@mui/lab"
 import { useRouter } from "next/router"
-import { Cancel, EventPeriodsFooter, Field, Form, Submit } from "./EventPeriods"
+import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
 
 const emptyInitialValues = {
   maxParticipantCount: "",

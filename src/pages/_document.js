@@ -11,7 +11,14 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="ru">
-        <Head></Head>
+        <Head>
+          <link
+            rel="shortcut icon"
+            href="/favicon/favicon.ico"
+            type="image/x-icon"
+          />
+          <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
+        </Head>
         <body>
           <Main />
           <NextScript />

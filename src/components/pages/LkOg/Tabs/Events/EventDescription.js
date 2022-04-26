@@ -1,17 +1,13 @@
 import React, { useEffect } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
-import {
-  TextField,
-} from "@mui/material"
-import { useDispatch, useSelector } from "react-redux"
-import {
-  fetchSportTypes,
-  selectSportTypes,
-} from "../../../../../redux/components/sportTypes"
+import { useDispatch } from "react-redux"
+import { fetchSportTypes } from "../../../../../redux/components/sportTypes"
 import { useRouter } from "next/router"
-import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventForm"
+import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
 import FileUploaderBig from "../../../../ui/LKui/FileUploaderBig"
+import { FormHR, FormSubTitle } from "./EventPeriods"
+import { TextField } from "@mui/material"
 
 const emptyInitialValues = {
   description: "",
@@ -19,14 +15,21 @@ const emptyInitialValues = {
 }
 
 function EventForm() {
-  const { touched, errors, values, handleChange, handleSubmit, isValid } =
-    useFormik({
-      initialValues: emptyInitialValues,
-      validationSchema,
-      onSubmit: async (values) => {
-        console.log(values)
-      },
-    })
+  const {
+    touched,
+    errors,
+    values,
+    handleChange,
+    setFieldValue,
+    handleSubmit,
+    isValid,
+  } = useFormik({
+    initialValues: emptyInitialValues,
+    validationSchema,
+    onSubmit: async (values) => {
+      console.log(values)
+    },
+  })
 
   const { push: routerPush } = useRouter()
 
@@ -38,11 +41,18 @@ function EventForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <FileUploaderBig
+        error={touched.image && errors.image}
+        onChange={(file) => setFieldValue("image", file)}
+      />
+
+      <FormHR />
+      <FormSubTitle>Описание</FormSubTitle>
+
       <Field>
-        <p className="auth-title__input">Название турнира</p>
         <TextField
           name="description"
-          placeholder="Название турнира"
+          placeholder="Введите описание турнира"
           variant="outlined"
           fullWidth
           multiline
@@ -53,8 +63,6 @@ function EventForm() {
           value={values.description}
         />
       </Field>
-
-      <FileUploaderBig />
 
       <EventFormFooter>
         <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
@@ -70,4 +78,7 @@ function EventForm() {
 
 export default EventForm
 
-const validationSchema = yup.object({})
+const validationSchema = yup.object({
+  image: yup.mixed().nullable().required("Обложка турнира обязательное поле!"),
+  description: yup.string().required("Обязательное поле!"),
+})

@@ -4,7 +4,7 @@ import * as yup from "yup"
 import { FormControl, FormHelperText, TextField } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
-import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventForm"
+import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
 import {
   fetchCountries,
   selectCountriesAndCities,
@@ -24,7 +24,7 @@ const emptyInitialValues = {
   weighingPlace: "",
 }
 
-function EventFormLocation() {
+function EventLocation() {
   const {
     touched,
     errors,
@@ -123,10 +123,10 @@ function EventFormLocation() {
       </FieldsRow>
 
       <Field>
-        <p className="auth-title__input">Адрес проведения турниры</p>
+        <p className="auth-title__input">Адрес проведения турнира</p>
         <TextField
           name="address"
-          placeholder="Адрес проведения турниры"
+          placeholder="Адрес проведения турнира"
           variant="outlined"
           fullWidth
           error={touched.address && Boolean(errors.address)}
@@ -183,7 +183,7 @@ function EventFormLocation() {
   )
 }
 
-export default EventFormLocation
+export default EventLocation
 
 export const FieldsRow = styled.div`
   display: flex;

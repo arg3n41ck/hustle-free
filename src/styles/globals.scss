@@ -83,8 +83,12 @@ li {
   border-radius: 16px !important;
   grid-gap: 14px;
   color: #fff;
-  height: 64px;
+  min-height: 64px;
   box-sizing: border-box;
+
+  &.HeaderLocalization {
+    min-height: unset;
+  }
 
   &:hover fieldset {
     border-color: #333 !important;
@@ -113,7 +117,7 @@ input.MuiAutocomplete-input {
 }
 
 .MuiSelect-icon {
-  color: #828282;
+  color: #828282 !important;
 }
 
 span.Mui-checked {

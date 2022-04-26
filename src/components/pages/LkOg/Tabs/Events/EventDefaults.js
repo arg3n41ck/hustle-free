@@ -35,7 +35,7 @@ const emptyInitialValues = {
   statusPublish: "draft",
 }
 
-function EventForm() {
+function EventDefaults() {
   const {
     touched,
     errors,
@@ -224,7 +224,7 @@ function EventForm() {
   )
 }
 
-export default EventForm
+export default EventDefaults
 
 const validationSchema = yup.object({
   name: yup.string().required("Обязательное поле").nullable(),

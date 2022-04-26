@@ -1,8 +1,9 @@
 import React from "react"
 import LkLayout from "../../../components/layouts/LkLayout"
 import { lkTmTabs } from "../../../components/pages/LkTm/Tabs/tabConstants"
+import Athletes from "../../../components/pages/LkTm/Tabs/Athletes/Athletes"
 
-function Athletes() {
+function AthletesPage() {
   return (
     <LkLayout tabs={lkTmTabs}>
       <Athletes />
@@ -10,4 +11,4 @@ function Athletes() {
   )
 }
 
-export default Athletes
+export default AthletesPage

@@ -23,8 +23,12 @@ const Localization = styled(FormControl)`
 
 const LocalizationSelect = styled(Select)`
   border-radius: 8px !important;
-  color: #828282;
+  color: #828282 !important;
   height: 44px;
+
+  & .MuiSelect-outlined {
+    padding: 0 35px 0 20px !important;
+  }
 `
 
 export default HeaderLocalizationPopover

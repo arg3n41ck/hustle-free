@@ -67,7 +67,7 @@ $api.interceptors.response.use(
         return Promise.reject(error)
       }
     }
-    toast.error("Что-то пошло не так!")
+    error?.response?.status !== 401 && toast.error("Что-то пошло не так!")
     return Promise.reject(error)
   }
 )
