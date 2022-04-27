@@ -28,7 +28,7 @@ const array = [
 
 function MainPageAuth() {
   const router = useRouter()
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const handleClick = (role) => {
     localStorageSetItem("role", role)
     router.push("/registration")
@@ -59,7 +59,7 @@ function MainPageAuth() {
             <CardTextDesc>{item.description}</CardTextDesc>
           </div>
           <CardButton onClick={() => handleClick(item.value)}>
-            Зарегестрироваться
+            Зарегистрироваться
           </CardButton>
         </Card>
       ))}

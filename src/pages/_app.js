@@ -18,17 +18,17 @@ function MyApp({ Component, pageProps }) {
         <ThemeProvider theme={theme}>
           <Layout>
             <RouterLoader />
-            <ToastContainer
-              position="top-right"
-              autoClose={2000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
+            {/*<ToastContainer*/}
+            {/*  position="top-right"*/}
+            {/*  autoClose={2000}*/}
+            {/*  hideProgressBar={false}*/}
+            {/*  newestOnTop={false}*/}
+            {/*  closeOnClick*/}
+            {/*  rtl={false}*/}
+            {/*  pauseOnFocusLoss*/}
+            {/*  draggable*/}
+            {/*  pauseOnHover*/}
+            {/*/>*/}
             <Component {...pageProps} />
           </Layout>
         </ThemeProvider>

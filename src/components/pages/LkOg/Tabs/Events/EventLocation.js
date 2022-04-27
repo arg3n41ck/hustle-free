@@ -81,7 +81,10 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
           {!!countries?.length && (
             <Autocomplete
               noOptionsText={"Ничего не найдено"}
-              onChange={(_, value) => setFieldValue("country", value.id)}
+              onChange={(_, value) => {
+                setFieldValue("country", value.id)
+                setFieldValue("city", null)
+              }}
               options={countries.map((option) => option)}
               getOptionLabel={(option) => option.name}
               fullWidth
@@ -109,7 +112,11 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
             <Autocomplete
               noOptionsText={"Ничего не найдено"}
               onChange={(_, value) => setFieldValue("city", value.id)}
-              options={cities.map((option) => option)}
+              options={
+                countries
+                  ?.find(({ id }) => values.country === id)
+                  ?.cityCountry?.map((option) => option) || []
+              }
               getOptionLabel={(option) => option.name}
               fullWidth
               value={cities.find(({ id }) => id === values.city) || null}
@@ -184,9 +191,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
         <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
           Отмена
         </Cancel>
-        <Submit disabled={!isValid} type="submit">
-          Далее
-        </Submit>
+        <Submit type="submit">Далее</Submit>
       </EventFormFooter>
     </Form>
   )
