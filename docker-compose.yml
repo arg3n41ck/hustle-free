@@ -1,16 +1,4 @@
 services:
-  nginx:
-    restart: unless-stopped
-    build:
-      context: .
-      dockerfile: ./docker/nginx/Dockerfile
-    volumes:
-      - ./docker/nginx:/etc/nginx/conf.d
-    ports:
-      - 3000:80
-    networks:
-      - my-network
-
   nextjs-ui:
     build:
       context: ./
@@ -21,11 +9,6 @@ services:
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
+      - /usr/src/app/.next
     env_file:
       - ./.env
-    networks:
-      - my-network
-
-
-networks:
-  my-network:
