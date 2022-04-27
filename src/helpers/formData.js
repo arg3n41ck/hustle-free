@@ -19,9 +19,9 @@ async function buildFormData(formData, data, parentKey) {
     const snakeParent = await decamelizeKeys(
       camelizeKeys({ [parentKey]: value })
     )
+
     const decamelizeObjEnt = Object.entries(snakeParent)[0]
-    console.log(decamelizeObjEnt)
-    formData.append(decamelizeObjEnt[0], decamelizeObjEnt[1])
+    formData.append(decamelizeObjEnt[0], value)
   }
 }
 export async function objToFormData(data) {

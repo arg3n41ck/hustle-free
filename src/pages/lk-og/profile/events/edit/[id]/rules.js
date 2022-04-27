@@ -21,7 +21,7 @@ function Rules() {
   return (
     <LkLayout tabs={lkOgTabs}>
       <EventsCreateLayout>
-        <RouterLoader open={!eventDefaultValues} />
+        {/*<RouterLoader open={!eventDefaultValues} />*/}
         {eventDefaultValues && (
           <EventRules defaultValues={eventDefaultValues} eventId={eventId} />
         )}

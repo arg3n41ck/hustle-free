@@ -50,8 +50,9 @@ function EventsCreateLayout({ onToggleSidebar, children }) {
             return (
               <Step key={`eventCreateSteps_${title}_${i}`}>
                 <ActiveLink
+                  disabled
                   href={path ? path : "/lk-og/profile/events/edit"}
-                  activeClassName="activeECLink"
+                  activeClassName={path ? "activeECLink" : ""}
                 >
                   <a>
                     {icon}
