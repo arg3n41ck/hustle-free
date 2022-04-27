@@ -1,35 +1,31 @@
 import React, { useEffect } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
-import {
-  TextField,
-} from "@mui/material"
+import { TextField } from "@mui/material"
 import { useDispatch } from "react-redux"
-import {
-  fetchSportTypes,
-} from "../../../../../redux/components/sportTypes"
+import { fetchSportTypes } from "../../../../../redux/components/sportTypes"
 import { useRouter } from "next/router"
 import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
+import { formDataHttp } from "../../../../../helpers/formDataHttp"
 
 const emptyInitialValues = {
-  rules: "",
+  eventRules: "",
 }
 
-function EventRules() {
-  const {
-    touched,
-    errors,
-    values,
-    handleChange,
-    handleSubmit,
-    isValid,
-  } = useFormik({
-    initialValues: emptyInitialValues,
-    validationSchema,
-    onSubmit: async (values) => {
-      console.log(values)
-    },
-  })
+function EventRules({ eventId, defaultValues = emptyInitialValues }) {
+  const { touched, errors, values, handleChange, handleSubmit, isValid } =
+    useFormik({
+      initialValues: emptyInitialValues,
+      validationSchema,
+      onSubmit: async (values) => {
+        await formDataHttp(
+          values,
+          `organizer/events/${eventId}/description/`,
+          "put"
+        )
+        routerPush(`/lk-og/profile/events/edit/${eventId}/participant-categories`)
+      },
+    })
 
   const { push: routerPush } = useRouter()
 
@@ -39,21 +35,20 @@ function EventRules() {
     dispatch(fetchSportTypes())
   }, [])
 
-
   return (
     <Form onSubmit={handleSubmit}>
       <Field>
         <TextField
-          name="rules"
+          name="eventRules"
           placeholder="Правила турнира"
           variant="outlined"
           fullWidth
           multiline
           minRows={10}
-          error={touched.rules && Boolean(errors.rules)}
-          helperText={touched.rules && errors.rules}
+          error={touched.eventRules && Boolean(errors.eventRules)}
+          helperText={touched.eventRules && errors.eventRules}
           onChange={handleChange}
-          value={values.rules}
+          value={values.eventRules}
         />
       </Field>
 
@@ -72,5 +67,5 @@ function EventRules() {
 export default EventRules
 
 const validationSchema = yup.object({
-  rules: yup.string().required("Обязательное поле").nullable(),
+  eventRules: yup.string().required("Обязательное поле").nullable(),
 })

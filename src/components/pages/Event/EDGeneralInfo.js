@@ -1,6 +1,7 @@
 import React, { useMemo } from "react"
 import styled from "styled-components"
 import { getRusBetweenDate } from "../../../helpers/helpers"
+import { useSelector } from "react-redux"
 
 const regArray = (event) => {
   return [
@@ -46,13 +47,16 @@ const regArray = (event) => {
 
 function EdGeneralInfo({ event }) {
   const regData = useMemo(() => regArray(event), [event])
+  const user = useSelector((state) => state.user.user)
 
   return (
     <>
       <EventBanner src={event.image} />
       <TitlePart>
         <h1>{event.name}</h1>
-        <button>Зарегистрироваться на турнир</button>
+        {user?.role && user?.role !== "organizer" && (
+          <button>Зарегистрироваться на турнир</button>
+        )}
       </TitlePart>
       <RegInfoUl>
         {regData.map(({ id, label, value, icon }) => (

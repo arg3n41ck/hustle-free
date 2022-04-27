@@ -10,12 +10,13 @@ import { FieldsRow } from "./EventLocation"
 import { FormHR, FormSubTitle } from "./EventPeriods"
 import InputMask from "react-input-mask"
 import PhoneIcon from "../../../../../public/svg/profile-phone.svg"
+import { decamelizeKeys } from "humps"
 
 const emptyInitialValues = {
   nameOrganization: "",
   firstName: "",
   lastName: "",
-  phoneNumber1: "",
+  phone_number_1: "",
   phoneNumber2: "",
   phoneNumber3: "",
   phoneNumber4: "",
@@ -51,6 +52,8 @@ function EventContacts() {
   const { push: routerPush } = useRouter()
 
   const dispatch = useDispatch()
+
+  console.log(decamelizeKeys({ phoneNumber1: "asdasd" }))
 
   useEffect(() => {
     dispatch(fetchSportTypes())

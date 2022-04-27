@@ -172,8 +172,8 @@ const Td = styled.td`
     content: "";
     position: absolute;
     top: 0;
-    left: -67.66px;
-    width: 67px;
+    left: -76px;
+    width: 76px;
     height: 84px;
     background: #0f0f10;
     z-index: 2;

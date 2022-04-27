@@ -18,6 +18,8 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import { MobileDatePicker } from "@mui/lab"
 import { useRouter } from "next/router"
 import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
+import { formDataHttp } from "../../../../../helpers/formDataHttp"
+import { format } from "date-fns"
 
 const emptyInitialValues = {
   maxParticipantCount: "",
@@ -31,20 +33,34 @@ const emptyInitialValues = {
   lateRegActive: false,
 }
 
-function EventPeriods() {
+function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
+  console.log(defaultValues)
   const { touched, errors, values, handleChange, setFieldValue, handleSubmit } =
     useFormik({
-      initialValues: emptyInitialValues,
+      initialValues: defaultValues,
       validationSchema,
       onSubmit: async (values) => {
-        alert(`${JSON.stringify(values, null, 2)}`)
+        const { data } = await formDataHttp(
+          {
+            ...values,
+            earlyRegStart: format(values.earlyRegStart, "yyyy-MM-dd"),
+            earlyRegEnd: format(values.earlyRegEnd, "yyyy-MM-dd"),
+            standartRegStart: format(values.standartRegStart, "yyyy-MM-dd"),
+            standartRegEnd: format(values.standartRegEnd, "yyyy-MM-dd"),
+            lateRegStart: format(values.lateRegStart, "yyyy-MM-dd"),
+            lateRegEnd: format(values.lateRegEnd, "yyyy-MM-dd"),
+            allFieldsFilled: true,
+          },
+          `organizer/events/${eventId}/registration/`,
+          "put"
+        )
+        routerPush(`/lk-og/profile/events/edit/${eventId}/description`)
       },
     })
 
   const { push: routerPush } = useRouter()
 
   const dispatch = useDispatch()
-
   useEffect(() => {
     dispatch(fetchSportTypes())
   }, [])
@@ -318,31 +334,25 @@ const validationSchema = yup.object({
     .date()
     .nullable()
     .test({
-      message: "Заполните поле",
-      test: function (value) {
-        return this.parent.earlyRegActive && value
-      },
-    })
-    .test({
       message:
         "Дата начала ранней регистрации не должна быть позднее даты окончания ранней рег.",
       test: function (value) {
-        return (
-          this.parent.earlyRegEnd &&
-          new Date(this.parent.earlyRegEnd).getTime() >
-            new Date(value).getTime()
-        )
+        return this.parent.earlyRegActive
+          ? this.parent.earlyRegEnd &&
+              new Date(this.parent.earlyRegEnd).getTime() >
+                new Date(value).getTime()
+          : true
       },
     })
     .test({
       message:
         "Дата начала ранней регистрации не должна быть позднее даты стандартной рег.",
       test: function (value) {
-        return (
-          this.parent.standartRegStart &&
-          new Date(this.parent.standartRegStart).getTime() >
-            new Date(value).getTime()
-        )
+        return this.parent.earlyRegActive
+          ? this.parent.standartRegStart &&
+              new Date(this.parent.standartRegStart).getTime() >
+                new Date(value).getTime()
+          : true
       },
     }),
   earlyRegEnd: yup
@@ -351,18 +361,18 @@ const validationSchema = yup.object({
     .test({
       message: "Заполните поле",
       test: function (value) {
-        return this.parent.earlyRegActive && value
+        return this.parent.earlyRegActive ? value : true
       },
     })
     .test({
       message:
         "Дата окончания ранней регистрации не должна быть позднее даты стандартной рег.",
       test: function (value) {
-        return (
-          this.parent.standartRegStart &&
-          new Date(this.parent.standartRegStart).getTime() >
-            new Date(value).getTime()
-        )
+        return this.parent.earlyRegActive
+          ? this.parent.standartRegStart &&
+              new Date(this.parent.standartRegStart).getTime() >
+                new Date(value).getTime()
+          : true
       },
     }),
   standartRegStart: yup
@@ -392,30 +402,25 @@ const validationSchema = yup.object({
     .date()
     .nullable()
     .test({
-      message: "Заполните поле",
-      test: function (value) {
-        return this.parent.lateRegActive && value
-      },
-    })
-    .test({
       message:
         "Дата начала поздней регистрации не должна быть раньше даты стандартной рег.",
       test: function (value) {
-        return (
-          this.parent.standartRegEnd &&
-          new Date(this.parent.standartRegEnd).getTime() <
-            new Date(value).getTime()
-        )
+        return this.parent.lateRegActive
+          ? this.parent.standartRegEnd &&
+              new Date(this.parent.standartRegEnd).getTime() <
+                new Date(value).getTime()
+          : true
       },
     })
     .test({
       message:
         "Дата начала поздней регистрации не должна быть позднее даты окончания поздней рег.",
       test: function (value) {
-        return (
-          this.parent.lateRegEnd &&
-          new Date(this.parent.lateRegEnd).getTime() > new Date(value).getTime()
-        )
+        return this.parent.lateRegActive
+          ? this.parent.lateRegEnd &&
+              new Date(this.parent.lateRegEnd).getTime() >
+                new Date(value).getTime()
+          : true
       },
     }),
   lateRegEnd: yup
@@ -424,7 +429,7 @@ const validationSchema = yup.object({
     .test({
       message: "Заполните поле",
       test: function (value) {
-        return this.parent.lateRegActive && value
+        return this.parent.lateRegActive ? value : true
       },
     }),
 })

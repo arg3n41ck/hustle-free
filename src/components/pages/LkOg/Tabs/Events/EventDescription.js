@@ -8,13 +8,14 @@ import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
 import FileUploaderBig from "../../../../ui/LKui/FileUploaderBig"
 import { FormHR, FormSubTitle } from "./EventPeriods"
 import { TextField } from "@mui/material"
+import { formDataHttp } from "../../../../../helpers/formDataHttp"
 
 const emptyInitialValues = {
   description: "",
   image: null,
 }
 
-function EventForm() {
+function EventForm({ defaultValues = emptyInitialValues, eventId }) {
   const {
     touched,
     errors,
@@ -24,12 +25,29 @@ function EventForm() {
     handleSubmit,
     isValid,
   } = useFormik({
-    initialValues: emptyInitialValues,
+    initialValues: defaultValues,
     validationSchema,
     onSubmit: async (values) => {
-      console.log(values)
+      await formDataHttp(
+        {
+          description: values.description,
+          allFieldsFilled: true,
+        },
+        `organizer/events/${eventId}/description/`,
+        "put"
+      )
+      await formDataHttp(
+        {
+          image: values.image,
+        },
+        `organizer/events/${eventId}/`,
+        "put"
+      )
+      routerPush(`/lk-og/profile/events/edit/${eventId}/periods`)
     },
   })
+
+  console.log(values)
 
   const { push: routerPush } = useRouter()
 
@@ -43,7 +61,11 @@ function EventForm() {
     <Form onSubmit={handleSubmit}>
       <FileUploaderBig
         error={touched.image && errors.image}
-        onChange={(file) => setFieldValue("image", file)}
+        defaultImage={values.image}
+        onChange={(file) => {
+          console.log(file)
+          setFieldValue("image", file)
+        }}
       />
 
       <FormHR />

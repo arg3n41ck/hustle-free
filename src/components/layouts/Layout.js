@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
   const [userAuthenticated] = useSelector(selectIsUserAuth)
 
   useEffect(() => {
-    userAuthenticated && dispatch(fetchUser())
+    dispatch(fetchUser())
   }, [cookies])
 
   return (

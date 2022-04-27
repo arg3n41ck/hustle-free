@@ -25,7 +25,7 @@ function ParticipantCategoriesModal({
         <Content>{children}</Content>
         <Footer>
           <Button onClick={onClose}>Отмена</Button>
-          <Button onClick={onSubmit} className="primary">
+          <Button type="submit" onClick={onSubmit} className="primary">
             {edit ? "Применить" : "Далее"}
           </Button>
         </Footer>

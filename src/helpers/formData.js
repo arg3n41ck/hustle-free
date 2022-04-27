@@ -7,18 +7,18 @@ async function buildFormData(formData, data, parentKey) {
     !(data instanceof Date) &&
     !(data instanceof File)
   ) {
-    const snakeCaseData = await decamelizeKeys(camelizeKeys(data))
-    Object.keys(snakeCaseData).forEach((key) => {
+    Object.keys(data).forEach((key) => {
       buildFormData(
         formData,
-        snakeCaseData[key],
+        data[key],
         parentKey ? `${parentKey}[${key}]` : key
       )
     })
   } else {
+    console.log({ parentKey, data })
     const value = data == null ? "" : data
-
-    formData.append(parentKey, value)
+    const snakeParent = await decamelizeKeys(camelizeKeys(parentKey))
+    formData.append(snakeParent, value)
   }
 }
 export async function objToFormData(data) {

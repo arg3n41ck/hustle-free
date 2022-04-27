@@ -36,6 +36,7 @@ const emptyInitialValues = {
 }
 
 function EventDefaults() {
+  const { push: routerPush } = useRouter()
   const {
     touched,
     errors,
@@ -48,6 +49,7 @@ function EventDefaults() {
     initialValues: emptyInitialValues,
     validationSchema,
     onSubmit: async (values) => {
+      console.log(values)
       const { data } = await formDataHttp(
         {
           ...values,
@@ -58,12 +60,11 @@ function EventDefaults() {
         "organizer/events/",
         "post"
       )
-      console.log(data)
+      routerPush(`/lk-og/profile/events/edit/${data.id}/location`)
     },
   })
 
-  const { push: routerPush } = useRouter()
-
+  console.log({ touched, values, errors })
   const [sportTypes] = useSelector(selectSportTypes)
 
   const dispatch = useDispatch()
@@ -71,7 +72,6 @@ function EventDefaults() {
   useEffect(() => {
     dispatch(fetchSportTypes())
   }, [])
-
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -216,9 +216,7 @@ function EventDefaults() {
         <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
           Отмена
         </Cancel>
-        <Submit disabled={!isValid} type="submit">
-          Далее
-        </Submit>
+        <Submit type="submit">Далее</Submit>
       </EventFormFooter>
     </Form>
   )
@@ -229,8 +227,27 @@ export default EventDefaults
 const validationSchema = yup.object({
   name: yup.string().required("Обязательное поле").nullable(),
   typeSport: yup.number().required("Обязательное поле").nullable(),
-  dateStart: yup.string().required("Обязательное поле").nullable(),
-  dateEnd: yup.string().required("Обязательное поле").nullable(),
+  dateStart: yup
+    .date()
+    .nullable()
+    .required("Заполните поле")
+    .test({
+      message:
+        "Дата начала стандартной турнира не должна быть позднее даты окончания турнира",
+      test: function (value) {
+        return (
+          this.parent.dateEnd &&
+          new Date(this.parent.dateEnd).getTime() > new Date(value).getTime()
+        )
+      },
+    })
+    .test({
+      message: "Укажите действительную дату",
+      test: function (value) {
+        return new Date().getTime() < new Date(value).getTime()
+      },
+    }),
+  dateEnd: yup.date().nullable().required("Заполните поле"),
   timezone: yup.string().required("Обязательное поле").nullable(),
   formatEvent: yup.string().required("Обязательное поле").nullable(),
 })
