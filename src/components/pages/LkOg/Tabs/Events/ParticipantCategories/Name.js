@@ -38,7 +38,7 @@ function Name({
       <Field>
         <TextField
           name="name"
-          placeholder="Правила турнира"
+          placeholder="Название категории"
           variant="outlined"
           fullWidth
           error={touched.name && Boolean(errors.name)}

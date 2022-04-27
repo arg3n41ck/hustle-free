@@ -2,17 +2,23 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { Box } from "@mui/material"
 
-function FileUploaderBig({ onChange, error }) {
+function FileUploaderBig({ onChange, defaultImage: defaultStateImage, error }) {
   const [file, setFile] = useState(null)
-  const image = file ? URL.createObjectURL(file) : null
+  const [defaultImage, setDefaultImage] = useState(defaultStateImage)
+  const image = defaultImage
+    ? defaultImage
+    : file
+    ? URL.createObjectURL(file)
+    : null
 
   const handleOnDeleteImage = () => {
     setFile(null)
+    setDefaultImage(null)
   }
 
   const onUploadImage = (e) => {
     setFile(e.target.files[0])
-    onChange(file)
+    onChange(e.target.files[0])
   }
 
   return (

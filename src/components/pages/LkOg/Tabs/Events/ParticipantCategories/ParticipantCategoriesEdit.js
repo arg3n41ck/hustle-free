@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useState } from "react"
 import Name from "./Name"
 import Levels from "./Levels"
 import Age from "./Age"
@@ -19,16 +19,12 @@ const emptyState = {
   price: "",
 }
 
-function ParticipantCategoriesEdit({ onCloseModals, open, id, step }) {
+function ParticipantCategoriesEdit({ onCloseModals, open, step }) {
   const [initialState, setInitialState] = useState(emptyState)
   const onClose = () => {
     setInitialState(emptyState)
     onCloseModals()
   }
-
-  useEffect(() => {
-    console.log(`selected category ${id}`)
-  }, [id])
 
   const onSubmit = useCallback((values) => {
     alert(`${JSON.stringify(values, null, 2)}`)
@@ -99,9 +95,7 @@ function ParticipantCategoriesEdit({ onCloseModals, open, id, step }) {
           open={step === "price" && open}
           onClose={onClose}
           edit
-          defaultValues={{
-            price: initialState.price,
-          }}
+          priceId={initialState.price}
           submit={(values) => {
             setInitialState((state) => ({ ...state, ...values }))
             console.log({ submit: initialState })

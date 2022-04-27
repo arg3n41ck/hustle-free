@@ -13,18 +13,19 @@ import styled from "styled-components"
 import { Autocomplete } from "@mui/material"
 import { LocationIcon } from "../../../Events/EventsCatalog/EventsFilter"
 import MapField from "../../../../ui/Map/Field"
+import { formDataHttp } from "../../../../../helpers/formDataHttp"
 
 const emptyInitialValues = {
-  placeName: "",
-  address: "",
+  placeName: null,
+  address: null,
   country: null,
   city: null,
-  lat: "",
-  long: "",
-  weighingPlace: "",
+  lat: null,
+  long: null,
+  weighingPlace: null,
 }
 
-function EventLocation() {
+function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
   const {
     touched,
     errors,
@@ -34,10 +35,18 @@ function EventLocation() {
     handleSubmit,
     isValid,
   } = useFormik({
-    initialValues: emptyInitialValues,
+    initialValues: defaultValues,
     validationSchema,
     onSubmit: async (values) => {
-      alert(`${JSON.stringify(values, null, 2)}`)
+      const { data } = await formDataHttp(
+        {
+          ...values,
+          allFieldsFilled: true,
+        },
+        `organizer/events/${eventId}/location/`,
+        "put"
+      )
+      routerPush(`/lk-og/profile/events/edit/${eventId}/periods`)
     },
   })
 
@@ -53,10 +62,10 @@ function EventLocation() {
   return (
     <Form onSubmit={handleSubmit}>
       <Field>
-        <p className="auth-title__input">Название турнира</p>
+        <p className="auth-title__input">Название арены/здания</p>
         <TextField
           name="placeName"
-          placeholder="Название турнира"
+          placeholder="Название арены/здания"
           variant="outlined"
           fullWidth
           error={touched.placeName && Boolean(errors.placeName)}

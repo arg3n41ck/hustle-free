@@ -2,34 +2,49 @@ import React from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
 import ParticipantCategoriesModal from "./Modal"
-import { Field, Form } from "../EventDefaults"
+import { Field } from "../EventDefaults"
 import { FormSubTitle } from "../EventPeriods"
 import { Autocomplete, TextField } from "@mui/material"
+import styled from "styled-components"
+import $api from "../../../../../../services/axios"
 
 const initialEmptyValues = {
-  earlyPrice: "string",
-  standartPrice: "string",
-  latePrice: "string",
+  earlyPrice: "",
+  standartPrice: "",
+  latePrice: "",
   currency: "kzt",
 }
 
-const validationSchema = yup.object({})
+const validationSchema = yup.object({
+  standartPrice: yup.string().required("Обязательное поле!"),
+})
 
-function Price({
-  open,
-  edit,
-  onClose,
-  submit,
-  defaultValues = initialEmptyValues,
-}) {
+const createPrice = async (values) => {
+  try {
+    const { data } = await $api.post(
+      "/directory/participant_category_price/",
+      values
+    )
+    return data
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function Price({ open, edit, onClose, submit, priceId, eventId }) {
   const { values, setFieldValue, touched, errors, handleChange, handleSubmit } =
     useFormik({
-      initialValues: defaultValues,
+      initialValues: initialEmptyValues,
       validationSchema,
       onSubmit: (values) => {
-        submit(values)
+        if (!priceId) {
+          createPrice({ ...values, eventId }).then((data) => {
+            submit({ price: data.id })
+          })
+        }
       },
     })
+
   return (
     <ParticipantCategoriesModal
       open={open}
@@ -59,6 +74,21 @@ function Price({
         <Field>
           <p className="auth-title__input">Стандартная регистрация</p>
           <TextField
+            name="standartPrice"
+            placeholder="Цена"
+            variant="outlined"
+            fullWidth
+            type="number"
+            error={touched.standartPrice && Boolean(errors.standartPrice)}
+            helperText={touched.standartPrice && errors.standartPrice}
+            onChange={handleChange}
+            value={values.standartPrice}
+          />
+        </Field>
+
+        <Field>
+          <p className="auth-title__input">Поздняя регистрация</p>
+          <TextField
             name="latePrice"
             placeholder="Цена"
             variant="outlined"
@@ -72,21 +102,6 @@ function Price({
         </Field>
 
         <Field>
-          <p className="auth-title__input">Поздняя регистрация</p>
-          <TextField
-            name="earlyPrice"
-            placeholder="Цена"
-            variant="outlined"
-            fullWidth
-            type="number"
-            error={touched.earlyPrice && Boolean(errors.earlyPrice)}
-            helperText={touched.earlyPrice && errors.earlyPrice}
-            onChange={handleChange}
-            value={values.earlyPrice}
-          />
-        </Field>
-
-        <Field>
           <p className="auth-title__input">Валюта</p>
           <Autocomplete
             noOptionsText={"Ничего не найдено"}
@@ -94,9 +109,11 @@ function Price({
               value && setFieldValue("currency", value.value)
             }
             options={currencyOptions.map((option) => option)}
-            getOptionLabel={(option) => option.value}
+            getOptionLabel={(option) => option.name}
             fullWidth
-            value={currencyOptions.find(({ value }) => values.currency)}
+            value={currencyOptions.find(
+              ({ value }) => values.currency === value
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -116,7 +133,14 @@ function Price({
 export default Price
 
 export const currencyOptions = [
-  { name: "Тенге", value: "kzd" },
+  { name: "Тенге", value: "kzt" },
   { name: "Доллар", value: "usd" },
   { name: "Евро", value: "eur" },
 ]
+
+const Form = styled.div`
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 24px;
+`

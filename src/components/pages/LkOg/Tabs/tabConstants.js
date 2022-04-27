@@ -14,7 +14,7 @@ export const lkOgTabs = [
     name: "Мои турниры",
     icon: <MyTournamentsIcon />,
     href: "/lk-og/profile/events",
-    children: ["/lk-og/profile/events/create"],
+    children: ["/lk-og/profile/events/edit"],
   },
   {
     name: "Настройки",

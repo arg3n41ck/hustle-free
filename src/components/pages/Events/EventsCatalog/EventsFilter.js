@@ -48,21 +48,21 @@ function EventsFilter() {
   const handleCountriesFilter = useCallback(
     (_, value) => {
       value ? query.set("country", value.name) : query.delete("country")
-      routerPush(`/?${query}`)
+      routerPush(`/events/?${query}`)
     },
     [query]
   )
   const handleSportTypesFilter = useCallback(
     (_, value) => {
       value ? query.set("type_sport", value.name) : query.delete("type_sport")
-      routerPush(`/?${query}`)
+      routerPush(`/events/?${query}`)
     },
     [query]
   )
   const handleDateFilter = useCallback(
     (_, value) => {
       value ? query.set("ordering", value.value) : query.delete("ordering")
-      routerPush(`/?${query}`)
+      routerPush(`/events/?${query}`)
     },
     [query]
   )

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
 import { useRouter } from "next/router"
@@ -16,12 +16,41 @@ import {
 } from "@mui/material"
 import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material"
 import ParticipantCategoriesEdit from "./ParticipantCategories/ParticipantCategoriesEdit"
+import EventParticipantCategoriesTableCollapseHead from "./EventParticipantCategoriesTableCollapseHead"
 
 const emptyInitialValues = {
   level: [],
 }
 
-function EventParticipantCategories() {
+const getGender = (gender) => (gender === "male" ? "М" : "Ж")
+
+const createDataForTable = (defaultData = []) => {
+  return defaultData.map((currentValue) => {
+    const {
+      fromAge,
+      fromWeight,
+      gender,
+      id,
+      levels,
+      name,
+      price,
+      toAge,
+      toWeight,
+    } = currentValue
+    return {
+      id,
+      name,
+      level: levels?.length || 0,
+      gender: getGender(gender),
+      age: `${fromAge} - ${toAge}`,
+      weight: `${fromWeight} кг - ${toWeight} кг`,
+      price,
+    }
+  })
+}
+
+function EventParticipantCategories({ refreshPC, manualEventPC, eventId }) {
+  const [participantCategories, setParticipantCategories] = useState([])
   const [openPCM, setOpenPCM] = useState(false)
   const [openPCME, setOpenPCME] = useState({ id: "", step: "" })
   const [selectedRows, setSelectedRows] = useState([])
@@ -34,6 +63,11 @@ function EventParticipantCategories() {
     },
   })
   const { push: routerPush } = useRouter()
+
+  useEffect(() => {
+    manualEventPC.length &&
+      setParticipantCategories(createDataForTable(manualEventPC))
+  }, [manualEventPC])
 
   const columns = useMemo(() => {
     return [
@@ -73,14 +107,11 @@ function EventParticipantCategories() {
   const onClickChangeSomeRows = (value) => {
     console.log(value)
   }
-
-  const removeSelectedInTableRows = useCallback(() => {
-    setSelectedRows((state) =>
-      state.filter(({ id }) => !selectedInTableRows.includes(id))
-    )
-    setSelectedInTableRows([])
-  }, [selectedInTableRows, selectedRows])
-
+  console.log(selectedRows)
+  const onCreateNewPC = useCallback(() => {
+    refreshPC()
+  }, [manualEventPC])
+  console.log(selectedRows)
   return (
     <>
       <Form onSubmit={handleSubmit}>
@@ -88,7 +119,7 @@ function EventParticipantCategories() {
           <p className="auth-title__input">Выберите категории</p>
           <Autocomplete
             multiple
-            options={mock}
+            options={participantCategories}
             sx={{
               "& .MuiOutlinedInput-root": {
                 padding: 0,
@@ -104,7 +135,10 @@ function EventParticipantCategories() {
             value={selectedRows}
             onChange={(_, value) => setSelectedRows(value)}
             renderOption={(props, option, { selected }) => (
-              <li {...props}>
+              <li
+                key={`EventParticipantCategories_autocomplete_list_${option.id}`}
+                {...props}
+              >
                 <Checkbox
                   icon={icon}
                   checkedIcon={checkedIcon}
@@ -132,52 +166,13 @@ function EventParticipantCategories() {
 
         <TableWrapper>
           <Collapse in={!!selectedInTableRows?.length}>
-            <TableCollapseHead>
-              <THCell>
-                <ThText>
-                  Выбрано {selectedInTableRows?.length} категории.{" "}
-                  <span
-                    onClick={() =>
-                      setSelectedInTableRows(selectedRows.map(({ id }) => id))
-                    }
-                  >
-                    Выбрать все
-                  </span>
-                </ThText>
-              </THCell>
-              <THCell>
-                <Select
-                  sx={{
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                    },
-
-                    "& .MuiSelect-select": {
-                      padding: "0 37px 0 20px !important",
-                    },
-                  }}
-                  value={"none"}
-                  onChange={onClickChangeSomeRows}
-                >
-                  <MenuItem value={"none"}>Изменить</MenuItem>
-                  <MenuItem value={"levels"}>Уровни</MenuItem>
-                  <MenuItem value={"gender"}>Пол</MenuItem>
-                  <MenuItem value={"age"}>Возраст</MenuItem>
-                  <MenuItem value={"weight"}>Вес</MenuItem>
-                  <MenuItem value={"price"}>Цена</MenuItem>
-                </Select>
-              </THCell>
-
-              <THCell onClick={removeSelectedInTableRows}>
-                <Delete>Удалить</Delete>
-              </THCell>
-
-              <THCell>
-                <THCancel onClick={() => setSelectedInTableRows([])}>
-                  <XIcon /> Сбросить
-                </THCancel>
-              </THCell>
-            </TableCollapseHead>
+            <EventParticipantCategoriesTableCollapseHead
+              onClickChangeSomeRows={onClickChangeSomeRows}
+              selectedInTableRows={selectedInTableRows}
+              selectedRows={selectedRows}
+              setSelectedInTableRows={setSelectedInTableRows}
+              setSelectedRows={setSelectedRows}
+            />
           </Collapse>
           <Table
             columns={columns}
@@ -202,7 +197,9 @@ function EventParticipantCategories() {
       </Form>
       <ParticipantCategoriesCreate
         open={openPCM}
+        eventId={eventId}
         onCloseModals={() => setOpenPCM(false)}
+        onCreatePC={(newPC) => onCreateNewPC(newPC)}
       />
       <ParticipantCategoriesEdit
         id={openPCME.id}
@@ -237,127 +234,3 @@ const OpenPCM = styled.div`
   margin: 0 auto 0 0;
   cursor: pointer;
 `
-
-const TableCollapseHead = styled.div`
-  height: 80px;
-  display: grid;
-  grid-template: 1fr / max-content 145px auto 150px;
-  background: #0f0f10;
-  padding: 0 8px;
-`
-
-const THCell = styled.div`
-  height: 100%;
-  width: 100%;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-`
-
-const ThText = styled.p`
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #f2f2f2;
-
-  & span {
-    color: #6d4eea;
-    cursor: pointer;
-  }
-`
-
-const Delete = styled.button`
-  width: 100%;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #eb5757;
-  padding: 5px;
-  text-align: end;
-`
-
-const THCancel = styled.button`
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  grid-gap: 4px;
-
-  color: #f2f2f2;
-`
-
-const XIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M15 5L5 15"
-      stroke="#F2F2F2"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M5 5L15 15"
-      stroke="#F2F2F2"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
-
-const mock = [
-  {
-    id: "1994_1",
-    name: "The Shawshank Redemption",
-    level: 5,
-    gender: "M",
-    age: "30-40",
-    weight: "80 кг - 90 кг",
-    price: "15 000 KZT",
-  },
-  {
-    id: "1972_2",
-    name: "The Godfather",
-    level: 5,
-    gender: "M",
-    age: "30-40",
-    weight: "80 кг - 90 кг",
-    price: "15 000 KZT",
-  },
-  {
-    id: "1974_3",
-    name: "The Godfather: Part II",
-    level: 5,
-    gender: "M",
-    age: "30-40",
-    weight: "80 кг - 90 кг",
-    price: "15 000 KZT",
-  },
-  {
-    id: "2008_4",
-    name: "The Dark Knight",
-    level: 5,
-    gender: "M",
-    age: "30-40",
-    weight: "80 кг - 90 кг",
-    price: "15 000 KZT",
-  },
-  {
-    id: "1957_5",
-    name: "12 Angry Men",
-    level: 5,
-    gender: "M",
-    age: "30-40",
-    weight: "80 кг - 90 кг",
-    price: "15 000 KZT",
-  },
-]

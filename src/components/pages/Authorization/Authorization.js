@@ -15,11 +15,11 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { useCookies } from "react-cookie"
 import { useRouter } from "next/router"
-import $api from "../../../services/axios"
 import Head from "next/head"
 import { theme } from "../../../styles/theme"
 import { useDispatch } from "react-redux"
 import { fetchUser } from "../../../redux/components/user"
+import { formDataHttp } from "../../../helpers/formDataHttp"
 
 const validationSchema = yup.object({
   email: yup
@@ -45,8 +45,13 @@ const Authorization = ({ onView }) => {
       password: "",
     },
     onSubmit: async (values) => {
+      console.log(values)
       try {
-        const res = await $api.post("/accounts/auth/jwt/create/", values)
+        const res = await formDataHttp(
+          values,
+          `accounts/auth/jwt/create/`,
+          "post"
+        )
         if (!cookies.refresh) {
           setCookie("token", res.data.access, { path: "/" })
           setCookie("refresh", res.data.refresh, { path: "/" })

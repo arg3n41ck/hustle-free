@@ -45,12 +45,12 @@ function Gender({
         variant="standard"
       >
         <RadioGroup row name="gender" onChange={handleChange}>
-          <FormControlLabel value="male" control={<Radio />} label="Женский" />
           <FormControlLabel
             value="female"
             control={<Radio />}
-            label="Мужской"
+            label="Женский"
           />
+          <FormControlLabel value="male" control={<Radio />} label="Мужской" />
         </RadioGroup>
         <FormHelperText>{touched.gender && errors.gender}</FormHelperText>
       </FormControl>

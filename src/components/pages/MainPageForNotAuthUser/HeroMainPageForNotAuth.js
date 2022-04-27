@@ -26,7 +26,7 @@ function HeroMainPageForNotAuth() {
           </Link>
           {(!user || user.role === "organizer") && (
             <Link
-              href={!user ? "/#user-roles" : "/lk-og/profile/events/create"}
+              href={!user ? "/#user-roles" : "/lk-og/profile/events/edit"}
             >
               <a>
                 <HeroInfoButtonForCreateEvents>

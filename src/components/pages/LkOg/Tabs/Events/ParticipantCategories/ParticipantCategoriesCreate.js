@@ -5,6 +5,7 @@ import Age from "./Age"
 import Weight from "./Weight"
 import Gender from "./Gender"
 import Price from "./Price"
+import $api from "../../../../../../services/axios"
 
 const emptyState = {
   name: "",
@@ -15,11 +16,27 @@ const emptyState = {
   toWeight: "",
   levels: [],
   event: "",
-  order: "",
   price: "",
 }
 
-function ParticipantCategoriesCreate({ onCloseModals, open }) {
+const createParticipantCategory = async (values) => {
+  try {
+    const { data } = await $api.post(
+      "/directory/participants_categories/",
+      values
+    )
+    return data
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function ParticipantCategoriesCreate({
+  onCreatePC,
+  onCloseModals,
+  open,
+  eventId,
+}) {
   const [initialState, setInitialState] = useState(emptyState)
   const [step, setStep] = useState("name")
   const onClose = () => {
@@ -28,11 +45,21 @@ function ParticipantCategoriesCreate({ onCloseModals, open }) {
     onCloseModals()
   }
 
-  const onSubmit = useCallback((values, _step) => {
-    setInitialState((state) => ({ ...state, ...values }))
-    alert(`${JSON.stringify(values, null, 2)}`)
-    _step !== "close" ? setStep(_step) : onClose()
+  const globalSubmit = useCallback((values) => {
+    createParticipantCategory({ ...values, event: eventId }).then((data) => {
+      onCreatePC(data)
+      onClose()
+    })
   }, [])
+
+  const onSubmit = useCallback(
+    (values, _step) => {
+      const newValues = { ...initialState, ...values }
+      setInitialState(newValues)
+      _step !== "close" ? setStep(_step) : globalSubmit(newValues)
+    },
+    [initialState]
+  )
 
   switch (step) {
     case "name":
@@ -49,6 +76,7 @@ function ParticipantCategoriesCreate({ onCloseModals, open }) {
         <Levels
           open={step === "levels" && open}
           onClose={onClose}
+          eventId={eventId}
           defaultValues={{ levels: initialState.levels }}
           submit={(values) => onSubmit(values, "age")}
         />
@@ -93,9 +121,8 @@ function ParticipantCategoriesCreate({ onCloseModals, open }) {
         <Price
           open={step === "price" && open}
           onClose={onClose}
-          defaultValues={{
-            price: initialState.price,
-          }}
+          eventId={eventId}
+          priceId={initialState.price}
           submit={(values) => onSubmit(values, "close")}
         />
       )
