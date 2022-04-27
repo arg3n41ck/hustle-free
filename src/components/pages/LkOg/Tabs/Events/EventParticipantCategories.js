@@ -107,11 +107,14 @@ function EventParticipantCategories({ refreshPC, manualEventPC, eventId }) {
   const onClickChangeSomeRows = (value) => {
     console.log(value)
   }
-  console.log(selectedRows)
   const onCreateNewPC = useCallback(() => {
     refreshPC()
   }, [manualEventPC])
-  console.log(selectedRows)
+
+  const onSelectManual = useCallback((values) => {
+
+  }, [])
+
   return (
     <>
       <Form onSubmit={handleSubmit}>
@@ -133,7 +136,7 @@ function EventParticipantCategories({ refreshPC, manualEventPC, eventId }) {
             fullWidth
             getOptionLabel={(option) => option.name}
             value={selectedRows}
-            onChange={(_, value) => setSelectedRows(value)}
+            onChange={(_, value) => onSelectManual(value)}
             renderOption={(props, option, { selected }) => (
               <li
                 key={`EventParticipantCategories_autocomplete_list_${option.id}`}

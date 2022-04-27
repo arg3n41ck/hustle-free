@@ -53,10 +53,10 @@ li {
     background: unset;
     color: #fff;
   }
-}
 
-.MuiAutocomplete-paper {
-  background-color: #333333;
+  &.MuiAutocomplete-paper {
+    background-color: #333333 !important;
+  }
 }
 
 .MuiAutocomplete-option {
@@ -82,7 +82,7 @@ li {
 .MuiOutlinedInput-root {
   border-radius: 16px !important;
   grid-gap: 14px;
-  color: #fff;
+  color: #fff !important;
   min-height: 64px;
   box-sizing: border-box;
 
