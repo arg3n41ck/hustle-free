@@ -2,19 +2,18 @@ import React, { useEffect, useState } from "react"
 import LkLayout from "../../../../../../components/layouts/LkLayout"
 import { lkOgTabs } from "../../../../../../components/pages/LkOg/Tabs/tabConstants"
 import EventsCreateLayout from "../../../../../../components/layouts/EventsCreateLayout"
-import EventPeriods from "../../../../../../components/pages/LkOg/Tabs/Events/EventPeriods"
+import EventDefaults from "../../../../../../components/pages/LkOg/Tabs/Events/EventDefaults"
 import { useRouter } from "next/router"
 import { getEventDefaultValues } from "./location"
-import RouterLoader from "../../../../../../components/ui/RouterLoader"
 
-function Periods() {
+function Index() {
   const {
     query: { id: eventId },
   } = useRouter()
   const [eventDefaultValues, setEventDefaultValues] = useState(null)
   useEffect(() => {
     eventId &&
-      getEventDefaultValues(`/organizer/events/${eventId}/registration/`).then(
+      getEventDefaultValues(`/organizer/events/${eventId}/location/`).then(
         setEventDefaultValues
       )
   }, [eventId])
@@ -22,13 +21,10 @@ function Periods() {
   return (
     <LkLayout tabs={lkOgTabs}>
       <EventsCreateLayout>
-        {/*<RouterLoader open={!eventDefaultValues} />*/}
-        {eventDefaultValues && (
-          <EventPeriods defaultValues={eventDefaultValues} eventId={eventId} />
-        )}
+        {eventDefaultValues && <EventDefaults />}
       </EventsCreateLayout>
     </LkLayout>
   )
 }
 
-export default Periods
+export default Index

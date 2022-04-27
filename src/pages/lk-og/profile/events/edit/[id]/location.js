@@ -6,7 +6,6 @@ import EventLocation from "../../../../../../components/pages/LkOg/Tabs/Events/E
 import $api from "../../../../../../services/axios"
 import { useRouter } from "next/router"
 import { camelizeKeys } from "humps"
-import RouterLoader from "../../../../../../components/ui/RouterLoader"
 
 export const getEventDefaultValues = async (href) => {
   try {
@@ -32,7 +31,7 @@ function Location() {
   return (
     <LkLayout tabs={lkOgTabs}>
       <EventsCreateLayout>
-        {!eventDefaultValues && <RouterLoader open={!eventDefaultValues} />}{" "}
+        {/*{!eventDefaultValues && <RouterLoader open={!eventDefaultValues} />}{" "}*/}
         {eventDefaultValues && (
           <EventLocation defaultValues={eventDefaultValues} eventId={eventId} />
         )}

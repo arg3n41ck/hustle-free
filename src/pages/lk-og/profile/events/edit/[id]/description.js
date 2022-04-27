@@ -26,7 +26,7 @@ function Description() {
   return (
     <LkLayout tabs={lkOgTabs}>
       <EventsCreateLayout>
-        <RouterLoader open={!eventDefaultValues} />
+        {/*<RouterLoader open={!eventDefaultValues} />*/}
         {eventDefaultValues && (
           <EventDescription
             defaultValues={eventDefaultValues}
