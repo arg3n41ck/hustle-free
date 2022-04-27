@@ -1,9 +1,31 @@
 services:
-  frontend:
-    build: .
-    container_name: jva-frontend
+  nginx:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
     ports:
-      - "3001:3000"
+      - 3000:80
+    networks:
+      - my-network
+
+  nextjs-ui:
+    build:
+      context: ./
+    ports:
+      - "3000:3000"
+    container_name: nextjs-ui
     stdin_open: true
-    restart:
-      on-failure
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - ./.env
+    networks:
+      - my-network
+
+
+networks:
+  my-network:
