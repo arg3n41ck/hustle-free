@@ -17,7 +17,7 @@ const variantsSidebar = {
 
 const contentVariants = {
   open: { gridGap: "18px", justifyContent: "flex-start" },
-  closed: { gridGap: 0, justifyContent: "center" },
+  closed: { gridGap: "0px", justifyContent: "center" },
 }
 
 const Sidebar = ({ open, array }) => {

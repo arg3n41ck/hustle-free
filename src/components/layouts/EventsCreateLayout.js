@@ -8,16 +8,20 @@ import { HeaderWrapper } from "../pages/LkOg/Tabs/Events/Events"
 import { TitleHeader } from "../ui/LKui/HeaderContent"
 
 function EventsCreateLayout({ onToggleSidebar, children }) {
-  const { push: routerPush, pathname } = useRouter()
+  const {
+    push: routerPush,
+    pathname,
+    query: { id: eventId },
+  } = useRouter()
+
+  const readySteps = steps(eventId)
 
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
           <TitleHeader>Создание турнира</TitleHeader>
-          <SaveAsDraft
-            onClick={() => routerPush("/lk-og/profile/events/create")}
-          >
+          <SaveAsDraft onClick={() => routerPush("/lk-og/profile/events/edit")}>
             Сохранить в черновик
           </SaveAsDraft>
         </HeaderWrapper>
@@ -25,16 +29,16 @@ function EventsCreateLayout({ onToggleSidebar, children }) {
       <MainWrapper>
         <div>
           <PageHeader>
-            <h2>{steps.find(({ href }) => href === pathname).title}</h2>
+            <h2>{readySteps.find(({ href }) => href === pathname)?.title}</h2>
           </PageHeader>
 
           <Form>{children}</Form>
         </div>
 
         <StepsWrapper>
-          {steps.map(({ title, href }, i) => {
+          {readySteps.map(({ title, href, path }, i) => {
             const icon =
-              i === 0 || i === steps.length - 1 ? (
+              i === 0 || i === readySteps.length - 1 ? (
                 <StartIcon
                   completed={false}
                   active={href === pathname}
@@ -45,7 +49,11 @@ function EventsCreateLayout({ onToggleSidebar, children }) {
               )
             return (
               <Step key={`eventCreateSteps_${title}_${i}`}>
-                <ActiveLink href={href} activeClassName="activeECLink">
+                <ActiveLink
+                  disabled
+                  href={path ? path : "/lk-og/profile/events/edit"}
+                  activeClassName={path ? "activeECLink" : ""}
+                >
                   <a>
                     {icon}
                     <span>{title}</span>
@@ -130,37 +138,51 @@ const Step = styled.div`
   }
 `
 
-const steps = [
-  {
-    title: "Общая информация",
-    href: "/lk-og/profile/events/create",
-  },
-  {
-    title: "Локация",
-    href: "/lk-og/profile/events/create/location",
-  },
-  {
-    title: "Периоды регистрации",
-    href: "/lk-og/profile/events/create/periods",
-  },
-  {
-    title: "Обложка и описание",
-    href: "/lk-og/profile/events/create/description",
-  },
-  {
-    title: "Правила турнира",
-    href: "/lk-og/profile/events/create/rules",
-  },
-  {
-    title: "Категории участников",
-    href: "/lk-og/profile/events/create/participant-categories",
-  },
-  {
-    title: "Контакты",
-    href: "/lk-og/profile/events/create/contacts",
-  },
-  {
-    title: "Кредиты",
-    href: "/lk-og/profile/events/create/credits",
-  },
-]
+const steps = (eventId) => {
+  return [
+    {
+      title: "Общая информация",
+      href: "/lk-og/profile/events/edit",
+      path: "/lk-og/profile/events/edit",
+    },
+    {
+      title: "Локация",
+      href: `/lk-og/profile/events/edit/[id]/location`,
+      path: eventId ? `/lk-og/profile/events/edit/${eventId}/location` : null,
+    },
+    {
+      title: "Периоды регистрации",
+      href: `/lk-og/profile/events/edit/[id]/periods`,
+      path: eventId ? `/lk-og/profile/events/edit/${eventId}/periods` : null,
+    },
+    {
+      title: "Обложка и описание",
+      href: `/lk-og/profile/events/edit/[id]/description`,
+      path: eventId
+        ? `/lk-og/profile/events/edit/${eventId}/description`
+        : null,
+    },
+    {
+      title: "Правила турнира",
+      href: `/lk-og/profile/events/edit/[id]/rules`,
+      path: eventId ? `/lk-og/profile/events/edit/${eventId}/rules` : null,
+    },
+    {
+      title: "Категории участников",
+      href: `/lk-og/profile/events/edit/[id]/participant-categories`,
+      path: eventId
+        ? `/lk-og/profile/events/edit/${eventId}/participant-categories`
+        : null,
+    },
+    {
+      title: "Контакты",
+      href: `/lk-og/profile/events/edit/[id]/contacts`,
+      path: eventId ? `/lk-og/profile/events/edit/${eventId}/contacts` : null,
+    },
+    {
+      title: "Кредиты",
+      href: `/lk-og/profile/events/edit/[id]/credits`,
+      path: eventId ? `/lk-og/profile/events/edit/${eventId}/credits` : null,
+    },
+  ]
+}

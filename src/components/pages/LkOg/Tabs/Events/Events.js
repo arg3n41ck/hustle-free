@@ -12,7 +12,7 @@ function EventsContent({ onToggleSidebar }) {
         <HeaderWrapper>
           <TitleHeader>Мои турниры</TitleHeader>
           <CreateEventBTN
-            onClick={() => routerPush("/lk-og/profile/events/create")}
+            onClick={() => routerPush("/lk-og/profile/events/edit")}
           >
             Создать новое мероприятие
           </CreateEventBTN>

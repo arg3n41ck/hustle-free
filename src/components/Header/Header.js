@@ -48,8 +48,6 @@ const Header = () => {
     await routerPush("/")
   }
 
-  useEffect(() => {}, [])
-
   return (
     <Wrapper>
       <WrapperItems>

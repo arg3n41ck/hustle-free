@@ -2,8 +2,10 @@ import React from "react"
 import styled from "styled-components"
 import TwoDude from "../../../public/png/twoDutes.png"
 import Link from "next/link"
+import { useSelector } from "react-redux"
 
 function HeroMainPageForNotAuth() {
+  const user = useSelector((state) => state.user.user)
   return (
     <HeroWrapper>
       <HeroInfo>
@@ -15,20 +17,24 @@ function HeroMainPageForNotAuth() {
           соревнованиями
         </HeroInfoDescription>
         <HeroInfoButtons>
-          <Link href={"/#user-roles"}>
+          <Link href={"/events/"}>
             <a>
               <HeroInfoButtonForViewEvents>
                 Смотреть турниры
               </HeroInfoButtonForViewEvents>
             </a>
           </Link>
-          <Link href={"/#user-roles"}>
-            <a>
-              <HeroInfoButtonForCreateEvents>
-                Создать турнир
-              </HeroInfoButtonForCreateEvents>
-            </a>
-          </Link>
+          {(!user || user.role === "organizer") && (
+            <Link
+              href={!user ? "/#user-roles" : "/lk-og/profile/events/edit"}
+            >
+              <a>
+                <HeroInfoButtonForCreateEvents>
+                  Создать турнир
+                </HeroInfoButtonForCreateEvents>
+              </a>
+            </Link>
+          )}
         </HeroInfoButtons>
       </HeroInfo>
       <HeroBackgroundImage twoDude={TwoDude} />
@@ -67,11 +73,11 @@ const HeroInfo = styled.div`
 `
 
 const HeroInfoButtons = styled.div`
-  max-width: 481px;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  grid-column-gap: 32px;
 `
 
 const HeroInfoButtonForViewEvents = styled.button`

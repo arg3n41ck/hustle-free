@@ -6,7 +6,7 @@ import styled from "styled-components"
 const NotificationItems = () => {
   return (
     <>
-      <Link passHref href={`/redirect/`}>
+      <Link>
         <ListItem>
           {/*TODO user avatar*/}
           <Skeleton

@@ -16,7 +16,7 @@ import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
 import { useSelector } from "react-redux"
 import { getCookie } from "../../../../services/JWTService"
-import { selectCountries } from "../../../../redux/components/countriesAndCities"
+import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
 
 const regMatch =
   /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
@@ -85,7 +85,7 @@ const validationSchema = yup.object({
 })
 
 const TeamContactInfo = ({ data, setData, setView }) => {
-  const [countries] = useSelector(selectCountries)
+  const [countries] = useSelector(selectCountriesAndCities)
   const [cities, setCities] = useState(null)
   const [showPassword, setShowPassword] = useState(false)
   const formik = useFormik({

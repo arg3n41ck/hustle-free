@@ -53,10 +53,10 @@ li {
     background: unset;
     color: #fff;
   }
-}
 
-.MuiAutocomplete-paper {
-  background-color: #333333;
+  &.MuiAutocomplete-paper {
+    background-color: #333333 !important;
+  }
 }
 
 .MuiAutocomplete-option {
@@ -70,6 +70,11 @@ li {
   color: #fff;
 }
 
+.MuiCalendarPicker-root .MuiSvgIcon-root,
+.PrivateDatePickerToolbar-penIcon .MuiSvgIcon-root {
+  color: #6d4eea;
+}
+
 .MuiButtonBase-root {
   text-transform: inherit !important;
 }
@@ -77,20 +82,27 @@ li {
 .MuiOutlinedInput-root {
   border-radius: 16px !important;
   grid-gap: 14px;
-  color: #fff;
-  height: 64px;
+  color: #fff !important;
+  min-height: 64px;
   box-sizing: border-box;
+
+  &.HeaderLocalization {
+    min-height: unset;
+  }
 
   &:hover fieldset {
     border-color: #333 !important;
   }
-}
-.MuiOutlinedInput-root {
+
   input {
     height: 100%;
-    padding: 20px !important;
+    padding: 0 20px !important;
     box-sizing: border-box;
   }
+}
+
+input.MuiAutocomplete-input {
+  padding: 0 !important;
 }
 
 .MuiOutlinedInput-input {
@@ -105,7 +117,13 @@ li {
 }
 
 .MuiSelect-icon {
-  color: #828282;
+  color: #828282 !important;
+}
+
+span.Mui-checked {
+  .MuiSvgIcon-root {
+    color: #6d4eea !important;
+  }
 }
 
 .MuiOutlinedInput-notchedOutline,
@@ -131,6 +149,7 @@ select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   border: none;
   border-radius: 0 !important;
+  color: unset;
   background-color: transparent !important;
   -webkit-box-shadow: 0 0 0 40px #1b1c22 inset !important;
   -webkit-text-fill-color: white !important;
