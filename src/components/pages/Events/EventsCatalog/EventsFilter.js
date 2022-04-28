@@ -331,7 +331,7 @@ const BoxIcon = () => (
   </svg>
 )
 
-const LocationIcon = () => (
+export const LocationIcon = () => (
   <svg
     width="24"
     height="24"
