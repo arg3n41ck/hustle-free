@@ -6,6 +6,7 @@ function EDContentFilter({
   label = "Поиск",
   onSearch,
   children,
+  isFilterOpen,
   searchPlaceholder = "Поиск",
 }) {
   const [search, setSearch] = useState("")
@@ -38,7 +39,7 @@ function EDContentFilter({
           <span>Фильтр</span>
         </button>
       </Search>
-      <Collapse in={openChildren}>{children}</Collapse>
+      <Collapse in={openChildren || isFilterOpen}>{children}</Collapse>
     </MainWrapper>
   )
 }
