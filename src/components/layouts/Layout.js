@@ -7,6 +7,7 @@ import { fetchUser, selectIsUserAuth } from "../../redux/components/user"
 import { useCookies } from "react-cookie"
 import { theme } from "../../styles/theme"
 import styled from "styled-components"
+import { fetchCountries } from "../../redux/components/countriesAndCities"
 
 const Layout = ({ children }) => {
   const lg = useMediaQuery("(max-width:992px)")
@@ -16,6 +17,7 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     dispatch(fetchUser())
+    dispatch(fetchCountries())
   }, [cookies])
 
   return (

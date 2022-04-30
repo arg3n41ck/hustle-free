@@ -142,27 +142,28 @@ const Header = () => {
             }}
           >
             <WrapperUserMenu>
-              <Box sx={{ padding: "32px" }}>
-                {!!activeTabs &&
+              {!!activeTabs &&
                 activeTabs
                   .filter((tab) => tab.value !== "exit")
                   .map((tab) => (
-                    <UserMenuItem onClick={() => changeMenu(tab.href)}>
+                    <UserMenuItem
+                      key={tab.href}
+                      onClick={() => changeMenu(tab.href)}
+                    >
                       <UserMenuItemContent>
                         <IconWrapper>{tab.icon}</IconWrapper>
                         <p>{tab.name}</p>
                       </UserMenuItemContent>
                     </UserMenuItem>
                   ))}
-                <UserMenuItem onClick={() => changeMenu("exit")}>
-                  <UserMenuItemContent>
-                    <IconWrapper>
-                      <ExitIcon />
-                    </IconWrapper>
-                    <p>Выйти</p>
-                  </UserMenuItemContent>
-                </UserMenuItem>
-              </Box>
+              <UserMenuItem onClick={() => changeMenu("exit")}>
+                <UserMenuItemContent>
+                  <IconWrapper>
+                    <ExitIcon />
+                  </IconWrapper>
+                  <p>Выйти</p>
+                </UserMenuItemContent>
+              </UserMenuItem>
             </WrapperUserMenu>
           </Popover>
         </Right>

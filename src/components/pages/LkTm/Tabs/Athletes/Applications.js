@@ -12,6 +12,7 @@ const Applications = ({ applications, onAcceptOrReject }) => {
     <List>
       {applications.map((application) => (
         <ApplicationItem
+          key={application.id}
           onAcceptOrReject={onAcceptOrReject}
           applicationItem={application}
         />
@@ -84,6 +85,7 @@ const ApplicationItem = ({ applicationItem, onAcceptOrReject }) => {
             borderRadius={"4px"}
             style={{ fontSize: 14 }}
           >
+            {id}
             Отклонить
           </CustomButton>
         </WrapperButton>

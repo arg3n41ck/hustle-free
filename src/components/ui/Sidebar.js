@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux"
 import { exitUser } from "../../redux/components/user"
 
 const variants = {
-  open: { opacity: 1, x: 0, pointerEvents: "auto" },
-  closed: { opacity: 0, x: "100%", pointerEvents: "auto" },
+  open: { display: "block", x: 0, pointerEvents: "auto" },
+  closed: { display: "none", x: "100%", pointerEvents: "auto" },
 }
 
 const variantsSidebar = {

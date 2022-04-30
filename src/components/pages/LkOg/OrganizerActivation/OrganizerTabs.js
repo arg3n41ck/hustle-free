@@ -31,11 +31,7 @@ function OrganizerTabs() {
 
   const onSubmit = useCallback(async (values) => {
     try {
-      await formDataHttp(
-        values,
-        "accounts/organizer/",
-        "post"
-      )
+      await formDataHttp(values, "accounts/organizer/", "post")
       toast.success("Вы успешно активировали свои учетные данные!")
       router.push("/login")
     } catch (e) {}

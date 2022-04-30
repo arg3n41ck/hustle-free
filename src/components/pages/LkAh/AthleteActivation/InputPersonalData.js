@@ -73,7 +73,6 @@ const InputPersonalData = () => {
               "/accounts/athlete/",
               values
             )
-            await $api.post(`/accounts/organizer/`, _data)
             setCookie("token", _data.access, 999)
             setCookie("refresh", _data.refresh, 999999)
             toast.success("Вы успешно активировали свои учетные данные!")
