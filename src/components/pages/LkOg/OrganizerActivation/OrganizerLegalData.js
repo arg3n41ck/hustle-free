@@ -154,14 +154,16 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
         >
           {!!cities
             ? cities.cityCountry.map((item) => (
-                <MenuItem value={item.id}>{item.name}</MenuItem>
+                <MenuItem key={item.id} value={item.id}>
+                  {item.name}
+                </MenuItem>
               ))
             : !!countries &&
               countries.map(
                 ({ cityCountry }) =>
                   !!cityCountry &&
                   cityCountry.map((item) => (
-                    <MenuItem value={item.id}>{item.name}</MenuItem>
+                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
                   ))
               )}
         </TextField>

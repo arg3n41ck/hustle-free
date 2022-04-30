@@ -7,13 +7,13 @@ const useFetch = (url, config = {}, deps) => {
   const [data, setData] = useState(null)
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
         setLoading(true)
         const { data } = await axios(url, config)
         setData(data)
       } catch (e) {
-        setError(e.response.message)
+        setError(e.response?.message || e.response)
       } finally {
         setLoading(false)
       }

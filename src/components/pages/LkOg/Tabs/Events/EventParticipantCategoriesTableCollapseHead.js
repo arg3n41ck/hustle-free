@@ -1,14 +1,27 @@
 import React, { useCallback } from "react"
 import { MenuItem, Select } from "@mui/material"
 import styled from "styled-components"
+import $api from "../../../../../services/axios"
 
-function EventParticipantCategoriesTableCollapseHead({selectedInTableRows, setSelectedInTableRows, selectedRows, onClickChangeSomeRows, setSelectedRows}) {
-  const removeRowsFromTable = useCallback(() => {
-    setSelectedRows((state) =>
-      state.filter(({ id }) => !selectedInTableRows.includes(id))
-    )
+const deleteRow = (id) => {
+  $api.delete(`/directory/participants_categories/${id}/`)
+}
+
+function EventParticipantCategoriesTableCollapseHead({
+  selectedInTableRows,
+  setSelectedInTableRows,
+  selectedRows,
+  onClickChangeSomeRows,
+  refreshPC,
+}) {
+  const removeRowsFromTable = useCallback(async () => {
+    selectedInTableRows.length &&
+      (await Promise.all(selectedInTableRows.map(deleteRow)).then(() =>
+        setTimeout(() => refreshPC(), 500)
+      ))
     setSelectedInTableRows([])
   }, [selectedInTableRows, selectedRows])
+
   return (
     <TableCollapseHead>
       <THCell>
@@ -46,12 +59,12 @@ function EventParticipantCategoriesTableCollapseHead({selectedInTableRows, setSe
         </Select>
       </THCell>
 
-      <THCell onClick={removeRowsFromTable}>
+      <THCell type="button" onClick={removeRowsFromTable}>
         <Delete>Удалить</Delete>
       </THCell>
 
       <THCell>
-        <THCancel onClick={() => setSelectedInTableRows([])}>
+        <THCancel type="button" onClick={() => setSelectedInTableRows([])}>
           <XIcon /> Сбросить
         </THCancel>
       </THCell>

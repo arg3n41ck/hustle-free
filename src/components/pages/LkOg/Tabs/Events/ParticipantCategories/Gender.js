@@ -25,7 +25,7 @@ function Gender({
   submit,
   defaultValues = initialEmptyValues,
 }) {
-  const { touched, errors, handleChange, handleSubmit } = useFormik({
+  const { touched, errors, handleChange, values, handleSubmit } = useFormik({
     initialValues: defaultValues,
     validationSchema,
     onSubmit: (values) => {
@@ -44,7 +44,12 @@ function Gender({
         error={touched.gender && Boolean(errors.gender)}
         variant="standard"
       >
-        <RadioGroup row name="gender" onChange={handleChange}>
+        <RadioGroup
+          row
+          name="gender"
+          value={values.gender}
+          onChange={handleChange}
+        >
           <FormControlLabel
             value="female"
             control={<Radio />}

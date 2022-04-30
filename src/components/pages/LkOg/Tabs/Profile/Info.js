@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import EditsIcon from "../../../../../public/svg/edits-icon.svg"
 import { Avatar } from "@mui/material"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import CompanyIcon from "../../../../../public/svg/company-icon.svg"
 import LocationIcon from "../../../../../public/svg/place-icon.svg"
 import CalendarIcon from "../../../../../public/svg/calendar-profile.svg"
@@ -16,26 +16,30 @@ import { ru } from "date-fns/locale"
 import LkDefaultHeader from "../../../../ui/LKui/LKDefaultHeader"
 import { TitleHeader } from "../../../../ui/LKui/HeaderContent"
 import { useRouter } from "next/router"
+import {
+  fetchCountries,
+  selectCountriesAndCities,
+} from "../../../../../redux/components/countriesAndCities"
 
 const Info = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
   const { push: routerPush } = useRouter()
-  const {
-    countries: { data: countries },
-  } = useSelector((state) => state.countries)
+  const [countries, cities] = useSelector(selectCountriesAndCities)
   const [currentLocations, setCurrentLocations] = useState({
     country: "",
     city: "",
   })
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchCountries())
+  }, [])
 
   useEffect(() => {
-    if (user?.country && countries.length) {
+    if (user?.country && countries.length && cities.length) {
       const currentCountry = countries.find(
           (country) => country.id === user?.country
         ),
-        currentCity = currentCountry.cityCountry.find(
-          (country) => country.id === user?.city
-        )
+        currentCity = cities.find((country) => country.id === user?.city)
       setCurrentLocations({
         country: currentCountry.name,
         city: currentCity.name,

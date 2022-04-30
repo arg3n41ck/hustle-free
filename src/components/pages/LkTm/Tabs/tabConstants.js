@@ -25,9 +25,4 @@ export const lkTmTabs = [
     href: "/lk-tm/profile/settings",
     icon: <SettingsIcon />,
   },
-  {
-    name: "Выйти",
-    href: "exit",
-    icon: <ExitIcon />,
-  },
 ]

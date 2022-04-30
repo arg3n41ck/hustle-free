@@ -38,11 +38,6 @@ function MapField({ onPoint, defaultPoints, disabled }) {
     mapRef.current = map
   }, [])
 
-  // const panTo = React.useCallback(({ lat, lng }) => {
-  //   mapRef.current.panTo({ lat, lng })
-  //   mapRef.current.setZoom(14)
-  // }, [])
-
   if (loadError) return "Error"
   if (!isLoaded) return "Loading..."
 

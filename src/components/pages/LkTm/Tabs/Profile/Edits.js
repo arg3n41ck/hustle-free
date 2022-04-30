@@ -107,7 +107,7 @@ const Edits = ({ onView }) => {
       const currentCountry = countries.find(
         (country) => country.id === formik.values.country
       )
-      const currentCity = currentCountry.cityCountry.find(
+      const currentCity = currentCountry?.cityCountry.find(
         (city) => city.id === formik.values.city
       )
       setCurrentCities(currentCountry.cityCountry)
@@ -116,7 +116,7 @@ const Edits = ({ onView }) => {
     }
 
     const newSportTypes = []
-    formik.values.sports.map((sportId) => {
+    formik.values?.sports?.map((sportId) => {
       const obj = sportTypes.find((sportType) => sportType.id === sportId)
       newSportTypes.push(obj)
     })
@@ -352,7 +352,7 @@ const Edits = ({ onView }) => {
                 },
               }}
             />
-            <p>{CSportType.name}</p>
+            <p>{CSportType?.name}</p>
           </SportItem>
         ))}
 

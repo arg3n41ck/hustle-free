@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
 import ParticipantCategoriesModal from "./Modal"
@@ -7,6 +7,7 @@ import { FormSubTitle } from "../EventPeriods"
 import { Autocomplete, TextField } from "@mui/material"
 import styled from "styled-components"
 import $api from "../../../../../../services/axios"
+import { editParticipantCategory } from "./ParticipantCategoriesEdit"
 
 const initialEmptyValues = {
   earlyPrice: "",
@@ -30,20 +31,62 @@ const createPrice = async (values) => {
     console.log(e)
   }
 }
+const editPrice = async (values, id) => {
+  try {
+    const { data } = await $api.put(
+      `/directory/participant_category_price/${id}/`,
+      values
+    )
+    return data
+  } catch (e) {
+    console.log(e)
+  }
+}
 
-function Price({ open, edit, onClose, submit, priceId, eventId }) {
+const getPrice = async (id) => {
+  const { data } = await $api.get(
+    `/directory/participant_category_price/${id}/`
+  )
+  return data
+}
+
+function Price({ open, edit, onClose, submit, priceId, eventId, id: pcId }) {
+  const [defaultValues, setDefaultValues] = useState(initialEmptyValues)
+
   const { values, setFieldValue, touched, errors, handleChange, handleSubmit } =
     useFormik({
-      initialValues: initialEmptyValues,
+      initialValues: defaultValues,
       validationSchema,
-      onSubmit: (values) => {
-        if (!priceId) {
+      enableReinitialize: true,
+      onSubmit: async (values) => {
+        if (!priceId && !Array.isArray(pcId)) {
           createPrice({ ...values, eventId }).then((data) => {
+            edit && editParticipantCategory({ price: data.id }, pcId)
             submit({ price: data.id })
+          })
+        } else if (priceId && !Array.isArray(pcId)) {
+          editPrice({ ...values, event_id: eventId }, priceId).then(() => {
+            submit()
+          })
+        } else if (Array.isArray(pcId)) {
+          await Promise.all(
+            pcId.map(async (id) => {
+              await createPrice({ ...values, eventId }).then(
+                async ({ id: priceId }) => {
+                  await editParticipantCategory({ price: priceId }, id)
+                }
+              )
+            })
+          ).then(() => {
+            submit()
           })
         }
       },
     })
+
+  useEffect(() => {
+    priceId && getPrice(priceId).then(setDefaultValues)
+  }, [priceId])
 
   return (
     <ParticipantCategoriesModal
@@ -67,7 +110,11 @@ function Price({ open, edit, onClose, submit, priceId, eventId }) {
             error={touched.earlyPrice && Boolean(errors.earlyPrice)}
             helperText={touched.earlyPrice && errors.earlyPrice}
             onChange={handleChange}
-            value={values.earlyPrice}
+            value={
+              values.earlyPrice
+                ? Math.round(values.earlyPrice)
+                : values.earlyPrice
+            }
           />
         </Field>
 
@@ -82,7 +129,11 @@ function Price({ open, edit, onClose, submit, priceId, eventId }) {
             error={touched.standartPrice && Boolean(errors.standartPrice)}
             helperText={touched.standartPrice && errors.standartPrice}
             onChange={handleChange}
-            value={values.standartPrice}
+            value={
+              values.standartPrice
+                ? Math.round(values.standartPrice)
+                : values.standartPrice
+            }
           />
         </Field>
 
@@ -97,7 +148,9 @@ function Price({ open, edit, onClose, submit, priceId, eventId }) {
             error={touched.latePrice && Boolean(errors.latePrice)}
             helperText={touched.latePrice && errors.latePrice}
             onChange={handleChange}
-            value={values.latePrice}
+            value={
+              values.latePrice ? Math.round(values.latePrice) : values.latePrice
+            }
           />
         </Field>
 

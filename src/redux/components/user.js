@@ -31,7 +31,6 @@ export const fetchUser = createAsyncThunk(
   }
 )
 
-// reducer
 const initialState = {
   user: null,
   error: null,
