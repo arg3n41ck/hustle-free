@@ -64,8 +64,6 @@ function Table({ pc }) {
     setRewrittenData(createDataForTable(pc))
   }, [pc])
 
-  console.log(rewrittenData)
-
   return (
     <Wrapper>
       <Scrollbar>
@@ -101,6 +99,7 @@ export default Table
 
 const Wrapper = styled.div`
   overflow: hidden;
+  margin: -32px;
 `
 
 const Scrollbar = styled.div`
