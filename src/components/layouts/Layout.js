@@ -8,9 +8,12 @@ import { useCookies } from "react-cookie"
 import { theme } from "../../styles/theme"
 import styled from "styled-components"
 import { fetchCountries } from "../../redux/components/countriesAndCities"
+import { fetchSportTypes } from "../../redux/components/sportTypes"
+import { useRouter } from "next/router"
 
 const Layout = ({ children }) => {
   const lg = useMediaQuery("(max-width:992px)")
+  const router = useRouter()
   const dispatch = useDispatch()
   const [cookies] = useCookies(["token", "refresh"])
   const [userAuthenticated] = useSelector(selectIsUserAuth)
@@ -18,7 +21,8 @@ const Layout = ({ children }) => {
   useEffect(() => {
     dispatch(fetchUser())
     dispatch(fetchCountries())
-  }, [cookies])
+    dispatch(fetchSportTypes())
+  }, [cookies?.token])
 
   return (
     <>

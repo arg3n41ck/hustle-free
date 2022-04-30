@@ -326,7 +326,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
             id="outlined-basic"
             placeholder="Электронная почта"
             variant="outlined"
-            disabled
             InputProps={{
               endAdornment: (
                 <svg
