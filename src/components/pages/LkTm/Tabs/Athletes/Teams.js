@@ -1,13 +1,20 @@
 import React from "react"
 import styled from "styled-components"
 import { Avatar } from "@mui/material"
+import { useSelector } from "react-redux"
+import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
 
 const Teams = ({ teams }) => {
+  const [countries] = useSelector(selectCountriesAndCities)
+  const getCountry = (id) => {
+    return countries.find((countryItem) => countryItem.id === id)?.name || null
+  }
+
   if (!teams) return null
   return (
     <List>
       {teams.results.map((team) => (
-        <TeamItem teamItem={team} />
+        <TeamItem onGetCountry={getCountry} teamItem={team} />
       ))}
     </List>
   )
@@ -20,7 +27,7 @@ const List = styled.ul`
 `
 export default Teams
 
-const TeamItem = ({ teamItem }) => {
+const TeamItem = ({ teamItem, onGetCountry }) => {
   const { user } = teamItem?.athlete
   return (
     <Item>
@@ -33,7 +40,7 @@ const TeamItem = ({ teamItem }) => {
         <ItemTitle>
           {user?.firstName} {user?.lastName}
         </ItemTitle>
-        <ItemDescription>{user?.country}</ItemDescription>
+        <ItemDescription>{onGetCountry(user?.country)}</ItemDescription>
       </div>
     </Item>
   )

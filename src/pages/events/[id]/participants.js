@@ -1,9 +1,22 @@
-import React from "react"
+import React, { useState } from "react"
 import EdMainLayout from "../../../components/pages/Event/EDMainLayout"
 import $api from "../../../services/axios"
+import DropdownData from "../../../components/ui/DropdownData"
 
 function Participants({ event }) {
-  return <EdMainLayout event={event}>participants</EdMainLayout>
+  const [test, setTest] = useState(false)
+  return (
+    <EdMainLayout event={event}>
+      <DropdownData
+        active={test}
+        setActive={setTest}
+        title={"Сеньор мужчины / Белый / 25-35 лет / 60 кг - 75 кг"}
+      >
+        <h1>data</h1>
+      </DropdownData>
+      participants
+    </EdMainLayout>
+  )
 }
 
 export default Participants

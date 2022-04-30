@@ -47,13 +47,15 @@ const Athletes = ({ onToggleSidebar }) => {
   }
 
   useEffect(async () => {
-    try {
-      setApplications(await fetchMyRequests())
-      setTeams(await fetchTeams(user?.id))
-    } catch (e) {
-      throw e
+    if (user?.id) {
+      try {
+        setApplications(await fetchMyRequests())
+        setTeams(await fetchTeams(user?.id))
+      } catch (e) {
+        throw e
+      }
     }
-  }, [])
+  }, [user])
 
   const acceptOrRejectHandler = async (id, status = "approved") => {
     try {
