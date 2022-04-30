@@ -61,6 +61,7 @@ const NavigationUl = styled.ul`
   display: grid;
   grid-template: 96px / repeat(4, 1fr);
   margin-bottom: 32px;
+  border-bottom: 1px solid #333333;
 `
 
 const ChildWrapper = styled.div`
