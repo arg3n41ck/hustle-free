@@ -5,6 +5,7 @@ import Row from "./Row"
 import styled from "styled-components"
 import EDContentFilter from "../EDContentFilter"
 import Autocompletes from "./Autocompletes"
+import { useSelector } from "react-redux"
 
 const getEventPC = async (query) => {
   const { data } = await $api.get(`/events/participant_category/`, {
@@ -71,6 +72,7 @@ function EventCategories() {
   const [pc, setPc] = useState([])
   const [search, setSearch] = useState("")
   const [levelOptions, setLevelOptions] = useState([])
+  const user = useSelector((state) => state.user.user)
   const isFilterOpen = useMemo(() => {
     return !!(search && levelQValue)
   }, [levelQValue, genderQValue, weightQValue, ageQValue])
@@ -103,7 +105,9 @@ function EventCategories() {
         onSearch={(value) => setSearch((value || "").toLowerCase())}
         openChildren={isFilterOpen}
       >
-        <Autocompletes levelOptions={levelOptions} />
+        {user?.role !== "organizer" && (
+          <Autocompletes levelOptions={levelOptions} />
+        )}
       </EDContentFilter>
       <PCRows>
         {!!pc?.length &&

@@ -34,10 +34,12 @@ function EDContentFilter({
           <SearchIcon />
           <span>{label ? label : "Поиск"}</span>
         </button>
-        <button onClick={() => children && setOpenChildren((s) => !s)}>
-          <FilterIcon />
-          <span>Фильтр</span>
-        </button>
+        {children && (
+          <button onClick={() => children && setOpenChildren((s) => !s)}>
+            <FilterIcon />
+            <span>Фильтр</span>
+          </button>
+        )}
       </Search>
       <Collapse in={openChildren || isFilterOpen}>{children}</Collapse>
     </MainWrapper>
