@@ -19,7 +19,7 @@ const emptyState = {
   price: "",
 }
 
-const createParticipantCategory = async (values) => {
+export const createParticipantCategory = async (values) => {
   try {
     const { data } = await $api.post(
       "/directory/participants_categories/",
@@ -36,9 +36,10 @@ function ParticipantCategoriesCreate({
   onCloseModals,
   open,
   eventId,
+  sportType
 }) {
   const [initialState, setInitialState] = useState(emptyState)
-  const [step, setStep] = useState("name")
+  const [step, setStep] = useState("name");
   const onClose = () => {
     setInitialState(emptyState)
     setStep("name")
@@ -77,6 +78,7 @@ function ParticipantCategoriesCreate({
           open={step === "levels" && open}
           onClose={onClose}
           eventId={eventId}
+          sportType={sportType}
           defaultValues={{ levels: initialState.levels }}
           submit={(values) => onSubmit(values, "age")}
         />

@@ -79,7 +79,9 @@ const Table = ({ columns, data, select, selectedRows, onSelect }) => {
                       onClick={() => onClick && onClick(cell.id)}
                       key={`table-cell-${cell[accessor]}-${cell.id}`}
                     >
-                      {cell[accessor]}
+                      {cell[accessor] || (
+                        <AddButton type="button">Добавить</AddButton>
+                      )}
                     </Td>
                   ))}
                 </Tr>
@@ -183,4 +185,19 @@ const Td = styled.td`
   &:last-child {
     border-right: none;
   }
+`
+
+const AddButton = styled.button`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(100%);
+  width: calc(100%);
+  font-size: 18px;
+  line-height: 24px;
+  color: #6d4eea;
+  background: #211f30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `

@@ -16,12 +16,12 @@ const options = {
 }
 const center = { lat: 47.62453103078936, lng: 64.59334709431583 }
 
-function MapField({ onPoint }) {
+function MapField({ onPoint, defaultPoints }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_MAP_API,
     libraries,
   })
-  const [marker, setMarker] = React.useState(null)
+  const [marker, setMarker] = React.useState(defaultPoints)
 
   const onMapClick = React.useCallback((e) => {
     const newPoint = {
@@ -37,11 +37,6 @@ function MapField({ onPoint }) {
     mapRef.current = map
   }, [])
 
-  // const panTo = React.useCallback(({ lat, lng }) => {
-  //   mapRef.current.panTo({ lat, lng })
-  //   mapRef.current.setZoom(14)
-  // }, [])
-
   if (loadError) return "Error"
   if (!isLoaded) return "Loading..."
 
@@ -50,7 +45,7 @@ function MapField({ onPoint }) {
       id="map"
       mapContainerStyle={mapContainerStyle}
       zoom={5}
-      center={center}
+      center={defaultPoints || center}
       options={options}
       onClick={onMapClick}
       onLoad={onMapLoad}

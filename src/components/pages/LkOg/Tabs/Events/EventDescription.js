@@ -41,13 +41,11 @@ function EventForm({ defaultValues = emptyInitialValues, eventId }) {
           image: values.image,
         },
         `organizer/events/${eventId}/`,
-        "put"
+        "patch"
       )
-      routerPush(`/lk-og/profile/events/edit/${eventId}/periods`)
+      routerPush(`/lk-og/profile/events/edit/${eventId}/participant-categories/`)
     },
   })
-
-  console.log(values)
 
   const { push: routerPush } = useRouter()
 

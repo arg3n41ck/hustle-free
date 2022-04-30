@@ -5,7 +5,6 @@ import EventsCreateLayout from "../../../../../../components/layouts/EventsCreat
 import EventDescription from "../../../../../../components/pages/LkOg/Tabs/Events/EventDescription"
 import { useRouter } from "next/router"
 import { getEventDefaultValues } from "./location"
-import RouterLoader from "../../../../../../components/ui/RouterLoader"
 
 function Description() {
   const {
@@ -16,8 +15,8 @@ function Description() {
     if (eventId) {
       getEventDefaultValues(`/organizer/events/${eventId}/`).then((data) => {
         setEventDefaultValues({
-          image: data.image,
-          description: data.description.description,
+          image: data?.image || null,
+          description: data?.description?.description,
         })
       })
     }

@@ -1,4 +1,4 @@
-import { camelizeKeys, decamelizeKeys } from "humps"
+import { decamelizeKeys } from "humps"
 
 async function buildFormData(formData, data, parentKey) {
   if (
@@ -16,9 +16,7 @@ async function buildFormData(formData, data, parentKey) {
     })
   } else {
     const value = data == null ? "" : data
-    const snakeParent = await decamelizeKeys(
-      camelizeKeys({ [parentKey]: value })
-    )
+    const snakeParent = await decamelizeKeys({ [parentKey]: value })
 
     const decamelizeObjEnt = Object.entries(snakeParent)[0]
     formData.append(decamelizeObjEnt[0], value)

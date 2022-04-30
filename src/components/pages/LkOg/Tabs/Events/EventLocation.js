@@ -33,12 +33,11 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
     handleChange,
     setFieldValue,
     handleSubmit,
-    isValid,
   } = useFormik({
     initialValues: defaultValues,
     validationSchema,
     onSubmit: async (values) => {
-      const { data } = await formDataHttp(
+      await formDataHttp(
         {
           ...values,
           allFieldsFilled: true,
@@ -166,6 +165,11 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
               setFieldValue("lat", `${lat}`)
               setFieldValue("long", `${lng}`)
             }}
+            defaultPoints={
+              eventId
+                ? { lat: +defaultValues.lat, lng: +defaultValues.long }
+                : null
+            }
           />
         </Field>
         <FormHelperText>

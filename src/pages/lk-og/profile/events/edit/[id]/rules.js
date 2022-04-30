@@ -5,7 +5,6 @@ import EventsCreateLayout from "../../../../../../components/layouts/EventsCreat
 import EventRules from "../../../../../../components/pages/LkOg/Tabs/Events/EventRules"
 import { useRouter } from "next/router"
 import { getEventDefaultValues } from "./location"
-import RouterLoader from "../../../../../../components/ui/RouterLoader"
 
 function Rules() {
   const {
@@ -14,8 +13,10 @@ function Rules() {
   const [eventDefaultValues, setEventDefaultValues] = useState(null)
   useEffect(() => {
     eventId &&
-      getEventDefaultValues(`/organizer/events/${eventId}/description/`).then(
-        (data) => setEventDefaultValues({ eventRules: data.eventRules })
+      getEventDefaultValues(`/organizer/events/${eventId}/rules/`).then(
+        (data) => {
+          setEventDefaultValues({ rules: data.rules })
+        }
       )
   }, [eventId])
   return (
