@@ -61,10 +61,10 @@ function Price({ open, edit, onClose, submit, priceId, eventId, id: pcId }) {
       onSubmit: async (values) => {
         if (!priceId && !Array.isArray(pcId)) {
           createPrice({ ...values, eventId }).then((data) => {
-            editParticipantCategory({ price: data.id }, pcId)
-            submit()
+            edit && editParticipantCategory({ price: data.id }, pcId)
+            submit({ price: data.id })
           })
-        } else if (priceId) {
+        } else if (priceId && !Array.isArray(pcId)) {
           editPrice({ ...values, event_id: eventId }, priceId).then(() => {
             submit()
           })

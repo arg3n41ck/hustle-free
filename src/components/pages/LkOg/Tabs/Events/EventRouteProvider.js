@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { createContext, useContext } from "react"
 import $api from "../../../../../services/axios"
 import { useRouter } from "next/router"
@@ -16,6 +16,13 @@ const steps = [
 ]
 
 const eventProfileFormPaths = [
+  "/lk-og/profile/events/edit/[id]",
+  "/lk-og/profile/events/edit/[id]/location",
+  "/lk-og/profile/events/edit/[id]/contacts",
+  "/lk-og/profile/events/edit/[id]/description",
+  "/lk-og/profile/events/edit/[id]/participant-categories",
+  "/lk-og/profile/events/edit/[id]/periods",
+  "/lk-og/profile/events/edit/[id]/rules",
   "/lk-og/profile/events/edit/[id]",
   "/lk-og/profile/events/edit",
 ]
@@ -86,7 +93,10 @@ function EventRouteWrapper({ children }) {
     [eventId, pathname]
   )
 
-  const isInOgProfile = eventProfileFormPaths.includes(pathname)
+  const isInOgProfile = useMemo(
+    () => eventProfileFormPaths.includes(pathname),
+    [eventId, pathname]
+  )
 
   useEffect(async () => {
     isInOgProfile && eventId

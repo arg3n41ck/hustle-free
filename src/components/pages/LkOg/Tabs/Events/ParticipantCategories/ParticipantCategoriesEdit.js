@@ -130,6 +130,7 @@ function ParticipantCategoriesEdit({
           open={step === "price" && open}
           onClose={onClose}
           id={id}
+          edit
           eventId={eventId}
           priceId={initialState.price?.id}
           submit={(values) => onSubmit(values)}

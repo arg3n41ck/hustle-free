@@ -47,6 +47,7 @@ function ParticipantCategoriesCreate({
   }
 
   const globalSubmit = useCallback((values) => {
+    console.log(values)
     createParticipantCategory({ ...values, event: eventId }).then((data) => {
       onCreatePC(data)
       onClose()
