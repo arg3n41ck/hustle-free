@@ -7,7 +7,7 @@ import EventsTable from "./EventsTable"
 import $api from "../../../../../../services/axios"
 
 const getEvents = async () => {
-  const { data } = await $api.get("/organizer/events/")
+  const { data } = await $api.get("/organizer/my_events_list/")
   return data
 }
 
