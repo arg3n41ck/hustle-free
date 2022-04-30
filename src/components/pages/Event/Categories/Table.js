@@ -1,40 +1,33 @@
 import React, { useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
-import { getRusBetweenDate } from "../../../../../../helpers/helpers"
-import { IconButton } from "@mui/material"
-import { Edit } from "@mui/icons-material"
-import { useRouter } from "next/router"
+import { getGender } from "../../LkOg/Tabs/Events/EventParticipantCategories"
 
-//currency: "eur"
-// earlyPrice: "300.00"
-// id: 44
-// latePrice: "500.00"
-// standartPrice: "400.00"
-
-const createDataForTable = (events = []) => {
-  return events.map((currentValue) => {
-    const {
-      id,
-      name,
-      fromAge,
-      toAge,
-      fromWeight,
-      toWeight,
-      gender,
-      price: { standartPrice, currency },
-    } = currentValue
-    return {
-      id,
-      name,
-      // gender: ,
-      date: `${fromAge} - ${toAge} лет`,
-      price: `${standartPrice} ${currency.toLowerCase()}`,
-      weight: `${fromWeight} - ${toWeight} кг`,
-    }
-  })
+const createDataForTable = (pc = []) => {
+  const {
+    id,
+    fromAge,
+    toAge,
+    fromWeight,
+    levels,
+    toWeight,
+    gender,
+    price: { standartPrice, currency },
+  } = pc
+  return levels
+    .map(() => {
+      return levels.map(({ id: lId, name: lName }, i) => ({
+        id: `${id}-${lId}-${i}`,
+        gender: getGender(gender, true),
+        age: `${fromAge} - ${toAge} лет`,
+        price: `${standartPrice} ${currency.toLowerCase()}`,
+        weight: `${fromWeight} - ${toWeight} кг`,
+        name: lName,
+      }))
+    })
+    .flat(Infinity)
 }
 
-function Table({ events }) {
+function Table({ pc }) {
   const [rewrittenData, setRewrittenData] = useState([])
 
   const columns = useMemo(() => {
@@ -68,8 +61,10 @@ function Table({ events }) {
   }, [])
 
   useEffect(() => {
-    setRewrittenData(createDataForTable(events))
-  }, [events])
+    setRewrittenData(createDataForTable(pc))
+  }, [pc])
+
+  console.log(rewrittenData)
 
   return (
     <Wrapper>
@@ -84,9 +79,9 @@ function Table({ events }) {
           </Thead>
           <tbody>
             {!!rewrittenData.length &&
-              rewrittenData.map((cell) => {
+              rewrittenData.map((cell, index) => {
                 return (
-                  <Tr key={`pc-table-row-${cell.id}`}>
+                  <Tr key={`pc-table-row-${cell.id}-${index}`}>
                     {columns.map(({ accessor }) => (
                       <Td key={`pc-table-cell-${cell[accessor]}-${cell.id}`}>
                         {cell[accessor]}
@@ -127,6 +122,12 @@ const Thead = styled.thead`
 const Tr = styled.tr`
   position: relative;
   border-bottom: 1px solid #333;
+  td {
+    max-width: 150px;
+  }
+  & td:first-child {
+    min-width: 200px;
+  }
 
   &:hover {
     background: #0f0f10;

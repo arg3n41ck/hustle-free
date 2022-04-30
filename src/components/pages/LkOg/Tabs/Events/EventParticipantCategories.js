@@ -17,7 +17,8 @@ const emptyInitialValues = {
   pc: [],
 }
 
-const getGender = (gender) => (gender === "male" ? "М" : "Ж")
+export const getGender = (gender, isFull = false) =>
+  gender === "male" ? (!isFull ? "М" : "Мужской") : !isFull ? "Ж" : "Женский"
 
 const createDataForTable = (defaultData = []) => {
   return defaultData.map((currentValue) => {
