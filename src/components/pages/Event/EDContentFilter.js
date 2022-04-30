@@ -2,7 +2,12 @@ import React, { useState } from "react"
 import { Collapse, TextField } from "@mui/material"
 import styled from "styled-components"
 
-function EDContentFilter({ label, onSearch, children }) {
+function EDContentFilter({
+  label = "Поиск",
+  onSearch,
+  children,
+  searchPlaceholder = "Поиск",
+}) {
   const [search, setSearch] = useState("")
   const [openChildren, setOpenChildren] = useState(false)
 
@@ -13,13 +18,14 @@ function EDContentFilter({ label, onSearch, children }) {
         <TextField
           value={search}
           fullWidth
+          placeholder={searchPlaceholder}
           onChange={({ target: { value } }) => {
             setSearch(value)
             onSearch && onSearch(value)
           }}
           sx={{
             "& >.MuiOutlinedInput-root": {
-              borderRadius: "16px 0 0 16px",
+              borderRadius: "16px 0 0 16px !important",
             },
           }}
         />

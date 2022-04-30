@@ -30,9 +30,10 @@ const createPCList = (pc) => {
 
 function EventCategories() {
   const {
-    query: { id: eventId },
+    query: { id: eventId, ...queryRest },
   } = useRouter()
   const [pc, setPc] = useState([])
+  const [search, setSearch] = useState("")
   const query = useQuery()
   const [countries] = useSelector(selectCountriesAndCities)
   const { push: routerPush } = useRouter()
@@ -45,6 +46,7 @@ function EventCategories() {
     [query]
   )
 
+  console.log(queryRest)
   const countriesValue =
     countries.length &&
     countries.find((type) => type.name === query.get("country"))
@@ -57,7 +59,7 @@ function EventCategories() {
 
   return (
     <CollapseWrapper>
-      <EDContentFilter onSearch={(value) => console.log(value)}>
+      <EDContentFilter onSearch={(value) => setSearch(value)}>
         {!!countries?.length && (
           <Autocomplete
             noOptionsText={"Ничего не найдено"}
@@ -79,10 +81,14 @@ function EventCategories() {
           />
         )}
       </EDContentFilter>
-      {!!pc?.length &&
-        pc.map((pci) => (
-          <Row key={`EventCategories_PC_Collapse_${pci.id}`} pcItem={pci} />
-        ))}
+      <PCRows>
+        {!!pc?.length &&
+          pc
+            .filter(({ name }) => name.indexOf(search) >= 0)
+            .map((pci) => (
+              <Row key={`EventCategories_PC_Collapse_${pci.id}`} pcItem={pci} />
+            ))}
+      </PCRows>
     </CollapseWrapper>
   )
 }
@@ -90,6 +96,13 @@ function EventCategories() {
 export default EventCategories
 
 const CollapseWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-row-gap: 32px;
+`
+
+const PCRows = styled.div`
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   grid-row-gap: 32px;
