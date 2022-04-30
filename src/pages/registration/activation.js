@@ -9,13 +9,8 @@ import { setCookie } from "../../services/JWTService"
 import { fetchCountries } from "../../redux/components/countriesAndCities"
 
 const InputData = ({ query }) => {
-  const [view, setView] = useState("personal") // personal | skills
   const dispatch = useDispatch()
   const [role, setRole] = useState(null)
-
-  const viewHandler = (type) => {
-    setView(type)
-  }
 
   const activationUser = async (uid, token) => {
     await $api
@@ -23,12 +18,13 @@ const InputData = ({ query }) => {
         uid,
         token,
       })
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         setCookie("token", data.access, 999)
         setCookie("refresh", data.refresh, 999999)
         setCookie("email", data.email)
         setRole(data.role)
       })
+      .catch((e) => console.log(e))
   }
 
   useEffect(() => {
@@ -45,9 +41,7 @@ const InputData = ({ query }) => {
   return (
     <>
       {/* {(view === "personal" && ( */}
-      {!!role && role === "athlete" && (
-        <InputPersonalData onView={viewHandler} />
-      )}
+      {!!role && role === "athlete" && <InputPersonalData />}
       {!!role && role === "organizer" && <OrganizerPersonalData />}
       {!!role && role === "team" && alert(role)}
       {/* )) || */}

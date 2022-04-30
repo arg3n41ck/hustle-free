@@ -59,7 +59,7 @@ const validationSchema = yup.object({
     .required("Заполните поле"),
 })
 
-const InputPersonalData = ({ onView }) => {
+const InputPersonalData = () => {
   const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
@@ -87,20 +87,16 @@ const InputPersonalData = ({ onView }) => {
 
           // })
           try {
-            const { data: _data } = $api.post("/accounts/athlete/", {
-              first_name: values.firstName,
-              last_name: values.lastName,
-              password: values.password,
-            })
+            const { data: _data } = await $api.post(
+              "/accounts/athlete/",
+              values
+            )
+            await $api.post(`/accounts/organizer/`, _data)
             setCookie("token", _data.access, 999)
             setCookie("refresh", _data.refresh, 999999)
-            // onView("skills")
+            toast.success("Вы успешно активировали свои учетные данные!")
+            await router.push("/")
           } catch (e) {}
-          toast.success("Вы успешно активировали свои учетные данные!")
-          router.push("/login")
-          dispatch(
-            saveUserItem({ userItem: "password", value: values.password })
-          )
         } catch (e) {}
       }
     },

@@ -11,6 +11,7 @@ export const fetchUser = createAsyncThunk("user/get", async () => {
   let newData = {}
   const { data } = await $api.get(`/accounts/users/me/`)
   newData = { ...newData, ...data }
+  console.log(data)
   if (data.role === "organizer") {
     const { data: organizerData } = await $api.get(`/organizer/profile/`)
     newData = { ...newData, ...organizerData[0].user }
@@ -23,7 +24,6 @@ export const fetchUser = createAsyncThunk("user/get", async () => {
 
   return camelizeKeys(newData)
 })
-
 
 export const changeUserItemThunk = createAsyncThunk(
   "user/details-item",
@@ -202,6 +202,7 @@ export const profileMenuSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUser.fulfilled, (state, action) => {
+      console.log(action.payload)
       state.user = { ...state.user, ...action.payload }
     })
   },

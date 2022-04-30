@@ -28,6 +28,7 @@ import LogoIcon from "../../public/svg/logo.svg"
 import { lkOgTabs } from "../pages/LkOg/Tabs/tabConstants"
 import { lkTmTabs } from "../pages/LkTm/Tabs/tabConstants"
 import { lkAhTabs } from "../pages/LkAh/Tabs/tabConstants"
+import ExitIcon from "../../public/svg/exit-icon.svg"
 
 let notificationInterval
 
@@ -349,14 +350,24 @@ const Header = ({ onMenu }) => {
                 <WrapperUserMenu>
                   <Box sx={{ padding: "32px" }}>
                     {!!activeTabs &&
-                      activeTabs.map((tab) => (
-                        <UserMenuItem onClick={() => changeMenu(tab.value)}>
-                          <UserMenuItemContent>
-                            <IconWrapper>{tab.icon}</IconWrapper>
-                            <p>{tab.name}</p>
-                          </UserMenuItemContent>
-                        </UserMenuItem>
-                      ))}
+                      activeTabs
+                        .filter((tab) => tab.value !== "exit")
+                        .map((tab) => (
+                          <UserMenuItem onClick={() => changeMenu(tab.value)}>
+                            <UserMenuItemContent>
+                              <IconWrapper>{tab.icon}</IconWrapper>
+                              <p>{tab.name}</p>
+                            </UserMenuItemContent>
+                          </UserMenuItem>
+                        ))}
+                    <UserMenuItem onClick={() => changeMenu("exit")}>
+                      <UserMenuItemContent>
+                        <IconWrapper>
+                          <ExitIcon />
+                        </IconWrapper>
+                        <p>Выйти</p>
+                      </UserMenuItemContent>
+                    </UserMenuItem>
                   </Box>
                 </WrapperUserMenu>
               </Popover>

@@ -116,7 +116,7 @@ const Edits = ({ onView }) => {
     }
 
     const newSportTypes = []
-    formik.values.sports.map((sportId) => {
+    formik.values?.sports?.map((sportId) => {
       const obj = sportTypes.find((sportType) => sportType.id === sportId)
       newSportTypes.push(obj)
     })
