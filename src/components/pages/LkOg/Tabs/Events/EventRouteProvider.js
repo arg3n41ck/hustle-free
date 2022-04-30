@@ -15,6 +15,11 @@ const steps = [
   "contacts",
 ]
 
+const eventProfileFormPaths = [
+  "/lk-og/profile/events/edit/[id]",
+  "/lk-og/profile/events/edit",
+]
+
 function EventRouteWrapper({ children }) {
   const {
     pathname,
@@ -81,8 +86,10 @@ function EventRouteWrapper({ children }) {
     [eventId, pathname]
   )
 
+  const isInOgProfile = eventProfileFormPaths.includes(pathname)
+
   useEffect(async () => {
-    eventId
+    isInOgProfile && eventId
       ? await $api
           .get(`/organizer/events/${eventId}/event_creating_status/`)
           .then(({ data }) => {
