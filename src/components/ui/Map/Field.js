@@ -4,7 +4,7 @@ import mapStyles from "../../../styles/mapStyles"
 
 const libraries = ["places"]
 const mapContainerStyle = {
-  height: "300px",
+  height: "100%",
   width: "100%",
   borderRadius: "16px",
 }
@@ -16,20 +16,21 @@ const options = {
 }
 const center = { lat: 47.62453103078936, lng: 64.59334709431583 }
 
-function MapField({ onPoint }) {
+function MapField({ onPoint, defaultPoints, disabled }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_MAP_API,
     libraries,
   })
-  const [marker, setMarker] = React.useState(null)
+
+  const [marker, setMarker] = React.useState(defaultPoints || null)
 
   const onMapClick = React.useCallback((e) => {
     const newPoint = {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
     }
-    setMarker(newPoint)
-    onPoint && onPoint(newPoint)
+    !disabled && setMarker(newPoint)
+    !disabled && onPoint && onPoint(newPoint)
   }, [])
 
   const mapRef = React.useRef()
@@ -50,14 +51,14 @@ function MapField({ onPoint }) {
       id="map"
       mapContainerStyle={mapContainerStyle}
       zoom={5}
-      center={center}
+      center={defaultPoints || center}
       options={options}
       onClick={onMapClick}
       onLoad={onMapLoad}
     >
       {marker && (
         <Marker
-          position={{ lat: marker.lat, lng: marker.lng }}
+          position={defaultPoints || { lat: marker.lat, lng: marker.lng }}
           // icon={{
           //   url: "../../../public/svg/map-pointer.svg",
           //   origin: new window.google.maps.Point(0, 0),
