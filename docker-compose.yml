@@ -1,9 +1,14 @@
 services:
-  frontend:
-    build: .
-    container_name: jva-frontend
+  nextjs-ui:
+    build:
+      context: ./
     ports:
-      - "3001:3000"
+      - "3000:3000"
+    container_name: nextjs-ui
     stdin_open: true
-    restart:
-      on-failure
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    env_file:
+      - ./.env
