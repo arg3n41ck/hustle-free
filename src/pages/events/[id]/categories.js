@@ -1,9 +1,12 @@
 import React from "react"
 import EdMainLayout from "../../../components/pages/Event/EDMainLayout"
 import $api from "../../../services/axios"
+import EventCategories from "../../../components/pages/Event/Categories/EventCategories"
 
 function Categories({ event }) {
-  return <EdMainLayout event={event}>Categories</EdMainLayout>
+  return <EdMainLayout event={event}>
+    <EventCategories/>
+  </EdMainLayout>
 }
 
 export default Categories

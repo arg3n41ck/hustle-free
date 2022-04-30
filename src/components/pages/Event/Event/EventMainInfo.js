@@ -126,8 +126,6 @@ function EventMainInfo({ event }) {
         }
       : null
 
-  console.log({ event })
-
   return (
     <MainWrapper>
       <Column>

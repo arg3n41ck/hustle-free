@@ -58,7 +58,6 @@ const Column = styled.div`
   }
 
   &:last-child {
-    padding: 0 0 0 32px;
     border-right: none;
     grid-gap: 24px;
 
