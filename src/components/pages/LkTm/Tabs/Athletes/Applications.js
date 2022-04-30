@@ -85,7 +85,6 @@ const ApplicationItem = ({ applicationItem, onAcceptOrReject }) => {
             borderRadius={"4px"}
             style={{ fontSize: 14 }}
           >
-            {id}
             Отклонить
           </CustomButton>
         </WrapperButton>

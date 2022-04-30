@@ -10,12 +10,11 @@ import LinkIcon from "../../../../../public/svg/link-icon.svg"
 import UserIcon from "../../../../../public/svg/user.svg"
 import PhoneIcon from "../../../../../public/svg/phone-icon.svg"
 import phoneFormatter from "../../../../../helpers/phoneFormatter"
+import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
 
 const Info = ({ onToggleSidebar, onView }) => {
   const { user } = useSelector((state) => state.user)
-  const {
-    countries: { data: countries },
-  } = useSelector((state) => state.countries)
+  const [countries] = useSelector(selectCountriesAndCities)
   const [currentLocations, setCurrentLocations] = useState({
     country: "",
     city: "",
