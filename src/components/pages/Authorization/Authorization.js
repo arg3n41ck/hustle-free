@@ -15,11 +15,11 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { useCookies } from "react-cookie"
 import { useRouter } from "next/router"
-import $api from "../../../services/axios"
 import Head from "next/head"
 import { theme } from "../../../styles/theme"
-import { changeAuthCheck } from "../../../redux/components/navigations"
 import { useDispatch } from "react-redux"
+import { fetchUser } from "../../../redux/components/user"
+import { formDataHttp } from "../../../helpers/formDataHttp"
 
 const validationSchema = yup.object({
   email: yup
@@ -45,17 +45,21 @@ const Authorization = ({ onView }) => {
       password: "",
     },
     onSubmit: async (values) => {
+      console.log(values)
       try {
-        const res = await $api.post("/accounts/auth/jwt/create/", values)
+        const res = await formDataHttp(
+          values,
+          `accounts/auth/jwt/create/`,
+          "post"
+        )
         if (!cookies.refresh) {
           setCookie("token", res.data.access, { path: "/" })
           setCookie("refresh", res.data.refresh, { path: "/" })
         }
-        dispatch(changeAuthCheck(true))
-        await router.push("/lk-og/profile/")
+        dispatch(fetchUser())
+        await router.push("/")
       } catch (e) {
         setErrorMessage("Неверный логин или пароль")
-        // console.log(e?.response)
         if (
           e?.response?.data.detail ===
           "No active account found with the given credentials"
@@ -66,10 +70,6 @@ const Authorization = ({ onView }) => {
     },
     validationSchema,
   })
-
-  // React.useEffect(() => {
-  //   if (cookies.token) router.push("/")
-  // }, [cookies.token])
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
@@ -239,7 +239,7 @@ const Authorization = ({ onView }) => {
               component="p"
             >
               Нет аккаунта?{" "}
-              <Link href="/registration" passHref>
+              <Link href="/#user-roles" passHref>
                 <a className="auth-link">Зарегистрироваться</a>
               </Link>
             </Box>
@@ -250,8 +250,13 @@ const Authorization = ({ onView }) => {
   )
 }
 
-const Form = styled(motion.form)`
-  min-height: 87vh;
+export const Form = styled(motion.form)`
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  grid-row-gap: 30px;
+  align-items: center;
+  justify-content: center;
 `
 export const AuthButton = styled.button`
   width: 100%;

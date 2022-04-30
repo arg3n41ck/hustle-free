@@ -21,7 +21,7 @@ const validationSchema = yup.object({
 })
 
 const Recover = ({ onView }) => {
-  const [toggleInfoModal, setToggleInfoModal] = useState(true)
+  const [toggleInfoModal, setToggleInfoModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const formik = useFormik({
     initialValues: {
@@ -103,7 +103,7 @@ const Recover = ({ onView }) => {
                 ),
               }}
             />
-            {true && <ErrorMessage>{errorMessage}</ErrorMessage>}
+            {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
           </div>
 
           <AuthButton
@@ -130,7 +130,7 @@ const Recover = ({ onView }) => {
               component="p"
             >
               Нет аккаунта?{" "}
-              <Link href="/registration" passHref>
+              <Link href="/#user-roles" passHref>
                 <a className="auth-link">Зарегистрироваться</a>
               </Link>
             </Box>

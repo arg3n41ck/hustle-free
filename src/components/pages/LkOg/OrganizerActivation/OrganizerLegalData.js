@@ -5,36 +5,9 @@ import styled from "styled-components"
 import { TextField, MenuItem } from "@mui/material"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
-import $api from "../../../../services/axios"
-import { useDispatch, useSelector } from "react-redux"
-import { saveUserItem } from "../../../../redux/components/user"
-import { setCookie } from "../../../../services/JWTService"
+import { useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import { styled as styl } from "@mui/material/styles"
-import { useRadioGroup } from "@mui/material/RadioGroup"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import { useRouter } from "next/router"
-import { selectCountries } from "../../../../redux/components/countriesAndCities"
-
-const StyledFormControlLabel = styl((props) => <FormControlLabel {...props} />)(
-  ({ theme, checked }) => ({
-    ".MuiFormControlLabel-label": checked && {
-      color: theme.palette.primary.main,
-    },
-  })
-)
-
-function MyFormControlLabel(props) {
-  const radioGroup = useRadioGroup()
-
-  let checked = false
-
-  if (radioGroup) {
-    checked = radioGroup.value === props.value
-  }
-
-  return <StyledFormControlLabel checked={checked} {...props} />
-}
+import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
 
 const validationSchema = yup.object({
   nameOrganizer: yup
@@ -63,12 +36,9 @@ const validationSchema = yup.object({
     .required("Заполните поле"),
 })
 
-const OrganizerLegalData = ({ dataPersonal, data }) => {
-  const dispatch = useDispatch()
+const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
   const [cities, setCities] = useState(null)
-  const [countries] = useSelector(selectCountries)
-
-  const router = useRouter()
+  const [countries] = useSelector(selectCountriesAndCities)
   const formik = useFormik({
     initialValues: {
       nameOrganizer: !!data?.name_organization ? data.name_organization : "",
@@ -92,53 +62,33 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
         !Boolean(formik.errors.city)
       ) {
         toast.info("Ожидайте ответа от сервера")
-        try {
-          const data = {
-            ...dataPersonal,
-            name_organization: values.nameOrganizer,
-            country: values.country,
-            city: values.city,
-            address: values.actualAddress,
-            legal_name: values.legalName,
-            legal_address: values.legalAddress,
-            bin: values.bin,
-            number: values.number,
-            swift: values.swift,
-            bank_name: values.bankName,
-          }
-          if (data.phone_number === "+") delete data.phone_number
+        const data = {
+          ...dataPersonal,
+          name_organization: values.nameOrganizer,
+          country: values.country,
+          city: values.city,
+          address: values.actualAddress,
+          legal_name: values.legalName,
+          legal_address: values.legalAddress,
+          bin: values.bin,
+          number: values.number,
+          swift: values.swift,
+          bank_name: values.bankName,
+        }
+        if (data.phone_number === "+") delete data.phone_number
 
-          for (let key in data) {
-            if (!data[key]) delete data[key]
-          }
+        for (let key in data) {
+          if (!data[key]) delete data[key]
+        }
 
-          dispatch(
-            saveUserItem({ userItem: "password", value: values.password })
-          )
-          try {
-            const { data: _data } = await $api.post(
-              "/accounts/organizer/",
-              data
-            )
-            setCookie("token", _data.access, 999)
-            setCookie("refresh", _data.refresh, 999999)
-            toast.success("Вы успешно активировали свои учетные данные!")
-            router.push("/login")
-          } catch (e) {}
-        } catch (e) {}
+        await onSubmit({ ...data, ...dataPersonal })
       }
     },
     validationSchema,
   })
 
-  console.log(formik.errors)
-
   const handleClickCities = (item) => {
     setCities(item)
-  }
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault()
   }
 
   return (
@@ -347,18 +297,5 @@ const OrganizerLegalData = ({ dataPersonal, data }) => {
 }
 
 const Form = styled(motion.form)``
-
-const Error = styled.p`
-  color: #d32f2f;
-  font-weight: 400;
-  font-size: 0.75rem;
-  line-height: 1.66;
-  letter-spacing: 0.03333em;
-  text-align: left;
-  margin-top: 3px;
-  margin-right: 14px;
-  margin-bottom: 0;
-  margin-left: 14px;
-`
 
 export default OrganizerLegalData

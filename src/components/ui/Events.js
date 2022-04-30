@@ -1,40 +1,16 @@
 import React from "react"
-import { useSelector } from "react-redux"
-import { selectEvents } from "../../../../redux/components/events"
+import { getEventStatus, getRusBetweenDate } from "../../helpers/helpers"
+import { useRouter } from "next/router"
 import styled from "styled-components"
-import Image from "next/image"
-import { getEventStatus, getRusBetweenDate } from "../../../../helpers/helpers"
 
-//city: "Москва"
-// country: "Россия"
-// dateEnd: "2022-05-15T06:11:00+06:00"
-// dateStart: "2022-03-14T06:11:00+06:00"
-// id: 4
-// image: "http://api.dev.hustlefree.pro/media/events/images/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA4.jpeg"
-// name: "Чемпионат мира по Борьбе Бишкек"
-// status: "continue"
-// typeSport: "Борьба"
-
-function Events() {
-  const [, events] = useSelector(selectEvents)
+function Events({data}) {
+  const { push: routerPush } = useRouter()
 
   return (
-    <EventsWrapper>
-      <HeadPart>
-        <MainPageTitle>Турниры</MainPageTitle>
-        <ViewTypeChanger>
-          <MenuIcon />
-          Карточки
-        </ViewTypeChanger>
-        <SortByMap>
-          <LocationIcon />
-          На карте
-        </SortByMap>
-      </HeadPart>
-
+    <div>
       <EventsLWrapper>
-        {!!events?.length ? (
-          events.map(
+        {!!data?.length ? (
+          data.map(
             ({
               city,
               country,
@@ -45,7 +21,10 @@ function Events() {
               name,
               status,
             }) => (
-              <EventCard key={`mainPageEvents${id}`}>
+              <EventCard
+                onClick={() => routerPush(`/events/${id}`)}
+                key={`mainPageEvents${id}`}
+              >
                 <EventImg src={image} />
                 <Texts>
                   <h4>{name}</h4>
@@ -72,7 +51,7 @@ function Events() {
           <Empty>Турниров не найдено</Empty>
         )}
       </EventsLWrapper>
-    </EventsWrapper>
+    </div>
   )
 }
 
@@ -84,11 +63,22 @@ const EventsWrapper = styled.div`
   grid-gap: 32px;
   margin-top: 32px;
 `
+const Empty = styled.h3`
+  font-style: normal;
+  font-weight: 600;
+  color: #bdbdbd;
+`
 
-const HeadPart = styled.div`
+const Content = styled.div`
   display: flex;
-  align-items: center;
-  grid-gap: 32px;
+`
+
+const EventImg = styled.div`
+  height: 224px;
+  width: 100%;
+  background: no-repeat ${({ src }) => (src ? 'url("' + src + '")' : "red")}
+    center / cover;
+  border-radius: 16px 16px 0 0;
 `
 
 const MainPageTitle = styled.h2`
@@ -97,33 +87,6 @@ const MainPageTitle = styled.h2`
   font-size: 32px;
   line-height: 40px;
   color: #ffffff;
-  margin: 0 auto 0 0;
-`
-const Empty = styled.h3`
-  font-style: normal;
-  font-weight: 600;
-  color: #bdbdbd;
-`
-
-const ViewTypeChanger = styled.button`
-  padding: 10px 20px;
-  background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  grid-gap: 12px;
-`
-
-const SortByMap = styled.button`
-  padding: 10px 20px;
-  border: 1px solid #bdbdbd;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  grid-gap: 12px;
-
-  font-size: 16px;
-  color: #bdbdbd;
 `
 
 const EventsLWrapper = styled.div`
@@ -138,30 +101,7 @@ const EventCard = styled.div`
   grid-gap: 16px;
   border-radius: 16px;
   background: #1b1c22;
-`
-
-const Texts = styled.div`
-  padding: 0 6% 32px;
-  display: flex;
-  flex-direction: column;
-  grid-gap: 16px;
-  h4 {
-    font-weight: 600;
-    font-size: 24px;
-    color: #f2f2f2;
-  }
-`
-
-const EventImg = styled.div`
-  height: 224px;
-  width: 100%;
-  background: no-repeat ${({ src }) => (src ? 'url("' + src + '")' : "red")}
-    center / cover;
-  border-radius: 16px 16px 0 0;
-`
-
-const Content = styled.div`
-  display: flex;
+  cursor: pointer;
 `
 
 const ContentLeftSide = styled.div`
@@ -183,29 +123,6 @@ const ContentItems = styled.div`
   }
 `
 
-const ContentRightSide = styled.div`
-  width: 40%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  font-size: 16px;
-  color: #828282;
-`
-
-const MenuIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M4.16669 5.8335H15.8334" stroke="white" strokeLinecap="round" />
-    <path d="M4.16669 10H15.8334" stroke="white" strokeLinecap="round" />
-    <path d="M4.16669 14.1665H15.8334" stroke="white" strokeLinecap="round" />
-  </svg>
-)
-
 const LocationIcon = () => (
   <svg
     width="24"
@@ -223,6 +140,27 @@ const LocationIcon = () => (
   </svg>
 )
 
+const ContentRightSide = styled.div`
+  width: 40%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-size: 16px;
+  color: #828282;
+`
+
+const Texts = styled.div`
+  padding: 0 6% 32px;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 16px;
+  h4 {
+    font-weight: 600;
+    font-size: 24px;
+    color: #f2f2f2;
+  }
+`
+
 const CalendarIcon = () => (
   <svg
     width="24"
@@ -238,23 +176,18 @@ const CalendarIcon = () => (
       height="15"
       rx="2"
       stroke="#F4F4F4"
-      stroke-width="2"
+      strokeWidth="2"
     />
     <path
       d="M3 10C3 8.11438 3 7.17157 3.58579 6.58579C4.17157 6 5.11438 6 7 6H17C18.8856 6 19.8284 6 20.4142 6.58579C21 7.17157 21 8.11438 21 10H3Z"
       fill="#F4F4F4"
     />
-    <path
-      d="M7 3L7 6"
-      stroke="#F4F4F4"
-      stroke-width="2"
-      stroke-linecap="round"
-    />
+    <path d="M7 3L7 6" stroke="#F4F4F4" strokeWidth="2" strokeLinecap="round" />
     <path
       d="M17 3L17 6"
       stroke="#F4F4F4"
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth="2"
+      strokeLinecap="round"
     />
   </svg>
 )

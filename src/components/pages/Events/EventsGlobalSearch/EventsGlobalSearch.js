@@ -79,9 +79,8 @@ const SearchButton = styled.button`
   grid-column-gap: 11px;
 
   padding: 0 24px 0 20px;
-  height: 59px;
+  height: 64px;
   background: #333333;
-  border: 1.5px solid #333333;
   border-radius: 0 16px 16px 0;
 
   span {

@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react"
-import InputPersonalData from "../../components/pages/LkAh/AthleteActivation/InputPersonalData"
-import InputSkillsData from "../../components/pages/LkAh/AthleteActivation/inputSkillsData"
-import { fetchUser } from "../../redux/components/user"
+import React from "react"
 import { useDispatch } from "react-redux"
 import $api from "../../services/axios"
-import OrganizerPersonalData from "../../components/pages/LkOg/OrganizerActivation/OrganizerTabs"
 import { setCookie } from "../../services/JWTService"
 import { fetchCountries } from "../../redux/components/countriesAndCities"
+import { useRouter } from "next/router"
 
 const InputData = ({ query }) => {
   const dispatch = useDispatch()
-  const [role, setRole] = useState(null)
+  const router = useRouter()
 
   const activationUser = async (uid, token) => {
     await $api
@@ -18,36 +15,20 @@ const InputData = ({ query }) => {
         uid,
         token,
       })
-      .then(async ({ data }) => {
+      .then(({ data }) => {
         setCookie("token", data.access, 999)
         setCookie("refresh", data.refresh, 999999)
         setCookie("email", data.email)
-        setRole(data.role)
+        router.push(data.role)
       })
-      .catch((e) => console.log(e))
   }
 
-  useEffect(() => {
-    !role && activationUser(query?.uid, query?.token)
+  React.useEffect(() => {
+    activationUser(query?.uid, query?.token)
     dispatch(fetchCountries())
-    return () => {
-      // dispatch(fetchSkills())
-      // dispatch(fetchTechnologies())
-      // dispatch(fetchUser())
-      // dispatch(fetchStartups())
-    }
   }, [])
 
-  return (
-    <>
-      {/* {(view === "personal" && ( */}
-      {!!role && role === "athlete" && <InputPersonalData />}
-      {!!role && role === "organizer" && <OrganizerPersonalData />}
-      {!!role && role === "team" && alert(role)}
-      {/* )) || */}
-      {/* (view === "skills" && <InputSkillsData />)} */}
-    </>
-  )
+  return <div></div>
 }
 
 export default InputData

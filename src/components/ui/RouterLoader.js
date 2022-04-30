@@ -3,20 +3,13 @@ import { useState } from "react"
 import Router from "next/router"
 import styled from "styled-components"
 
-const RouterLoader = () => {
+const RouterLoader = ({ open }) => {
   const [routeLoading, setRouterLoading] = useState(false)
 
   Router.onRouteChangeStart = () => setRouterLoading(true)
   Router.onRouteChangeComplete = () => setRouterLoading(false)
   return (
-    <Modal
-      // sx={{
-      //   "& .MuiBackdrop-root": {
-      //     backgroundColor: "rgba(255, 255, 255, 0.78) !important",
-      //   },
-      // }}
-      open={routeLoading}
-    >
+    <Modal open={open || routeLoading}>
       <LDSRing>
         <div className="lds-ring">
           <div />

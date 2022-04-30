@@ -33,6 +33,10 @@ const HorizontalTabs = ({ valueTab, arrayTab, onChangeHandler, children }) => {
               color: "#F1FBF5 !important",
               transition: "all 0.3s ease 0s",
             },
+            "& .MuiTabs-flexContainer": {
+              display: "grid",
+              gridTemplate: "1fr / 1fr 1fr",
+            },
           }}
         >
           {arrayTab.map((item) => (
@@ -47,28 +51,25 @@ const HorizontalTabs = ({ valueTab, arrayTab, onChangeHandler, children }) => {
 
 const Wrapper = styled.div`
   border-radius: 12px;
-  overflow: hidden;
   max-width: 832px;
   ${theme.mqMax("xl")} {
     max-width: none;
   }
 `
 const Header = styled.div`
-  padding: 32px 32px 0 32px;
-  border-bottom: 1px solid #e5e5e5;
+  padding: 32px 48px 0 48px;
+  margin: 0 -48px 0 -48px;
+  border-bottom: 1px solid #333;
 `
 const Content = styled.div`
   padding: 32px 0;
 `
 const TabItem = styled(Tab)`
-  font-family: Inter, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 24px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
   color: #828282;
-  min-width: 0;
-  margin-right: 12px;
+  padding: 0;
   &:last-child {
     margin-right: 0;
   }

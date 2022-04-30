@@ -7,15 +7,11 @@ function HeaderLocalizationPopover() {
   return (
     <Localization>
       <LocalizationSelect
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
         value={localization}
-        label="Age"
         onChange={setLocalization}
+        className="HeaderLocalization"
       >
         <MenuItem value={"ru"}>RU</MenuItem>
-        <MenuItem value={"en"}>EN</MenuItem>
-        <MenuItem value={"kz"}>KZ</MenuItem>
       </LocalizationSelect>
     </Localization>
   )
@@ -26,10 +22,13 @@ const Localization = styled(FormControl)`
 `
 
 const LocalizationSelect = styled(Select)`
-  border: 1px solid #333333;
-  border-radius: 8px;
-  color: #828282;
+  border-radius: 8px !important;
+  color: #828282 !important;
   height: 44px;
+
+  & .MuiSelect-outlined {
+    padding: 0 35px 0 20px !important;
+  }
 `
 
 export default HeaderLocalizationPopover

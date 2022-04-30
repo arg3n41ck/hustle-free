@@ -150,7 +150,7 @@ const NewPassword = () => {
               component="p"
             >
               Нет аккаунта?{" "}
-              <Link href="/registration" passHref>
+              <Link href="/#user-roles" passHref>
                 <a className="auth-link">Зарегистрироваться</a>
               </Link>
             </Box>

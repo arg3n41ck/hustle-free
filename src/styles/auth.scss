@@ -1,8 +1,8 @@
 .auth {
   &-container {
-    margin: calc(14vh + 100px) auto 0 auto;
+    margin: 88px auto 0;
     width: 100%;
-    max-width: 630px;
+    max-width: 688px;
   }
   &-wrapper {
     padding: 64px 48px;
@@ -41,6 +41,10 @@
     line-height: 24px;
     color: #f2f2f2;
     margin-bottom: 12px;
+
+    span {
+      color: #828282
+    }
   }
   &-additionally {
     margin-top: 32px;

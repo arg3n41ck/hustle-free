@@ -49,10 +49,13 @@ li {
 }
 
 .MuiPaper-root {
-  // background: #333;
   .MuiPopover-paper {
     background: unset;
     color: #fff;
+  }
+
+  &.MuiAutocomplete-paper {
+    background-color: #333333 !important;
   }
 }
 
@@ -67,6 +70,11 @@ li {
   color: #fff;
 }
 
+.MuiCalendarPicker-root .MuiSvgIcon-root,
+.PrivateDatePickerToolbar-penIcon .MuiSvgIcon-root {
+  color: #6d4eea;
+}
+
 .MuiButtonBase-root {
   text-transform: inherit !important;
 }
@@ -74,19 +82,34 @@ li {
 .MuiOutlinedInput-root {
   border-radius: 16px !important;
   grid-gap: 14px;
-  color: #fff;
-  height: 64px;
+  color: #fff !important;
+  min-height: 64px;
   box-sizing: border-box;
+
+  &.HeaderLocalization {
+    min-height: unset;
+  }
 
   &:hover fieldset {
     border-color: #333 !important;
   }
+
+  input {
+    height: 100%;
+    padding: 0 20px !important;
+    box-sizing: border-box;
+  }
 }
-.MuiOutlinedInput-root {
-  padding: 20px !important;
+
+input.MuiAutocomplete-input {
+  padding: 0 !important;
 }
+
 .MuiOutlinedInput-input {
   padding: 0 !important;
+}
+.MuiSelect-outlined {
+  padding: 0 20px !important;
 }
 
 .MuiTabs-indicator {
@@ -94,11 +117,25 @@ li {
 }
 
 .MuiSelect-icon {
-  color: #828282;
+  color: #828282 !important;
 }
 
-.MuiOutlinedInput-notchedOutline {
-  border: 1.5px solid #333333;
+span.Mui-checked {
+  .MuiSvgIcon-root {
+    color: #6d4eea !important;
+  }
+}
+
+.MuiOutlinedInput-notchedOutline,
+.Mui-disabled.MuiOutlinedInput-notchedOutline {
+  border-width: 1.5px;
+  border-style: solid;
+  border-color: #333 !important;
+}
+
+.MuiOutlinedInput-input.MuiInputBase-input.Mui-disabled {
+  color: #333;
+  -webkit-text-fill-color: #a6a6a6;
 }
 
 input:-webkit-autofill,
@@ -111,8 +148,17 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   border: none;
+  border-radius: 0 !important;
   color: unset;
   background-color: transparent !important;
-  -webkit-box-shadow: 0 0 0 40px black inset !important;
+  -webkit-box-shadow: 0 0 0 40px #1b1c22 inset !important;
   -webkit-text-fill-color: white !important;
+}
+
+.activeEDLink {
+  border-bottom: 8px solid #6d4eea !important;
+}
+
+.MuiInputLabel-root {
+  color: unset;
 }

@@ -1,192 +1,40 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
 import $api from "../../services/axios"
 import { camelizeKeys } from "humps"
-import axios from "axios"
-import { getCookie } from "../../services/JWTService"
-import { toast } from "react-toastify"
-import { changeOgTabValue } from "./navigations"
+import { clearTokens } from "../../services/JWTService"
+import { localStorageRemoveItem } from "../../helpers/helpers"
 
 // async actions
-export const fetchUser = createAsyncThunk("user/get", async () => {
-  let newData = {}
-  const { data } = await $api.get(`/accounts/users/me/`)
-  newData = { ...newData, ...data }
-  console.log(data)
-  if (data.role === "organizer") {
-    const { data: organizerData } = await $api.get(`/organizer/profile/`)
-    newData = { ...newData, ...organizerData[0].user }
-  } else if (data.role === "athlete") {
-  } else if (data.role === "team") {
-    const { data: teamData } = await $api.get(`/teams/profile/`)
-    const { user, ...rst } = teamData[0]
-    newData = { ...newData, ...user, ...rst }
-  }
-
-  return camelizeKeys(newData)
-})
-
-export const changeUserItemThunk = createAsyncThunk(
-  "user/details-item",
-  async ({ pathItem, values }) => {
-    toast.info("Идет обработка данных пользователя...")
+export const fetchUser = createAsyncThunk(
+  "user/get",
+  async (params, { rejectWithValue }) => {
     try {
-      const array = [...values]
-      const newArray = []
-      array.forEach((item) => {
-        if (item.id) {
-          $api.put(`/accounts/${pathItem}/${item.id}/`, item, {
-            headers: {
-              Authorization: `Bearer ${getCookie("token")}`,
-            },
-          })
-        } else {
-          $api.post(`/accounts/${pathItem}/`, item, {
-            headers: {
-              Authorization: `Bearer ${getCookie("token")}`,
-            },
-          })
-        }
-        newArray.push(item)
-      })
-      toast.success("Изменения в данных пользователя прошли успешно!")
-      return newArray
+      let newData
+      const { data } = await $api.get(`/accounts/users/me/`)
+
+      if (data.role === "organizer") {
+        const { data: organizerData } = await $api.get(`/organizer/profile/`)
+        newData = { ...data, ...organizerData[0].user }
+      } else if (data.role === "athlete") {
+        const { data: athlete } = await $api.get(`/athlete/profile/`)
+        newData = { ...data, ...athlete[0].user }
+      } else if (data.role === "team") {
+        const { data: teamData } = await $api.get(`/teams/profile/`)
+        const { user, ...rst } = teamData[0]
+        newData = { ...data, ...user, ...rst }
+      }
+
+      return camelizeKeys(newData)
     } catch (e) {
-      console.log(e)
+      return rejectWithValue(e.response.status)
     }
   }
 )
 
-// const FormatDataPutReq = async (data, id, action) => {
-//   try {
-//     if (action === "PUT") {
-//       return await axios.put(
-//         `https://api.dev.main.jva.vc/api/v1/accounts/certificates/${id}/`,
-//         data,
-//         {
-//           headers: {
-//             // "Content-type": "application/json",
-//             Authorization: `Bearer ${getCookie("token")}`,
-//             "Content-type":
-//               "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-//           },
-//         }
-//       )
-//     } else if (action === "POST") {
-//       return await axios.post(
-//         `https://api.dev.main.jva.vc/api/v1/accounts/certificates/`,
-//         data,
-//         {
-//           headers: {
-//             // "Content-type": "application/json",
-//             Authorization: `Bearer ${getCookie("token")}`,
-//             "Content-type":
-//               "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-//           },
-//         }
-//       )
-//     }
-//   } catch (e) {
-//     // console.log(e.response)
-//   }
-// }
-
-export const changeFormatDataThunk = createAsyncThunk(
-  "user/details-certificates",
-  async ({ itemData, path, showPopup = true }) => {
-    showPopup && toast.info("Идет обработка данных пользователя...")
-    const body = new FormData()
-    for (const key in itemData) {
-      if (Array.isArray(itemData[key])) {
-        itemData[key].forEach((itemOfItem) => body.append(key, itemOfItem))
-      } else {
-        if (key === "image") {
-          if (typeof itemData[key] !== "string") body.append(key, itemData[key])
-        } else {
-          body.append(key, itemData[key])
-        }
-      }
-    }
-    let response
-    try {
-      if (itemData?.id) {
-        response = await axios.put(
-          `${process.env.NEXT_PUBLIC_API_URL}${path}${itemData?.id}/`,
-          body,
-          {
-            headers: {
-              // "Content-type": "application/json",
-              Authorization: `Bearer ${getCookie("token")}`,
-              "Content-type": "multipart/form-data;",
-            },
-          }
-        )
-      } else {
-        response = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}${path}`,
-          body,
-          {
-            headers: {
-              Authorization: `Bearer ${getCookie("token")}`,
-              "Content-type":
-                "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-            },
-          }
-        )
-      }
-      showPopup &&
-        toast.success("Изменения в данных пользователя прошли успешно!")
-      return response
-    } catch (e) {
-      console.log(e)
-      toast.success("Что-то пошло не так!")
-    }
-    // return await FormatDataPutReq(data, id, action)
-  }
-)
-
-export const saveUserThunk = createAsyncThunk(
-  "user/details",
-  async ({ user }) => {
-    const body = new FormData()
-    for (const key in user) {
-      if (Array.isArray(user[key])) {
-        user[key].forEach((itemOfItem) => body.append(key, itemOfItem))
-      } else {
-        body.append(key, user[key])
-      }
-    }
-    return await axios.put(
-      `${process.env.NEXT_PUBLIC_API_URL}accounts/users/me/`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${getCookie("token")}`,
-          "Content-type":
-            "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-        },
-      }
-    )
-  }
-)
-
-// reducer
 const initialState = {
-  user: {
-    id: null,
-    email: "",
-    firstName: null,
-    lastName: null,
-    phoneNumber: "",
-    gender: null,
-    dateBirthday: null,
-    age: null,
-    role: "",
-    country: null,
-    city: null,
-    avatar: null,
-    nameOrganization: null,
-    address: null,
-  },
+  user: null,
+  error: null,
+  userAuthenticated: false,
 }
 
 export const profileMenuSlice = createSlice({
@@ -199,16 +47,31 @@ export const profileMenuSlice = createSlice({
     saveUser(state, { payload }) {
       state.user = payload
     },
+    exitUser(state) {
+      clearTokens()
+      state.user = initialState
+      state.userAuthenticated = false
+      localStorageRemoveItem("role")
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      console.log(action.payload)
-      state.user = { ...state.user, ...action.payload }
+      state.user = action.payload
+      state.userAuthenticated = true
+      state.error = false
+    })
+    builder.addCase(fetchUser.rejected, (state, action) => {
+      state.error = action.payload
+      state.userAuthenticated = false
     })
   },
 })
 
-export const { saveUserItem, saveUser, checkProgress } =
-  profileMenuSlice.actions
+export const { saveUserItem, saveUser, exitUser } = profileMenuSlice.actions
+
+export const selectIsUserAuth = createSelector(
+  (state) => state.user.userAuthenticated,
+  (userAuthenticated) => [userAuthenticated]
+)
 
 export default profileMenuSlice.reducer

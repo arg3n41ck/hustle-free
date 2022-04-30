@@ -6,22 +6,24 @@ import ExitIcon from "../../../../public/svg/exit-icon.svg"
 export const lkOgTabs = [
   {
     name: "Профиль",
-    value: "profile",
     icon: <ProfileIcon />,
+    href: "/lk-og/profile",
+    children: ["/lk-og/profile/edit"],
   },
   {
     name: "Мои турниры",
-    value: "myTournaments",
     icon: <MyTournamentsIcon />,
+    href: "/lk-og/profile/events",
+    children: ["/lk-og/profile/events/edit"],
   },
   {
     name: "Настройки",
-    value: "settings",
     icon: <SettingsIcon />,
+    href: "/lk-og/profile/settings",
   },
   {
     name: "Выйти",
-    value: "exit",
     icon: <ExitIcon />,
+    href: "exit",
   },
 ]
