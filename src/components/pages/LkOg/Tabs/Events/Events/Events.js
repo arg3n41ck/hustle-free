@@ -1,11 +1,23 @@
-import React from "react"
-import LkDefaultHeader from "../../../../ui/LKui/LKDefaultHeader"
-import { TitleHeader } from "../../../../ui/LKui/HeaderContent"
+import React, { useEffect, useState } from "react"
+import LkDefaultHeader from "../../../../../ui/LKui/LKDefaultHeader"
+import { TitleHeader } from "../../../../../ui/LKui/HeaderContent"
 import styled from "styled-components"
 import { useRouter } from "next/router"
+import EventsTable from "./EventsTable"
+import $api from "../../../../../../services/axios"
+
+const getEvents = async () => {
+  const { data } = await $api.get("/organizer/events/")
+  return data
+}
 
 function EventsContent({ onToggleSidebar }) {
+  const [events, setEvents] = useState([])
   const { push: routerPush } = useRouter()
+
+  useEffect(() => {
+    getEvents().then(setEvents)
+  }, [])
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
@@ -18,7 +30,9 @@ function EventsContent({ onToggleSidebar }) {
           </CreateEventBTN>
         </HeaderWrapper>
       </LkDefaultHeader>
-      Тут список моих турниров
+      <TableWrapper>
+        <EventsTable events={events} />
+      </TableWrapper>
     </div>
   )
 }
@@ -42,4 +56,11 @@ export const CreateEventBTN = styled.button`
   align-items: center;
   text-align: center;
   color: #ffffff;
+`
+
+const TableWrapper = styled.div`
+  display: grid;
+  grid-template: 1fr / 1fr;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
 `

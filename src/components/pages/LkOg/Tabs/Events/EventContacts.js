@@ -10,16 +10,13 @@ import { FieldsRow } from "./EventLocation"
 import { FormHR, FormSubTitle } from "./EventPeriods"
 import InputMask from "react-input-mask"
 import PhoneIcon from "../../../../../public/svg/profile-phone.svg"
-import { decamelizeKeys } from "humps"
+import { formDataHttp } from "../../../../../helpers/formDataHttp"
 
 const emptyInitialValues = {
   nameOrganization: "",
   firstName: "",
   lastName: "",
-  phone_number_1: "",
-  phoneNumber2: "",
-  phoneNumber3: "",
-  phoneNumber4: "",
+  phoneNumber1: "",
   telegram: "",
   instagram: "",
   youtube: "",
@@ -32,7 +29,7 @@ const emptyInitialValues = {
   webSite: "",
 }
 
-function EventContacts() {
+function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
   const {
     touched,
     errors,
@@ -42,18 +39,28 @@ function EventContacts() {
     handleSubmit,
     isValid,
   } = useFormik({
-    initialValues: emptyInitialValues,
+    initialValues: defaultValue,
     validationSchema,
     onSubmit: async (values) => {
-      console.log(values)
+      const {
+        phoneNumber1,
+        phoneNumber2,
+        phoneNumber3,
+        phoneNumber4,
+        ...rest
+      } = values
+      await formDataHttp(
+        { ...rest, phone_number_1: phoneNumber1, allFieldsFilled: true },
+        `organizer/events/${eventId}/contact/`,
+        "put"
+      )
+      routerPush(`/lk-og/profile/events/`)
     },
   })
 
   const { push: routerPush } = useRouter()
 
   const dispatch = useDispatch()
-
-  console.log(decamelizeKeys({ phoneNumber1: "asdasd" }))
 
   useEffect(() => {
     dispatch(fetchSportTypes())
@@ -72,7 +79,7 @@ function EventContacts() {
           error={touched.nameOrganization && Boolean(errors.nameOrganization)}
           helperText={touched.nameOrganization && errors.nameOrganization}
           onChange={handleChange}
-          value={values.nameOrganization}
+          value={values.nameOrganization || ""}
         />
       </Field>
 
@@ -87,7 +94,7 @@ function EventContacts() {
             error={touched.lastName && Boolean(errors.lastName)}
             helperText={touched.lastName && errors.lastName}
             onChange={handleChange}
-            value={values.lastName}
+            value={values.lastName || ""}
           />
         </Field>
         <Field>
@@ -100,7 +107,7 @@ function EventContacts() {
             error={touched.firstName && Boolean(errors.firstName)}
             helperText={touched.firstName && errors.firstName}
             onChange={handleChange}
-            value={values.firstName}
+            value={values.firstName || ""}
           />
         </Field>
       </FieldsRow>
@@ -116,7 +123,7 @@ function EventContacts() {
           error={touched.email && Boolean(errors.email)}
           helperText={touched.email && errors.email}
           onChange={handleChange}
-          value={values.email}
+          value={values.email || ""}
         />
       </Field>
 
@@ -166,7 +173,7 @@ function EventContacts() {
           error={touched.facebook && Boolean(errors.facebook)}
           helperText={touched.facebook && errors.facebook}
           onChange={handleChange}
-          value={values.facebook}
+          value={values.facebook || ""}
         />
       </Field>
 
@@ -183,7 +190,7 @@ function EventContacts() {
           error={touched.linkedin && Boolean(errors.linkedin)}
           helperText={touched.linkedin && errors.linkedin}
           onChange={handleChange}
-          value={values.linkedin}
+          value={values.linkedin || ""}
         />
       </Field>
 
@@ -200,7 +207,7 @@ function EventContacts() {
           error={touched.instagram && Boolean(errors.instagram)}
           helperText={touched.instagram && errors.instagram}
           onChange={handleChange}
-          value={values.instagram}
+          value={values.instagram || ""}
         />
       </Field>
 
@@ -217,12 +224,12 @@ function EventContacts() {
           error={touched.vk && Boolean(errors.vk)}
           helperText={touched.vk && errors.vk}
           onChange={handleChange}
-          value={values.vk}
+          value={values.vk || ""}
         />
       </Field>
 
       <EventFormFooter>
-        <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
+        <Cancel type='button' onClick={() => routerPush("/lk-og/profile/events")}>
           Отмена
         </Cancel>
         <Submit disabled={!isValid} type="submit">
@@ -236,5 +243,18 @@ function EventContacts() {
 export default EventContacts
 
 const validationSchema = yup.object({
-  rules: yup.string().required("Обязательное поле!"),
+  nameOrganization: yup.string().nullable().required("Обязательное поле!"),
+  firstName: yup.string().nullable().required("Обязательное поле!"),
+  lastName: yup.string().nullable().required("Обязательное поле!"),
+  phoneNumber1: yup.string().nullable().required("Обязательное поле!"),
+  telegram: "",
+  instagram: "",
+  youtube: "",
+  tiktok: "",
+  facebook: "",
+  linkedin: "",
+  twitter: "",
+  vk: "",
+  email: yup.string().nullable().required("Обязательное поле!"),
+  webSite: "",
 })

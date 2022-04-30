@@ -7,9 +7,9 @@ import { theme, themeMui } from "../styles/theme"
 import Layout from "../components/layouts/Layout"
 import { Provider } from "react-redux"
 import store from "../redux/store"
-import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import RouterLoader from "../components/ui/RouterLoader"
+import EventRouteWrapper from "../components/pages/LkOg/Tabs/Events/EventRouteProvider"
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -29,7 +29,9 @@ function MyApp({ Component, pageProps }) {
             {/*  draggable*/}
             {/*  pauseOnHover*/}
             {/*/>*/}
-            <Component {...pageProps} />
+            <EventRouteWrapper>
+              <Component {...pageProps} />
+            </EventRouteWrapper>
           </Layout>
         </ThemeProvider>
       </ThemeProviderMui>

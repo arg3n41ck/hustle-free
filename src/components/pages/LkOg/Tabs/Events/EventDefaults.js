@@ -24,6 +24,7 @@ import { MobileDatePicker } from "@mui/lab"
 import { asiaTimezone } from "../../../../../services/asia-timezone"
 import { useRouter } from "next/router"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
+import Link from "next/link"
 
 const emptyInitialValues = {
   name: "",
@@ -35,7 +36,7 @@ const emptyInitialValues = {
   statusPublish: "draft",
 }
 
-function EventDefaults() {
+function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
   const { push: routerPush } = useRouter()
   const {
     touched,
@@ -44,12 +45,10 @@ function EventDefaults() {
     handleChange,
     setFieldValue,
     handleSubmit,
-    isValid,
   } = useFormik({
-    initialValues: emptyInitialValues,
+    initialValues: defaultValues,
     validationSchema,
     onSubmit: async (values) => {
-      console.log(values)
       const { data } = await formDataHttp(
         {
           ...values,
@@ -57,16 +56,13 @@ function EventDefaults() {
           dateStart: new Date(values.dateStart).toISOString(),
           dateEnd: new Date(values.dateEnd).toISOString(),
         },
-        "organizer/events/",
-        "post"
+        `organizer/events/${eventId ? eventId + "/" : ""}`,
+        eventId ? "put" : "post"
       )
       routerPush(`/lk-og/profile/events/edit/${data.id}/location`)
     },
   })
-
-  console.log({ touched, values, errors })
   const [sportTypes] = useSelector(selectSportTypes)
-
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -174,7 +170,7 @@ function EventDefaults() {
           options={asiaTimezone.map((option) => option)}
           getOptionLabel={(option) => `${option.country} ${option.tz}`}
           fullWidth
-          // value={values.timezone}
+          value={asiaTimezone.find(({ tz }) => tz === values.timezone)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -195,7 +191,12 @@ function EventDefaults() {
         error={touched.formatEvent && Boolean(errors.formatEvent)}
         variant="standard"
       >
-        <RadioGroup row name="formatEvent" onChange={handleChange}>
+        <RadioGroup
+          row
+          name="formatEvent"
+          value={values.formatEvent}
+          onChange={handleChange}
+        >
           <FormControlLabel
             value="olympic"
             control={<Radio />}
@@ -213,9 +214,9 @@ function EventDefaults() {
       </FormControl>
 
       <EventFormFooter>
-        <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
-          Отмена
-        </Cancel>
+        <Link href="/lk-og/profile/events">
+          <Cancel>Отмена</Cancel>
+        </Link>
         <Submit type="submit">Далее</Submit>
       </EventFormFooter>
     </Form>
@@ -282,7 +283,7 @@ export const Submit = styled.button`
   padding: 8px 24px;
 `
 
-export const Cancel = styled.button`
+export const Cancel = styled.a`
   font-weight: 600;
   font-size: 18px;
   line-height: 32px;

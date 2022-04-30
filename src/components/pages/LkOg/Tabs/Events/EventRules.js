@@ -9,21 +9,23 @@ import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 
 const emptyInitialValues = {
-  eventRules: "",
+  rules: "",
 }
 
 function EventRules({ eventId, defaultValues = emptyInitialValues }) {
   const { touched, errors, values, handleChange, handleSubmit, isValid } =
     useFormik({
-      initialValues: emptyInitialValues,
+      initialValues: defaultValues,
       validationSchema,
       onSubmit: async (values) => {
         await formDataHttp(
           values,
-          `organizer/events/${eventId}/description/`,
+          `organizer/events/${eventId}/rules/`,
           "put"
         )
-        routerPush(`/lk-og/profile/events/edit/${eventId}/participant-categories`)
+        routerPush(
+          `/lk-og/profile/events/edit/${eventId}/participant-categories`
+        )
       },
     })
 
@@ -39,16 +41,16 @@ function EventRules({ eventId, defaultValues = emptyInitialValues }) {
     <Form onSubmit={handleSubmit}>
       <Field>
         <TextField
-          name="eventRules"
+          name="rules"
           placeholder="Правила турнира"
           variant="outlined"
           fullWidth
           multiline
           minRows={10}
-          error={touched.eventRules && Boolean(errors.eventRules)}
-          helperText={touched.eventRules && errors.eventRules}
+          error={touched.rules && Boolean(errors.rules)}
+          helperText={touched.rules && errors.rules}
           onChange={handleChange}
-          value={values.eventRules}
+          value={values.rules || ""}
         />
       </Field>
 
@@ -67,5 +69,5 @@ function EventRules({ eventId, defaultValues = emptyInitialValues }) {
 export default EventRules
 
 const validationSchema = yup.object({
-  eventRules: yup.string().required("Обязательное поле").nullable(),
+  rules: yup.string().required("Обязательное поле").nullable(),
 })

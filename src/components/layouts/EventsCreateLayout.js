@@ -1,19 +1,21 @@
-import React from "react"
+import React  from "react"
 import { BetweenIcon, StartIcon } from "../pages/LkOg/Tabs/Events/FormIcons"
 import { useRouter } from "next/router"
 import styled from "styled-components"
 import ActiveLink from "../ActiveLink"
 import LkDefaultHeader from "../ui/LKui/LKDefaultHeader"
-import { HeaderWrapper } from "../pages/LkOg/Tabs/Events/Events"
+import { HeaderWrapper } from "../pages/LkOg/Tabs/Events/Events/Events"
 import { TitleHeader } from "../ui/LKui/HeaderContent"
+import { useEventRouteContext } from "../pages/LkOg/Tabs/Events/EventRouteProvider"
 
 function EventsCreateLayout({ onToggleSidebar, children }) {
   const {
     push: routerPush,
     pathname,
+    asPath,
     query: { id: eventId },
   } = useRouter()
-
+  const { ctxStep } = useEventRouteContext()
   const readySteps = steps(eventId)
 
   return (
@@ -31,28 +33,32 @@ function EventsCreateLayout({ onToggleSidebar, children }) {
           <PageHeader>
             <h2>{readySteps.find(({ href }) => href === pathname)?.title}</h2>
           </PageHeader>
-
           <Form>{children}</Form>
         </div>
 
         <StepsWrapper>
-          {readySteps.map(({ title, href, path }, i) => {
+          {readySteps.map(({ title, href, path, ctxKey }, i) => {
             const icon =
               i === 0 || i === readySteps.length - 1 ? (
                 <StartIcon
-                  completed={false}
+                  completed={ctxStep[ctxKey]?.allFieldsFilled}
                   active={href === pathname}
                   reversed={i !== 0}
                 />
               ) : (
-                <BetweenIcon completed={false} active={href === pathname} />
+                <BetweenIcon
+                  completed={ctxStep[ctxKey]?.allFieldsFilled}
+                  active={href === pathname}
+                />
               )
             return (
               <Step key={`eventCreateSteps_${title}_${i}`}>
                 <ActiveLink
                   disabled
-                  href={path ? path : "/lk-og/profile/events/edit"}
-                  activeClassName={path ? "activeECLink" : ""}
+                  href={ctxStep[ctxKey]?.access && path ? path : asPath}
+                  activeClassName={
+                    ctxStep[ctxKey]?.access && path ? "activeECLink" : ""
+                  }
                 >
                   <a>
                     {icon}
@@ -142,22 +148,28 @@ const steps = (eventId) => {
   return [
     {
       title: "Общая информация",
-      href: "/lk-og/profile/events/edit",
-      path: "/lk-og/profile/events/edit",
+      href: !eventId
+        ? "/lk-og/profile/events/edit"
+        : "/lk-og/profile/events/edit/[id]",
+      ctxKey: "general",
+      path: eventId ? `/lk-og/profile/events/edit/${eventId}` : null,
     },
     {
       title: "Локация",
       href: `/lk-og/profile/events/edit/[id]/location`,
+      ctxKey: "location",
       path: eventId ? `/lk-og/profile/events/edit/${eventId}/location` : null,
     },
     {
       title: "Периоды регистрации",
       href: `/lk-og/profile/events/edit/[id]/periods`,
+      ctxKey: "periods",
       path: eventId ? `/lk-og/profile/events/edit/${eventId}/periods` : null,
     },
     {
       title: "Обложка и описание",
       href: `/lk-og/profile/events/edit/[id]/description`,
+      ctxKey: "description",
       path: eventId
         ? `/lk-og/profile/events/edit/${eventId}/description`
         : null,
@@ -165,11 +177,13 @@ const steps = (eventId) => {
     {
       title: "Правила турнира",
       href: `/lk-og/profile/events/edit/[id]/rules`,
+      ctxKey: "rules",
       path: eventId ? `/lk-og/profile/events/edit/${eventId}/rules` : null,
     },
     {
       title: "Категории участников",
       href: `/lk-og/profile/events/edit/[id]/participant-categories`,
+      ctxKey: "participantCategories",
       path: eventId
         ? `/lk-og/profile/events/edit/${eventId}/participant-categories`
         : null,
@@ -177,12 +191,13 @@ const steps = (eventId) => {
     {
       title: "Контакты",
       href: `/lk-og/profile/events/edit/[id]/contacts`,
+      ctxKey: "contacts",
       path: eventId ? `/lk-og/profile/events/edit/${eventId}/contacts` : null,
     },
-    {
-      title: "Кредиты",
-      href: `/lk-og/profile/events/edit/[id]/credits`,
-      path: eventId ? `/lk-og/profile/events/edit/${eventId}/credits` : null,
-    },
+    // {
+    //   title: "Кредиты",
+    //   href: `/lk-og/profile/events/edit/[id]/credits`,
+    //   path: eventId ? `/lk-og/profile/events/edit/${eventId}/credits` : null,
+    // },
   ]
 }
