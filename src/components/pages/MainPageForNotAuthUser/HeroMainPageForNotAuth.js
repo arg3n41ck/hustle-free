@@ -17,7 +17,7 @@ function HeroMainPageForNotAuth() {
           соревнованиями
         </HeroInfoDescription>
         <HeroInfoButtons>
-          <Link href={"/events/"}>
+          <Link href={"/events/"} passHref>
             <a>
               <HeroInfoButtonForViewEvents>
                 Смотреть турниры

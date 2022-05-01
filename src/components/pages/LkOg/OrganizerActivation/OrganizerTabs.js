@@ -7,6 +7,8 @@ import { fetchCountries } from "../../../../redux/components/countriesAndCities"
 import { toast } from "react-toastify"
 import { formDataHttp } from "../../../../helpers/formDataHttp"
 import { useRouter } from "next/router"
+import { setCookie } from "../../../../services/JWTService"
+import { fetchUser } from "../../../../redux/components/user"
 
 const tabs = [
   {
@@ -31,9 +33,16 @@ function OrganizerTabs() {
 
   const onSubmit = useCallback(async (values) => {
     try {
-      await formDataHttp(values, "accounts/organizer/", "post")
+      const { data } = await formDataHttp(
+        values,
+        "accounts/organizer/",
+        "post"
+      )
+      setCookie("token", data.access, 999)
+      setCookie("refresh", data.refresh, 999999)
+      dispatch(fetchUser())
       toast.success("Вы успешно активировали свои учетные данные!")
-      router.push("/login")
+      await router.push("/")
     } catch (e) {}
   }, [])
 

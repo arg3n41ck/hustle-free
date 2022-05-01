@@ -30,6 +30,7 @@ const Info = ({ onToggleSidebar }) => {
     city: "",
   })
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(fetchCountries())
   }, [])

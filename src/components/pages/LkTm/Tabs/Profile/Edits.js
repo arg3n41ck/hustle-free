@@ -62,8 +62,7 @@ const Edits = ({ onView }) => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const { nameOrganization, country, avatar, city, ...rstValues } =
-            values,
+        const { country, avatar, city, ...rstValues } = values,
           currentCountry = countries.find(
             (countryItem) => countryItem.name === country
           ),
@@ -81,10 +80,6 @@ const Edits = ({ onView }) => {
         }
         if (typeof newValues.avatar === "string") delete newValues.avatar
         const { data } = await formDataHttp(newValues, "teams/profile/edit/")
-
-        await $api.patch(`/accounts/users/me/`, {
-          nameOrganization,
-        })
         dispatch(saveUser({ ...values, ...data }))
         dispatch(fetchUser())
         onView("general")

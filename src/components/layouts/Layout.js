@@ -10,6 +10,7 @@ import styled from "styled-components"
 import { fetchCountries } from "../../redux/components/countriesAndCities"
 import { fetchSportTypes } from "../../redux/components/sportTypes"
 import { useRouter } from "next/router"
+import { getCookie } from "../../services/JWTService"
 
 const Layout = ({ children }) => {
   const lg = useMediaQuery("(max-width:992px)")
@@ -19,9 +20,11 @@ const Layout = ({ children }) => {
   const [userAuthenticated] = useSelector(selectIsUserAuth)
 
   useEffect(() => {
-    dispatch(fetchUser())
-    dispatch(fetchCountries())
-    dispatch(fetchSportTypes())
+    if (getCookie("token")) {
+      dispatch(fetchUser())
+      dispatch(fetchCountries())
+      dispatch(fetchSportTypes())
+    }
   }, [cookies?.token])
 
   return (
