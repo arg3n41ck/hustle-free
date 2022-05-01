@@ -49,7 +49,7 @@ function EventsGlobalSearch() {
             {!!data?.length &&
               data.map(({ id, name }) => (
                 <li key={`hustleFreeSearchEventsResult${id}`}>
-                  <Link href={"/"}>
+                  <Link href={`/events/${id}`}>
                     <a>{name}</a>
                   </Link>
                 </li>

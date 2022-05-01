@@ -24,5 +24,3 @@ export function setCookie(cName, cValue, expDays) {
 //
 //   return await data
 // }
-
-export async function clearTokens() {}

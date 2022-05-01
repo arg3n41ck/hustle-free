@@ -6,6 +6,7 @@ import sportTypes from "./components/sportTypes"
 import teams from "./components/teams"
 import stories from "./components/stories"
 import categories from "./components/categories"
+import athletes from "./components/athletes"
 
 export function makeStore() {
   return configureStore({
@@ -17,6 +18,7 @@ export function makeStore() {
       sportTypes,
       teams,
       stories,
+      athletes,
       categories,
     },
   })

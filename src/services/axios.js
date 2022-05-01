@@ -19,7 +19,6 @@ const $api = axios.create({
 $api.interceptors.request.use(
   (config) => {
     let token = getCookie("token")
-    let email = getCookie("email")
     if (token) {
       config.headers.Authorization = `Token ${token}`
     }
@@ -44,7 +43,7 @@ $api.interceptors.response.use(
         const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}accounts/auth/jwt/refresh/`,
           {
-            refresh: refreshToken,
+            refresh: getCookie("refresh"),
           }
         )
         await setCookie("token", data.access, 99999)

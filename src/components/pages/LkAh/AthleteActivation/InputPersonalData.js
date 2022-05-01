@@ -54,7 +54,7 @@ const InputPersonalData = () => {
     initialValues: {
       lastName: "",
       firstName: "",
-      email: getCookie("email") || "",
+      email: unescape(getCookie("email")) || "",
       password: "",
     },
     onSubmit: async (values) => {

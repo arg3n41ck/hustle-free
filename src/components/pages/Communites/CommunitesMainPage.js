@@ -4,10 +4,16 @@ import { fetchTeams, teamsSelector } from "../../../redux/components/teams"
 import styled from "styled-components"
 import searchIcon from "../../../public/svg/searchIcon.svg"
 import Image from "next/image"
-import CommunitesList from "./CommunitesList"
+import CommunitesList from "./CommunitesTeamsList"
 import Link from "next/link"
 import useQuery from "../../../hooks/useQuery"
 import { useRouter } from "next/router"
+import {
+  fetchAthletesByParams,
+  selectAthletes,
+} from "../../../redux/components/athletes"
+import CommunitesAthletesList from "./CommunitiesAthleteList"
+import { fetchCountries } from "../../../redux/components/countriesAndCities"
 
 function CommunitesMainPage() {
   const dispatch = useDispatch()
@@ -15,9 +21,12 @@ function CommunitesMainPage() {
   const [search, setSearch] = useState("")
   const query = useQuery()
   const { push: routerPush } = useRouter()
+  const [, athletes] = useSelector(selectAthletes)
 
   React.useEffect(() => {
     dispatch(fetchTeams())
+    dispatch(fetchAthletesByParams())
+    dispatch(fetchCountries())
   }, [])
 
   const handleSubmit = (e, value) => {
@@ -42,6 +51,15 @@ function CommunitesMainPage() {
             </CommunitesHeadingButton>
           </CommunitesHeadingInputAndButton>
         </form>
+
+        <CommunitesItem>
+          <CommunitesHeadingText>Участники</CommunitesHeadingText>
+          <Link href={`/communities-athletes`} passHref>
+            <CommunitesHeadingTextViewAll>См.все</CommunitesHeadingTextViewAll>
+          </Link>
+        </CommunitesItem>
+
+        <CommunitesAthletesList data={athletes.slice(0, 8)} />
 
         <CommunitesItem>
           <CommunitesHeadingText>Команды</CommunitesHeadingText>

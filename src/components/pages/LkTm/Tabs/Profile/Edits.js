@@ -29,7 +29,7 @@ const Edits = ({ onView }) => {
   const dispatch = useDispatch()
   const [currentSportTypes, setCurrentSportTypes] = useState([])
   const validationSchema = yup.object({
-    nameOrganization: yup.string().nullable().required("Обязательное поле"),
+    fullName: yup.string().nullable().required("Обязательное поле"),
     country: yup.mixed().required("Обязательное поле"),
     city: yup.mixed().required("Обязательное поле"),
     webSite: yup.string().url().required("Обязательное поле"),
@@ -62,8 +62,7 @@ const Edits = ({ onView }) => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const { nameOrganization, country, avatar, city, ...rstValues } =
-            values,
+        const { country, avatar, city, ...rstValues } = values,
           currentCountry = countries.find(
             (countryItem) => countryItem.name === country
           ),
@@ -81,10 +80,6 @@ const Edits = ({ onView }) => {
         }
         if (typeof newValues.avatar === "string") delete newValues.avatar
         const { data } = await formDataHttp(newValues, "teams/profile/edit/")
-
-        await $api.patch(`/accounts/users/me/`, {
-          nameOrganization,
-        })
         dispatch(saveUser({ ...values, ...data }))
         dispatch(fetchUser())
         onView("general")
@@ -141,19 +136,14 @@ const Edits = ({ onView }) => {
           <p className="auth-title__input">Название организации</p>
           <TextField
             sx={{ width: "100%" }}
-            name="nameOrganization"
+            name="fullName"
             onChange={formik.handleChange}
             id="outlined-basic"
-            value={formik.values.nameOrganization}
+            value={formik.values.fullName}
             placeholder="Название организации"
             variant="outlined"
-            error={
-              formik.touched.nameOrganization &&
-              Boolean(formik.errors.nameOrganization)
-            }
-            helperText={
-              formik.touched.nameOrganization && formik.errors.nameOrganization
-            }
+            error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+            helperText={formik.touched.fullName && formik.errors.fullName}
           />
         </div>
 

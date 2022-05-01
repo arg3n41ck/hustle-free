@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
 import $api from "../../services/axios"
 import { camelizeKeys } from "humps"
-import { clearTokens } from "../../services/JWTService"
 import { localStorageRemoveItem } from "../../helpers/helpers"
 
 // async actions
@@ -31,6 +30,18 @@ export const fetchUser = createAsyncThunk(
   }
 )
 
+export const fetchOgEvents = createAsyncThunk(
+  "user/get-og-events",
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/organizer/my_events_list/`)
+      return data || []
+    } catch (e) {
+      return rejectWithValue(e.response.status)
+    }
+  }
+)
+
 // reducer
 const initialState = {
   user: null,
@@ -49,7 +60,6 @@ export const profileMenuSlice = createSlice({
       state.user = payload
     },
     exitUser(state) {
-      clearTokens()
       state.user = initialState
       state.userAuthenticated = false
       localStorageRemoveItem("role")
@@ -65,6 +75,12 @@ export const profileMenuSlice = createSlice({
       state.error = action.payload
       state.userAuthenticated = false
     })
+    builder.addCase(fetchOgEvents.fulfilled, (state, action) => {
+      state.myEvents = action.payload
+    })
+    builder.addCase(fetchOgEvents.rejected, (state, action) => {
+      state.errorOgEvents = action.payload
+    })
   },
 })
 
@@ -73,6 +89,14 @@ export const { saveUserItem, saveUser, exitUser } = profileMenuSlice.actions
 export const selectIsUserAuth = createSelector(
   (state) => state.user.userAuthenticated,
   (userAuthenticated) => [userAuthenticated]
+)
+
+export const selectOgEvents = createSelector(
+  (state) => {
+    const ogEvents = state?.user?.myEvents
+    return ogEvents?.length ? ogEvents.map(({ id }) => id) : []
+  },
+  (ogEvents) => [ogEvents]
 )
 
 export default profileMenuSlice.reducer

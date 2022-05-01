@@ -98,7 +98,7 @@ const TeamContactInfo = ({ data, setData, setView }) => {
       phone_coach: !!data?.phone_coach ? data.phone_coach : "",
       email_coach: !!data?.email_coach
         ? data.email_coach
-        : getCookie("email") || "",
+        : unescape(getCookie("email")) || "",
       password: !!data?.password ? data.password : "",
     },
     onSubmit: async (values) => {

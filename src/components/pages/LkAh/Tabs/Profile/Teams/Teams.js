@@ -15,7 +15,7 @@ function Teams({ data, column }) {
   }, [data])
 
   return (
-    <TeamsContainer column={column}>
+    <TeamsContainer key={data?.id} column={column}>
       <TeamsItems>
         <TeamsHeadingInfo column={column}>
           <img

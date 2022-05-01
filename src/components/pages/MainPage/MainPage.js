@@ -3,12 +3,11 @@ import { Container } from "../../ui/Wrappers/Container"
 import EventsSlider from "../Events/EventsSlider"
 import EventsGlobalSearch from "../Events/EventsGlobalSearch/EventsGlobalSearch"
 import styled from "styled-components"
-import { useDispatch, useSelector } from "react-redux"
-import { fetchEvents, selectEvents } from "../../../redux/components/events"
+import { useDispatch } from "react-redux"
+import { fetchEvents } from "../../../redux/components/events"
 import EventsCatalog from "../Events/EventsCatalog/EventsCatalog"
 
 const MainPage = () => {
-  const [, events] = useSelector(selectEvents)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -20,7 +19,7 @@ const MainPage = () => {
       <MainPageWrapper>
         <EventsGlobalSearch />
         <MainPageTitle>Популярные</MainPageTitle>
-        <EventsSlider events={events} />
+        <EventsSlider />
         <EventsCatalog />
       </MainPageWrapper>
     </Container>

@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { Skeleton } from "@mui/material"
 import React from "react"
 import styled from "styled-components"
@@ -6,18 +5,16 @@ import styled from "styled-components"
 const NotificationItems = () => {
   return (
     <>
-      <Link>
-        <ListItem>
-          {/*TODO user avatar*/}
-          <Skeleton
-            variant="circular"
-            width={64}
-            height={64}
-            sx={{ marginRight: 1.2 }}
-          />
-          <Text>Сообщение об успехе или о выполнении условий</Text>
-        </ListItem>
-      </Link>
+      <ListItem>
+        {/*TODO user avatar*/}
+        <Skeleton
+          variant="circular"
+          width={64}
+          height={64}
+          sx={{ marginRight: 1.2 }}
+        />
+        <Text>Сообщение об успехе или о выполнении условий</Text>
+      </ListItem>
     </>
   )
 }

@@ -4,6 +4,7 @@ import DropdownData from "../../../ui/DropdownData"
 
 const EventParticipantsItem = ({ eventParticipant }) => {
   const [open, setOpen] = useState(false)
+  const { eventParticipantsCategory } = eventParticipant
 
   const info = (
     <Info>
@@ -15,18 +16,23 @@ const EventParticipantsItem = ({ eventParticipant }) => {
   )
 
   return (
-    <DropdownData
-      active={open}
-      setActive={setOpen}
-      heightWrapper={"184px"}
-      additionalData={info}
-      title={"Сеньор мужчины / Белый / 25-35 лет / 60 кг - 75 кг"}
-    >
-      <h1>data</h1>
-    </DropdownData>
+    <Item>
+      <DropdownData
+        active={open}
+        setActive={setOpen}
+        heightWrapper={"184px"}
+        additionalData={info}
+        title={`${eventParticipantsCategory.name} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
+      >
+        <h1>data</h1>
+      </DropdownData>
+    </Item>
   )
 }
 
+const Item = styled.div`
+  margin-bottom: 32px;
+`
 const Info = styled.div`
   padding: 0 32px;
   border-top: 1px solid #333333;

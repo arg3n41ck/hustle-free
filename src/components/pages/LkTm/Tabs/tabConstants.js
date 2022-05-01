@@ -22,7 +22,7 @@ export const lkTmTabs = [
   },
   {
     name: "Настройки",
-    href: "/lk-tm/profile/settings",
+    href: "/lk-tm/profile/",
     icon: <SettingsIcon />,
   },
 ]
