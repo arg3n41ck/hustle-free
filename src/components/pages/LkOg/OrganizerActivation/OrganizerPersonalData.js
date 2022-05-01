@@ -90,7 +90,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
       password: !!data?.password ? data.password : "",
       gender: !!data?.gender ? data.gender : "",
       position: !!data?.position ? data.position : "",
-      email: !!data?.email ? data.email : getCookie("email") || "",
+      email: !!data?.email ? data.email : unescape(getCookie("email")) || "",
     },
     onSubmit: async (values) => {
       if (
@@ -386,7 +386,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  <PasswordIcon show={showPassword}/>
+                  <PasswordIcon show={showPassword} />
                 </IconButton>
               </InputAdornment>
             }

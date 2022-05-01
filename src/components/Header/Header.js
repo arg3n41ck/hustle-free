@@ -99,8 +99,8 @@ const Header = () => {
               <UserInfo>
                 <UserName>
                   {user?.role !== "team"
-                    ? `${user.firstName} ${user.lastName}`
-                    : user.fullNameCoach}
+                    ? `${user?.firstName || ""} ${user?.lastName || ""}`
+                    : user?.fullNameCoach || ''}
                 </UserName>
                 <UserRole>{getRoleInRu(user.role)}</UserRole>
               </UserInfo>

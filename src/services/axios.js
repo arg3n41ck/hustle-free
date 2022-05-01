@@ -19,7 +19,6 @@ const $api = axios.create({
 $api.interceptors.request.use(
   (config) => {
     let token = getCookie("token")
-    let email = getCookie("email")
     if (token) {
       config.headers.Authorization = `Token ${token}`
     }
