@@ -29,8 +29,14 @@ const HorizontalTabs = ({ valueTab, arrayTab, onChangeHandler, children }) => {
             indicator: classes.indicator,
           }}
           sx={{
+            "& .MuiTab-root": {
+              color: "#BDBDBD",
+              fontSize: "24px !important",
+              fontHeight: "32px !important",
+              fontStyle: "normal !important",
+            },
             "& .Mui-selected": {
-              color: "#F1FBF5 !important",
+              color: "#F2F2F2 !important",
               transition: "all 0.3s ease 0s",
             },
             "& .MuiTabs-flexContainer": {

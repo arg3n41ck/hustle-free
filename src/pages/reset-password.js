@@ -112,7 +112,7 @@ const NewPassword = ({ query }) => {
               component="p"
             >
               Уже есть аккаунт?{" "}
-              <Link href={"/login"}>
+              <Link href={"/login"} passHref>
                 <a className="auth-link">Войти</a>
               </Link>
             </Box>

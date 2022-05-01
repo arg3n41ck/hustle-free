@@ -37,6 +37,7 @@ const Header = () => {
   const changeMenu = (value) => {
     setAnchorUserMenu(null)
     if (value === "exit") {
+      clearCookies()
       outHandler()
       return
     }
@@ -44,9 +45,9 @@ const Header = () => {
   }
 
   const outHandler = async () => {
-    await clearCookies()
     dispatch(exitUser())
-    await routerPush("/")
+    clearCookies()
+    await routerPush("/login")
   }
 
   return (
@@ -63,17 +64,17 @@ const Header = () => {
         </Left>
         <WrapperCenter>
           <NavbarTextList>
-            <Link href={"/events"}>
+            <Link href={"/events"} passHref>
               <a>
                 <NavbarText>Турниры</NavbarText>
               </a>
             </Link>
-            <Link href={"/about"}>
+            <Link href={"/about"} passHref>
               <a>
                 <NavbarText>Подробнее</NavbarText>
               </a>
             </Link>
-            <Link href={"/communities"}>
+            <Link href={"/communities"} passHref>
               <a>
                 <NavbarText>Сообщество</NavbarText>
               </a>

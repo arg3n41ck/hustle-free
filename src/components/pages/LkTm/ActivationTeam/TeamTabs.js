@@ -11,6 +11,8 @@ import { fetchCountries } from "../../../../redux/components/countriesAndCities"
 import { toast } from "react-toastify"
 import { formDataHttp } from "../../../../helpers/formDataHttp"
 import { useRouter } from "next/router"
+import { setCookie } from "../../../../services/JWTService"
+import { fetchUser } from "../../../../redux/components/user"
 
 const tabs = [
   {
@@ -34,11 +36,14 @@ function TeamTabs() {
     dispatch(fetchSportTypes())
   }, [])
 
-  const onSubmit = useCallback(async (data) => {
+  const onSubmit = useCallback(async (submitData) => {
     try {
-      await formDataHttp(data, "accounts/team/", "post")
+      const { data } = await formDataHttp(submitData, "accounts/team/", "post")
+      setCookie("token", data.access, 999)
+      setCookie("refresh", data.refresh, 999999)
+      dispatch(fetchUser())
       toast.success("Вы успешно активировали свои учетные данные!")
-      router.push("/login")
+      await router.push("/")
     } catch (e) {
       console.log(e.response)
       toast.error("Что-то пошло не так!")

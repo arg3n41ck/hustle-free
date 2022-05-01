@@ -10,7 +10,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import Radio from "../../../../ui/Radio"
 import InputMask from "react-input-mask"
 import CustomButton from "../../../../ui/CustomButton"
-
+import Link from "next/link"
 import CalendarIcon from "../../../../../public/svg/calendar-edit-profile.svg"
 import PhoneIcon from "../../../../../public/svg/profile-phone.svg"
 import EmailIcon from "../../../../../public/svg/profile-email-edit.svg"
@@ -380,11 +380,14 @@ const Edits = ({ onView }) => {
         </div>
       </Content>
       <Footer>
-        <ButtonWrapper onClick={() => onView("general")}>
-          <CustomButton type={"button"} typeButton={"secondary"}>
-            Отмена
-          </CustomButton>
-        </ButtonWrapper>
+        <Link href={"/lk-og/profile/"} passHref>
+          <ButtonWrapper>
+            <CustomButton type={"button"} typeButton={"secondary"}>
+              Отмена
+            </CustomButton>
+          </ButtonWrapper>
+        </Link>
+
         <ButtonWrapper>
           <CustomButton type={"submit"} typeButton={"primary"}>
             Сохранить

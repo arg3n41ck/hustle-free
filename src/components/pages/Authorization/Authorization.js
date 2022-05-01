@@ -20,6 +20,7 @@ import { theme } from "../../../styles/theme"
 import { useDispatch } from "react-redux"
 import { fetchUser } from "../../../redux/components/user"
 import { formDataHttp } from "../../../helpers/formDataHttp"
+import { setCookie } from "../../../services/JWTService"
 
 const validationSchema = yup.object({
   email: yup
@@ -34,7 +35,7 @@ const validationSchema = yup.object({
 
 const Authorization = ({ onView }) => {
   const router = useRouter()
-  const [cookies, setCookie] = useCookies(["token", "refresh"])
+  // const [cookies, setCookie] = useCookies(["token", "refresh"])
   const [showPassword, setShowPassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const dispatch = useDispatch()
@@ -46,15 +47,13 @@ const Authorization = ({ onView }) => {
     },
     onSubmit: async (values) => {
       try {
-        const res = await formDataHttp(
+        const { data } = await formDataHttp(
           values,
           `accounts/auth/jwt/create/`,
           "post"
         )
-        if (!cookies.refresh) {
-          setCookie("token", res.data.access, { path: "/" })
-          setCookie("refresh", res.data.refresh, { path: "/" })
-        }
+        setCookie("token", data.access, 9999)
+        setCookie("refresh", data.refresh, 999999)
         dispatch(fetchUser())
         await router.push("/")
       } catch (e) {

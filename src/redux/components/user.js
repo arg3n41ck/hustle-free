@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
 import $api from "../../services/axios"
 import { camelizeKeys } from "humps"
-import { clearTokens } from "../../services/JWTService"
 import { localStorageRemoveItem } from "../../helpers/helpers"
 
 // async actions
@@ -61,7 +60,6 @@ export const profileMenuSlice = createSlice({
       state.user = payload
     },
     exitUser(state) {
-      clearTokens()
       state.user = initialState
       state.userAuthenticated = false
       localStorageRemoveItem("role")
