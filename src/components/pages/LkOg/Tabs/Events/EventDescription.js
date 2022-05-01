@@ -43,7 +43,7 @@ function EventForm({ defaultValues = emptyInitialValues, eventId }) {
         `organizer/events/${eventId}/`,
         "patch"
       )
-      routerPush(`/lk-og/profile/events/edit/${eventId}/participant-categories/`)
+      routerPush(`/lk-og/profile/events/edit/${eventId}/rules/`)
     },
   })
 

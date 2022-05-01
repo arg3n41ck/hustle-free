@@ -69,16 +69,32 @@ function EventsFilter() {
     query.get("ordering") &&
     dateTypes.find((type) => type.value === query.get("ordering"))
 
+  const futureValue =
+    query.get("events_type_time") === "future" ? null : { name: "future" }
+  const liveValue =
+    query.get("events_type_time") === "live" ? null : { name: "live" }
+  const pastValue =
+    query.get("events_type_time") === "past" ? null : { name: "past" }
+
   return (
     <div>
       <BtnsWrapper>
-        <SoonBtn onClikc={() => handleFilter("future", { name: true })}>
+        <SoonBtn
+          className={!futureValue ? "active" : ""}
+          onClick={() => handleFilter("events_type_time", futureValue)}
+        >
           Предстоящие
         </SoonBtn>
-        <LiveBtn onClikc={() => handleFilter("live", { name: true })}>
+        <LiveBtn
+          className={!liveValue ? "active" : ""}
+          onClick={() => handleFilter("events_type_time", liveValue)}
+        >
           • Live
         </LiveBtn>
-        <PastEventsBtn onClikc={() => handleFilter("past", { name: true })}>
+        <PastEventsBtn
+          className={!pastValue ? "active" : ""}
+          onClick={() => handleFilter("events_type_time", pastValue)}
+        >
           Прошедшие
         </PastEventsBtn>
         <FilterBtn onClick={() => setFilter((s) => !s)}>
@@ -181,6 +197,10 @@ const BtnsWrapper = styled.div`
   align-items: center;
   color: #fff;
   grid-gap: 56px;
+
+  button {
+    height: 64px;
+  }
 `
 
 const SoonBtn = styled.button`
@@ -188,8 +208,14 @@ const SoonBtn = styled.button`
   height: 64px;
   font-weight: 600;
   font-size: 18px;
-  background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
+  background: transparent;
+  color: #886cf8;
   border-radius: 32px;
+
+  &.active {
+    background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
+    color: #fff;
+  }
 `
 
 const LiveBtn = styled.button`
@@ -197,8 +223,13 @@ const LiveBtn = styled.button`
   font-size: 18px;
   font-weight: 600;
 
-  padding: 0 24px;
+  padding: 0 30px 0 24px;
   border-radius: 32px;
+
+  &.active {
+    color: #fff;
+    background: linear-gradient(90deg, #a12157 0%, #bd3c3c 100%);
+  }
 `
 
 const PastEventsBtn = styled.button`
@@ -207,6 +238,12 @@ const PastEventsBtn = styled.button`
   font-weight: 600;
   font-size: 18px;
   padding: 0 24px;
+  border-radius: 32px;
+
+  &.active {
+    color: #fff;
+    background: linear-gradient(90deg, #5f5f5f 0%, #313131 100%);
+  }
 `
 
 const FilterBtn = styled.button`

@@ -46,14 +46,16 @@ function MapField({ onPoint, defaultPoints, disabled }) {
       id="map"
       mapContainerStyle={mapContainerStyle}
       zoom={5}
-      center={defaultPoints || center}
+      center={marker ? center : defaultPoints}
       options={options}
       onClick={onMapClick}
       onLoad={onMapLoad}
     >
       {marker && (
         <Marker
-          position={defaultPoints || { lat: marker.lat, lng: marker.lng }}
+          position={
+            marker ? { lat: marker.lat, lng: marker.lng } : defaultPoints
+          }
           // icon={{
           //   url: "../../../public/svg/map-pointer.svg",
           //   origin: new window.google.maps.Point(0, 0),
