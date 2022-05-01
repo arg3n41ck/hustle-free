@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
       dispatch(fetchCountries())
       dispatch(fetchSportTypes())
     }
-  }, [cookies?.token, userAuthenticated])
+  }, [cookies?.token])
 
   return (
     <>

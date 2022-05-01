@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchTeams, teamsSelector } from "../../../redux/components/teams"
 import styled from "styled-components"
-import searchIcon from "../../../public/svg/searchIcon.svg"
 import { Autocomplete, TextField } from "@mui/material"
 import {
   selectCountriesAndCities,
@@ -97,7 +96,9 @@ function CommunitesAthletesPage() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Поиск"
             />
-            <CommunitesHeadingButton type="submit" searchIcon={searchIcon}>
+            <CommunitesHeadingButton
+              type="submit"
+            >
               <SearchIcon />
               Найти
             </CommunitesHeadingButton>
@@ -243,7 +244,7 @@ const CommunitesHeadingButton = styled.button`
   border-radius: 0 16px 16px 0;
   height: 100%;
   color: #ffffff;
-  background-image: url(${({ searchIcon }) => searchIcon});
+  // background-image: url(${({ searchIcon }) => searchIcon});
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
