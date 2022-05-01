@@ -1,7 +1,6 @@
 import ProfileIcon from "../../../../public/svg/profile-icon.svg"
 import MyTournamentsIcon from "../../../../public/svg/my-tournaments-icon.svg"
 import SettingsIcon from "../../../../public/svg/settings.svg"
-import ExitIcon from "../../../../public/svg/exit-icon.svg"
 
 export const lkOgTabs = [
   {
@@ -19,6 +18,6 @@ export const lkOgTabs = [
   {
     name: "Настройки",
     icon: <SettingsIcon />,
-    href: "/lk-og/profile/settings",
+    href: "/lk-og/profile/",
   },
 ]

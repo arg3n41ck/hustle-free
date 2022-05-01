@@ -13,6 +13,20 @@ export const fetchAthleteTeams = createAsyncThunk(
   }
 )
 
+export const fetchTeams = createAsyncThunk(
+  "teams/fetchTeams",
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/teams/teams/`, {
+        params,
+      })
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  }
+)
+
 export const teamsSlice = createSlice({
   name: "teams",
   initialState: {
@@ -21,6 +35,7 @@ export const teamsSlice = createSlice({
       count: 0,
       isLoading: false,
       athleteTeams: [],
+      teams: [],
     },
   },
   extraReducers: (builder) => {
@@ -38,12 +53,28 @@ export const teamsSlice = createSlice({
       teams.error = action.payload
       teams.athleteTeams = []
     })
+
+    builder.addCase(fetchTeams.pending, ({ teams }) => {
+      teams.isLoading = true
+    })
+    builder.addCase(fetchTeams.fulfilled, ({ teams }, action) => {
+      teams.isLoading = false
+      teams.teams = action.payload
+      teams.count = action.payload.count ?? action.payload.length
+      teams.error = null
+    })
+    builder.addCase(fetchTeams.rejected, ({ teams }, action) => {
+      teams.isLoading = false
+      teams.error = action.payload
+      teams.teams = []
+    })
   },
 })
 
 export const teamsSelector = createSelector(
   (state) => state.teams.teams.athleteTeams,
-  (athleteTeams) => [athleteTeams]
+  (state) => state.teams.teams.teams,
+  (athleteTeams, teams) => [athleteTeams, teams]
 )
 
 export default teamsSlice.reducer

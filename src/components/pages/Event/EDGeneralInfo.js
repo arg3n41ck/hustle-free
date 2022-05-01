@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { getRusBetweenDate } from "../../../helpers/helpers"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
+import Link from "next/link"
 import FileUploaderBig from "../../ui/LKui/FileUploaderBig"
 import { formDataHttp } from "../../../helpers/formDataHttp"
 import { fetchOgEvents, selectOgEvents } from "../../../redux/components/user"
@@ -97,7 +98,9 @@ function EdGeneralInfo({ event }) {
       <TitlePart>
         <h1>{event.name}</h1>
         {(user?.role || "") === "athlete" ? (
-          <button>Зарегистрироваться на турнир</button>
+          <Link href={`/events/${event?.id}/tournament-rules`} passHref>
+            <button>Зарегистрироваться на турнир</button>
+          </Link>
         ) : (
           ogAndIsMyEvent && (
             <button

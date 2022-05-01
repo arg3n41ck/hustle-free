@@ -36,7 +36,7 @@ const validationSchema = yup.object({
   factAddress: yup.string().nullable(),
 })
 
-const Edits = ({ onView }) => {
+const Edits = () => {
   const {
     user,
     countries: {

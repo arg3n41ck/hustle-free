@@ -200,7 +200,7 @@ const Tr = styled.tr`
     background: #0f0f10;
     & td:nth-child(5) {
       div {
-        display: none;
+        opacity: 0;
       }
     }
 

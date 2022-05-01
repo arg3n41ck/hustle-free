@@ -45,6 +45,20 @@ export const fetchEvents = createAsyncThunk(
   }
 )
 
+export const fetchPopularEvents = createAsyncThunk(
+  "events/fetchPopularEvents",
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/events/popular/`, {
+        params,
+      })
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  }
+)
+
 export const handleSearch = createAsyncThunk(
   "events/handleSearch",
   async (value, { rejectWithValue }) => {
@@ -111,6 +125,13 @@ export const eventsSlice = createSlice({
       events.error = action.payload
       events.data = []
     })
+    // POPULAR EVENTS
+    builder.addCase(fetchPopularEvents.fulfilled, ({ events }, action) => {
+      events.popularEvents = action.payload
+    })
+    builder.addCase(fetchPopularEvents.rejected, ({ events }) => {
+      events.popularEvents = []
+    })
     // EVENTS BY SEARCH VALUE
     builder.addCase(handleSearch.pending, ({ search }) => {
       search.isLoading = false
@@ -155,6 +176,11 @@ export const selectEvents = createSelector(
     count,
     athleteEvents,
   ]
+)
+
+export const selectPopularEvents = createSelector(
+  (state) => state.events.events.popularEvents,
+  (popularEvents) => [popularEvents]
 )
 
 export default eventsSlice.reducer

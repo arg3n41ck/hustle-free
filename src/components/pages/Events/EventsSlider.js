@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 import "swiper/css"
@@ -10,6 +10,11 @@ import styled from "styled-components"
 import { Navigation } from "swiper"
 import { getRusBetweenDate } from "../../../helpers/helpers"
 import { useRouter } from "next/router"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  fetchPopularEvents,
+  selectPopularEvents,
+} from "../../../redux/components/events"
 
 export const LocationIcon = ({ color }) => (
   <svg
@@ -64,12 +69,18 @@ export const CalendarIcon = ({ color }) => (
   </svg>
 )
 
-function EventsSlider({ events }) {
+function EventsSlider() {
   const { push: routerPush } = useRouter()
+  const [popularEvents] = useSelector(selectPopularEvents)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchPopularEvents())
+  }, [])
 
   return (
     <div className="main-page-swiper">
-      {!!events?.length && (
+      {!!popularEvents?.length && (
         <Swiper
           navigation
           slidesPerView={"auto"}
@@ -77,7 +88,7 @@ function EventsSlider({ events }) {
           modules={[Navigation]}
           className="mySwiper"
         >
-          {events.map(
+          {popularEvents.map(
             ({ name, id, image, country, city, dateStart, dateEnd }) => (
               <SwiperSlide key={`swiper-slide-content-${id}`}>
                 <div

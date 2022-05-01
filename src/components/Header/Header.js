@@ -69,7 +69,7 @@ const Header = () => {
                 <NavbarText>Турниры</NavbarText>
               </a>
             </Link>
-            <Link href={"/about"} passHref>
+            <Link href={"/"} passHref>
               <a>
                 <NavbarText>Подробнее</NavbarText>
               </a>

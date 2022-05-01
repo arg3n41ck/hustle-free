@@ -49,7 +49,7 @@ function EventsGlobalSearch() {
             {!!data?.length &&
               data.map(({ id, name }) => (
                 <li key={`hustleFreeSearchEventsResult${id}`}>
-                  <Link href={"/"}>
+                  <Link href={`/events/${id}`}>
                     <a>{name}</a>
                   </Link>
                 </li>
@@ -130,7 +130,7 @@ const SearchWrapper = styled.div`
 
 export default EventsGlobalSearch
 
-const SearchIcon = () => (
+export const SearchIcon = () => (
   <svg
     width="24"
     height="24"
