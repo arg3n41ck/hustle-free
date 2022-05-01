@@ -17,6 +17,7 @@ import {
   EventVKHover,
 } from "./EventIcons"
 import styled from "styled-components"
+import MapField from "../../../ui/Map/Field"
 
 const getContacts = (event) => {
   const { contacts } = event
@@ -24,25 +25,25 @@ const getContacts = (event) => {
     {
       id: "orgName_1",
       label: "Название организации",
-      value: contacts.nameOrganization,
+      value: contacts?.nameOrganization || "",
       icon: <EventOrganisation />,
     },
     {
       id: "organizer_2",
       label: "Организатор",
-      value: `${contacts.firstName} ${contacts.lastName}`,
+      value: `${contacts?.firstName || ""} ${contacts?.lastName || ""}`,
       icon: <EventOrganizer />,
     },
     {
       id: "email_3",
       label: "Электронный адрес",
-      value: contacts.email,
+      value: contacts?.email || "",
       icon: <EventEmail />,
     },
     {
       id: "phone_4",
       label: "Номер телефона",
-      value: contacts.phoneNumber1,
+      value: contacts?.phoneNumber1 || "",
       icon: <EventPhone />,
     },
   ]
@@ -55,19 +56,19 @@ const getAddresses = (event) => {
     {
       id: "getAddresses_1",
       label: "Адрес проведения мероприятия",
-      value: location.address,
+      value: location?.address || "",
       icon: <EventLocation />,
     },
     {
       id: "getAddresses_2",
       label: "Адрес взвешивания",
-      value: location.weighingPlace,
+      value: location?.weighingPlace || "",
       icon: <EventMass />,
     },
     {
       id: "getAddresses_3",
       label: "Название арены",
-      value: location.placeName,
+      value: location?.placeName || "",
       icon: <EventFlag />,
     },
   ]
@@ -117,6 +118,14 @@ function EventMainInfo({ event }) {
     }
   }, [event])
 
+  const mapPoints =
+    event?.location?.lat && event?.location?.long
+      ? {
+          lat: +event?.location?.lat,
+          lng: +event?.location?.long,
+        }
+      : null
+
   return (
     <MainWrapper>
       <Column>
@@ -154,7 +163,9 @@ function EventMainInfo({ event }) {
           ))}
         </ul>
         <div />
-        <Map />
+        <Map active={!!mapPoints}>
+          {mapPoints && <MapField defaultPoints={mapPoints} disabled />}
+        </Map>
       </Column>
 
       <Column listWrapped>

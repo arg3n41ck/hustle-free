@@ -69,16 +69,14 @@ const InputPersonalData = () => {
         toast.info("Ожидайте ответа от сервера")
         try {
           try {
-            const { data: _data } = $api.post("/accounts/athlete/", {
-              first_name: values.firstName,
-              last_name: values.lastName,
-              password: values.password,
-            })
+            const { data: _data } = await $api.post(
+              "/accounts/athlete/",
+              values
+            )
             setCookie("token", _data.access, 999)
             setCookie("refresh", _data.refresh, 999999)
             toast.success("Вы успешно активировали свои учетные данные!")
-            dispatch(fetchUser())
-            router.push("/login")
+            await router.push("/")
           } catch (e) {}
         } catch (e) {}
       }

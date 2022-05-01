@@ -47,7 +47,22 @@ const Edits = ({ onView }) => {
   const { push: routerPush } = useRouter()
   const [currentCities, setCurrentCities] = useState([])
   const formik = useFormik({
-    initialValues: user.user,
+    initialValues: user.user && {
+      email: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      gender: null,
+      dateBirthday: null,
+      age: null,
+      role: "",
+      country: null,
+      city: null,
+      avatar: null,
+      nameOrganization: "",
+      address: null,
+      factAddress: null,
+    },
     validationSchema,
     onSubmit: async (values) => {
       try {
@@ -71,24 +86,31 @@ const Edits = ({ onView }) => {
     },
   })
 
+  useEffect(() => {
+    formik.setValues(user.user)
+  }, [user.user])
+
   const changeCurrentCities = (changeCountry) => {
     const findObj = countries.find((country) => country.name === changeCountry)
     if (findObj) setCurrentCities(findObj.cityCountry)
   }
 
   useEffect(() => {
-    if (typeof formik.values?.country === "number") {
+    if (typeof +formik.values?.country === "number" && countries.length) {
       const currentCountry = countries.find(
         (country) => country.id === formik.values?.country
       )
-      const currentCity = currentCountry.cityCountry.find(
+      const currentCity = currentCountry?.cityCountry.find(
         (city) => city.id === formik.values?.city
       )
-      setCurrentCities(currentCountry.cityCountry)
-      formik.setFieldValue("country", currentCountry.name)
-      formik.setFieldValue("city", currentCity.name)
+
+      if (currentCountry && currentCity) {
+        setCurrentCities(currentCountry?.cityCountry)
+        formik.setFieldValue("country", currentCountry.name)
+        formik.setFieldValue("city", currentCity.name)
+      }
     }
-  }, [])
+  }, [formik.values?.country, formik.values?.city])
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -117,7 +139,9 @@ const Edits = ({ onView }) => {
               }
               placeholder="Фамилия"
               variant="outlined"
-              error={formik.touched?.lastName && Boolean(formik.errors?.lastName)}
+              error={
+                formik.touched?.lastName && Boolean(formik.errors?.lastName)
+              }
               helperText={formik.touched?.lastName && formik.errors?.lastName}
             />
           </div>
@@ -272,7 +296,8 @@ const Edits = ({ onView }) => {
               Boolean(formik.errors?.nameOrganization)
             }
             helperText={
-              formik.touched?.nameOrganization && formik.errors?.nameOrganization
+              formik.touched?.nameOrganization &&
+              formik.errors?.nameOrganization
             }
           />
         </div>
@@ -348,7 +373,9 @@ const Edits = ({ onView }) => {
             error={
               formik.touched?.factAddress && Boolean(formik.errors?.factAddress)
             }
-            helperText={formik.touched?.factAddress && formik.errors?.factAddress}
+            helperText={
+              formik.touched?.factAddress && formik.errors?.factAddress
+            }
           />
         </div>
       </Content>

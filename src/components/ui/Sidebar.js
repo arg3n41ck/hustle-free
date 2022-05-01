@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { motion } from "framer-motion"
+import ExitIcon from "../../public/svg/exit-icon.svg"
 import { useRouter } from "next/router"
 import { useDispatch } from "react-redux"
 import { exitUser } from "../../redux/components/user"

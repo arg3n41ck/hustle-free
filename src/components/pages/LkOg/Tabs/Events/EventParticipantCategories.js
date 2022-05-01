@@ -4,25 +4,21 @@ import * as yup from "yup"
 import { useRouter } from "next/router"
 import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
 import styled from "styled-components"
-import ParticipantCategoriesCreate from "./ParticipantCategories/ParticipantCategoriesCreate"
+import ParticipantCategoriesCreate, {
+  createParticipantCategory,
+} from "./ParticipantCategories/ParticipantCategoriesCreate"
 import Table from "../../../../ui/Table/Table"
-import {
-  Autocomplete,
-  Checkbox,
-  Collapse,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material"
-import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material"
+import { Collapse } from "@mui/material"
 import ParticipantCategoriesEdit from "./ParticipantCategories/ParticipantCategoriesEdit"
 import EventParticipantCategoriesTableCollapseHead from "./EventParticipantCategoriesTableCollapseHead"
+import EventParticipantAutocomplete from "./ParticipantCategories/EventParticipantAutocomplete"
 
 const emptyInitialValues = {
-  level: [],
+  pc: [],
 }
 
-const getGender = (gender) => (gender === "male" ? "М" : "Ж")
+export const getGender = (gender, isFull = false) =>
+  gender === "male" ? (!isFull ? "М" : "Мужской") : !isFull ? "Ж" : "Женский"
 
 const createDataForTable = (defaultData = []) => {
   return defaultData.map((currentValue) => {
@@ -44,30 +40,40 @@ const createDataForTable = (defaultData = []) => {
       gender: getGender(gender),
       age: `${fromAge} - ${toAge}`,
       weight: `${fromWeight} кг - ${toWeight} кг`,
-      price,
+      price: price
+        ? `${Math.round(price.standartPrice)} ${price.currency.toUpperCase()}`
+        : null,
     }
   })
 }
 
-function EventParticipantCategories({ refreshPC, manualEventPC, eventId }) {
+function EventParticipantCategories({
+  refreshPC,
+  manualEventPC,
+  selectedRows,
+  eventId,
+  sportType,
+}) {
   const [participantCategories, setParticipantCategories] = useState([])
   const [openPCM, setOpenPCM] = useState(false)
-  const [openPCME, setOpenPCME] = useState({ id: "", step: "" })
-  const [selectedRows, setSelectedRows] = useState([])
+  const [openPCME, setOpenPCME] = useState({ id: "" | [], step: "" })
   const [selectedInTableRows, setSelectedInTableRows] = useState([])
-  const { handleSubmit, isValid } = useFormik({
+  const { push: routerPush } = useRouter()
+  const { handleSubmit, errors, touched, setFieldValue } = useFormik({
     initialValues: emptyInitialValues,
     validationSchema,
-    onSubmit: async (values) => {
-      console.log(values)
+    onSubmit: async () => {
+      routerPush(`/lk-og/profile/events/edit/${eventId}/contacts`)
     },
   })
-  const { push: routerPush } = useRouter()
 
   useEffect(() => {
-    manualEventPC.length &&
-      setParticipantCategories(createDataForTable(manualEventPC))
-  }, [manualEventPC])
+    if (selectedRows.length) {
+      setParticipantCategories(createDataForTable(selectedRows))
+    } else {
+      setParticipantCategories([])
+    }
+  }, [selectedRows])
 
   const columns = useMemo(() => {
     return [
@@ -104,66 +110,40 @@ function EventParticipantCategories({ refreshPC, manualEventPC, eventId }) {
     ]
   }, [])
 
-  const onClickChangeSomeRows = (value) => {
-    console.log(value)
+  const onClickChangeSomeRows = ({ target: { value } }) => {
+    setOpenPCME({ id: selectedInTableRows, step: value })
   }
   const onCreateNewPC = useCallback(() => {
     refreshPC()
-  }, [manualEventPC])
+  }, [selectedRows])
+
+  useEffect(() => {
+    participantCategories.length
+      ? setFieldValue(
+          "pc",
+          participantCategories.map(({ id }) => id)
+        )
+      : setFieldValue("pc", [])
+  }, [participantCategories])
 
   const onSelectManual = useCallback((values) => {
-
+    values?.length &&
+      values.map(async ({ price, ...value }) => {
+        createParticipantCategory({
+          ...value,
+          levels: value.levels?.map(({ id }) => id),
+          event: eventId,
+        }).then(() => refreshPC())
+      })
   }, [])
 
   return (
     <>
       <Form onSubmit={handleSubmit}>
         <Field>
-          <p className="auth-title__input">Выберите категории</p>
-          <Autocomplete
-            multiple
-            options={participantCategories}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                padding: 0,
-
-                "& input": {
-                  padding: "0 20px !important",
-                },
-              },
-            }}
-            disableCloseOnSelect
-            fullWidth
-            getOptionLabel={(option) => option.name}
-            value={selectedRows}
-            onChange={(_, value) => onSelectManual(value)}
-            renderOption={(props, option, { selected }) => (
-              <li
-                key={`EventParticipantCategories_autocomplete_list_${option.id}`}
-                {...props}
-              >
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
-                  checked={selected}
-                />
-                {option.name}
-              </li>
-            )}
-            renderInput={(params) => {
-              const {
-                InputProps: { startAdornment, ...inputRest },
-                ...rest
-              } = params
-              return (
-                <TextField
-                  {...rest}
-                  InputProps={inputRest}
-                  placeholder="Категории"
-                />
-              )
-            }}
+          <EventParticipantAutocomplete
+            manualEventPC={manualEventPC}
+            onSelectManual={onSelectManual}
           />
         </Field>
 
@@ -172,9 +152,9 @@ function EventParticipantCategories({ refreshPC, manualEventPC, eventId }) {
             <EventParticipantCategoriesTableCollapseHead
               onClickChangeSomeRows={onClickChangeSomeRows}
               selectedInTableRows={selectedInTableRows}
+              refreshPC={refreshPC}
               selectedRows={selectedRows}
               setSelectedInTableRows={setSelectedInTableRows}
-              setSelectedRows={setSelectedRows}
             />
           </Collapse>
           <Table
@@ -182,18 +162,23 @@ function EventParticipantCategories({ refreshPC, manualEventPC, eventId }) {
             select
             onSelect={(values) => setSelectedInTableRows(values)}
             selectedRows={selectedInTableRows}
-            data={selectedRows}
+            data={participantCategories}
           />
         </TableWrapper>
+
+        {touched.pc && errors.pc && <Error>{errors.pc}</Error>}
 
         <EventFormFooter>
           <OpenPCM onClick={() => setOpenPCM(true)}>
             + Добавить новую категорию
           </OpenPCM>
-          <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
+          <Cancel
+            type="button"
+            onClick={() => routerPush("/lk-og/profile/events")}
+          >
             Отмена
           </Cancel>
-          <Submit disabled={!isValid} type="submit">
+          <Submit type="submit" onClick={handleSubmit}>
             Далее
           </Submit>
         </EventFormFooter>
@@ -201,25 +186,34 @@ function EventParticipantCategories({ refreshPC, manualEventPC, eventId }) {
       <ParticipantCategoriesCreate
         open={openPCM}
         eventId={eventId}
+        sportType={sportType}
         onCloseModals={() => setOpenPCM(false)}
         onCreatePC={(newPC) => onCreateNewPC(newPC)}
       />
-      <ParticipantCategoriesEdit
-        id={openPCME.id}
-        open={!!(openPCME.id && openPCME.step)}
-        step={openPCME.step}
-        onCloseModals={() => setOpenPCME({ id: "", step: "" })}
-      />
+      {!!(openPCME.id && openPCME.step) && (
+        <ParticipantCategoriesEdit
+          id={openPCME.id}
+          defaultValues={selectedRows.find(({ id }) => id === openPCME?.id)}
+          open={!!(openPCME.id && openPCME.step)}
+          step={openPCME.step}
+          sportType={sportType}
+          refreshPC={refreshPC}
+          eventId={eventId}
+          onCloseModals={() => setOpenPCME({ id: "", step: "" })}
+        />
+      )}
     </>
   )
 }
 
 export default EventParticipantCategories
 
-export const icon = <CheckBoxOutlineBlank fontSize="small" />
-export const checkedIcon = <CheckBox fontSize="small" />
-
-const validationSchema = yup.object({})
+const validationSchema = yup.object({
+  pc: yup.mixed().test({
+    test: (array) => array.some((value) => value),
+    message: "Выберите хотя бы одну категорию участников!",
+  }),
+})
 
 const TableWrapper = styled.div`
   display: grid;
@@ -236,4 +230,9 @@ const OpenPCM = styled.div`
   color: #6d4eea;
   margin: 0 auto 0 0;
   cursor: pointer;
+`
+
+const Error = styled.p`
+  margin: 10px 0;
+  color: #d32f2f;
 `

@@ -15,13 +15,14 @@ const fetchMyRequests = async () => {
   return requests
 }
 const fetchTeams = async (id) => {
-  const { data } = await $api.get(`/teams/team_athlete/`, {
-    params: {
-      team_id: id,
-    },
-  })
-  console.log(data)
-  return data
+  if (id) {
+    const { data } = await $api.get(`/teams/team_athlete/`, {
+      params: {
+        team_id: id,
+      },
+    })
+    return data
+  }
 }
 
 const Athletes = ({ onToggleSidebar }) => {
@@ -46,13 +47,15 @@ const Athletes = ({ onToggleSidebar }) => {
   }
 
   useEffect(async () => {
-    try {
-      setApplications(await fetchMyRequests())
-      setTeams(await fetchTeams(user.id))
-    } catch (e) {
-      throw e
+    if (user?.id) {
+      try {
+        setApplications(await fetchMyRequests())
+        setTeams(await fetchTeams(user?.id))
+      } catch (e) {
+        throw e
+      }
     }
-  }, [])
+  }, [user])
 
   const acceptOrRejectHandler = async (id, status = "approved") => {
     try {
@@ -64,7 +67,7 @@ const Athletes = ({ onToggleSidebar }) => {
         ...prev.slice(indexCurrentElement + 1),
       ])
       await $api.put(`/teams/change_request/${id}/`, { status })
-      setTeams(await fetchTeams(user.id))
+      setTeams(await fetchTeams(user?.id))
     } catch (e) {}
   }
 

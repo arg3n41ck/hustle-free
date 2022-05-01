@@ -21,9 +21,4 @@ export const lkOgTabs = [
     icon: <SettingsIcon />,
     href: "/lk-og/profile/settings",
   },
-  {
-    name: "Выйти",
-    icon: <ExitIcon />,
-    href: "exit",
-  },
 ]

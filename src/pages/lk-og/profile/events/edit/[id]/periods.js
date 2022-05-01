@@ -5,7 +5,6 @@ import EventsCreateLayout from "../../../../../../components/layouts/EventsCreat
 import EventPeriods from "../../../../../../components/pages/LkOg/Tabs/Events/EventPeriods"
 import { useRouter } from "next/router"
 import { getEventDefaultValues } from "./location"
-import RouterLoader from "../../../../../../components/ui/RouterLoader"
 
 function Periods() {
   const {
@@ -15,7 +14,9 @@ function Periods() {
   useEffect(() => {
     eventId &&
       getEventDefaultValues(`/organizer/events/${eventId}/registration/`).then(
-        setEventDefaultValues
+        (data) => {
+          setEventDefaultValues(data)
+        }
       )
   }, [eventId])
 

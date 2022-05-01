@@ -32,7 +32,6 @@ function TeamTabs() {
   const router = useRouter()
   React.useEffect(() => {
     dispatch(fetchSportTypes())
-    dispatch(fetchCountries())
   }, [])
 
   const onSubmit = useCallback(async (data) => {

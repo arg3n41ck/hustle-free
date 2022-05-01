@@ -21,10 +21,12 @@ function Location() {
     query: { id: eventId },
   } = useRouter()
   const [eventDefaultValues, setEventDefaultValues] = useState(null)
-  useEffect(() => {
+  useEffect(async () => {
     eventId &&
       getEventDefaultValues(`/organizer/events/${eventId}/location/`).then(
-        setEventDefaultValues
+        (data) => {
+          setEventDefaultValues(data)
+        }
       )
   }, [eventId])
 

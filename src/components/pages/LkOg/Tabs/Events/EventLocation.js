@@ -26,29 +26,22 @@ const emptyInitialValues = {
 }
 
 function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
-  const {
-    touched,
-    errors,
-    values,
-    handleChange,
-    setFieldValue,
-    handleSubmit,
-    isValid,
-  } = useFormik({
-    initialValues: defaultValues,
-    validationSchema,
-    onSubmit: async (values) => {
-      const { data } = await formDataHttp(
-        {
-          ...values,
-          allFieldsFilled: true,
-        },
-        `organizer/events/${eventId}/location/`,
-        "put"
-      )
-      routerPush(`/lk-og/profile/events/edit/${eventId}/periods`)
-    },
-  })
+  const { touched, errors, values, handleChange, setFieldValue, handleSubmit } =
+    useFormik({
+      initialValues: defaultValues,
+      validationSchema,
+      onSubmit: async (values) => {
+        await formDataHttp(
+          {
+            ...values,
+            allFieldsFilled: true,
+          },
+          `organizer/events/${eventId}/location/`,
+          "put"
+        )
+        routerPush(`/lk-og/profile/events/edit/${eventId}/periods`)
+      },
+    })
 
   const { push: routerPush } = useRouter()
 
@@ -161,12 +154,19 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
       >
         <Field>
           <p className="auth-title__input">Карта локации адреса турнира</p>
-          <MapField
-            onPoint={({ lat, lng }) => {
-              setFieldValue("lat", `${lat}`)
-              setFieldValue("long", `${lng}`)
-            }}
-          />
+          <div style={{ height: 300 }}>
+            <MapField
+              onPoint={({ lat, lng }) => {
+                setFieldValue("lat", `${lat}`)
+                setFieldValue("long", `${lng}`)
+              }}
+              defaultPoints={
+                eventId
+                  ? { lat: +defaultValues.lat, lng: +defaultValues.long }
+                  : null
+              }
+            />
+          </div>
         </Field>
         <FormHelperText>
           {(touched.lat && errors.lat) || (touched.long && errors.long)}

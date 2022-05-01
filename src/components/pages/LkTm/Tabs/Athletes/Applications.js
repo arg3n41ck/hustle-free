@@ -12,6 +12,7 @@ const Applications = ({ applications, onAcceptOrReject }) => {
     <List>
       {applications.map((application) => (
         <ApplicationItem
+          key={application.id}
           onAcceptOrReject={onAcceptOrReject}
           applicationItem={application}
         />

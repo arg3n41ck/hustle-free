@@ -34,13 +34,12 @@ const emptyInitialValues = {
 }
 
 function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
-  console.log(defaultValues)
   const { touched, errors, values, handleChange, setFieldValue, handleSubmit } =
     useFormik({
       initialValues: defaultValues,
       validationSchema,
       onSubmit: async (values) => {
-        const { data } = await formDataHttp(
+        await formDataHttp(
           {
             ...values,
             earlyRegStart: format(values.earlyRegStart, "yyyy-MM-dd"),

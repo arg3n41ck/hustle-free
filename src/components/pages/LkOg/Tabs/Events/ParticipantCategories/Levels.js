@@ -7,9 +7,10 @@ import $api from "../../../../../../services/axios"
 import styled from "styled-components"
 import { Checkbox, FormControlLabel, TextField } from "@mui/material"
 
-const getLevelsBySportType = async () => {
+const getLevelsBySportType = async (sportType) => {
   try {
     const { data } = await $api.get("/directory/discipline_level/")
+
     return data.filter(({ typeSport }) => sportType === typeSport)
   } catch (e) {
     console.log(e)
@@ -32,10 +33,13 @@ function Levels({
   edit,
   submit,
   onClose,
+  sportType,
   defaultValues = initialEmptyValues,
 }) {
   const [levels, setLevels] = useState(null)
-  const [selectedLevels, setSelectedLevels] = useState([])
+  const [selectedLevels, setSelectedLevels] = useState(
+    defaultValues?.levels || []
+  )
   const { handleSubmit, setFieldValue, touched, errors } = useFormik({
     initialValues: defaultValues,
     validationSchema,
@@ -91,7 +95,7 @@ function Levels({
       <Form>
         <LevelsUl>
           {!!levels?.length &&
-            levels.map(({ name, id, isManual }) => {
+            levels.map(({ name, id }) => {
               return (
                 <LevelLi key={`PCCreateLevels_${id}`}>
                   <FormControlLabel

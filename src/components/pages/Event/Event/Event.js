@@ -53,8 +53,11 @@ const Column = styled.div`
 
   border-right: 1px solid #333;
 
+  &:first-child {
+    padding: 0 32px 0 0;
+  }
+
   &:last-child {
-    padding: 0 0 0 32px;
     border-right: none;
     grid-gap: 24px;
 

@@ -2,13 +2,10 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { selectEvents } from "../../../../redux/components/events"
 import styled from "styled-components"
-import { getEventStatus, getRusBetweenDate } from "../../../../helpers/helpers"
-import { useRouter } from "next/router"
 import EventsArray from "../../../ui/Events"
 
 function Events() {
   const [, events] = useSelector(selectEvents)
-  const { push: routerPush } = useRouter()
 
   return (
     <EventsWrapper>
