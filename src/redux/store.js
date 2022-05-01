@@ -5,11 +5,12 @@ import countries from "./components/countriesAndCities"
 import sportTypes from "./components/sportTypes"
 import teams from "./components/teams"
 import stories from "./components/stories"
+import athletes from "./components/athletes"
 
 export function makeStore() {
   return configureStore({
     devTools: true,
-    reducer: { user, events, countries, sportTypes, teams, stories },
+    reducer: { user, events, countries, sportTypes, teams, stories, athletes },
   })
 }
 
