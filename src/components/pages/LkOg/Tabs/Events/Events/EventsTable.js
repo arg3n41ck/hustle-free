@@ -5,16 +5,36 @@ import { IconButton } from "@mui/material"
 import { Edit } from "@mui/icons-material"
 import { useRouter } from "next/router"
 
+const getEventStatus = (status) => {
+  switch (status) {
+    case "published":
+      return {
+        name: "Скоро",
+        value: status,
+      }
+    case "in_proccessing":
+      return {
+        name: "Сейчас идет",
+        value: status,
+      }
+    default:
+      return {
+        name: "Черновик",
+        value: status,
+      }
+  }
+}
+
 const createDataForTable = (events = []) => {
   return events.map((currentValue) => {
-    const { id, name, dateEnd, dateStart } = currentValue
+    const { id, name, dateEnd, dateStart, statusPublish } = currentValue
     return {
       id,
       name,
       date: getRusBetweenDate(dateStart, dateEnd),
       registration: "5/10",
       paid: "2/5",
-      status: "Сейчас идет",
+      status: getEventStatus(statusPublish),
     }
   })
 }
@@ -69,27 +89,32 @@ function EventsTable({ events }) {
                 return (
                   <Tr
                     key={`table-row-${cell.id}`}
-                    className={cell.status === "Сейчас идет" ? "active" : ""}
+                    className={
+                      cell.status.value === "in_proccessing" ? "active" : ""
+                    }
                   >
                     {columns.map(({ accessor }) => (
                       <Td
                         key={`table-cell-${cell[accessor]}-${cell.id}`}
                         onClick={() =>
                           accessor === "name" &&
+                          cell.status.value === "published" &&
                           routerPush(`/events/${cell.id}/`)
                         }
                       >
                         <div
                           className={
                             accessor === "status" &&
-                            cell[accessor] === "Сейчас идет"
+                            cell[accessor].value === "in_proccessing"
                               ? "green"
-                              : cell[accessor] === "Черновик"
+                              : cell[accessor].value === "published"
                               ? "draft"
                               : ""
                           }
                         >
-                          {cell[accessor]}
+                          {!!cell[accessor]?.name
+                            ? cell[accessor]?.name
+                            : cell[accessor]}
                         </div>
                       </Td>
                     ))}
@@ -218,6 +243,7 @@ const Td = styled.td`
     min-height: 60px;
     display: flex;
     align-items: center;
+    color: #f2f2f2;
 
     &.green {
       color: #27ae60;

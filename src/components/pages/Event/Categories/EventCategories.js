@@ -1,14 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import $api from "../../../../services/axios"
 import { useRouter } from "next/router"
 import Row from "./Row"
 import styled from "styled-components"
 import EDContentFilter from "../EDContentFilter"
-import { Autocomplete, TextField } from "@mui/material"
-import { LocationIcon } from "../../Events/EventsCatalog/EventsFilter"
+import Autocompletes from "./Autocompletes"
 import { useSelector } from "react-redux"
-import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
-import useQuery from "../../../../hooks/useQuery"
 
 const getEventPC = async (query) => {
   const { data } = await $api.get(`/events/participant_category/`, {
@@ -28,65 +25,96 @@ const createPCList = (pc) => {
   }, [])
 }
 
+const getEnabledLevels = (pc) => {
+  return [...new Set(pc.map(({ level }) => level))] || []
+}
+
+const filterPc = ({
+  pc,
+  levelQValue,
+  genderQValue,
+  search,
+  ageQValue,
+  weightQValue,
+}) => {
+  return pc
+    .filter(({ name }) =>
+      search ? (name || "").toLowerCase().indexOf(search) >= 0 : true
+    )
+    .filter(({ gender }) => (genderQValue ? genderQValue === gender : true))
+    .filter(({ levels }) => {
+      return levels.some(({ name }) =>
+        levelQValue ? name === levelQValue : true
+      )
+    })
+    .sort(({ toAge: aAgeFrom }, { toAge: bAgeFrom }) => {
+      return ageQValue === "increase"
+        ? aAgeFrom - bAgeFrom
+        : bAgeFrom - aAgeFrom
+    })
+    .sort(({ toWeight: aWeightFrom }, { toWeight: bWeightFrom }) => {
+      return weightQValue === "increase"
+        ? aWeightFrom - bWeightFrom
+        : bWeightFrom - aWeightFrom
+    })
+}
+
 function EventCategories() {
   const {
-    query: { id: eventId, ...queryRest },
+    query: {
+      id: eventId,
+      level: levelQValue,
+      gender: genderQValue,
+      weight: weightQValue,
+      age: ageQValue,
+    },
   } = useRouter()
   const [pc, setPc] = useState([])
   const [search, setSearch] = useState("")
-  const query = useQuery()
-  const [countries] = useSelector(selectCountriesAndCities)
-  const { push: routerPush } = useRouter()
+  const [levelOptions, setLevelOptions] = useState([])
+  const user = useSelector((state) => state.user.user)
+  const isFilterOpen = useMemo(() => {
+    return !!(search && levelQValue)
+  }, [levelQValue, genderQValue, weightQValue, ageQValue])
 
-  const handleCountriesFilter = useCallback(
-    (_, value) => {
-      value ? query.set("country", value.name) : query.delete("country")
-      routerPush(`/events/${eventId}/categories/?${query}`)
-    },
-    [query]
+  const filterPcMemo = useMemo(
+    () =>
+      filterPc({
+        pc,
+        levelQValue,
+        search: (search || "").toLowerCase(),
+        ageQValue,
+        weightQValue,
+        genderQValue,
+      }),
+    [levelQValue, search, genderQValue, ageQValue, weightQValue, pc]
   )
-
-  const countriesValue =
-    countries.length &&
-    countries.find((type) => type.name === query.get("country"))
 
   useEffect(() => {
     getEventPC({ event_id: eventId }).then((data) => {
-      data?.length && setPc(createPCList(data))
+      if (data?.length) {
+        setPc(createPCList(data))
+        setLevelOptions(getEnabledLevels(data))
+      }
     })
   }, [])
 
   return (
     <CollapseWrapper>
-      <EDContentFilter onSearch={(value) => setSearch(value)}>
-        {!!countries?.length && (
-          <Autocomplete
-            noOptionsText={"Ничего не найдено"}
-            onChange={(e, value) => handleCountriesFilter(e, value)}
-            options={countries.map((option) => option)}
-            getOptionLabel={(option) => option.name}
-            value={countriesValue}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                fullWidth
-                placeholder="Страна"
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: <LocationIcon />,
-                }}
-              />
-            )}
-          />
+      <EDContentFilter
+        onSearch={(value) => setSearch((value || "").toLowerCase())}
+        openChildren={isFilterOpen}
+      >
+        {user?.role !== "organizer" && (
+          <Autocompletes levelOptions={levelOptions} />
         )}
       </EDContentFilter>
       <PCRows>
         {!!pc?.length &&
-          pc
-            .filter(({ name }) => name.indexOf(search) >= 0)
-            .map((pci) => (
-              <Row key={`EventCategories_PC_Collapse_${pci.id}`} pcItem={pci} />
-            ))}
+          !!filterPcMemo.length &&
+          filterPcMemo.map((pci) => (
+            <Row key={`EventCategories_PC_Collapse_${pci.id}`} pcItem={pci} />
+          ))}
       </PCRows>
     </CollapseWrapper>
   )
