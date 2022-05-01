@@ -1,23 +1,21 @@
 import React, { useEffect } from "react"
 import Header from "../Header/Header"
 import { Box, useMediaQuery } from "@mui/material"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import Head from "next/head"
-import { fetchUser, selectIsUserAuth } from "../../redux/components/user"
+import { fetchUser } from "../../redux/components/user"
 import { useCookies } from "react-cookie"
 import { theme } from "../../styles/theme"
 import styled from "styled-components"
 import { fetchCountries } from "../../redux/components/countriesAndCities"
 import { fetchSportTypes } from "../../redux/components/sportTypes"
-import { useRouter } from "next/router"
 import { getCookie } from "../../services/JWTService"
+import Footer from "../Footer/Footer"
 
 const Layout = ({ children }) => {
   const lg = useMediaQuery("(max-width:992px)")
-  const router = useRouter()
   const dispatch = useDispatch()
   const [cookies] = useCookies(["token", "refresh"])
-  const [userAuthenticated] = useSelector(selectIsUserAuth)
 
   useEffect(() => {
     if (getCookie("token")) {
@@ -40,7 +38,11 @@ const Layout = ({ children }) => {
       </Head>
       <Header />
       <Box sx={{ display: "flex" }}>
-        <ChildrenWrapper lg={lg}>{children}</ChildrenWrapper>
+        <ChildrenWrapper lg={lg}>
+          <>{children}</>
+
+          <Footer />
+        </ChildrenWrapper>
       </Box>
     </>
   )
@@ -51,7 +53,7 @@ const ChildrenWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 76px 38px 130px;
+  padding: 76px 38px 0;
 
   ${theme.mqMax("lg")} {
     margin: 117px auto 160px auto;
