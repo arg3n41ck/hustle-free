@@ -12,7 +12,7 @@ function FilterMyEvents({ data }) {
         <Avatar
           alt={DEFAULT_API_URL + data?.event?.image}
           src={DEFAULT_API_URL + data?.event?.image}
-          sx={{ width: 208, height: 112 }}
+          sx={{ width: 112, height: 112 }}
         />
         <EventsInfo>
           <EventInfoHeadingText>{data?.event?.name}</EventInfoHeadingText>
@@ -80,7 +80,8 @@ const PaidInfo = styled.p`
 
 const EventItems = styled.div`
   display: grid;
-  grid-template-columns: 3fr 10fr 1fr;
+  grid-template-columns: 112px auto min-content;
+  grid-column-gap: 32px;
 `
 const EventsInfo = styled.div`
   display: flex;
