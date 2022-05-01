@@ -1,8 +1,11 @@
-import React, { useMemo } from "react"
+import React, { useCallback, useEffect, useMemo } from "react"
 import styled from "styled-components"
 import { getRusBetweenDate } from "../../../helpers/helpers"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
+import FileUploaderBig from "../../ui/LKui/FileUploaderBig"
+import { formDataHttp } from "../../../helpers/formDataHttp"
+import { fetchOgEvents, selectOgEvents } from "../../../redux/components/user"
 
 const regArray = (event) => {
   return [
@@ -49,27 +52,63 @@ const regArray = (event) => {
 function EdGeneralInfo({ event }) {
   const regData = useMemo(() => regArray(event), [event])
   const user = useSelector((state) => state.user.user)
+  const [ogEvents] = useSelector(selectOgEvents)
   const {
     query: { id: eventId },
     push: routerPush,
+    reload,
   } = useRouter()
+  const dispatch = useDispatch()
+  const ogAndIsMyEvent =
+    user?.role === "organizer" && (ogEvents || []).includes(+eventId)
+
+  useEffect(() => {
+    user?.role === "organizer" && dispatch(fetchOgEvents())
+  }, [user])
+
+  const onUploadNewImage = useCallback(
+    async (file) => {
+      user?.role === "organizer" &&
+        (await formDataHttp(
+          {
+            image: file,
+          },
+          `organizer/events/${eventId}/`,
+          "patch"
+        ).then(() => reload()))
+    },
+    [user, eventId]
+  )
 
   return (
     <>
-      <EventBanner src={event.image} />
+      {!ogAndIsMyEvent ? (
+        <EventBanner src={event.image} />
+      ) : (
+        <div style={{ height: "448px" }}>
+          <FileUploaderBig
+            defaultImage={event?.image}
+            onChange={async (file) => {
+              await onUploadNewImage(file)
+            }}
+          />
+        </div>
+      )}
       <TitlePart>
         <h1>{event.name}</h1>
         {(user?.role || "") === "athlete" ? (
           <button>Зарегистрироваться на турнир</button>
         ) : (
-          <button
-            onClick={() =>
-              eventId && routerPush(`/lk-og/profile/events/edit/${eventId}`)
-            }
-          >
-            <EditIcon />
-            <span>Редактировать турнир</span>
-          </button>
+          ogAndIsMyEvent && (
+            <button
+              onClick={() =>
+                eventId && routerPush(`/lk-og/profile/events/edit/${eventId}`)
+              }
+            >
+              <EditIcon />
+              <span>Редактировать турнир</span>
+            </button>
+          )
         )}
       </TitlePart>
       <RegInfoUl>

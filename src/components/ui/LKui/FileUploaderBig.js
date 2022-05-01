@@ -74,7 +74,8 @@ const FileUploadLabel = styled.label`
   padding: 22px 0;
   font-size: 18px;
   line-height: 24px;
-  height: 230px;
+  min-height: 230px;
+  height: 100%;
 
   input[type="file"] {
     top: 0;
