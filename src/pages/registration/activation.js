@@ -3,28 +3,26 @@ import { useDispatch } from "react-redux"
 import $api from "../../services/axios"
 import { fetchCountries } from "../../redux/components/countriesAndCities"
 import { useRouter } from "next/router"
-import { setCookie } from "../../services/JWTService"
+import { useCookies } from "react-cookie"
 
 const InputData = ({ query }) => {
+  const [cookies, setCookie] = useCookies(["token", "refresh", "email"])
   const dispatch = useDispatch()
   const router = useRouter()
 
   const activationUser = async (uid, token) => {
-    await $api
-      .post("/accounts/auth/users/activation/", {
-        uid,
-        token,
-      })
-      .then(({ data }) => {
-        setCookie("token", data.access, 999)
-        setCookie("refresh", data.refresh, 999999)
-        setCookie("email", data.email)
-        router.push(data.role)
-      })
+    const { data } = await $api.post("/accounts/auth/users/activation/", {
+      uid,
+      token,
+    })
+    setCookie("token", data.access, { path: "/" })
+    setCookie("refresh", data.refresh, { path: "/" })
+    setCookie("email", data.email, { path: "/" })
+    router.push(data.role)
   }
 
-  React.useEffect(() => {
-    activationUser(query?.uid, query?.token)
+  React.useEffect(async () => {
+    await activationUser(query?.uid, query?.token)
     dispatch(fetchCountries())
   }, [])
 

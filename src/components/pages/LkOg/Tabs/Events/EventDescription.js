@@ -61,7 +61,6 @@ function EventForm({ defaultValues = emptyInitialValues, eventId }) {
         error={touched.image && errors.image}
         defaultImage={values.image}
         onChange={(file) => {
-          console.log(file)
           setFieldValue("image", file)
         }}
       />

@@ -16,17 +16,16 @@ import { decamelizeKeys } from "humps"
 import PhoneIcon from "../../../../../public/svg/phone-icon.svg"
 import EmailIcon from "../../../../../public/svg/email-profile.svg"
 import UploadIcon from "../../../../../public/svg/upload-profile-icon.svg"
+import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
 
 const Edits = ({ onView }) => {
   const {
     user,
-    countries: {
-      countries: { data: countries },
-    },
     sportTypes: {
       sportTypes: { data: sportTypes },
     },
   } = useSelector((state) => state)
+  const [countries] = useSelector(selectCountriesAndCities)
   const dispatch = useDispatch()
   const [currentSportTypes, setCurrentSportTypes] = useState([])
   const validationSchema = yup.object({
@@ -68,7 +67,7 @@ const Edits = ({ onView }) => {
           currentCountry = countries.find(
             (countryItem) => countryItem.name === country
           ),
-          currentCity = currentCountry.cityCountry.find(
+          currentCity = currentCountry?.cityCountry.find(
             (cityItem) => cityItem.name === city
           )
         const newValues = {
@@ -83,10 +82,9 @@ const Edits = ({ onView }) => {
         if (typeof newValues.avatar === "string") delete newValues.avatar
         const { data } = await formDataHttp(newValues, "teams/profile/edit/")
 
-        // await $api.put(`/accounts/users/me/`, {
-        //   ...newValues,
-        //   nameOrganization,
-        // })
+        await $api.patch(`/accounts/users/me/`, {
+          nameOrganization,
+        })
         dispatch(saveUser({ ...values, ...data }))
         dispatch(fetchUser())
         onView("general")
