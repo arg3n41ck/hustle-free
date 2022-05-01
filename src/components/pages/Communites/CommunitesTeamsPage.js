@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchTeams, teamsSelector } from "../../../redux/components/teams"
 import styled from "styled-components"
 import searchIcon from "../../../public/svg/searchIcon.svg"
-import Image from "next/image"
 import CommunitesList from "./CommunitesTeamsList"
 import { Autocomplete, TextField } from "@mui/material"
 import {
@@ -16,10 +15,6 @@ import {
 } from "../../../redux/components/sportTypes"
 import useQuery from "../../../hooks/useQuery"
 import { useRouter } from "next/router"
-import {
-  fetchAthletesByParams,
-  selectAthletes,
-} from "../../../redux/components/athletes"
 
 function CommunitesPage() {
   const dispatch = useDispatch()
@@ -28,7 +23,6 @@ function CommunitesPage() {
   const [sportTypes] = useSelector(selectSportTypes)
   const query = useQuery()
   const [search, setSearch] = useState("")
-  const [, athletes] = useSelector(selectAthletes)
   const { push: routerPush } = useRouter()
 
   const sportTypesValue =
@@ -42,7 +36,7 @@ function CommunitesPage() {
   const handleCountriesFilter = useCallback(
     (_, value) => {
       value ? query.set("country", value.name) : query.delete("country")
-      routerPush(`/communities-teams/?${query}`)
+      routerPush(`/communities/teams/?${query}`)
     },
     [query]
   )
@@ -50,7 +44,7 @@ function CommunitesPage() {
   const handleSportTypesFilter = useCallback(
     (_, value) => {
       value ? query.set("type_sport", value.name) : query.delete("type_sport")
-      routerPush(`/communities-teams/?${query}`)
+      routerPush(`/communities/teams/?${query}`)
     },
     [query]
   )
@@ -64,7 +58,7 @@ function CommunitesPage() {
   const handleSubmit = (e, value) => {
     e.preventDefault()
     value ? query.set("search", value) : query.delete("search")
-    routerPush(`/communities-teams/?${query}`)
+    routerPush(`/communities/teams/?${query}`)
   }
 
   return (
@@ -149,7 +143,6 @@ const CommunitesAutoCompletes = styled.div`
 `
 
 const CommunitesHeadingText = styled.h2`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-size: 32px;
@@ -164,7 +157,6 @@ const CommunitesItems = styled.div`
 `
 
 const CommunitesHeadingTextViewAll = styled.button`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -189,7 +181,7 @@ const CommunitesHeadingInputAndButton = styled.div`
   align-items: center;
   border: 1.5px solid #333333;
   border-radius: 16px;
-  padding: 0px;
+  padding: 0;
   height: 64px;
 `
 
@@ -199,7 +191,6 @@ const CommunitesHeadingInput = styled.input`
   border: none;
   outline: none;
   padding: 20px;
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -210,11 +201,10 @@ const CommunitesHeadingInput = styled.input`
 const CommunitesHeadingButton = styled.button`
   background: #333333;
   border: 1.5px solid #333333;
-  border-radius: 0px 16px 16px 0px;
+  border-radius: 0 16px 16px 0;
   height: 100%;
   color: #ffffff;
   background-image: url(${({ searchIcon }) => searchIcon});
-  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -237,8 +227,8 @@ const SearchIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.9036 19 14.652 18.3351 16.0255 17.2249C16.0661 17.4016 16.1552 17.5694 16.2929 17.7071L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.7071 16.2929C17.5694 16.1552 17.4016 16.0661 17.2249 16.0255C18.3351 14.652 19 12.9036 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z"
       fill="white"
     />
@@ -269,8 +259,8 @@ const LocationIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M12.398 19.804C13.881 19.0348 19 16.0163 19 11C19 7.13401 15.866 4 12 4C8.13401 4 5 7.13401 5 11C5 16.0163 10.119 19.0348 11.602 19.804C11.8548 19.9351 12.1452 19.9351 12.398 19.804ZM12 14C13.6569 14 15 12.6569 15 11C15 9.34315 13.6569 8 12 8C10.3431 8 9 9.34315 9 11C9 12.6569 10.3431 14 12 14Z"
       fill="#828282"
     />

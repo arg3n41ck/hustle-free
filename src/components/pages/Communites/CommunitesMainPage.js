@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchTeams, teamsSelector } from "../../../redux/components/teams"
 import styled from "styled-components"
 import searchIcon from "../../../public/svg/searchIcon.svg"
-import Image from "next/image"
 import CommunitesList from "./CommunitesTeamsList"
 import Link from "next/link"
 import useQuery from "../../../hooks/useQuery"
@@ -54,7 +53,7 @@ function CommunitesMainPage() {
 
         <CommunitesItem>
           <CommunitesHeadingText>Участники</CommunitesHeadingText>
-          <Link href={`/communities-athletes`} passHref>
+          <Link href={`/communities/athletes`} passHref>
             <CommunitesHeadingTextViewAll>См.все</CommunitesHeadingTextViewAll>
           </Link>
         </CommunitesItem>
@@ -63,7 +62,7 @@ function CommunitesMainPage() {
 
         <CommunitesItem>
           <CommunitesHeadingText>Команды</CommunitesHeadingText>
-          <Link href={`/communities-teams`} passHref>
+          <Link href={`/communities/teams`} passHref>
             <CommunitesHeadingTextViewAll>См.все</CommunitesHeadingTextViewAll>
           </Link>
         </CommunitesItem>
@@ -76,7 +75,6 @@ function CommunitesMainPage() {
 export default CommunitesMainPage
 
 const CommunitesHeadingText = styled.h2`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-size: 32px;
@@ -91,7 +89,6 @@ const CommunitesItems = styled.div`
 `
 
 const CommunitesHeadingTextViewAll = styled.button`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -116,7 +113,7 @@ const CommunitesHeadingInputAndButton = styled.div`
   align-items: center;
   border: 1.5px solid #333333;
   border-radius: 16px;
-  padding: 0px;
+  padding: 0;
   height: 64px;
 `
 
@@ -126,7 +123,6 @@ const CommunitesHeadingInput = styled.input`
   border: none;
   outline: none;
   padding: 20px;
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -137,11 +133,10 @@ const CommunitesHeadingInput = styled.input`
 const CommunitesHeadingButton = styled.button`
   background: #333333;
   border: 1.5px solid #333333;
-  border-radius: 0px 16px 16px 0px;
+  border-radius: 0 16px 16px 0;
   height: 100%;
   color: #ffffff;
   background-image: url(${({ searchIcon }) => searchIcon});
-  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -164,8 +159,8 @@ const SearchIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.9036 19 14.652 18.3351 16.0255 17.2249C16.0661 17.4016 16.1552 17.5694 16.2929 17.7071L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.7071 16.2929C17.5694 16.1552 17.4016 16.0661 17.2249 16.0255C18.3351 14.652 19 12.9036 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z"
       fill="white"
     />
