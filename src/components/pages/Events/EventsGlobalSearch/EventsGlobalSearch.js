@@ -130,7 +130,7 @@ const SearchWrapper = styled.div`
 
 export default EventsGlobalSearch
 
-const SearchIcon = () => (
+export const SearchIcon = () => (
   <svg
     width="24"
     height="24"

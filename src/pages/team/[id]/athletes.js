@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import LkLayout from "../../../components/layouts/LkLayout"
 import { useRouter } from "next/router"
 import { teamProfileTabs } from "../../../components/pages/Team/tabConstants"
@@ -18,13 +18,18 @@ import {
 } from "../../../components/pages/Team/TeamProfile"
 import Athlete from "../../../components/ui/Ahtletes/Athlete"
 import styled from "styled-components"
+import { TextField } from "@mui/material"
+import { SearchIcon } from "../../../components/pages/Events/EventsGlobalSearch/EventsGlobalSearch"
+import useDebounce from "../../../hooks/useDebounce"
 
 function Athletes({ onToggleSidebar }) {
   const {
     query: { id: teamId },
   } = useRouter()
   const query = useQuery()
-  const [loading, athletes, count, error] = useSelector(selectAthletes)
+  const [, athletes] = useSelector(selectAthletes)
+  const [searchValue, setSearchValue] = useState("")
+  const searchDebounced = useDebounce(searchValue, 500)
 
   const tabs = useMemo(() => {
     return teamProfileTabs(teamId)
@@ -38,6 +43,11 @@ function Athletes({ onToggleSidebar }) {
     dispatch(fetchCountries())
   }, [query, teamId])
 
+  useEffect(() => {
+    query.set("search", searchDebounced)
+    dispatch(fetchAthletesByParams(query))
+  }, [searchDebounced])
+
   return (
     <LkLayout tabs={tabs}>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
@@ -48,6 +58,25 @@ function Athletes({ onToggleSidebar }) {
           </CreateEventBTN>
         </HeaderWrapper>
       </LkDefaultHeader>
+
+      <Field>
+        <TextField
+          sx={{
+            ".MuiOutlinedInput-notchedOutline": {
+              borderRadius: "8px 0 0 8px !important",
+            },
+          }}
+          onChange={(e) => setSearchValue(e.target.value)}
+          fullWidth
+          value={searchValue}
+          placeholder={"Поиск"}
+        />
+        <SearchButton>
+          <SearchIcon />
+          <span>Поиск</span>
+        </SearchButton>
+      </Field>
+
       <AthletesWrapper>
         {!!athletes.length &&
           athletes.map(({ id, user }, i) => (
@@ -64,4 +93,34 @@ const AthletesWrapper = styled.div`
   display: flex;
   grid-gap: 16px;
   padding: 32px;
+`
+
+const Field = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  padding: 32px 32px 0;
+`
+
+const SearchButton = styled.button`
+  display: flex;
+  align-items: center;
+  grid-column-gap: 11px;
+
+  padding: 0 24px 0 20px;
+  height: 64px;
+  background: #333333;
+  border-radius: 0 16px 16px 0;
+
+  span {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 48px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    color: #ffffff;
+  }
 `
