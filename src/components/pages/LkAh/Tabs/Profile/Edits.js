@@ -14,7 +14,8 @@ import {
   IconButton,
 } from "@mui/material"
 import { ru } from "date-fns/locale"
-import { DatePicker, LocalizationProvider } from "@mui/lab"
+import { LocalizationProvider } from "@mui/lab"
+import { MobileDatePicker } from "@mui/x-date-pickers"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import Radio from "../../../../ui/Radio"
 import InputMask from "react-input-mask"
@@ -178,10 +179,6 @@ const Edits = ({ onToggleSidebar }) => {
     }
   }
 
-  if (!user?.id && !countries?.length && !currentCities?.length) {
-    return <div>Loading...</div>
-  }
-
   return (
     <form onSubmit={formik.handleSubmit}>
       <Header>
@@ -251,7 +248,7 @@ const Edits = ({ onToggleSidebar }) => {
           <div className="auth-wrapper__input">
             <p className="auth-title__input">Дата рождения (не обязательно)</p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <MobileDatePicker
                 components={{
                   OpenPickerIcon: CalendarIcon,
                 }}
@@ -277,6 +274,7 @@ const Edits = ({ onToggleSidebar }) => {
                     }
                     inputProps={{
                       ...params.inputProps,
+                      endAdornment: <CalendarIcon/>,
                       placeholder: "ДД/ММ/ГГГГ",
                     }}
                   />
@@ -416,7 +414,7 @@ const Edits = ({ onToggleSidebar }) => {
             </Box>
           </div>
 
-          <div className="auth-wrapper__input">
+          {/* <div className="auth-wrapper__input">
             <p className="auth-title__input">Тип профиля</p>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <RadioWrapper>
@@ -434,7 +432,7 @@ const Edits = ({ onToggleSidebar }) => {
                 />
               </RadioWrapper>
             </Box>
-          </div>
+          </div> */}
         </Box>
         <div className="auth-wrapper__input">
           <p className="auth-title__input">Электронный адрес</p>

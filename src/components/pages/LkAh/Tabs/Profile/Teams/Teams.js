@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { selectCountriesAndCities } from "../../../../../../redux/components/countriesAndCities"
 
-function Teams({ data }) {
+function Teams({ data, column }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
 
   const [country, setCountry] = React.useState(null)
@@ -14,31 +14,32 @@ function Teams({ data }) {
     setCity(cities.find((city) => city.id === data?.city))
   }, [data])
 
-  if (!country && !city) {
-    return <div>Loading...</div>
-  }
-
   return (
-    <TeamsContainer>
+    <TeamsContainer column={column}>
       <TeamsItems>
-        <TeamsHeadingInfo>
-          <img src="#" width={64} height={64} style={{ objectFit: "cover" }} />
+        <TeamsHeadingInfo column={column}>
+          <img
+            src={data?.user?.avatar}
+            width={64}
+            height={64}
+            style={{ objectFit: "cover" }}
+          />
           <TeamsHeadingText>{data?.name}</TeamsHeadingText>
         </TeamsHeadingInfo>
         <Line />
 
-        <TeamsBottomInfo>
-          <TeamsBottomInfoCol>
+        <TeamsBottomInfo column={column}>
+          <TeamsBottomInfoCol column={column}>
             <LocationIcon />
             <TeamsBottonInfoText>
               {country?.name}, {city?.name}, {data?.address}{" "}
             </TeamsBottonInfoText>
           </TeamsBottomInfoCol>
-          <TeamsBottomInfoCol>
+          <TeamsBottomInfoCol column={column}>
             <UserIcon />
             <TeamsBottonInfoText>{data?.fullNameCoach}</TeamsBottonInfoText>
           </TeamsBottomInfoCol>
-          <TeamsBottomInfoCol>
+          <TeamsBottomInfoCol column={column}>
             <CoachInfoContainer>
               <CoachInfo>
                 <PhoneIcon />
@@ -72,10 +73,10 @@ const CoachInfo = styled.div`
 `
 
 const TeamsContainer = styled.div`
-  padding: 32px;
+  padding: ${({ column }) => (!!column ? 0 : "32px")};
   border: 1px solid #333333;
   border-radius: 16px;
-  margin: 32px;
+  margin: ${({ column }) => (!!column ? 0 : "32px")};
 `
 
 const TeamsHeadingText = styled.h2`
@@ -101,7 +102,7 @@ const TeamsBottomInfoCol = styled.div`
   display: grid;
   align-items: flex-start;
   grid-template-columns: 1.5fr 10fr;
-  border-right: 1px solid #333;
+  border-right: ${({ column }) => (!!column ? "none" : "1px solid #333")};
   &:last-child {
     border-right: none;
   }
@@ -113,13 +114,15 @@ const TeamsItems = styled.div`
 
 const TeamsHeadingInfo = styled.div`
   display: grid;
-  grid-template-columns: 2fr 10fr;
+  grid-template-columns: ${({ column }) =>
+    !!column ? "3fr 10fr" : "2fr 10fr"};
   align-items: center;
 `
 
 const TeamsBottomInfo = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: ${({ column }) => (!!column ? "1fr" : "1fr 1fr 1fr")};
+  grid-gap: ${({ column }) => (!!column ? "16px" : 0)};
 `
 
 const Line = styled.div`

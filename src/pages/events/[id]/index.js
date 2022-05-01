@@ -4,7 +4,6 @@ import $api from "../../../services/axios"
 import EdMainLayout from "../../../components/pages/Event/EDMainLayout"
 
 function EventsDetail({event}) {
-
   return (
     <EdMainLayout event={event}>
       <Content event={event}/>
