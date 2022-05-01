@@ -31,6 +31,18 @@ export const fetchUser = createAsyncThunk(
   }
 )
 
+export const patchUser = createAsyncThunk(
+  "user/patch",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.patch(`/athlete/profile/${id}/`, data)
+      return camelizeKeys(newData)
+    } catch (e) {
+      return rejectWithValue(e.response.status)
+    }
+  }
+)
+
 // reducer
 const initialState = {
   user: null,

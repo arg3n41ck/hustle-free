@@ -45,7 +45,6 @@ const Authorization = ({ onView }) => {
       password: "",
     },
     onSubmit: async (values) => {
-      console.log(values)
       try {
         const res = await formDataHttp(
           values,

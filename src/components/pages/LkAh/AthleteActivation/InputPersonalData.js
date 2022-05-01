@@ -76,10 +76,10 @@ const InputPersonalData = () => {
             })
             setCookie("token", _data.access, 999)
             setCookie("refresh", _data.refresh, 999999)
+            toast.success("Вы успешно активировали свои учетные данные!")
+            dispatch(fetchUser())
+            router.push("/login")
           } catch (e) {}
-          toast.success("Вы успешно активировали свои учетные данные!")
-          dispatch(fetchUser())
-          router.push("/login")
         } catch (e) {}
       }
     },

@@ -19,6 +19,7 @@ const $api = axios.create({
 $api.interceptors.request.use(
   (config) => {
     let token = getCookie("token")
+    let email = getCookie("email")
     if (token) {
       config.headers.Authorization = `Token ${token}`
     }
@@ -35,7 +36,6 @@ $api.interceptors.response.use(
   },
   async (error) => {
     const refreshToken = await getCookie("refresh")
-
     if (
       error?.response?.status === 401 &&
       error?.config?.url !== "/accounts/auth/jwt/refresh/"

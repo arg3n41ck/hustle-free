@@ -1,14 +1,14 @@
 import React from "react"
 import LkLayout from "../../../components/layouts/LkLayout"
+import MyEvents from "../../../components/pages/LkAh/Tabs/Profile/MyEvents"
 import { lkAhTabs } from "../../../components/pages/LkAh/Tabs/tabConstants"
-import SettingsProfile from "../../../components/pages/LkAh/Tabs/Profile/Settings"
 
-function Settings() {
+function Events() {
   return (
     <LkLayout tabs={lkAhTabs}>
-      <SettingsProfile />
+      <MyEvents />
     </LkLayout>
   )
 }
 
-export default Settings
+export default Events

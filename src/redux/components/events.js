@@ -15,6 +15,22 @@ export const fetchEventsByParams = createAsyncThunk(
   }
 )
 
+export const fetchEventsAthlete = createAsyncThunk(
+  "products/fetchEventsAthlete",
+  async (period, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/athlete/events/`, {
+        params: {
+          period,
+        },
+      })
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  }
+)
+
 export const fetchEvents = createAsyncThunk(
   "events/fetchEvent",
   async (params, { rejectWithValue }) => {
@@ -52,6 +68,7 @@ export const eventsSlice = createSlice({
       count: 0,
       isLoading: false,
       data: [],
+      athleteEvents: null,
     },
   },
   reducers: {
@@ -107,6 +124,20 @@ export const eventsSlice = createSlice({
       search.isLoading = false
       search.error = action.payload
     })
+
+    // Events Athlete
+    builder.addCase(fetchEventsAthlete.pending, ({ events }) => {
+      events.isLoading = false
+    })
+    builder.addCase(fetchEventsAthlete.fulfilled, ({ events }, action) => {
+      events.athleteEvents = action.payload
+      events.isLoading = false
+      events.error = ""
+    })
+    builder.addCase(fetchEventsAthlete.rejected, ({ events }, action) => {
+      events.isLoading = false
+      events.error = action.payload
+    })
   },
 })
 
@@ -117,7 +148,13 @@ export const selectEvents = createSelector(
   (state) => state.events.events.isLoading,
   (state) => state.events.events.data,
   (state) => state.events.events.count,
-  (loading, events, count) => [loading, events, count]
+  (state) => state.events.events.athleteEvents,
+  (loading, events, count, athleteEvents) => [
+    loading,
+    events,
+    count,
+    athleteEvents,
+  ]
 )
 
 export default eventsSlice.reducer

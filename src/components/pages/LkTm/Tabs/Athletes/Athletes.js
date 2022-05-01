@@ -26,7 +26,7 @@ const fetchTeams = async (id) => {
 
 const Athletes = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
-  const [view, setView] = useState("teams") // teams | applications
+  const [view, setView] = useState("teams") // teams | applicationsD
   const [teams, setTeams] = useState(null)
   const [applications, setApplications] = useState([])
 

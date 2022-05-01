@@ -1,9 +1,9 @@
 import React from "react"
 import { useDispatch } from "react-redux"
 import $api from "../../services/axios"
-import { setCookie } from "../../services/JWTService"
 import { fetchCountries } from "../../redux/components/countriesAndCities"
 import { useRouter } from "next/router"
+import { setCookie } from "../../services/JWTService"
 
 const InputData = ({ query }) => {
   const dispatch = useDispatch()

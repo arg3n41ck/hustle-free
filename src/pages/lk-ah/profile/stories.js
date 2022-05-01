@@ -1,14 +1,14 @@
 import React from "react"
 import LkLayout from "../../../components/layouts/LkLayout"
+import MyStories from "../../../components/pages/LkAh/Tabs/Profile/MyStories"
 import { lkAhTabs } from "../../../components/pages/LkAh/Tabs/tabConstants"
-import SettingsProfile from "../../../components/pages/LkAh/Tabs/Profile/Settings"
 
-function Settings() {
+function Stories() {
   return (
     <LkLayout tabs={lkAhTabs}>
-      <SettingsProfile />
+      <MyStories />
     </LkLayout>
   )
 }
 
-export default Settings
+export default Stories

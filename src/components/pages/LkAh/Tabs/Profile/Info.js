@@ -16,9 +16,16 @@ import { ru } from "date-fns/locale"
 import LkDefaultHeader from "../../../../ui/LKui/LKDefaultHeader"
 import { TitleHeader } from "../../../../ui/LKui/HeaderContent"
 import { useRouter } from "next/router"
+import { useDispatch } from "react-redux"
+
+import {
+  fetchCountries,
+  selectCountriesAndCities,
+} from "../../../../../redux/components/countriesAndCities"
 
 const Info = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
   const { push: routerPush } = useRouter()
   const {
     countries: { data: countries },
@@ -42,6 +49,10 @@ const Info = ({ onToggleSidebar }) => {
       })
     }
   }, [user, countries])
+
+  React.useEffect(() => {
+    dispatch(fetchCountries())
+  }, [])
 
   return (
     <>
@@ -79,7 +90,6 @@ const Info = ({ onToggleSidebar }) => {
               format(parseISO(user?.dateBirthday), "dd MMMM yyyy г.", {
                 locale: ru,
               })}
-              {console.log(user)}
           </Item>
           <Item>
             <WrapperIcon>
@@ -103,7 +113,8 @@ const Info = ({ onToggleSidebar }) => {
             </WrapperIcon>
             Контакты
           </Item>
-          <Item>{phoneFormatter(user?.phoneNumber)}</Item>
+          {/* <Item>{phoneFormatter(user?.phoneNumber)}</Item> */}
+          <Item>{user?.phoneNumber}</Item>
           <Item>
             <WrapperIcon>
               <EmailIcon />
