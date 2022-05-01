@@ -69,7 +69,7 @@ const Header = () => {
                 <NavbarText>Турниры</NavbarText>
               </a>
             </Link>
-            <Link href={"/about"} passHref>
+            <Link href={"/"} passHref>
               <a>
                 <NavbarText>Подробнее</NavbarText>
               </a>
@@ -101,7 +101,7 @@ const Header = () => {
                 <UserName>
                   {user?.role !== "team"
                     ? `${user?.firstName || ""} ${user?.lastName || ""}`
-                    : user?.fullNameCoach || ''}
+                    : user?.fullNameCoach || ""}
                 </UserName>
                 <UserRole>{getRoleInRu(user.role)}</UserRole>
               </UserInfo>

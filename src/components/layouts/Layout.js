@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import Header from "../Header/Header"
-import { Box, useMediaQuery } from "@mui/material"
+import { useMediaQuery } from "@mui/material"
 import { useDispatch } from "react-redux"
 import Head from "next/head"
 import { fetchUser } from "../../redux/components/user"
@@ -37,13 +37,11 @@ const Layout = ({ children }) => {
         />
       </Head>
       <Header />
-      <Box sx={{ display: "flex" }}>
-        <ChildrenWrapper lg={lg}>
-          <>{children}</>
+      <ChildrenWrapper lg={lg}>
+        <div>{children}</div>
 
-          <Footer />
-        </ChildrenWrapper>
-      </Box>
+        <Footer />
+      </ChildrenWrapper>
     </>
   )
 }
@@ -54,6 +52,9 @@ const ChildrenWrapper = styled.div`
   min-height: 100vh;
   margin: 0 auto;
   padding: 76px 38px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   ${theme.mqMax("lg")} {
     margin: 117px auto 160px auto;
