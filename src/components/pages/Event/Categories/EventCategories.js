@@ -102,6 +102,7 @@ function EventCategories() {
   return (
     <CollapseWrapper>
       <EDContentFilter
+        label={'Поиск'}
         onSearch={(value) => setSearch((value || "").toLowerCase())}
         openChildren={isFilterOpen}
       >

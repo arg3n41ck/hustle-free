@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
       dispatch(fetchCountries())
       dispatch(fetchSportTypes())
     }
-  }, [cookies?.token])
+  }, [cookies?.token, userAuthenticated])
 
   return (
     <>
@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
 }
 
 const ChildrenWrapper = styled.div`
-  max-width: 1408px;
+  max-width: 1489px;
   width: 100%;
   min-height: 100vh;
   margin: 0 auto;

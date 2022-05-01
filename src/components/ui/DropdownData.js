@@ -18,6 +18,7 @@ const DropdownData = ({
   })
   return (
     <Wrapper
+      height={heightWrapper}
       animate={active ? "open" : "closed"}
       transition={{ transition: 0.2 }}
       variants={variants.current}
@@ -38,6 +39,7 @@ const Wrapper = styled(motion.div)`
   box-sizing: border-box;
   border-radius: 16px;
   width: 100%;
+  height: ${(p) => p.height};
   overflow: hidden;
 `
 const Header = styled.div`

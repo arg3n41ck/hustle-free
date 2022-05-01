@@ -41,7 +41,6 @@ function TeamTabs() {
       const { data } = await formDataHttp(submitData, "accounts/team/", "post")
       setCookie("token", data.access, 999)
       setCookie("refresh", data.refresh, 999999)
-      dispatch(fetchUser())
       toast.success("Вы успешно активировали свои учетные данные!")
       await router.push("/")
     } catch (e) {

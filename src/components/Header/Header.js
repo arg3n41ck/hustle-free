@@ -25,9 +25,9 @@ const Header = () => {
   const [userAuthenticated] = useSelector(selectIsUserAuth)
   const dispatch = useDispatch()
   const activeTabs = userAuthenticated
-    ? (user.role === "organizer" && lkOgTabs) ||
-      (user.role === "team" && lkTmTabs) ||
-      (user.role === "athlete" && lkAhTabs)
+    ? (user?.role === "organizer" && lkOgTabs) ||
+      (user?.role === "team" && lkTmTabs) ||
+      (user?.role === "athlete" && lkAhTabs)
     : null
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const Header = () => {
               aria-describedby={idUserMenu}
             >
               <Avatar
-                src={user.avatar}
+                src={user?.avatar}
                 sx={{ marginRight: 1.2, objectFit: "cover" }}
                 alt="userAva"
               />
@@ -101,9 +101,9 @@ const Header = () => {
                 <UserName>
                   {user?.role !== "team"
                     ? `${user?.firstName || ""} ${user?.lastName || ""}`
-                    : user?.fullNameCoach || ''}
+                    : user?.fullNameCoach || ""}
                 </UserName>
-                <UserRole>{getRoleInRu(user.role)}</UserRole>
+                <UserRole>{getRoleInRu(user?.role)}</UserRole>
               </UserInfo>
               <svg
                 width="18"
@@ -183,7 +183,7 @@ const Wrapper = styled.div`
 `
 
 const WrapperItems = styled.div`
-  max-width: 1408px;
+  max-width: 1489px;
   width: 100%;
   margin: 0 auto;
   display: flex;

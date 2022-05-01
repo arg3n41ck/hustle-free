@@ -8,15 +8,17 @@ import Events from "../../ui/Events"
 import HeroMainPageForNotAuth from "./HeroMainPageForNotAuth"
 import MainPageAuth from "./MainPageAuth"
 import { MainPageWrapper } from "../MainPage/MainPage"
-import { selectIsUserAuth } from "../../../redux/components/user"
+import { fetchUser, selectIsUserAuth } from "../../../redux/components/user"
 
 const MainPageForNotAuthUser = () => {
   const [, events] = useSelector(selectEvents)
   const dispatch = useDispatch()
   const [userAuthenticated] = useSelector(selectIsUserAuth)
+  const user = useSelector((state) => state.user)
   let array = [...events]
 
   useEffect(() => {
+    if (!user.user) dispatch(fetchUser())
     dispatch(fetchEvents())
   }, [])
 

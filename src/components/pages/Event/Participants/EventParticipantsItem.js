@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import DropdownData from "../../../ui/DropdownData"
+import ParticipantsList from "./ParticipantsList"
 
 const EventParticipantsItem = ({ eventParticipant }) => {
   const [open, setOpen] = useState(false)
@@ -8,10 +9,13 @@ const EventParticipantsItem = ({ eventParticipant }) => {
 
   const info = (
     <Info>
-      <InfoText>Всего: 5</InfoText>
-      <InfoText color="#6D4EEA">Подтвержденные: 5</InfoText>
-      <InfoText color="#27AE60">Регистраций: 5</InfoText>
-      <InfoText color="#F2994A">Неподтвержденных: 5</InfoText>
+      <InfoText>Всего: {eventParticipant.allParticipants}</InfoText>
+      <InfoText color="#27AE60">
+        Регистраций: {eventParticipant.isAcceptParticipants}
+      </InfoText>
+      <InfoText color="#F2994A">
+        Неподтвержденных: {eventParticipant.isNotAcceptParticipants}
+      </InfoText>
     </Info>
   )
 
@@ -22,9 +26,9 @@ const EventParticipantsItem = ({ eventParticipant }) => {
         setActive={setOpen}
         heightWrapper={"184px"}
         additionalData={info}
-        title={`${eventParticipantsCategory.name} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
+        title={`${eventParticipantsCategory.name} / ${eventParticipant.level} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
       >
-        <h1>data</h1>
+        <ParticipantsList participants={eventParticipant.participants} />
       </DropdownData>
     </Item>
   )

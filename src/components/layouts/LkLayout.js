@@ -33,8 +33,9 @@ function LkLayout({ tabs, children }) {
 export default LkLayout
 
 const Container = styled.div`
-  max-width: 1408px;
+  max-width: 1489px;
   margin: 64px auto;
+  overflow: hidden;
 `
 const Wrapper = styled.div`
   border: 1px solid #333333;

@@ -35,9 +35,4 @@ export const lkAhTabs = [
     icon: <SettingsIcon />,
     href: "/lk-ah/profile/settings",
   },
-  {
-    name: "Выйти",
-    href: "exit",
-    icon: <ExitIcon />,
-  },
 ]

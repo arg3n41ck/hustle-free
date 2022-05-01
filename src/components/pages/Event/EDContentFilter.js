@@ -3,7 +3,7 @@ import { Collapse, TextField } from "@mui/material"
 import styled from "styled-components"
 
 function EDContentFilter({
-  label = "Поиск",
+  label,
   onSearch,
   children,
   isFilterOpen,
@@ -14,7 +14,7 @@ function EDContentFilter({
 
   return (
     <MainWrapper>
-      <h2>{label}</h2>
+      {!!label && <h2>{label}</h2>}
       <Search>
         <TextField
           value={search}
