@@ -1,14 +1,14 @@
 import React from "react"
 import LkLayout from "../../../components/layouts/LkLayout"
-import ProfileAh from "../../../components/pages/LkAh/Tabs/Profile/Profile"
+import MyEvents from "../../../components/pages/LkAh/Tabs/Profile/MyEvents"
 import { lkAhTabs } from "../../../components/pages/LkAh/Tabs/tabConstants"
 
-const OgProfile = () => {
+function Events() {
   return (
     <LkLayout tabs={lkAhTabs}>
-      <ProfileAh />
+      <MyEvents />
     </LkLayout>
   )
 }
 
-export default OgProfile
+export default Events

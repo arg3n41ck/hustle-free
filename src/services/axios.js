@@ -35,7 +35,6 @@ $api.interceptors.response.use(
   },
   async (error) => {
     const refreshToken = await getCookie("refresh")
-
     if (
       error?.response?.status === 401 &&
       error?.config?.url !== "/accounts/auth/jwt/refresh/"

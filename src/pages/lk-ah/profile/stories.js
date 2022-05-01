@@ -1,14 +1,14 @@
 import React from "react"
 import LkLayout from "../../../components/layouts/LkLayout"
-import ProfileAh from "../../../components/pages/LkAh/Tabs/Profile/Profile"
+import MyStories from "../../../components/pages/LkAh/Tabs/Profile/MyStories"
 import { lkAhTabs } from "../../../components/pages/LkAh/Tabs/tabConstants"
 
-const OgProfile = () => {
+function Stories() {
   return (
     <LkLayout tabs={lkAhTabs}>
-      <ProfileAh />
+      <MyStories />
     </LkLayout>
   )
 }
 
-export default OgProfile
+export default Stories
