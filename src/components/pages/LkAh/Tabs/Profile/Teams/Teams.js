@@ -15,6 +15,10 @@ function Teams({ data, column }) {
     setCity(cities.find((city) => city.id === data?.city))
   }, [data])
 
+  if (!country && !city) {
+    return <div />
+  }
+
   return (
     <TeamsContainer key={data?.id} column={column}>
       <TeamsItems>
@@ -95,6 +99,8 @@ const TeamsItems = styled.div`
 
 const TeamsHeadingInfo = styled.div`
   display: grid;
+  grid-template-columns: 64px auto;
+  grid-column-gap: 16px;
   grid-template-columns: ${({ column }) =>
     !!column ? "3fr 10fr" : "2fr 10fr"};
   align-items: center;

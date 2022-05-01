@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from "react"
+import React, { useEffect, useState } from "react"
 import { useFormik } from "formik"
 import { useDispatch, useSelector } from "react-redux"
 import * as yup from "yup"
@@ -7,15 +7,13 @@ import {
   Box,
   TextField,
   Autocomplete,
-  MenuItem,
   FormControl,
   OutlinedInput,
   InputAdornment,
   IconButton,
 } from "@mui/material"
 import { ru } from "date-fns/locale"
-import { LocalizationProvider } from "@mui/lab"
-import { MobileDatePicker } from "@mui/x-date-pickers"
+import { DatePicker, LocalizationProvider } from "@mui/lab"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import Radio from "../../../../ui/Radio"
 import InputMask from "react-input-mask"
@@ -25,9 +23,7 @@ import { TitleHeader } from "../../../../ui/LKui/HeaderContent"
 import CalendarIcon from "../../../../../public/svg/calendar-edit-profile.svg"
 import PhoneIcon from "../../../../../public/svg/profile-phone.svg"
 import EmailIcon from "../../../../../public/svg/profile-email-edit.svg"
-import SelectUI from "../../../../ui/Selects/Select"
-import $api from "../../../../../services/axios"
-import { patchUser, saveUser } from "../../../../../redux/components/user"
+import { saveUser } from "../../../../../redux/components/user"
 import { format } from "date-fns"
 import { useRouter } from "next/router"
 import { PasswordIcon } from "../../../../../pages/reset-password"
@@ -82,11 +78,9 @@ const Edits = ({ onToggleSidebar }) => {
       countries: { data: countries },
     },
   } = useSelector((state) => state)
-  const query = useQuery()
   const dispatch = useDispatch()
   const { push: routerPush } = useRouter()
   const [currentCities, setCurrentCities] = useState([])
-  const [city, setCity] = useState(null)
   const [showPassword, setShowPassword] = useState(false)
   const [imageUrl, setImageUrl] = useState(null)
   const [, cities] = useSelector(selectCountriesAndCities)
@@ -98,10 +92,7 @@ const Edits = ({ onToggleSidebar }) => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        //  const { nameOrganization, country, avatar, city, ...rstValues } =
-        //     values,
         const { avatar, ...rstValues } = values
-        const formData = new FormData()
         const currentCountry = countries.find(
             (country) => country.id === values.country
           ),
@@ -145,14 +136,6 @@ const Edits = ({ onToggleSidebar }) => {
     event.preventDefault()
   }
 
-  const defaultCities = React.useMemo(() => {
-    const res = []
-    countries.forEach(({ cityCountry }) =>
-      cityCountry.forEach((item) => res.push(item))
-    )
-    return res
-  }, [])
-
   const changeCurrentCities = (changeCountry) => {
     const findObj = countries.find((country) => country.id === changeCountry.id)
     if (findObj) setCurrentCities(findObj.cityCountry)
@@ -169,14 +152,14 @@ const Edits = ({ onToggleSidebar }) => {
     !countries?.length && dispatch(fetchCountries())
   }, [])
 
-  const handleClickCities = (item) => {
-    setCity(item)
-  }
-
   const uploadImageToClient = (event) => {
     if (event.target.files[0]) {
       setImageUrl(URL.createObjectURL(event.target.files[0]))
     }
+  }
+
+  if (!user?.id && !countries?.length && !currentCities?.length) {
+    return <div />
   }
 
   return (
@@ -248,7 +231,7 @@ const Edits = ({ onToggleSidebar }) => {
           <div className="auth-wrapper__input">
             <p className="auth-title__input">Дата рождения (не обязательно)</p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-              <MobileDatePicker
+              <DatePicker
                 components={{
                   OpenPickerIcon: CalendarIcon,
                 }}
@@ -274,7 +257,6 @@ const Edits = ({ onToggleSidebar }) => {
                     }
                     inputProps={{
                       ...params.inputProps,
-                      endAdornment: <CalendarIcon/>,
                       placeholder: "ДД/ММ/ГГГГ",
                     }}
                   />
@@ -414,7 +396,7 @@ const Edits = ({ onToggleSidebar }) => {
             </Box>
           </div>
 
-          {/* <div className="auth-wrapper__input">
+          <div className="auth-wrapper__input">
             <p className="auth-title__input">Тип профиля</p>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <RadioWrapper>
@@ -432,7 +414,7 @@ const Edits = ({ onToggleSidebar }) => {
                 />
               </RadioWrapper>
             </Box>
-          </div> */}
+          </div>
         </Box>
         <div className="auth-wrapper__input">
           <p className="auth-title__input">Электронный адрес</p>
@@ -628,20 +610,16 @@ const Header = styled.div`
   padding: 32px;
   border-bottom: 1px solid #333333;
 `
-const Title = styled.h4`
-  font-style: normal;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 32px;
-  color: #f2f2f2;
-`
+
 const Content = styled.div`
   padding: 32px;
 `
+
 const RadioWrapper = styled.div`
   display: flex;
   margin-right: 32px;
 `
+
 const Footer = styled.div`
   border-top: 1px solid #333333;
   padding: 32px;
@@ -662,13 +640,6 @@ const AvatarWrapper = styled.div`
     flex-direction: column-reverse;
     align-items: center;
   }
-`
-
-const AvatarText = styled.p`
-  font-family: Inter, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  color: #fff;
 `
 
 const AvatarInfo = styled.div`

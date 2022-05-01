@@ -93,6 +93,7 @@ const AthletesWrapper = styled.div`
   display: flex;
   grid-gap: 16px;
   padding: 32px;
+  flex-wrap: wrap;
 `
 
 const Field = styled.div`

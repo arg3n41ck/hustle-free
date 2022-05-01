@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import $api from "../../../services/axios"
 import LkDefaultHeader from "../../ui/LKui/LKDefaultHeader"
 import { TitleHeader } from "../../ui/LKui/HeaderContent"
 import { HeaderWrapper } from "../LkOg/Tabs/Events/Events/Events"
 import styled from "styled-components"
 import { Avatar, Box } from "@mui/material"
-import EditsIcon from "../../../public/svg/edits-icon.svg"
 import WebsiteIcon from "../../../public/svg/website-icon.svg"
 import EmailIcon from "../../../public/svg/email-profile.svg"
 import LinkIcon from "../../../public/svg/link-icon.svg"
@@ -26,6 +25,8 @@ const getTeamData = async (teamId) => {
 function TeamInfo({ onToggleSidebar, teamId }) {
   const [team, setTeam] = useState(null)
   const [countries] = useSelector(selectCountriesAndCities)
+  const user = useSelector((state) => state.user.user)
+  const [athHasBeenReq, setAthHasBeenReq] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -36,6 +37,15 @@ function TeamInfo({ onToggleSidebar, teamId }) {
   useEffect(() => {
     teamId && getTeamData(teamId).then(setTeam)
   }, [teamId])
+
+  const sendReq = useCallback(async () => {
+    try {
+      await $api.post('/teams/teams/requests/', {team: teamId})
+      setAthHasBeenReq(true)
+    } catch (e) {
+      setAthHasBeenReq(true)
+    }
+  }, [user])
 
   const currentLocations = useMemo(() => {
     const country =
@@ -56,9 +66,17 @@ function TeamInfo({ onToggleSidebar, teamId }) {
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
           <TitleHeader>Профиль</TitleHeader>
-          <CreateEventBTN onClick={() => {}}>
-            <PlusIcon /> Вступить в команду
-          </CreateEventBTN>
+          {user?.role === "athlete" && (
+            <CreateEventBTN disabled={athHasBeenReq} onClick={() => sendReq()}>
+              {!athHasBeenReq ? (
+                <>
+                  <PlusIcon /> Вступить в команду
+                </>
+              ) : (
+                "Вы уже в команде"
+              )}
+            </CreateEventBTN>
+          )}
         </HeaderWrapper>
       </LkDefaultHeader>
       {team && (
@@ -74,7 +92,7 @@ function TeamInfo({ onToggleSidebar, teamId }) {
               <CenterDescription>{team?.description || ""}</CenterDescription>
             </CenterText>
           </Center>
-          <Footer>
+          <div>
             <List>
               <Item>
                 <ItemTitle>
@@ -149,7 +167,7 @@ function TeamInfo({ onToggleSidebar, teamId }) {
                 </CoachItem>
               </CoachBlock>
             </List>
-          </Footer>
+          </div>
         </Content>
       )}
     </div>
@@ -197,29 +215,7 @@ const CenterDescription = styled.p`
   line-height: 24px;
   color: #828282;
 `
-const IconWrapper = styled.div`
-  width: 15px;
-  height: 15px;
-  margin-right: 10px;
-  margin-top: 3px;
-`
-const Button = styled.button`
-  border: 1px solid #333333;
-  box-sizing: border-box;
-  border-radius: 4px;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  min-width: 187px;
-  background: inherit;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 40px;
-  color: #bdbdbd;
-  height: 40px;
-`
-const Footer = styled.div``
+
 const List = styled.ul`
   display: flex;
   flex-direction: column;
