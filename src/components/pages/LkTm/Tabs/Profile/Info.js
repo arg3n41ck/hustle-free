@@ -50,7 +50,7 @@ const Info = ({ onToggleSidebar, onView }) => {
             sx={{ width: 112, height: 112 }}
           />
           <CenterText>
-            <CenterTitle>{user?.nameOrganization}</CenterTitle>
+            <CenterTitle>{user?.fullName}</CenterTitle>
             <CenterDescription>{user?.description}</CenterDescription>
           </CenterText>
           <Button onClick={() => onView("edit")}>

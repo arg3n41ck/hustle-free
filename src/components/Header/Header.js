@@ -37,6 +37,7 @@ const Header = () => {
   const changeMenu = (value) => {
     setAnchorUserMenu(null)
     if (value === "exit") {
+      clearCookies()
       outHandler()
       return
     }
