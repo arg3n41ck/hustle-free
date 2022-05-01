@@ -45,23 +45,9 @@ function EventsFilter() {
 
   const sortHandler = (_) => {}
 
-  const handleCountriesFilter = useCallback(
-    (_, value) => {
-      value ? query.set("country", value.name) : query.delete("country")
-      routerPush(`/events/?${query}`)
-    },
-    [query]
-  )
-  const handleSportTypesFilter = useCallback(
-    (_, value) => {
-      value ? query.set("type_sport", value.name) : query.delete("type_sport")
-      routerPush(`/events/?${query}`)
-    },
-    [query]
-  )
-  const handleDateFilter = useCallback(
-    (_, value) => {
-      value ? query.set("ordering", value.value) : query.delete("ordering")
+  const handleFilter = useCallback(
+    (name, value) => {
+      value ? query.set(name, value.name) : query.delete(name)
       routerPush(`/events/?${query}`)
     },
     [query]
@@ -86,9 +72,15 @@ function EventsFilter() {
   return (
     <div>
       <BtnsWrapper>
-        <SoonBtn>Предстоящие</SoonBtn>
-        <LiveBtn>• Live</LiveBtn>
-        <PastEventsBtn>Прошедшие</PastEventsBtn>
+        <SoonBtn onClikc={() => handleFilter("future", { name: true })}>
+          Предстоящие
+        </SoonBtn>
+        <LiveBtn onClikc={() => handleFilter("live", { name: true })}>
+          • Live
+        </LiveBtn>
+        <PastEventsBtn onClikc={() => handleFilter("past", { name: true })}>
+          Прошедшие
+        </PastEventsBtn>
         <FilterBtn onClick={() => setFilter((s) => !s)}>
           <FilterIcon />
           Фильтр
@@ -100,7 +92,7 @@ function EventsFilter() {
           {!!sportTypes?.length && (
             <Autocomplete
               noOptionsText={"Ничего не найдено"}
-              onChange={(e, value) => handleSportTypesFilter(e, value)}
+              onChange={(e, value) => handleFilter("type_sport", value)}
               options={sportTypes.map((option) => option)}
               getOptionLabel={(option) => option.name}
               fullWidth
@@ -121,7 +113,7 @@ function EventsFilter() {
           {!!countries?.length && (
             <Autocomplete
               noOptionsText={"Ничего не найдено"}
-              onChange={(e, value) => handleCountriesFilter(e, value)}
+              onChange={(e, value) => handleFilter("country", value)}
               options={countries.map((option) => option)}
               getOptionLabel={(option) => option.name}
               value={countriesValue}
@@ -141,7 +133,7 @@ function EventsFilter() {
           )}
           <Autocomplete
             noOptionsText={"Ничего не найдено"}
-            onChange={(e, value) => handleDateFilter(e, value)}
+            onChange={(e, value) => handleFilter("ordering", value)}
             options={dateTypes.map((option) => option)}
             getOptionLabel={(option) => option.name}
             value={orderingValue}
