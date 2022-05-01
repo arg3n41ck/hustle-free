@@ -1,7 +1,8 @@
 import React from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { selectCountriesAndCities } from "../../../../../../redux/components/countriesAndCities"
+import { Avatar } from "@mui/material"
 
 function Teams({ data }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
@@ -15,14 +16,18 @@ function Teams({ data }) {
   }, [data])
 
   if (!country && !city) {
-    return <div>Loading...</div>
+    return <div />
   }
 
   return (
     <TeamsContainer>
       <TeamsItems>
         <TeamsHeadingInfo>
-          <img src="#" width={64} height={64} style={{ objectFit: "cover" }} />
+          <Avatar
+            alt={`${data?.user?.avatar}`}
+            src={data?.user?.avatar}
+            sx={{ width: 64, height: 64 }}
+          />
           <TeamsHeadingText>{data?.name}</TeamsHeadingText>
         </TeamsHeadingInfo>
         <Line />
@@ -72,14 +77,12 @@ const CoachInfo = styled.div`
 `
 
 const TeamsContainer = styled.div`
-  padding: 32px;
   border: 1px solid #333333;
   border-radius: 16px;
   margin: 32px;
 `
 
 const TeamsHeadingText = styled.h2`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -88,7 +91,6 @@ const TeamsHeadingText = styled.h2`
 `
 
 const TeamsBottonInfoText = styled.p`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -113,7 +115,8 @@ const TeamsItems = styled.div`
 
 const TeamsHeadingInfo = styled.div`
   display: grid;
-  grid-template-columns: 2fr 10fr;
+  grid-template-columns: 64px auto;
+  grid-column-gap: 16px;
   align-items: center;
 `
 
@@ -137,8 +140,8 @@ const LocationIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M12.398 19.804C13.881 19.0348 19 16.0163 19 11C19 7.13401 15.866 4 12 4C8.13401 4 5 7.13401 5 11C5 16.0163 10.119 19.0348 11.602 19.804C11.8548 19.9351 12.1452 19.9351 12.398 19.804ZM12 14C13.6569 14 15 12.6569 15 11C15 9.34315 13.6569 8 12 8C10.3431 8 9 9.34315 9 11C9 12.6569 10.3431 14 12 14Z"
       fill="#828282"
     />
@@ -188,8 +191,8 @@ const EmailIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M3.87868 5.87868C3 6.75736 3 8.17157 3 11V13C3 15.8284 3 17.2426 3.87868 18.1213C4.75736 19 6.17157 19 9 19H15C17.8284 19 19.2426 19 20.1213 18.1213C21 17.2426 21 15.8284 21 13V11C21 8.17157 21 6.75736 20.1213 5.87868C19.2426 5 17.8284 5 15 5H9C6.17157 5 4.75736 5 3.87868 5.87868ZM6.5547 8.16795C6.09517 7.8616 5.4743 7.98577 5.16795 8.4453C4.8616 8.90483 4.98577 9.5257 5.4453 9.83205L10.8906 13.4622C11.5624 13.9101 12.4376 13.9101 13.1094 13.4622L18.5547 9.83205C19.0142 9.5257 19.1384 8.90483 18.8321 8.4453C18.5257 7.98577 17.9048 7.8616 17.4453 8.16795L12 11.7982L6.5547 8.16795Z"
       fill="#828282"
     />
