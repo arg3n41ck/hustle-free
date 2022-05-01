@@ -46,7 +46,6 @@ function EventCategories() {
     [query]
   )
 
-  console.log(queryRest)
   const countriesValue =
     countries.length &&
     countries.find((type) => type.name === query.get("country"))
