@@ -13,7 +13,7 @@ function Rules() {
   const [eventDefaultValues, setEventDefaultValues] = useState(null)
   useEffect(() => {
     eventId &&
-      getEventDefaultValues(`/organizer/events/${eventId}/event_rules/`).then(
+      getEventDefaultValues(`/organizer/events/${eventId}/rules/`).then(
         (data) => {
           setEventDefaultValues({ rules: data.rules })
         }

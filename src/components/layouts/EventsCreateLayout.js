@@ -1,4 +1,4 @@
-import React  from "react"
+import React from "react"
 import { BetweenIcon, StartIcon } from "../pages/LkOg/Tabs/Events/FormIcons"
 import { useRouter } from "next/router"
 import styled from "styled-components"
@@ -23,7 +23,7 @@ function EventsCreateLayout({ onToggleSidebar, children }) {
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
           <TitleHeader>Создание турнира</TitleHeader>
-          <SaveAsDraft onClick={() => routerPush("/lk-og/profile/events/edit")}>
+          <SaveAsDraft onClick={() => routerPush("/lk-og/profile/events/")}>
             Сохранить в черновик
           </SaveAsDraft>
         </HeaderWrapper>
