@@ -75,7 +75,8 @@ const Edits = () => {
           newValues = {
             ...values,
             dateBirthday:
-              values.dateBirthday && format(values.dateBirthday, "yyyy-MM-dd"),
+              values.dateBirthday &&
+              format(new Date(values.dateBirthday), "yyyy-MM-dd"),
             country: currentCountry.id,
             city: currentCity.id,
           }
