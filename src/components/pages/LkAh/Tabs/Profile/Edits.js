@@ -119,7 +119,7 @@ const Edits = ({ onToggleSidebar }) => {
         const { data } = await formDataHttp(
           newValues,
           `athlete/profile/edit/`,
-          "put"
+          "patch"
         )
 
         dispatch(saveUser({ ...newValues, ...data }))

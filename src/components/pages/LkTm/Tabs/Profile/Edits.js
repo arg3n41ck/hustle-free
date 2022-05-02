@@ -471,7 +471,7 @@ const Textarea = styled.textarea`
   line-height: 24px;
   color: #f2f2f2;
 `
-const GrayText = styled.p`
+export const GrayText = styled.p`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -481,15 +481,15 @@ const GrayText = styled.p`
 const WhiteText = styled(GrayText)`
   color: #f2f2f2;
 `
-const Gallery = styled.div`
+export const Gallery = styled.div`
   padding-bottom: 32px;
   border-bottom: 1px solid #333333;
 `
-const GalleryBlock = styled.div`
+export const GalleryBlock = styled.div`
   display: flex;
   margin-top: 24px;
 `
-const GalleryLabel = styled.div`
+export const GalleryLabel = styled.div`
   min-width: 128px;
   margin-right: 24px;
   height: 128px;
@@ -499,21 +499,21 @@ const GalleryLabel = styled.div`
   position: relative;
   overflow: hidden;
 `
-const GalleryInput = styled.input`
+export const GalleryInput = styled.input`
   position: absolute;
   width: 100%;
   height: 100%;
   opacity: 0;
   cursor: pointer;
 `
-const UploadIconWrapper = styled.div`
+export const UploadIconWrapper = styled.div`
   position: absolute;
   pointer-events: none;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 `
-const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
