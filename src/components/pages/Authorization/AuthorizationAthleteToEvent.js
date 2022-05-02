@@ -275,6 +275,7 @@ function RegistrationAthleteToEvent({ data }) {
                     {...inputProps}
                     sx={{ width: "100%" }}
                     id="outlined-basic"
+                    disabled
                     variant="outlined"
                     placeholder={"+7 (7"}
                     error={
