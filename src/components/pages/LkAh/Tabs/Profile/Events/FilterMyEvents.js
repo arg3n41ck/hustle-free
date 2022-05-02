@@ -1,20 +1,18 @@
 import React from "react"
 import styled from "styled-components"
-import Image from "next/image"
 import { getRusBetweenDate } from "../../../../../../helpers/helpers"
 import { CalendarIcon, LocationIcon } from "../../../../Events/EventsSlider"
-import { IconButton } from "@mui/material"
+import { Avatar, IconButton } from "@mui/material"
 import { DEFAULT_API_URL } from "../../../../../../services/constants"
 
 function FilterMyEvents({ data }) {
   return (
     <EventContainer key={data?.id}>
       <EventItems>
-        <img
+        <Avatar
+          alt={DEFAULT_API_URL + data?.event?.image}
           src={DEFAULT_API_URL + data?.event?.image}
-          width={208}
-          height={112}
-          style={{ objectFit: "cover" }}
+          sx={{ width: 112, height: 112 }}
         />
         <EventsInfo>
           <EventInfoHeadingText>{data?.event?.name}</EventInfoHeadingText>
@@ -73,7 +71,6 @@ const EventRightInfo = styled.div`
 `
 
 const PaidInfo = styled.p`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -83,7 +80,8 @@ const PaidInfo = styled.p`
 
 const EventItems = styled.div`
   display: grid;
-  grid-template-columns: 3fr 10fr 1fr;
+  grid-template-columns: 112px auto min-content;
+  grid-column-gap: 32px;
 `
 const EventsInfo = styled.div`
   display: flex;
@@ -101,7 +99,6 @@ const EventBottomInfo = styled.div`
 `
 
 const EventCitiesAndDateInfo = styled.p`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
@@ -110,7 +107,6 @@ const EventCitiesAndDateInfo = styled.p`
 `
 
 const EventInfoHeadingText = styled.h2`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -119,7 +115,6 @@ const EventInfoHeadingText = styled.h2`
 `
 
 const EventInfoParticipantsInfo = styled.p`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 20px;

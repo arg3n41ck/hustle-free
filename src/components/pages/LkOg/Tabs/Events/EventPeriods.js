@@ -42,12 +42,24 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
         await formDataHttp(
           {
             ...values,
-            earlyRegStart: format(values.earlyRegStart, "yyyy-MM-dd"),
-            earlyRegEnd: format(values.earlyRegEnd, "yyyy-MM-dd"),
-            standartRegStart: format(values.standartRegStart, "yyyy-MM-dd"),
-            standartRegEnd: format(values.standartRegEnd, "yyyy-MM-dd"),
-            lateRegStart: format(values.lateRegStart, "yyyy-MM-dd"),
-            lateRegEnd: format(values.lateRegEnd, "yyyy-MM-dd"),
+            earlyRegStart:
+              values.earlyRegStart &&
+              format(new Date(values.earlyRegStart), "yyyy-MM-dd"),
+            earlyRegEnd:
+              values.earlyRegEnd &&
+              format(new Date(values.earlyRegEnd), "yyyy-MM-dd"),
+            standartRegStart:
+              values.standartRegStart &&
+              format(new Date(values.standartRegStart), "yyyy-MM-dd"),
+            standartRegEnd:
+              values.standartRegEnd &&
+              format(new Date(values.standartRegEnd), "yyyy-MM-dd"),
+            lateRegStart:
+              values.lateRegStart &&
+              format(new Date(values.lateRegStart), "yyyy-MM-dd"),
+            lateRegEnd:
+              values.lateRegEnd &&
+              format(new Date(values.lateRegEnd), "yyyy-MM-dd"),
             allFieldsFilled: true,
           },
           `organizer/events/${eventId}/registration/`,
@@ -63,7 +75,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
   useEffect(() => {
     dispatch(fetchSportTypes())
   }, [])
-
+  console.log({ errors, touched, values })
   return (
     <Form onSubmit={handleSubmit}>
       <Field>
@@ -326,7 +338,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
 export default EventPeriods
 
 const validationSchema = yup.object({
-  maxParticipantCount: yup.number().required("Обязательное поле"),
+  maxParticipantCount: yup.number().required("Обязательное поле").nullable(),
   earlyRegActive: yup.boolean(),
   lateRegActive: yup.boolean(),
   earlyRegStart: yup
