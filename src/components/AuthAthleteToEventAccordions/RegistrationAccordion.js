@@ -39,22 +39,24 @@ function RegistrationAccordion({ data }) {
         <Line />
         <AccordionDetails sx={{ padding: "24px" }}>
           {!!data?.registration?.earlyRegActive && (
-            <RegistrationAccordionItems>
-              <RegistrationIcon period="early" />
-              <div>
-                <RegistrationAccordionItemTopText>
-                  Ранняя регистрация
-                </RegistrationAccordionItemTopText>
-                <RegistrationAccordionItemBottomText>
-                  {getRusBetweenDate(
-                    data?.registration?.earlyRegStart,
-                    data?.registration?.earlyRegEnd
-                  )}
-                </RegistrationAccordionItemBottomText>
-              </div>
-            </RegistrationAccordionItems>
+            <>
+              <RegistrationAccordionItems>
+                <RegistrationIcon period="early" />
+                <div>
+                  <RegistrationAccordionItemTopText>
+                    Ранняя регистрация
+                  </RegistrationAccordionItemTopText>
+                  <RegistrationAccordionItemBottomText>
+                    {getRusBetweenDate(
+                      data?.registration?.earlyRegStart,
+                      data?.registration?.earlyRegEnd
+                    )}
+                  </RegistrationAccordionItemBottomText>
+                </div>
+              </RegistrationAccordionItems>
+              <Line margin={"24px 0"} />
+            </>
           )}
-          <Line margin={"24px 0"} />
           <RegistrationAccordionItems>
             <RegistrationIcon period="standart" />
             <div>

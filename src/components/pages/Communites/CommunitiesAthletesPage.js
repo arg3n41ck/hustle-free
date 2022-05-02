@@ -38,19 +38,20 @@ function CommunitesAthletesPage() {
   const [, athletes] = useSelector(selectAthletes)
   const { push: routerPush } = useRouter()
 
-  const teaamsValue =
-    teams.length && teams.find((type) => type.name === query.get("teams"))
+  const teamsValue =
+    teams.length && teams.find((type) => type.id === query.get("team_id"))
+
 
   const countriesValue =
     countries.length &&
-    countries.find((type) => type.name === query.get("country"))
+    countries.find((type) => type.id === query.get("country_id"))
 
   const gendersValue =
-    gender.length && gender.find((type) => type.name === query.get("gender"))
+    gender.length && gender.find((type) => type.value === query.get("gender"))
 
   const handleCountriesFilter = useCallback(
     (_, value) => {
-      value ? query.set("country", value.name) : query.delete("country")
+      value ? query.set("country_id", value.id) : query.delete("country_id")
       routerPush(`/communities/athletes/?${query}`)
     },
     [query]
@@ -58,7 +59,7 @@ function CommunitesAthletesPage() {
 
   const handleTeamsTypesFilter = useCallback(
     (_, value) => {
-      value ? query.set("teams", value.name) : query.delete("teams")
+      value ? query.set("team_id", value.id) : query.delete("team_id")
       routerPush(`/communities/athletes/?${query}`)
     },
     [query]
@@ -66,12 +67,11 @@ function CommunitesAthletesPage() {
 
   const handleGendersFilter = useCallback(
     (_, value) => {
-      value ? query.set("gender", value.name) : query.delete("gender")
+      value ? query.set("gender", value.value) : query.delete("gender")
       routerPush(`/communities/athletes/?${query}`)
     },
     [query]
   )
-  //
 
   React.useEffect(() => {
     dispatch(fetchTeams())
@@ -96,9 +96,7 @@ function CommunitesAthletesPage() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Поиск"
             />
-            <CommunitesHeadingButton
-              type="submit"
-            >
+            <CommunitesHeadingButton type="submit">
               <SearchIcon />
               Найти
             </CommunitesHeadingButton>
@@ -113,7 +111,7 @@ function CommunitesAthletesPage() {
               options={teams?.results?.map((option) => option)}
               getOptionLabel={(option) => option.name}
               fullWidth
-              value={teaamsValue}
+              value={teamsValue}
               renderInput={(params) => (
                 <TextField
                   {...params}
