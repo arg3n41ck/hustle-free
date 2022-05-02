@@ -106,7 +106,8 @@ const Info = ({ onToggleSidebar }) => {
             Страна, город
           </Item>
           <Item>
-            {currentLocations.country}, г. {currentLocations.city}
+            {currentLocations.country || ""}
+            {currentLocations.city ? `, г. ${currentLocations.city}` : ""}
           </Item>
           <Item>
             <WrapperIcon>

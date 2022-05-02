@@ -34,6 +34,7 @@ const validationSchema = yup.object({
   city: yup.string().required("Обязательное поле"),
   nameOrganization: yup.string().nullable().required("Обязательное поле"),
   factAddress: yup.string().nullable(),
+  address: yup.string().nullable(),
 })
 
 const Edits = () => {
@@ -364,18 +365,14 @@ const Edits = () => {
           </p>
           <TextField
             sx={{ width: "100%" }}
-            name="factAddress"
+            name="address"
             onChange={formik.handleChange}
             id="outlined-basic"
-            value={formik.values?.factAddress}
+            value={formik.values?.address}
             placeholder="Фактический Адрес"
             variant="outlined"
-            error={
-              formik.touched?.factAddress && Boolean(formik.errors?.factAddress)
-            }
-            helperText={
-              formik.touched?.factAddress && formik.errors?.factAddress
-            }
+            error={formik.touched?.address && Boolean(formik.errors?.address)}
+            helperText={formik.touched?.address && formik.errors?.address}
           />
         </div>
       </Content>

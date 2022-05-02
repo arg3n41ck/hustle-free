@@ -38,30 +38,24 @@ const emptyInitialValues = {
 
 function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
   const { push: routerPush } = useRouter()
-  const {
-    touched,
-    errors,
-    values,
-    handleChange,
-    setFieldValue,
-    handleSubmit,
-  } = useFormik({
-    initialValues: defaultValues,
-    validationSchema,
-    onSubmit: async (values) => {
-      const { data } = await formDataHttp(
-        {
-          ...values,
-          allFieldsFilled: true,
-          dateStart: new Date(values.dateStart).toISOString(),
-          dateEnd: new Date(values.dateEnd).toISOString(),
-        },
-        `organizer/events/${eventId ? eventId + "/" : ""}`,
-        eventId ? "put" : "post"
-      )
-      routerPush(`/lk-og/profile/events/edit/${data.id}/location`)
-    },
-  })
+  const { touched, errors, values, handleChange, setFieldValue, handleSubmit } =
+    useFormik({
+      initialValues: defaultValues,
+      validationSchema,
+      onSubmit: async (values) => {
+        const { data } = await formDataHttp(
+          {
+            ...values,
+            allFieldsFilled: true,
+            dateStart: new Date(values.dateStart).toISOString(),
+            dateEnd: new Date(values.dateEnd).toISOString(),
+          },
+          `organizer/events/${eventId ? eventId + "/" : ""}`,
+          eventId ? "put" : "post"
+        )
+        routerPush(`/lk-og/profile/events/edit/${data.id}/location`)
+      },
+    })
   const [sportTypes] = useSelector(selectSportTypes)
   const dispatch = useDispatch()
 
@@ -94,7 +88,7 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
             options={sportTypes.map((option) => option)}
             getOptionLabel={(option) => option.name}
             fullWidth
-            value={sportTypes.find(({ id }) => id === values.typeSport) || null}
+            value={sportTypes.find(({ id }) => id === values.typeSport)}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -163,7 +157,7 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
       </Field>
 
       <Field>
-        <p className="auth-title__input">Вид спорта</p>
+        <p className="auth-title__input">Часовой пояс</p>
         <Autocomplete
           noOptionsText={"Ничего не найдено"}
           onChange={(_, value) => value && setFieldValue("timezone", value.tz)}

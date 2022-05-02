@@ -75,14 +75,14 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
   useEffect(() => {
     dispatch(fetchSportTypes())
   }, [])
-  console.log({ errors, touched, values })
+
   return (
     <Form onSubmit={handleSubmit}>
       <Field>
         <p className="auth-title__input">Максимальное количество регистрации</p>
         <TextField
           name="maxParticipantCount"
-          placeholder="Название турнира"
+          placeholder="Максимальное количество регистрации"
           variant="outlined"
           fullWidth
           type="number"
