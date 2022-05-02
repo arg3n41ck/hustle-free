@@ -171,7 +171,7 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
 
       <div className="auth-wrapper__input">
         <p className="auth-title__input">
-          Фактические адрес{" "}
+          Фактический адрес{" "}
           <span style={{ color: "#828282" }}>(не обязательно)</span>
         </p>
         <TextField
