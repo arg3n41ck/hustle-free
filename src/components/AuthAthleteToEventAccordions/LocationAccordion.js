@@ -101,11 +101,11 @@ const Line = styled.div`
 `
 
 const LocationAccordionCustom = styled(Accordion)`
-  background: #1b1c22;
-  border: 1px solid #333333;
+  background-color: #1b1c22 !important ;
+  border: 1px solid #333333 !important;
   border-radius: 16px !important;
-  padding: 24px 0px;
-  margin: 0;
+  padding: 24px 0px !important;
+  margin: 0 !important;
 `
 
 const LocationPageIcon = ({ type }) => {

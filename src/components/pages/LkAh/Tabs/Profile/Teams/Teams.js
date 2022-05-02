@@ -3,12 +3,14 @@ import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { selectCountriesAndCities } from "../../../../../../redux/components/countriesAndCities"
 import { Avatar } from "@mui/material"
+import { useRouter } from "next/router"
 
 function Teams({ data, column }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
 
   const [country, setCountry] = React.useState(null)
   const [city, setCity] = React.useState(null)
+  const { push: routerPush } = useRouter()
 
   React.useEffect(() => {
     setCountry(countries.find((country) => country.id === data?.country))
@@ -28,7 +30,9 @@ function Teams({ data, column }) {
             src={data?.user?.avatar}
             sx={{ width: 64, height: 64 }}
           />
-          <TeamsHeadingText>{data?.name}</TeamsHeadingText>
+          <TeamsHeadingText onClick={() => routerPush(`/team/${data?.id}`)}>
+            {data?.name}
+          </TeamsHeadingText>
         </TeamsHeadingInfo>
         <Line />
 
@@ -72,6 +76,11 @@ const TeamsHeadingText = styled.h2`
   font-size: 24px;
   line-height: 32px;
   color: #f2f2f2;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 const TeamsBottonInfoText = styled.p`
@@ -99,10 +108,11 @@ const TeamsItems = styled.div`
 
 const TeamsHeadingInfo = styled.div`
   display: grid;
+  cursor: pointer;
   grid-template-columns: 64px auto;
   grid-column-gap: 16px;
   grid-template-columns: ${({ column }) =>
-    !!column ? "3fr 10fr" : "2fr 10fr"};
+    !!column ? "3fr 10fr" : "64px auto"};
   align-items: center;
 `
 

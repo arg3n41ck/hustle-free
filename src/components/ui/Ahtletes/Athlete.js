@@ -3,9 +3,11 @@ import { Avatar } from "@mui/material"
 import styled from "styled-components"
 import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
+import { useRouter } from "next/router"
 
 function Athlete({ children, user }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
+  const { push: routerPush } = useRouter()
 
   const { countryName, cityName } = useMemo(() => {
     const city = cities?.length
@@ -28,7 +30,7 @@ function Athlete({ children, user }) {
               sx={{ width: "100%", height: "100%" }}
             />
             <div>
-              <ItemTitle>
+              <ItemTitle onClick={() => routerPush(`/athlete/${user?.id}`)}>
                 {user?.firstName || ""} {user?.lastName || ""}
               </ItemTitle>
               {countryName && cityName && (
@@ -65,6 +67,11 @@ const ItemTitle = styled.h4`
   line-height: 24px;
   color: #f2f2f2;
   white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `
 const ItemDescription = styled.p`
   font-style: normal;
