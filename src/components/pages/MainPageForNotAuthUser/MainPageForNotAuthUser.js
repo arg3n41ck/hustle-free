@@ -9,11 +9,13 @@ import HeroMainPageForNotAuth from "./HeroMainPageForNotAuth"
 import MainPageAuth from "./MainPageAuth"
 import { MainPageWrapper } from "../MainPage/MainPage"
 import { fetchUser, selectIsUserAuth } from "../../../redux/components/user"
+import { useRouter } from "next/router"
 
 const MainPageForNotAuthUser = () => {
   const [, events] = useSelector(selectEvents)
   const dispatch = useDispatch()
   const [userAuthenticated] = useSelector(selectIsUserAuth)
+  const { push: routerPush } = useRouter()
   const user = useSelector((state) => state.user)
   let array = [...events]
 
@@ -38,7 +40,9 @@ const MainPageForNotAuthUser = () => {
             <EventsSlider events={events} />
             <MainPageContainerButtonAndTitle>
               <MainPageTitle>Ближайшие турниры</MainPageTitle>
-              <MainPageButton>Смотреть все</MainPageButton>
+              <MainPageButton onClock={() => routerPush("/events")}>
+                Смотреть все
+              </MainPageButton>
             </MainPageContainerButtonAndTitle>
             <Events data={array.slice(0, 3)} />
           </MainPageWrapper>
