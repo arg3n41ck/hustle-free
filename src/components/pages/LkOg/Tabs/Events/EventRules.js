@@ -20,7 +20,7 @@ function EventRules({ eventId, defaultValues = emptyInitialValues }) {
       onSubmit: async (values) => {
         await formDataHttp(
           values,
-          `organizer/events/${eventId}/participant-categories/`,
+          `organizer/events/${eventId}/rules/`,
           "put"
         )
         routerPush(

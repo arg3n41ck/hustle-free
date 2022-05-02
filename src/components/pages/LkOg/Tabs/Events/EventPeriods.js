@@ -326,7 +326,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
 export default EventPeriods
 
 const validationSchema = yup.object({
-  maxParticipantCount: yup.number().required("Обязательное поле"),
+  maxParticipantCount: yup.number().required("Обязательное поле").nullable(),
   earlyRegActive: yup.boolean(),
   lateRegActive: yup.boolean(),
   earlyRegStart: yup
