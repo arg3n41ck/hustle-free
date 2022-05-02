@@ -7,6 +7,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import styled from "styled-components"
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import Link from "next/link"
+import phoneFormatter from "../../helpers/phoneFormatter"
 
 function ContactAccordion({ data }) {
   return (
@@ -67,7 +68,7 @@ function ContactAccordion({ data }) {
             <ContactAccordionItems>
               <ContactIcon social={"phone"} />
               <ContactItemsText>
-                {data?.contacts?.phoneNumber1}
+                {phoneFormatter(data?.contacts?.phoneNumber1)}
               </ContactItemsText>
             </ContactAccordionItems>
           )}

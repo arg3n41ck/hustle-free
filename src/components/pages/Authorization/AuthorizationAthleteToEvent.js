@@ -396,7 +396,7 @@ function RegistrationAthleteToEvent({ data }) {
                 </RadioWrapper>
               </Box>
             </div>
-
+            {/*!!!TODO TYPE OF PROFILE*/}
             {/* <div className="auth-wrapper__input">
             <p className="auth-title__input">Тип профиля</p>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>

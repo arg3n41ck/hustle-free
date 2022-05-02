@@ -119,7 +119,7 @@ const Info = ({ onToggleSidebar }) => {
             Контакты
           </Item>
           {/* <Item>{phoneFormatter(user?.phoneNumber)}</Item> */}
-          <Item>{user?.phoneNumber}</Item>
+          <Item>{user?.phoneNumber ? phoneFormatter(user?.phoneNumber) : ""}</Item>
           <Item>
             <WrapperIcon>
               <EmailIcon />

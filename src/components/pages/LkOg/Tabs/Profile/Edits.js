@@ -5,13 +5,12 @@ import * as yup from "yup"
 import styled from "styled-components"
 import { Box, TextField } from "@mui/material"
 import { ru } from "date-fns/locale"
-import { DatePicker, LocalizationProvider } from "@mui/lab"
+import { LocalizationProvider, MobileDatePicker } from "@mui/lab"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import Radio from "../../../../ui/Radio"
 import InputMask from "react-input-mask"
 import CustomButton from "../../../../ui/CustomButton"
 import Link from "next/link"
-import CalendarIcon from "../../../../../public/svg/calendar-edit-profile.svg"
 import PhoneIcon from "../../../../../public/svg/profile-phone.svg"
 import EmailIcon from "../../../../../public/svg/profile-email-edit.svg"
 import SelectUI from "../../../../ui/Selects/Select"
@@ -75,6 +74,8 @@ const Edits = () => {
           ),
           newValues = {
             ...values,
+            dateBirthday:
+              values.dateBirthday && format(values.dateBirthday, "yyyy-MM-dd"),
             country: currentCountry.id,
             city: currentCity.id,
           }
@@ -178,23 +179,16 @@ const Edits = () => {
         >
           <p className="auth-title__input">Дата рождения (не обязательно)</p>
           <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-            <DatePicker
-              components={{
-                OpenPickerIcon: CalendarIcon,
-              }}
+            <MobileDatePicker
               toolbarTitle={"Выбрать дату"}
               cancelText={"Отмена"}
-              value={formik.values?.dateBirthday}
-              onChange={(value) =>
-                formik.setFieldValue(
-                  "dateBirthday",
-                  format(value, "yyyy-MM-dd")
-                )
-              }
+              value={formik?.values?.dateBirthday || ""}
+              onChange={(value) => formik.setFieldValue("dateBirthday", value)}
               inputFormat="dd/MM/yyyy"
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  fullWidth
                   error={
                     Boolean(formik.touched?.dateBirthday) &&
                     formik.errors?.dateBirthday

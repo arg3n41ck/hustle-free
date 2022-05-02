@@ -4,6 +4,7 @@ import styled from "styled-components"
 import Athlete from "../../ui/Ahtletes/Athlete"
 import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
+import phoneFormatter from "../../../helpers/phoneFormatter"
 
 function CommunitesAthletesList({ data }) {
   const [countries] = useSelector(selectCountriesAndCities)
@@ -28,7 +29,7 @@ function CommunitesAthletesList({ data }) {
                     Телефон
                   </AthletesBottomItemTextHeading>
                   <AthletesBottomItemText>
-                    {user?.phoneNumber}
+                    {phoneFormatter(user?.phoneNumber)}
                     {/* {user?.gender === "male" && "Мужчина"}
                     {user?.gender === "female" && "Женщина"} */}
                   </AthletesBottomItemText>
