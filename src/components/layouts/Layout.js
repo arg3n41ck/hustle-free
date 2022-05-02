@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
 import Header from "../Header/Header"
 import { useMediaQuery } from "@mui/material"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Head from "next/head"
-import { fetchUser } from "../../redux/components/user"
+import { fetchUser, selectIsUserAuth } from "../../redux/components/user"
 import { useCookies } from "react-cookie"
 import { theme } from "../../styles/theme"
 import styled from "styled-components"
@@ -16,6 +16,7 @@ const Layout = ({ children }) => {
   const lg = useMediaQuery("(max-width:992px)")
   const dispatch = useDispatch()
   const [cookies] = useCookies(["token", "refresh"])
+  const [userAuthenticated] = useSelector(selectIsUserAuth)
 
   useEffect(() => {
     if (getCookie("token")) {
@@ -23,7 +24,7 @@ const Layout = ({ children }) => {
       dispatch(fetchCountries())
       dispatch(fetchSportTypes())
     }
-  }, [cookies?.token])
+  }, [cookies?.token, userAuthenticated])
 
   return (
     <>
