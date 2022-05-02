@@ -5,6 +5,7 @@ export const fetchAthletesByParams = createAsyncThunk(
   "athlete/fetchAthletesByParams",
   async (params, { rejectWithValue }) => {
     try {
+      
       const {
         data: { results },
       } = await $api.get(`/athlete/athletes_list/`, {

@@ -75,7 +75,7 @@ function RegistrationAthleteToEvent({ data }) {
   const [imageUrl, setImageUrl] = useState(null)
   const [, cities] = useSelector(selectCountriesAndCities)
   const [categories, levels] = useSelector(categoriesSelector)
-  const [athleteTeams] = useSelector(teamsSelector)
+  const [athleteTeams, teams] = useSelector(teamsSelector)
   const [currentLevels, setCurrentLevels] = useState([])
   const [currentWeights, setCurrentWeights] = useState(null)
 
@@ -137,7 +137,7 @@ function RegistrationAthleteToEvent({ data }) {
   useEffect(() => {
     dispatch(fetchCategories())
     dispatch(fetchAthleteTeams())
-    dispatch(fetchUser())
+    // dispatch(fetchUser())
     dispatch(fetchLevel())
   }, [])
 

@@ -39,22 +39,24 @@ function RegistrationAccordion({ data }) {
         <Line />
         <AccordionDetails sx={{ padding: "24px" }}>
           {!!data?.registration?.earlyRegActive && (
-            <RegistrationAccordionItems>
-              <RegistrationIcon period="early" />
-              <div>
-                <RegistrationAccordionItemTopText>
-                  Ранняя регистрация
-                </RegistrationAccordionItemTopText>
-                <RegistrationAccordionItemBottomText>
-                  {getRusBetweenDate(
-                    data?.registration?.earlyRegStart,
-                    data?.registration?.earlyRegEnd
-                  )}
-                </RegistrationAccordionItemBottomText>
-              </div>
-            </RegistrationAccordionItems>
+            <>
+              <RegistrationAccordionItems>
+                <RegistrationIcon period="early" />
+                <div>
+                  <RegistrationAccordionItemTopText>
+                    Ранняя регистрация
+                  </RegistrationAccordionItemTopText>
+                  <RegistrationAccordionItemBottomText>
+                    {getRusBetweenDate(
+                      data?.registration?.earlyRegStart,
+                      data?.registration?.earlyRegEnd
+                    )}
+                  </RegistrationAccordionItemBottomText>
+                </div>
+              </RegistrationAccordionItems>
+              <Line margin={"24px 0"} />
+            </>
           )}
-          <Line margin={"24px 0"} />
           <RegistrationAccordionItems>
             <RegistrationIcon period="standart" />
             <div>
@@ -136,11 +138,11 @@ const RegistrationAccordionCustomHeadingText = styled(Typography)`
 `
 
 const RegistrationAccordionCustom = styled(Accordion)`
-  background: #1b1c22;
-  border: 1px solid #333333;
+  background-color: #1b1c22 !important ;
+  border: 1px solid #333333 !important;
   border-radius: 16px !important;
-  padding: 24px 0px;
-  margin: 0;
+  padding: 24px 0px !important;
+  margin: 0 !important;
 `
 
 const RegistrationAccordionItems = styled.div`

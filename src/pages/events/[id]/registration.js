@@ -7,17 +7,15 @@ import AuthAthleteToEventAllAccordions from "../../../components/AuthAthleteToEv
 import AuthorizationAthleteToEvent from "../../../components/pages/Authorization/AuthorizationAthleteToEvent"
 import $api from "../../../services/axios"
 import { getCookie } from "../../../services/JWTService"
+import { useDispatch } from "react-redux"
+import { fetchUser } from "../../../redux/components/user"
 
 function Registration({ data, query }) {
-  React.useEffect(() => {
-    const fetchU = async () => {
-      const { data: dataCategory } = await $api.get(
-        `/athlete/events/${query.id}/registration/`
-      )
-      console.log(dataCategory)
-    }
-    fetchU()
-  }, [])
+  const dispatch = useDispatch()
+
+  // React.useEffect(() => {
+    // dispatch(fetchUser())
+  // }, [])
 
   return (
     <RegistrationContainer>

@@ -98,15 +98,20 @@ const Info = ({ onToggleSidebar }) => {
             Пол
           </Item>
           <Item>{user?.gender === "male" ? "Мужской" : "Женский"}</Item>
-          <Item>
-            <WrapperIcon>
-              <LocationIcon />
-            </WrapperIcon>
-            Страна, город
-          </Item>
-          <Item>
-            {currentLocations.country}, г. {currentLocations.city}
-          </Item>
+          {(!!currentLocations?.country || !!currentLocations?.city) && (
+            <>
+              <Item>
+                <WrapperIcon>
+                  <LocationIcon />
+                </WrapperIcon>
+                Страна, город
+              </Item>
+              <Item>
+                {!!currentLocations?.country && `${currentLocations.country},`}
+                {!!currentLocations?.city && ` г. ${currentLocations.city}`}
+              </Item>
+            </>
+          )}
           <Item>
             <WrapperIcon>
               <PhoneIcon />

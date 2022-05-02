@@ -6,17 +6,7 @@ import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
 
 function CommunitesAthletesList({ data }) {
-  const [country, setCountry] = React.useState(null)
   const [countries] = useSelector(selectCountriesAndCities)
-
-  React.useEffect(() => {
-    !!data?.length &&
-      data.map(({ user }) =>
-        setCountry(countries.find((country) => country.id === user.country))
-      )
-  }, [data])
-
-  console.log(country)
 
   return (
     <CommunitesAthletesListItems>
@@ -28,13 +18,14 @@ function CommunitesAthletesList({ data }) {
                 <AthletesBottomItemTextHeading>
                   Страна
                 </AthletesBottomItemTextHeading>
-                <AthletesBottomItemText>{country?.name}</AthletesBottomItemText>
+                <AthletesBottomItemText>
+                  {countries.find(({ id }) => id === user.country)?.name}
+                </AthletesBottomItemText>
               </AthletesBottomItem>
               {!!user?.phoneNumber && (
                 <AthletesBottomItem>
                   <AthletesBottomItemTextHeading>
                     Телефон
-                    {console.log(user)}
                   </AthletesBottomItemTextHeading>
                   <AthletesBottomItemText>
                     {user?.phoneNumber}

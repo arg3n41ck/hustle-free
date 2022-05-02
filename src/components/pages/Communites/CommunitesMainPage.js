@@ -16,16 +16,21 @@ import { fetchCountries } from "../../../redux/components/countriesAndCities"
 function CommunitesMainPage() {
   const dispatch = useDispatch()
   const [, teams] = useSelector(teamsSelector)
-  const [search, setSearch] = useState("")
   const query = useQuery()
+  const searchValue = query.get("search")
+  const [search, setSearch] = useState(searchValue)
   const { push: routerPush } = useRouter()
   const [, athletes] = useSelector(selectAthletes)
 
   React.useEffect(() => {
     dispatch(fetchTeams())
-    dispatch(fetchAthletesByParams())
     dispatch(fetchCountries())
   }, [])
+
+  React.useEffect(() => {
+    dispatch(fetchAthletesByParams(query))
+    dispatch(fetchTeams(query))
+  }, [query])
 
   const handleSubmit = (e, value) => {
     e.preventDefault()
@@ -43,9 +48,7 @@ function CommunitesMainPage() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Поиск"
             />
-            <CommunitesHeadingButton
-              type="submit"
-            >
+            <CommunitesHeadingButton type="submit">
               <SearchIcon />
               Найти
             </CommunitesHeadingButton>
