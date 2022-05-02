@@ -36,13 +36,14 @@ function EventForm({ defaultValues = emptyInitialValues, eventId }) {
         `organizer/events/${eventId}/description/`,
         "put"
       )
-      await formDataHttp(
-        {
-          image: values.image,
-        },
-        `organizer/events/${eventId}/`,
-        "patch"
-      )
+      typeof (values.image || "") !== "string" &&
+        (await formDataHttp(
+          {
+            image: values.image,
+          },
+          `organizer/events/${eventId}/`,
+          "patch"
+        ))
       routerPush(`/lk-og/profile/events/edit/${eventId}/rules/`)
     },
   })

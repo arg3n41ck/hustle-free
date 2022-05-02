@@ -14,7 +14,7 @@ import { lkAhTabs } from "../pages/LkAh/Tabs/tabConstants"
 import ExitIcon from "../../public/svg/exit-icon.svg"
 import { exitUser, selectIsUserAuth } from "../../redux/components/user"
 import HeaderLocalizationPopover from "./components/HeaderLocalizationPopover"
-import { getRoleInRu } from "../../helpers/helpers"
+import { getRoleInRu, truncateString } from "../../helpers/helpers"
 
 const Header = () => {
   const { push: routerPush } = useRouter()
@@ -100,8 +100,10 @@ const Header = () => {
               <UserInfo>
                 <UserName>
                   {user?.role !== "team"
-                    ? `${user?.firstName || ""} ${user?.lastName || ""}`
-                    : user?.fullNameCoach || ""}
+                    ? `${truncateString(user?.lastName || "", 1, false)}. ${
+                        user?.firstName || ""
+                      }`
+                    : truncateString(user?.fullNameCoach || "", 15)}
                 </UserName>
                 <UserRole>{getRoleInRu(user?.role)}</UserRole>
               </UserInfo>
@@ -175,6 +177,8 @@ const Header = () => {
 
 const Wrapper = styled.div`
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 80px;
   border: 1px solid #333333;

@@ -80,7 +80,9 @@ const TabItem = styled(Tab)`
   font-size: 20px;
   line-height: 32px;
   color: #828282 !important;
-  min-width: 100%;
+  min-width: 100% !important;
+  width: 100% !important;
+  height: 100% !important;
   border-right: 1px solid #333;
 
   &.Mui-selected {
