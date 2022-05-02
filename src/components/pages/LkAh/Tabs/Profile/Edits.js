@@ -13,7 +13,7 @@ import {
   IconButton,
 } from "@mui/material"
 import { ru } from "date-fns/locale"
-import { DatePicker, LocalizationProvider } from "@mui/lab"
+import { DatePicker, LocalizationProvider, MobileDatePicker } from "@mui/lab"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import Radio from "../../../../ui/Radio"
 import InputMask from "react-input-mask"
@@ -102,6 +102,9 @@ const Edits = ({ onToggleSidebar }) => {
         const newValues = {
           ...decamelizeKeys({
             ...rstValues,
+            dateBirthday:
+              values.dateBirthday &&
+              format(new Date(values.dateBirthday), "yyyy-MM-dd"),
             country: currentCountry.id,
             city: currentCity.id,
           }),
@@ -231,10 +234,7 @@ const Edits = ({ onToggleSidebar }) => {
           <div className="auth-wrapper__input">
             <p className="auth-title__input">Дата рождения (не обязательно)</p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-              <DatePicker
-                components={{
-                  OpenPickerIcon: CalendarIcon,
-                }}
+              <MobileDatePicker
                 toolbarTitle={"Выбрать дату"}
                 cancelText={"Отмена"}
                 value={formik.values?.dateBirthday}
@@ -248,6 +248,7 @@ const Edits = ({ onToggleSidebar }) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
+                    fullWidth
                     error={
                       Boolean(formik.touched.dateBirthday) &&
                       formik.errors.dateBirthday
@@ -396,7 +397,7 @@ const Edits = ({ onToggleSidebar }) => {
             </Box>
           </div>
 
-          <div className="auth-wrapper__input">
+          {/* <div className="auth-wrapper__input">
             <p className="auth-title__input">Тип профиля</p>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <RadioWrapper>
@@ -414,7 +415,7 @@ const Edits = ({ onToggleSidebar }) => {
                 />
               </RadioWrapper>
             </Box>
-          </div>
+          </div> */}
         </Box>
         <div className="auth-wrapper__input">
           <p className="auth-title__input">Электронный адрес</p>
