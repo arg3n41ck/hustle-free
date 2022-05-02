@@ -41,7 +41,8 @@ function CommunitesAthletesPage() {
   const [countries] = useSelector(selectCountriesAndCities)
   const [sportTypes] = useSelector(selectSportTypes)
   const query = useQuery()
-  const [search, setSearch] = useState("")
+  const searchValue = query.get("search")
+  const [search, setSearch] = useState(searchValue)
   const [, athletes] = useSelector(selectAthletes)
   const { push: routerPush } = useRouter()
 

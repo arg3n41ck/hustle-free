@@ -21,20 +21,21 @@ function CommunitesPage() {
   const [countries] = useSelector(selectCountriesAndCities)
   const [sportTypes] = useSelector(selectSportTypes)
   const query = useQuery()
-  const [search, setSearch] = useState("")
+  const searchValue = query.get("search")
+  const [search, setSearch] = useState(searchValue)
   const { push: routerPush } = useRouter()
 
   const sportTypesValue =
     sportTypes.length &&
-    sportTypes.find((type) => type.name === query.get("type_sport"))
+    sportTypes.find((type) => `${type.id}` === query.get("sports__id"))
 
   const countriesValue =
     countries.length &&
-    countries.find((type) => type.name === query.get("country"))
+    countries.find((type) => `${type.id}` === query.get("country__id"))
 
   const handleCountriesFilter = useCallback(
     (_, value) => {
-      value ? query.set("country", value.name) : query.delete("country")
+      value ? query.set("country__id", value.id) : query.delete("country__id")
       routerPush(`/communities/teams/?${query}`)
     },
     [query]
@@ -42,11 +43,15 @@ function CommunitesPage() {
 
   const handleSportTypesFilter = useCallback(
     (_, value) => {
-      value ? query.set("type_sport", value.name) : query.delete("type_sport")
+      value ? query.set("sports__id", value.id) : query.delete("sports__id")
       routerPush(`/communities/teams/?${query}`)
     },
     [query]
   )
+
+  React.useEffect(() => {
+    dispatch(fetchTeams(query))
+  }, [query])
 
   React.useEffect(() => {
     dispatch(fetchTeams(query))
