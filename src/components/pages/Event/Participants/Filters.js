@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import EDContentFilter from "../EDContentFilter"
 import { Field } from "../../LkOg/Tabs/Events/EventDefaults"
 import { Autocomplete } from "@mui/lab"
@@ -6,9 +6,23 @@ import { TextField } from "@mui/material"
 import { Fields } from "../Results/Participants"
 import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
+import $api from "../../../../services/axios"
+import { useRouter } from "next/router"
 
-const Filters = ({ levels, onFilter, filter }) => {
+const Filters = ({ levels, onFilter }) => {
+  const [weights, setWeights] = useState([])
   const [countries] = useSelector(selectCountriesAndCities)
+  const [teams, setTeams] = useState([])
+  const router = useRouter()
+
+  useEffect(async () => {
+    const { data } = await $api.get(`events/event_teams/`)
+    const { data: weightData } = await $api.get(
+      `/events/events/${router.query.id}/weight_ranges/`
+    )
+    setWeights(weightData)
+    setTeams(data)
+  }, [])
 
   return (
     <>
@@ -35,11 +49,17 @@ const Filters = ({ levels, onFilter, filter }) => {
                 },
               }}
               noOptionsText={"Ничего не найдено"}
-              // onChange={(_, value) => setFieldValue("typeSport", value.id)}
-              options={[].map((option) => option)}
-              // getOptionLabel={(option) => option.name}
+              onChange={(_, value) =>
+                onFilter({
+                  target: {
+                    name: "teamId",
+                    value: value?.id || "",
+                  },
+                })
+              }
+              options={teams.map((option) => option.team)}
+              getOptionLabel={(option) => option.name}
               fullWidth
-              // value={sportTypes.find(({ id }) => id === values.typeSport) || null}
               renderInput={(params) => (
                 <TextField {...params} fullWidth placeholder="Команда" />
               )}
@@ -122,9 +142,10 @@ const Filters = ({ levels, onFilter, filter }) => {
                   },
                 })
               }
-              options={Array.from(Array(130).keys())
-                .slice(20)
-                .map((option) => option)}
+              options={weights.map((option) => option)}
+              getOptionLabel={(option) =>
+                `${option.fromWeight} - ${option.toWeight}`
+              }
               fullWidth
               renderInput={(params) => (
                 <TextField {...params} fullWidth placeholder="Вес" />

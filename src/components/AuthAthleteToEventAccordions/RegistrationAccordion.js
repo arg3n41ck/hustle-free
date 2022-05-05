@@ -9,7 +9,6 @@ import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import { getRusBetweenDate } from "../../helpers/helpers"
 
 function RegistrationAccordion({ data }) {
-  console.log(data)
   return (
     <div>
       <RegistrationAccordionCustom

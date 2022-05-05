@@ -1,14 +1,21 @@
 import React from "react"
 import styled from "styled-components"
 import EventParticipantsItem from "./EventParticipantsItem"
+import { useSelector } from "react-redux"
 
 const EventParticipantsList = ({ eventParticipants }) => {
+  const { user } = useSelector((state) => state.user)
+
   return (
     <>
-      <Title>Категории на основе сведений в вашем профиле</Title>
+      <Title>
+        {user?.role !== "organizer" &&
+          "Категории на основе сведений в вашем профиле"}
+      </Title>
       {eventParticipants.map((eventParticipant) => (
         <EventParticipantsItem
           key={eventParticipant.id}
+          isOrganizer={user?.role === "organizer"}
           eventParticipant={eventParticipant}
         />
       ))}

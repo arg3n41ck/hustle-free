@@ -1,44 +1,72 @@
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import DropdownData from "../../../ui/DropdownData"
 import styled from "styled-components"
 import GoldIcon from "../../../../public/svg/second-gold-medal.svg"
-import SilverIcon from "../../../../public/svg/silver-medal.svg"
-import BronzeIcon from "../../../../public/svg/bronze-medal.svg"
+import SilverIcon from "../../../../public/svg/second-silver-medal.svg"
+import BronzeIcon from "../../../../public/svg/second-bronze-medal.svg"
+import { Box } from "@mui/material"
 
-const EventResultsItem = () => {
+const EventResultsItem = ({ participant }) => {
   const [open, setOpen] = useState(false)
+  if (!participant) return null
+  const { eventParticipantsCategory } = participant
+
+  const participants = useMemo(() => {
+    return participant.participants.sort((a, b) => a.place - b.place)
+  }, [participant])
+
   return (
-    <EventResultsItemLi>
+    <Box sx={{ marginBottom: 4 }}>
       <DropdownData
         active={open}
         setActive={setOpen}
         heightWrapper={"100px"}
-        title={`Сеньор мужчины / Белый / 25-35 лет / 60 кг - 75 кг`}
+        title={`${eventParticipantsCategory.name} / ${participant.level} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
       >
-        <EventResultsItemLi>
-          <Left>
-            <GoldIcon />
-            <Title>Azamat Askarov</Title>
-          </Left>
-          <Right>
-            <InfoItem>
-              <InfoItemTitle>Команда</InfoItemTitle>
-              <InfoItemDescription>Checkmat Kazakhstan</InfoItemDescription>
-            </InfoItem>
-            <InfoItem>
-              <InfoItemTitle>Страна</InfoItemTitle>
-              <InfoItemDescription>Kazakhstan</InfoItemDescription>
-            </InfoItem>
-          </Right>
-        </EventResultsItemLi>
+        <List>
+          {participants.map((participant) => (
+            <Item key={participant.id}>
+              <Left>
+                {(participant.place === 1 && <GoldIcon />) ||
+                  (participant.place === 2 && <SilverIcon />) ||
+                  (participant.place === 3 && <BronzeIcon />) || (
+                    <OtherPlace>
+                      <p>{participant.place}</p>
+                    </OtherPlace>
+                  )}
+                <Title>{participant.fullName}</Title>
+              </Left>
+              <Right>
+                <InfoItem>
+                  <InfoItemTitle>Команда</InfoItemTitle>
+                  <InfoItemDescription>{participant.team}</InfoItemDescription>
+                </InfoItem>
+                {participant.country && (
+                  <InfoItem>
+                    <InfoItemTitle>Страна</InfoItemTitle>
+                    <InfoItemDescription>
+                      {participant.country}
+                    </InfoItemDescription>
+                  </InfoItem>
+                )}
+              </Right>
+            </Item>
+          ))}
+        </List>
       </DropdownData>
-    </EventResultsItemLi>
+    </Box>
   )
 }
 
-const EventResultsItemLi = styled.li`
+const List = styled.ul``
+const Item = styled.li`
   display: flex;
   justify-content: space-between;
+  padding: 16px 0;
+  &:first-child,
+  &:last-child {
+    padding: 0;
+  }
 `
 const Left = styled.div`
   display: flex;
@@ -74,5 +102,21 @@ const InfoItemDescription = styled.p`
   font-size: 18px;
   line-height: 24px;
   color: #f2f2f2;
+`
+const OtherPlace = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 32px;
+  color: #fbfbfb;
+  background: #1b1c22;
+  border-radius: 8px;
+  border: 1px solid #333333;
+  padding: 12px;
+  width: 72px;
+  height: 72px;
 `
 export default EventResultsItem

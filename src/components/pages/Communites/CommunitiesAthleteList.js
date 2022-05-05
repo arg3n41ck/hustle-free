@@ -16,8 +16,6 @@ function CommunitesAthletesList({ data }) {
       )
   }, [data])
 
-  console.log(country)
-
   return (
     <CommunitesAthletesListItems>
       {!!data?.length &&
@@ -34,7 +32,6 @@ function CommunitesAthletesList({ data }) {
                 <AthletesBottomItem>
                   <AthletesBottomItemTextHeading>
                     Телефон
-                    {console.log(user)}
                   </AthletesBottomItemTextHeading>
                   <AthletesBottomItemText>
                     {user?.phoneNumber}

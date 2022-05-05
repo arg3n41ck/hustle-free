@@ -1,54 +1,60 @@
 import React from "react"
 import styled from "styled-components"
+import Link from "next/link"
 
 const TeamItem = ({ team: { team }, index }) => {
   return (
     <Item>
-      <ItemLeft>
-        <ItemNumber>{index}.</ItemNumber>
-        <ItemText>
-          <ItemTitle>{team.name}</ItemTitle>
-          <ItemDescription>{team.country.name}</ItemDescription>
-        </ItemText>
-      </ItemLeft>
-      <ItemRight>
-        <Info>
-          <InfoItem color={"#828282"}>
-            <p>{team.teamMembersCount}</p>
-            <div>Участника</div>
-          </InfoItem>
-          <InfoItem color={"#2E79DD"}>
-            <p>0</p>
-            <div>Балла</div>
-          </InfoItem>
-          <InfoItem color={"#27AE60"}>
-            <p>0</p>
-            <div>Побед</div>
-          </InfoItem>
-          <InfoItem color={"#EB5757"}>
-            <p>0</p>
-            <div>Поражений</div>
-          </InfoItem>
-        </Info>
-        <Medal>
-          <InfoItem color={"#FFC107"}>
-            <p>0</p>
-            <div>Золото</div>
-          </InfoItem>
-          <InfoItem color={"#E0E0E0"}>
-            <p>0</p>
-            <div>Серебро</div>
-          </InfoItem>
-          <InfoItem color={"#D7832D"}>
-            <p>0</p>
-            <div>Бронзо</div>
-          </InfoItem>
-        </Medal>
-      </ItemRight>
+      <Link href={`/team/${team.id}`} passHref>
+        <A>
+          <ItemLeft>
+            <ItemNumber>{index}.</ItemNumber>
+            <ItemText>
+              <ItemTitle>{team.name}</ItemTitle>
+              <ItemDescription>{team.country.name}</ItemDescription>
+            </ItemText>
+          </ItemLeft>
+          <ItemRight>
+            <Info>
+              <InfoItem color={"#828282"}>
+                <p>{team.teamMembersCount}</p>
+                <div>Участника</div>
+              </InfoItem>
+              <InfoItem color={"#2E79DD"}>
+                <p>0</p>
+                <div>Балла</div>
+              </InfoItem>
+              <InfoItem color={"#27AE60"}>
+                <p>0</p>
+                <div>Побед</div>
+              </InfoItem>
+              <InfoItem color={"#EB5757"}>
+                <p>0</p>
+                <div>Поражений</div>
+              </InfoItem>
+            </Info>
+            <Medal>
+              <InfoItem color={"#FFC107"}>
+                <p>0</p>
+                <div>Золото</div>
+              </InfoItem>
+              <InfoItem color={"#E0E0E0"}>
+                <p>0</p>
+                <div>Серебро</div>
+              </InfoItem>
+              <InfoItem color={"#D7832D"}>
+                <p>0</p>
+                <div>Бронзо</div>
+              </InfoItem>
+            </Medal>
+          </ItemRight>
+        </A>
+      </Link>
     </Item>
   )
 }
-const Item = styled.li`
+const Item = styled.li``
+const A = styled.a`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #333333;
