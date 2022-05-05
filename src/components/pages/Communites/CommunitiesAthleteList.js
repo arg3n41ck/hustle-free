@@ -4,17 +4,10 @@ import styled from "styled-components"
 import Athlete from "../../ui/Ahtletes/Athlete"
 import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
+import phoneFormatter from "../../../helpers/phoneFormatter"
 
 function CommunitesAthletesList({ data }) {
-  const [country, setCountry] = React.useState(null)
   const [countries] = useSelector(selectCountriesAndCities)
-
-  React.useEffect(() => {
-    !!data?.length &&
-      data.map(({ user }) =>
-        setCountry(countries.find((country) => country.id === user.country))
-      )
-  }, [data])
 
   return (
     <CommunitesAthletesListItems>
@@ -26,7 +19,9 @@ function CommunitesAthletesList({ data }) {
                 <AthletesBottomItemTextHeading>
                   Страна
                 </AthletesBottomItemTextHeading>
-                <AthletesBottomItemText>{country?.name}</AthletesBottomItemText>
+                <AthletesBottomItemText>
+                  {countries.find(({ id }) => id === user.country)?.name}
+                </AthletesBottomItemText>
               </AthletesBottomItem>
               {!!user?.phoneNumber && (
                 <AthletesBottomItem>
@@ -34,7 +29,7 @@ function CommunitesAthletesList({ data }) {
                     Телефон
                   </AthletesBottomItemTextHeading>
                   <AthletesBottomItemText>
-                    {user?.phoneNumber}
+                    {phoneFormatter(user?.phoneNumber)}
                     {/* {user?.gender === "male" && "Мужчина"}
                     {user?.gender === "female" && "Женщина"} */}
                   </AthletesBottomItemText>

@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useMemo } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
 import { getRusBetweenDate } from "../../../helpers/helpers"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
-import Link from "next/link"
 import FileUploaderBig from "../../ui/LKui/FileUploaderBig"
 import { formDataHttp } from "../../../helpers/formDataHttp"
 import { fetchOgEvents, selectOgEvents } from "../../../redux/components/user"
+import ParticipantsAreFilledModal from "./EventModal/ParticipantsAreFilledModal"
 
 const regArray = (event) => {
   return [
@@ -54,6 +54,8 @@ function EdGeneralInfo({ event }) {
   const regData = useMemo(() => regArray(event), [event])
   const user = useSelector((state) => state.user.user)
   const [ogEvents] = useSelector(selectOgEvents)
+  const [open, setOpen] = useState(false)
+
   const {
     query: { id: eventId },
     push: routerPush,
@@ -98,9 +100,19 @@ function EdGeneralInfo({ event }) {
       <TitlePart>
         <h1>{event.name}</h1>
         {(user?.role || "") === "athlete" ? (
-          <Link href={`/events/${event?.id}/tournament-rules`} passHref>
-            <button>Зарегистрироваться на турнир</button>
-          </Link>
+          <>
+            <button
+              onClick={() =>
+                event?.registration?.maxParticipantCount !==
+                event?.participantsCount
+                  ? routerPush(`/events/${event?.id}/tournament-rules`)
+                  : setOpen(true)
+              }
+            >
+              Зарегистрироваться на турнир
+            </button>
+            <ParticipantsAreFilledModal open={open} setOpen={setOpen} />
+          </>
         ) : (
           ogAndIsMyEvent && (
             <button

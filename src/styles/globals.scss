@@ -27,6 +27,12 @@ button {
   font-family: "Inter", sans-serif !important;
 }
 
+
+
+.PrivateDatePickerToolbar-penIcon {
+  display: none !important;
+}
+
 button {
   cursor: pointer;
 }
@@ -62,6 +68,7 @@ li {
 .MuiAutocomplete-option {
   color: #fff;
 }
+
 .MuiAutocomplete-noOptions {
   color: #fff;
 }
@@ -108,6 +115,7 @@ input.MuiAutocomplete-input {
 .MuiOutlinedInput-input {
   padding: 0 !important;
 }
+
 .MuiSelect-outlined {
   padding: 0 20px !important;
 }

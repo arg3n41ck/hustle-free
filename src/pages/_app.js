@@ -10,6 +10,7 @@ import store from "../redux/store"
 import "react-toastify/dist/ReactToastify.css"
 import RouterLoader from "../components/ui/RouterLoader"
 import EventRouteWrapper from "../components/pages/LkOg/Tabs/Events/EventRouteProvider"
+import { ToastContainer } from "react-toastify"
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -18,17 +19,17 @@ function MyApp({ Component, pageProps }) {
         <ThemeProvider theme={theme}>
           <Layout>
             <RouterLoader />
-            {/*<ToastContainer*/}
-            {/*  position="top-right"*/}
-            {/*  autoClose={2000}*/}
-            {/*  hideProgressBar={false}*/}
-            {/*  newestOnTop={false}*/}
-            {/*  closeOnClick*/}
-            {/*  rtl={false}*/}
-            {/*  pauseOnFocusLoss*/}
-            {/*  draggable*/}
-            {/*  pauseOnHover*/}
-            {/*/>*/}
+            <ToastContainer
+              position="top-right"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
             <EventRouteWrapper>
               <Component {...pageProps} />
             </EventRouteWrapper>

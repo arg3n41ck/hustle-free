@@ -2,7 +2,7 @@ import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
 import $api from "../../services/axios"
 
 export const fetchAthleteTeams = createAsyncThunk(
-  "sportTypes/fetchSportTypes",
+  "teams/my_teams",
   async (params, { rejectWithValue }) => {
     try {
       const { data } = await $api.get(`/athlete/my_teams/`)
@@ -44,6 +44,10 @@ export const teamsSlice = createSlice({
     })
     builder.addCase(fetchAthleteTeams.fulfilled, ({ teams }, action) => {
       teams.isLoading = false
+      console.log(
+        "action.payloadaction.payloadaction.payloadaction.payloadaction.payload",
+        action.payload
+      )
       teams.athleteTeams = action.payload
       teams.count = action.payload.count ?? action.payload.length
       teams.error = null

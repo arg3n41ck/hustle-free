@@ -75,7 +75,7 @@ function RegistrationAthleteToEvent({ data }) {
   const [imageUrl, setImageUrl] = useState(null)
   const [, cities] = useSelector(selectCountriesAndCities)
   const [categories, levels] = useSelector(categoriesSelector)
-  const [athleteTeams] = useSelector(teamsSelector)
+  const [athleteTeams, teams] = useSelector(teamsSelector)
   const [currentLevels, setCurrentLevels] = useState([])
   const [currentWeights, setCurrentWeights] = useState(null)
 
@@ -137,7 +137,7 @@ function RegistrationAthleteToEvent({ data }) {
   useEffect(() => {
     dispatch(fetchCategories())
     dispatch(fetchAthleteTeams())
-    dispatch(fetchUser())
+    // dispatch(fetchUser())
     dispatch(fetchLevel())
   }, [])
 
@@ -275,6 +275,7 @@ function RegistrationAthleteToEvent({ data }) {
                     {...inputProps}
                     sx={{ width: "100%" }}
                     id="outlined-basic"
+                    disabled
                     variant="outlined"
                     placeholder={"+7 (7"}
                     error={
@@ -396,7 +397,7 @@ function RegistrationAthleteToEvent({ data }) {
                 </RadioWrapper>
               </Box>
             </div>
-
+            {/*!!!TODO TYPE OF PROFILE*/}
             {/* <div className="auth-wrapper__input">
             <p className="auth-title__input">Тип профиля</p>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>

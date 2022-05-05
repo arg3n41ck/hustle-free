@@ -105,7 +105,8 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
       ) {
         const data = {
           date_birthday:
-            !!values.birthDate && format(values.birthDate, "yyyy-MM-dd"),
+            !!values.birthDate &&
+            format(new Date(values.birthDate), "yyyy-MM-dd"),
           first_name: values.firstName,
           last_name: values.lastName,
           phone_number: `+${values.phone.replace(/[^0-9]/g, "")}`,

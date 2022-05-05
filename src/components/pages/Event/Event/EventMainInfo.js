@@ -18,6 +18,7 @@ import {
 } from "./EventIcons"
 import styled from "styled-components"
 import MapField from "../../../ui/Map/Field"
+import phoneFormatter from "../../../../helpers/phoneFormatter"
 
 const getContacts = (event) => {
   const { contacts } = event
@@ -43,7 +44,7 @@ const getContacts = (event) => {
     {
       id: "phone_4",
       label: "Номер телефона",
-      value: contacts?.phoneNumber1 || "",
+      value: contacts?.phoneNumber1 ? phoneFormatter(contacts?.phoneNumber1) : "",
       icon: <EventPhone />,
     },
   ]

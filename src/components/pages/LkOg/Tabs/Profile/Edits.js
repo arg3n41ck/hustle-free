@@ -5,20 +5,30 @@ import * as yup from "yup"
 import styled from "styled-components"
 import { Box, TextField } from "@mui/material"
 import { ru } from "date-fns/locale"
-import { DatePicker, LocalizationProvider } from "@mui/lab"
+import { LocalizationProvider, MobileDatePicker } from "@mui/lab"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import Radio from "../../../../ui/Radio"
 import InputMask from "react-input-mask"
 import CustomButton from "../../../../ui/CustomButton"
 import Link from "next/link"
-import CalendarIcon from "../../../../../public/svg/calendar-edit-profile.svg"
 import PhoneIcon from "../../../../../public/svg/profile-phone.svg"
 import EmailIcon from "../../../../../public/svg/profile-email-edit.svg"
 import SelectUI from "../../../../ui/Selects/Select"
-import $api from "../../../../../services/axios"
 import { saveUser } from "../../../../../redux/components/user"
 import { format } from "date-fns"
 import { useRouter } from "next/router"
+import { formDataHttp } from "../../../../../helpers/formDataHttp"
+import Image from "next/image"
+import UploadIcon from "../../../../../public/svg/upload-profile-icon.svg"
+import {
+  Gallery,
+  GalleryBlock,
+  GalleryInput,
+  GalleryLabel,
+  GrayText,
+  ImageWrapper,
+  UploadIconWrapper,
+} from "../../../LkTm/Tabs/Profile/Edits"
 
 const validationSchema = yup.object({
   email: yup
@@ -34,6 +44,16 @@ const validationSchema = yup.object({
   city: yup.string().required("Обязательное поле"),
   nameOrganization: yup.string().nullable().required("Обязательное поле"),
   factAddress: yup.string().nullable(),
+  address: yup.string().nullable(),
+  avatar: yup
+    .mixed()
+    .test("FILE_SIZE", "Размер файла должен быть – не более 4 МБ.", (value) => {
+      if (!value) return true
+      if (typeof value !== "string") {
+        return !!value && (value.size / 1024 / 1024).toFixed(2) <= 4
+      }
+      return true
+    }),
 })
 
 const Edits = () => {
@@ -74,10 +94,17 @@ const Edits = () => {
           ),
           newValues = {
             ...values,
+            dateBirthday:
+              values.dateBirthday &&
+              format(new Date(values.dateBirthday), "yyyy-MM-dd"),
             country: currentCountry.id,
             city: currentCity.id,
           }
-        const { data } = await $api.put(`/organizer/profile/edit/`, newValues)
+        const { data } = await formDataHttp(
+          newValues,
+          "/organizer/profile/edit/",
+          "patch"
+        )
         dispatch(saveUser({ ...newValues, ...data }))
         routerPush("/lk-og/profile")
       } catch (e) {
@@ -177,23 +204,16 @@ const Edits = () => {
         >
           <p className="auth-title__input">Дата рождения (не обязательно)</p>
           <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-            <DatePicker
-              components={{
-                OpenPickerIcon: CalendarIcon,
-              }}
+            <MobileDatePicker
               toolbarTitle={"Выбрать дату"}
               cancelText={"Отмена"}
-              value={formik.values?.dateBirthday}
-              onChange={(value) =>
-                formik.setFieldValue(
-                  "dateBirthday",
-                  format(value, "yyyy-MM-dd")
-                )
-              }
+              value={formik?.values?.dateBirthday || ""}
+              onChange={(value) => formik.setFieldValue("dateBirthday", value)}
               inputFormat="dd/MM/yyyy"
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  fullWidth
                   error={
                     Boolean(formik.touched?.dateBirthday) &&
                     formik.errors?.dateBirthday
@@ -364,20 +384,60 @@ const Edits = () => {
           </p>
           <TextField
             sx={{ width: "100%" }}
-            name="factAddress"
+            name="address"
             onChange={formik.handleChange}
             id="outlined-basic"
-            value={formik.values?.factAddress}
+            value={formik.values?.address}
             placeholder="Фактический Адрес"
             variant="outlined"
-            error={
-              formik.touched?.factAddress && Boolean(formik.errors?.factAddress)
-            }
-            helperText={
-              formik.touched?.factAddress && formik.errors?.factAddress
-            }
+            error={formik.touched?.address && Boolean(formik.errors?.address)}
+            helperText={formik.touched?.address && formik.errors?.address}
           />
         </div>
+
+        <Gallery>
+          <Title>Фотография профиля</Title>
+          <GrayText style={{ marginTop: 4 }}>
+            Фотография показывается, например, рядом с вашими профилем
+          </GrayText>
+          <GalleryBlock>
+            <GalleryLabel
+              error={formik.touched.avatar && Boolean(formik.errors.avatar)}
+            >
+              {!!formik?.values?.avatar ? (
+                <ImageWrapper>
+                  <Image
+                    src={
+                      typeof formik.values.avatar === "string"
+                        ? formik.values.avatar
+                        : URL.createObjectURL(formik.values.avatar)
+                    }
+                    width={128}
+                    height={128}
+                    objectFit={"cover"}
+                  />
+                </ImageWrapper>
+              ) : (
+                <UploadIconWrapper>
+                  <UploadIcon />
+                </UploadIconWrapper>
+              )}
+
+              <GalleryInput
+                name="avatar"
+                type={"file"}
+                accept="image/*"
+                onChange={(e) =>
+                  formik.setFieldValue("avatar", e.target.files[0])
+                }
+              />
+            </GalleryLabel>
+            <GrayText>
+              Рекомендуем использовать изображение размером не менее 600х600
+              пикселей в формате PNG. Размер файла – не более 4 МБ.
+            </GrayText>
+          </GalleryBlock>
+        </Gallery>
       </Content>
       <Footer>
         <Link href={"/lk-og/profile/"} passHref>

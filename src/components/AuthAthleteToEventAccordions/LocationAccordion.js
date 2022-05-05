@@ -9,12 +9,21 @@ import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import AddressIcon from "../../public/svg/address.svg"
 import { selectCountriesAndCities } from "../../redux/components/countriesAndCities"
 import { useSelector } from "react-redux"
+import MapField from "../ui/Map/Field"
 
 function LocationAccordion({ data }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
 
   const country = countries.find(({ id }) => id === data?.location.country)
   const city = cities.find(({ id }) => id === data?.location.city)
+
+  const mapPoints =
+    data?.location?.lat && data?.location?.long
+      ? {
+          lat: +data?.location?.lat,
+          lng: +data?.location?.long,
+        }
+      : null
 
   return (
     <div>
@@ -61,6 +70,10 @@ function LocationAccordion({ data }) {
               </LocationItemsText>
             </div>
           </LocationAccordionItems>
+
+          <Map active={!!mapPoints}>
+            {mapPoints && <MapField defaultPoints={mapPoints} disabled />}
+          </Map>
         </AccordionDetails>
       </LocationAccordionCustom>
     </div>
@@ -68,6 +81,15 @@ function LocationAccordion({ data }) {
 }
 
 export default LocationAccordion
+
+const Map = styled.div`
+  width: 100%;
+  height: 151px;
+  border-radius: 16px;
+  background: no-repeat
+    url("https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1700&q=80")
+    center / cover;
+`
 
 const LocationAccordionCustomHeadingText = styled(Typography)`
   font-family: "Inter";
@@ -88,6 +110,7 @@ const LocationItemsText = styled(Typography)`
 `
 
 const LocationAccordionItems = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: 2fr 10fr;
   align-items: flex-start;
@@ -101,11 +124,11 @@ const Line = styled.div`
 `
 
 const LocationAccordionCustom = styled(Accordion)`
-  background: #1b1c22;
-  border: 1px solid #333333;
+  background-color: #1b1c22 !important ;
+  border: 1px solid #333333 !important;
   border-radius: 16px !important;
-  padding: 24px 0px;
-  margin: 0;
+  padding: 24px 0px !important;
+  margin: 0 !important;
 `
 
 const LocationPageIcon = ({ type }) => {

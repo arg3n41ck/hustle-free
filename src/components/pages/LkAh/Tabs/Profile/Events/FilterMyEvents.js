@@ -4,8 +4,11 @@ import { getRusBetweenDate } from "../../../../../../helpers/helpers"
 import { CalendarIcon, LocationIcon } from "../../../../Events/EventsSlider"
 import { Avatar, IconButton } from "@mui/material"
 import { DEFAULT_API_URL } from "../../../../../../services/constants"
+import { useRouter } from "next/router"
 
 function FilterMyEvents({ data }) {
+  const { push: routerPush } = useRouter()
+
   return (
     <EventContainer key={data?.id}>
       <EventItems>
@@ -15,7 +18,11 @@ function FilterMyEvents({ data }) {
           sx={{ width: 112, height: 112 }}
         />
         <EventsInfo>
-          <EventInfoHeadingText>{data?.event?.name}</EventInfoHeadingText>
+          <EventInfoHeadingText
+            onClick={() => routerPush(`/events/${data?.event?.id}`)}
+          >
+            {data?.event?.name}
+          </EventInfoHeadingText>
           <EventInfoParticipantsInfo>
             {data?.participationCategory?.eventParticipantsCategory?.name} /{" "}
             {data?.participationCategory?.level} /{" "}
@@ -111,7 +118,12 @@ const EventInfoHeadingText = styled.h2`
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
+  cursor: pointer;
   color: #f2f2f2;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 const EventInfoParticipantsInfo = styled.p`

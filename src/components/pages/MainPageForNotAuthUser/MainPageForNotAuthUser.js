@@ -40,7 +40,7 @@ const MainPageForNotAuthUser = () => {
             <EventsSlider events={events} />
             <MainPageContainerButtonAndTitle>
               <MainPageTitle>Ближайшие турниры</MainPageTitle>
-              <MainPageButton onClock={() => routerPush("/events")}>
+              <MainPageButton onClick={() => routerPush("/events")}>
                 Смотреть все
               </MainPageButton>
             </MainPageContainerButtonAndTitle>

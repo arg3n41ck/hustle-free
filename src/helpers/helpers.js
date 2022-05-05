@@ -65,3 +65,11 @@ export const localStorageSetItem = (key, value) => {
 export const localStorageRemoveItem = (key) => {
   typeof window !== "undefined" && window.localStorage.removeItem(key)
 }
+
+export const truncateString = (str, num, dots = true) => {
+  if (str?.length < num) {
+    return str
+  }
+
+  return (str || "").slice(0, num) + (dots ? "..." : "")
+}
