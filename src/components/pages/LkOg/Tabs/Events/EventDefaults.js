@@ -180,32 +180,34 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
           )}
         />
       </Field>
-
-      <FormControl
-        error={touched.formatEvent && Boolean(errors.formatEvent)}
-        variant="standard"
-      >
-        <RadioGroup
-          row
-          name="formatEvent"
-          value={values.formatEvent}
-          onChange={handleChange}
+      <Field>
+        <p className="auth-title__input">Формат</p>
+        <FormControl
+          error={touched.formatEvent && Boolean(errors.formatEvent)}
+          variant="standard"
         >
-          <FormControlLabel
-            value="olympic"
-            control={<Radio />}
-            label="Олимпийский"
-          />
-          <FormControlLabel
-            value="circular"
-            control={<Radio />}
-            label="Круговой"
-          />
-        </RadioGroup>
-        <FormHelperText>
-          {touched.formatEvent && errors.formatEvent}
-        </FormHelperText>
-      </FormControl>
+          <RadioGroup
+            row
+            name="formatEvent"
+            value={values.formatEvent}
+            onChange={handleChange}
+          >
+            <FormControlLabel
+              value="olympic"
+              control={<Radio />}
+              label="Олимпийский"
+            />
+            <FormControlLabel
+              value="circular"
+              control={<Radio />}
+              label="Круговой"
+            />
+          </RadioGroup>
+          <FormHelperText>
+            {touched.formatEvent && errors.formatEvent}
+          </FormHelperText>
+        </FormControl>
+      </Field>
 
       <EventFormFooter>
         <Link href="/lk-og/profile/events">
