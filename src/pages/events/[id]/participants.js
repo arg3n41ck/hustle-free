@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import EdMainLayout from "../../../components/pages/Event/EDMainLayout"
 import $api from "../../../services/axios"
-import EventParticipantsList from "../../../components/pages/Event/Participants/EventParticipantsList"
-import Filters from "../../../components/pages/Event/Participants/Filters"
 import EventParticipants from "../../../components/pages/Event/Participants/EventParticipants"
 
 export async function getServerSideProps(context) {

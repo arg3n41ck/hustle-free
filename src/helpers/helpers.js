@@ -41,6 +41,14 @@ export const getRusBetweenDate = (start, end) => {
 
   return `${startDate} ${rusMonth[startMonth]} - ${endDate} ${rusMonth[endMonth]}`
 }
+export const getRuDetailDate = (start) => {
+  const sDate = new Date(start),
+    startDate = sDate.getDate(),
+    startMonth = sDate.getMonth(),
+    year = sDate.getFullYear()
+
+  return `${startDate} ${rusMonth[startMonth]} ${year}г.`
+}
 
 export const getRoleInRu = (role) => {
   switch (role) {

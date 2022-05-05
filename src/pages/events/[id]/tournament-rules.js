@@ -1,9 +1,6 @@
 import React from "react"
 import Tournamentrules from "../../../components/pages/Event/TournamentRules/TournamentRules"
 import styled from "styled-components"
-import { useRouter } from "next/router"
-import useFetch from "../../../hooks/useFetch"
-import { API_URL } from "../../../services/constants"
 import AuthAthleteToEventAllAccordions from "../../../components/AuthAthleteToEventAccordions/AuthAthleteToEventAllAccordions"
 import $api from "../../../services/axios"
 

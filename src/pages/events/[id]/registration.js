@@ -1,14 +1,9 @@
 import React from "react"
 import styled from "styled-components"
-import { useRouter } from "next/router"
-import useFetch from "../../../hooks/useFetch"
-import { API_URL } from "../../../services/constants"
 import AuthAthleteToEventAllAccordions from "../../../components/AuthAthleteToEventAccordions/AuthAthleteToEventAllAccordions"
 import AuthorizationAthleteToEvent from "../../../components/pages/Authorization/AuthorizationAthleteToEvent"
 import $api from "../../../services/axios"
-import { getCookie } from "../../../services/JWTService"
 import { useDispatch } from "react-redux"
-import { fetchUser } from "../../../redux/components/user"
 
 function Registration({ data, query }) {
   const dispatch = useDispatch()

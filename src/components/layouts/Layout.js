@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
       </Head>
       <Header />
       <ChildrenWrapper lg={lg}>
-        <div>{children}</div>
+        <div style={{ height: "100%" }}>{children}</div>
 
         <Footer />
       </ChildrenWrapper>

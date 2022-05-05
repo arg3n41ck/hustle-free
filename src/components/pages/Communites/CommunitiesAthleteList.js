@@ -12,29 +12,30 @@ function CommunitesAthletesList({ data }) {
   return (
     <CommunitesAthletesListItems>
       {!!data?.length &&
-        data.map(({ user }) => (
-          <Athlete user={user}>
+        data.map(({ id, user }) => (
+          <Athlete key={`communities-${id}-${user?.id}`} userId={id} user={user}>
             <AthletesBottomInfo>
               <AthletesBottomItem>
                 <AthletesBottomItemTextHeading>
                   Страна
                 </AthletesBottomItemTextHeading>
                 <AthletesBottomItemText>
-                  {countries.find(({ id }) => id === user.country)?.name}
+                  {countries.find(({ id }) => id === user.country)?.name ||
+                    "Не указано"}
                 </AthletesBottomItemText>
               </AthletesBottomItem>
-              {!!user?.phoneNumber && (
-                <AthletesBottomItem>
-                  <AthletesBottomItemTextHeading>
-                    Телефон
-                  </AthletesBottomItemTextHeading>
-                  <AthletesBottomItemText>
-                    {phoneFormatter(user?.phoneNumber)}
-                    {/* {user?.gender === "male" && "Мужчина"}
-                    {user?.gender === "female" && "Женщина"} */}
-                  </AthletesBottomItemText>
-                </AthletesBottomItem>
-              )}
+              <AthletesBottomItem>
+                <AthletesBottomItemTextHeading>
+                  Пол
+                </AthletesBottomItemTextHeading>
+                <AthletesBottomItemText>
+                  {user?.gender === "male"
+                    ? "Мужчина"
+                    : user?.gender === "female"
+                    ? "Женщина"
+                    : "Не указано"}
+                </AthletesBottomItemText>
+              </AthletesBottomItem>
             </AthletesBottomInfo>
           </Athlete>
         ))}

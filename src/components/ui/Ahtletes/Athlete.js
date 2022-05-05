@@ -5,9 +5,9 @@ import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
 import { useRouter } from "next/router"
 
-function Athlete({ children, user }) {
+function Athlete({ children, userId, user }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
-  const { push: routerPush } = useRouter()
+  const { push: routerPush, pathname } = useRouter()
 
   const { countryName, cityName } = useMemo(() => {
     const city = cities?.length
@@ -30,7 +30,11 @@ function Athlete({ children, user }) {
               sx={{ width: "100%", height: "100%" }}
             />
             <div>
-              <ItemTitle onClick={() => routerPush(`/athlete/${user?.id}`)}>
+              <ItemTitle
+                onClick={() =>
+                  routerPush(userId ? `/athlete/${userId}` : pathname)
+                }
+              >
                 {user?.firstName || ""} {user?.lastName || ""}
               </ItemTitle>
               {countryName && cityName && (
