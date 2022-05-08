@@ -17,22 +17,7 @@ const validationSchema = yup.object({
       (value) => !!(value || "").replace(/\s/g, "")
     )
     .required("Заполните поле"),
-  description: yup
-    .string()
-    .test(
-      "description",
-      "Заполните поле",
-      (value) => value !== "default" && !!(value || "").replace(/\s/g, "")
-    )
-    .required("Заполните поле"),
-  avatar: yup
-    .string()
-    .test(
-      "avatar",
-      "Заполните поле",
-      (value) => value !== "default" && !!(value || "").replace(/\s/g, "")
-    )
-    .required("Заполните поле"),
+  description: yup.string().required("Заполните поле"),
 })
 
 const TeamInfo = ({
@@ -53,23 +38,14 @@ const TeamInfo = ({
     },
     onSubmit: async (values) => {
       toast.info("Ожидайте ответа от сервера")
-      if (
-        formik.values.sports &&
-        !Boolean(formik.errors.sports) &&
-        formik.values.description &&
-        !Boolean(formik.errors.description) &&
-        formik.values.avatar &&
-        !Boolean(formik.errors.avatar)
-      ) {
-        const _data = {
-          ...dataPersonal,
-          sports: [values.sports],
-          description: values.description,
-          avatar: values.avatar,
-        }
-        setDataInfo(_data)
-        await onSubmit({ ...dataPersonal, ..._data })
+      const _data = {
+        ...dataPersonal,
+        sports: [values.sports],
+        description: values.description,
+        avatar: values.avatar,
       }
+      setDataInfo(_data)
+      await onSubmit({ ...dataPersonal, ..._data })
     },
     validationSchema,
   })
@@ -85,7 +61,6 @@ const TeamInfo = ({
       <div className="auth-wrapper__input">
         <p className="auth-title__input">Вид спорта</p>
         <TextField
-          id="outlined-select-currency"
           select
           sx={{ width: "100%", color: "white" }}
           name="sports"
@@ -232,14 +207,8 @@ const TeamInfo = ({
       </Box>
 
       <AuthButton
-        active={
-          formik.values.sports &&
-          !Boolean(formik.errors.sports) &&
-          formik.values.description &&
-          !Boolean(formik.errors.description) &&
-          formik.values.avatar &&
-          !Boolean(formik.errors.avatar)
-        }
+        disabled={!formik.isValid}
+        active={formik.values.sports && !Boolean(formik.errors.sports)}
         type="submit"
       >
         Дальше

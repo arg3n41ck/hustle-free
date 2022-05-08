@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { Avatar } from "@mui/material"
 
 function Teams({ teams }) {
-  if (!teams.length) return null
+  if (!teams?.length) return null
 
   return (
     <TeamsWrapper>

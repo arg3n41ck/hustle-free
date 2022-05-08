@@ -95,7 +95,7 @@ function Levels({
       <Form>
         <LevelsUl>
           {!!levels?.length &&
-            levels.map(({ name, id }) => {
+            levels.map(({ name, id, isManual }) => {
               return (
                 <LevelLi key={`PCCreateLevels_${id}`}>
                   <FormControlLabel
@@ -107,9 +107,11 @@ function Levels({
                     }
                     label={name}
                   />
-                  <LevelClearIcon>
-                    <ClearIcon onClick={() => handleOnDeleteLevel(id)} />
-                  </LevelClearIcon>
+                  {!isManual && (
+                    <LevelClearIcon>
+                      <ClearIcon onClick={() => handleOnDeleteLevel(id)} />
+                    </LevelClearIcon>
+                  )}
                 </LevelLi>
               )
             })}

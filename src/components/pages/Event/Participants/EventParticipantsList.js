@@ -3,18 +3,22 @@ import styled from "styled-components"
 import EventParticipantsItem from "./EventParticipantsItem"
 import { useSelector } from "react-redux"
 
-const EventParticipantsList = ({ eventParticipants }) => {
+const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
   const { user } = useSelector((state) => state.user)
 
   return (
     <>
-      <Title>
-        {user?.role !== "organizer" &&
-          "Категории на основе сведений в вашем профиле"}
-      </Title>
+      {user?.role !== "organizer" && (
+        <Title>
+          {isAthletes
+            ? "Категории на основе сведений в вашем профиле"
+            : "Отсальные категории"}
+        </Title>
+      )}
       {eventParticipants.map((eventParticipant) => (
         <EventParticipantsItem
           key={eventParticipant.id}
+          isAthletes={isAthletes}
           isOrganizer={user?.role === "organizer"}
           eventParticipant={eventParticipant}
         />

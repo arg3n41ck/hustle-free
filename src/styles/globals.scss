@@ -27,8 +27,6 @@ button {
   font-family: "Inter", sans-serif !important;
 }
 
-
-
 .PrivateDatePickerToolbar-penIcon {
   display: none !important;
 }
@@ -144,6 +142,13 @@ span.Mui-checked {
 .MuiOutlinedInput-input.MuiInputBase-input.Mui-disabled {
   color: #333;
   -webkit-text-fill-color: #a6a6a6;
+}
+.MuiMenu-paper {
+  background: #333 !important;
+  .MuiMenu-list {
+    //background: #333 !important;
+    color: #f2f2f2 !important;
+  }
 }
 
 input:-webkit-autofill,

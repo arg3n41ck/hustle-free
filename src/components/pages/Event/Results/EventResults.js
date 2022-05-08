@@ -1,11 +1,10 @@
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import styled from "styled-components"
 import HorizontalTabsBorder from "../../../ui/tabs/HorizontalTabsBorder"
 import GoldMedal from "../../../../public/svg/gold-medal.svg"
 import SilverMedal from "../../../../public/svg/silver-medal.svg"
 import BronzeMedal from "../../../../public/svg/bronze-medal.svg"
 import Teams from "./Teams"
-import useDebounce from "../../../../hooks/useDebounce"
 import Participants from "./Participants"
 
 const tabs = [
@@ -21,30 +20,53 @@ const tabs = [
 
 const EventResults = () => {
   const [view, setView] = useState("participants") // participants | teams
+  const [resultsPlaces, setResultsPlaces] = useState([])
+
+  const onloadPC = (data) => {
+    data.length &&
+      setResultsPlaces(data.map((item) => item.participants).flat(Infinity))
+  }
+
+  const { first, second, third, all } = useMemo(() => {
+    const firstP =
+      !!resultsPlaces.length &&
+      (resultsPlaces.filter(({ place }) => place === 1).length || "-")
+    const secondP =
+      !!resultsPlaces.length &&
+      (resultsPlaces.filter(({ place }) => place === 2).length || "-")
+    const thirdP =
+      !!resultsPlaces.length &&
+      (resultsPlaces.filter(({ place }) => place === 3).length || "-")
+
+    const allP =
+      !!resultsPlaces.length &&
+      (resultsPlaces.filter(({ place }) => place).length || "-")
+    return { first: firstP, second: secondP, third: thirdP, all: allP }
+  }, [resultsPlaces])
 
   return (
     <>
-      <MedalsTitle>Всего боев: 152</MedalsTitle>
+      <MedalsTitle>Всего боев: {all}</MedalsTitle>
       <Medals>
         <Medal>
           <GoldMedal />
           <MedalInfo>
             <MedalText color={"#FFC107"}>Золото:</MedalText>
-            <MedalText color={"#FFC107"}>-</MedalText>
+            <MedalText color={"#FFC107"}>{first}</MedalText>
           </MedalInfo>
         </Medal>
         <Medal>
           <SilverMedal />
           <MedalInfo>
-            <MedalText color={"#E0E0E0"}>Бронза:</MedalText>
-            <MedalText color={"#E0E0E0"}>-</MedalText>
+            <MedalText color={"#D7832D"}>Серебро:</MedalText>
+            <MedalText color={"#E0E0E0"}>{second}</MedalText>
           </MedalInfo>
         </Medal>
         <Medal>
           <BronzeMedal />
           <MedalInfo>
-            <MedalText color={"#D7832D"}>Серебро:</MedalText>
-            <MedalText color={"#D7832D"}>-</MedalText>
+            <MedalText color={"#E0E0E0"}>Бронза:</MedalText>
+            <MedalText color={"#D7832D"}>{third}</MedalText>
           </MedalInfo>
         </Medal>
       </Medals>
@@ -54,7 +76,11 @@ const EventResults = () => {
         onChangeHandler={setView}
         height={"96px"}
       >
-        {view === "participants" ? <Participants /> : <Teams />}
+        {view === "participants" ? (
+          <Participants onloadPC={onloadPC} />
+        ) : (
+          <Teams />
+        )}
       </HorizontalTabsBorder>
     </>
   )

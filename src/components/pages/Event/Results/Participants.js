@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react"
-import EDContentFilter from "../EDContentFilter"
+import React, { useCallback, useEffect, useState } from "react"
 import useDebounce from "../../../../hooks/useDebounce"
 import styled from "styled-components"
-import { Box, TextField } from "@mui/material"
+import { Box } from "@mui/material"
 import EventResultsItem from "./EventResultsItem"
-import { Autocomplete } from "@mui/lab"
-import { Field } from "../../LkOg/Tabs/Events/EventDefaults"
 import Filter from "./Filter"
 import $api from "../../../../services/axios"
+import { useRouter } from "next/router"
 
-const Participants = () => {
+const Participants = ({ onloadPC }) => {
   const [participants, setParticipants] = useState([])
+  const {
+    query: { id: eventId },
+  } = useRouter()
   const [filter, setFilter] = useState({
     search: "",
     teamId: "",
@@ -26,16 +27,23 @@ const Participants = () => {
     setFilter((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  useEffect(async () => {
+  const updatePC = useCallback(async () => {
     const { data } = await $api.get(`/events/event_participants_result/`, {
       params: {
         search: searchValue,
         country_id: countryValue,
         team_id: teamValue,
         id: categoryValue,
+        event_id: eventId,
+        "category-tab": false,
       },
     })
     setParticipants(data)
+    onloadPC(data)
+  }, [searchValue, countryValue, teamValue, categoryValue])
+
+  useEffect(async () => {
+    await updatePC()
   }, [searchValue, countryValue, teamValue, categoryValue])
 
   return (
@@ -46,7 +54,7 @@ const Participants = () => {
       </TitleBlock>
       <EventResults>
         {participants.map((participant) => (
-          <EventResultsItem key={participant.id} participant={participant} />
+          <EventResultsItem key={participant.id} participant={participant} updatePC={updatePC} />
         ))}
       </EventResults>
     </>

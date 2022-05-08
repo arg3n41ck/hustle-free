@@ -22,7 +22,12 @@ const getTeamData = async (teamId) => {
   return data
 }
 
-function TeamInfo({ onToggleSidebar, teamId }) {
+function TeamInfo({
+  onToggleSidebar,
+  teamId,
+  userStatusInTeam,
+  checkUserStatus,
+}) {
   const [team, setTeam] = useState(null)
   const [countries] = useSelector(selectCountriesAndCities)
   const user = useSelector((state) => state.user.user)
@@ -40,8 +45,9 @@ function TeamInfo({ onToggleSidebar, teamId }) {
 
   const sendReq = useCallback(async () => {
     try {
-      await $api.post('/teams/teams/requests/', {team: teamId})
+      await $api.post("/teams/teams/requests/", { team: teamId })
       setAthHasBeenReq(true)
+      checkUserStatus()
     } catch (e) {
       setAthHasBeenReq(true)
     }
@@ -67,11 +73,19 @@ function TeamInfo({ onToggleSidebar, teamId }) {
         <HeaderWrapper>
           <TitleHeader>Профиль</TitleHeader>
           {user?.role === "athlete" && (
-            <CreateEventBTN disabled={athHasBeenReq} onClick={() => sendReq()}>
-              {!athHasBeenReq ? (
+            <CreateEventBTN
+              disabled={
+                athHasBeenReq || userStatusInTeam?.message !== "not found"
+              }
+              active={userStatusInTeam?.message === "not found"}
+              onClick={() => sendReq()}
+            >
+              {userStatusInTeam?.message === "not found" ? (
                 <>
                   <PlusIcon /> Вступить в команду
                 </>
+              ) : userStatusInTeam?.message === "user in pending" ? (
+                "Запрошено"
               ) : (
                 "Вы уже в команде"
               )}
@@ -133,6 +147,7 @@ function TeamInfo({ onToggleSidebar, teamId }) {
                         color: "#2E79DD",
                         textDecoration: "underline",
                       }}
+                      rel="noreferrer noopener"
                       href={team?.webSite}
                     >
                       {team?.webSite || ""}
@@ -178,7 +193,8 @@ export default TeamInfo
 
 export const CreateEventBTN = styled.button`
   padding: 12px 20px;
-  background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
+  background: ${({ active }) =>
+    active ? "linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%)" : "#333"};
   border-radius: 8px;
   font-weight: 600;
   font-size: 16px;

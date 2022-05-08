@@ -111,8 +111,6 @@ const TeamsHeadingInfo = styled.div`
   cursor: pointer;
   grid-template-columns: 64px auto;
   grid-column-gap: 16px;
-  grid-template-columns: ${({ column }) =>
-    !!column ? "3fr 10fr" : "64px auto"};
   align-items: center;
 `
 

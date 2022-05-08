@@ -7,6 +7,7 @@ import FileUploaderBig from "../../ui/LKui/FileUploaderBig"
 import { formDataHttp } from "../../../helpers/formDataHttp"
 import { fetchOgEvents, selectOgEvents } from "../../../redux/components/user"
 import ParticipantsAreFilledModal from "./EventModal/ParticipantsAreFilledModal"
+import $api from "../../../services/axios"
 
 const regArray = (event) => {
   return [
@@ -50,11 +51,41 @@ const regArray = (event) => {
   ]
 }
 
+const getIsUserInEvent = async (eventId) => {
+  const { data } = await $api.get(`/events/check_athlete_event/${eventId}/`)
+  return data
+}
+const dateKeys = [
+  {
+    start: "earlyRegStart",
+    end: "earlyRegEnd",
+  },
+  {
+    start: "lateRegStart",
+    end: "lateRegEnd",
+  },
+  {
+    start: "standartRegStart",
+    end: "standartRegEnd",
+  },
+]
+const getIsEventOnRegistration = (registration) => {
+  return dateKeys.some(({ start, end }) => {
+    if (registration[start] && registration[end]) {
+      const startDate = new Date(registration[start])
+      const endDate = new Date(registration[end])
+      const today = new Date()
+      return startDate <= today && today < endDate
+    }
+  })
+}
+
 function EdGeneralInfo({ event }) {
   const regData = useMemo(() => regArray(event), [event])
   const user = useSelector((state) => state.user.user)
   const [ogEvents] = useSelector(selectOgEvents)
-  const [open, setOpen] = useState(false)
+  const [openFullPcModal, setOpenFullPcModal] = useState(false)
+  const [userStatusInEvent, setUserStatusInTeam] = useState()
 
   const {
     query: { id: eventId },
@@ -69,6 +100,14 @@ function EdGeneralInfo({ event }) {
     user?.role === "organizer" && dispatch(fetchOgEvents())
   }, [user])
 
+  const checkUserStatusInTeam = useCallback(() => {
+    eventId && getIsUserInEvent(eventId).then(setUserStatusInTeam)
+  }, [eventId])
+
+  useEffect(() => {
+    checkUserStatusInTeam()
+  }, [eventId])
+
   const onUploadNewImage = useCallback(
     async (file) => {
       user?.role === "organizer" &&
@@ -81,6 +120,11 @@ function EdGeneralInfo({ event }) {
         ).then(() => reload()))
     },
     [user, eventId]
+  )
+
+  const canApplyToEvent = useMemo(
+    () => event && getIsEventOnRegistration(event.registration),
+    [event]
   )
 
   return (
@@ -101,28 +145,46 @@ function EdGeneralInfo({ event }) {
         <h1>{event.name}</h1>
         {(user?.role || "") === "athlete" ? (
           <>
-            <button
-              onClick={() =>
+            <ERegBtn
+              onClick={() => {
                 event?.registration?.maxParticipantCount !==
                 event?.participantsCount
                   ? routerPush(`/events/${event?.id}/tournament-rules`)
-                  : setOpen(true)
+                  : setOpenFullPcModal(true)
+              }}
+              disabled={
+                userStatusInEvent?.message !== "event not found" ||
+                !canApplyToEvent
+              }
+              active={
+                userStatusInEvent?.message === "event not found" &&
+                canApplyToEvent
               }
             >
-              Зарегистрироваться на турнир
-            </button>
-            <ParticipantsAreFilledModal open={open} setOpen={setOpen} />
+              {userStatusInEvent?.message === "event not found"
+                ? canApplyToEvent
+                  ? "Зарегистрироваться на турнир"
+                  : "Регистрация еще не открыта"
+                : userStatusInEvent?.message === "user in waiting list"
+                ? "Запрошено"
+                : "Вы уже в турнире"}
+            </ERegBtn>
+            <ParticipantsAreFilledModal
+              open={openFullPcModal}
+              setOpen={setOpenFullPcModal}
+            />
           </>
         ) : (
           ogAndIsMyEvent && (
-            <button
+            <ERegBtn
+              active
               onClick={() =>
                 eventId && routerPush(`/lk-og/profile/events/edit/${eventId}`)
               }
             >
               <EditIcon />
               <span>Редактировать турнир</span>
-            </button>
+            </ERegBtn>
           )
         )}
       </TitlePart>
@@ -165,20 +227,20 @@ const TitlePart = styled.div`
     color: #f2f2f2;
     word-break: break-word;
   }
+`
 
-  button {
-    height: min-content;
-    width: 100%;
-    background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
-    border-radius: 16px;
-    font-size: 20px;
-    color: #ffffff;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    grid-column-gap: 20px;
-  }
+const ERegBtn = styled.button`
+  height: min-content;
+  background: ${({ active }) =>
+    active ? "linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%)" : "#333"};
+  border-radius: 16px;
+  font-size: 20px;
+  color: #ffffff;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column-gap: 20px;
 `
 
 const RegInfoUl = styled.ul`

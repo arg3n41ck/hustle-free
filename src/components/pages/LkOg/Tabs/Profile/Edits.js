@@ -14,7 +14,7 @@ import Link from "next/link"
 import PhoneIcon from "../../../../../public/svg/profile-phone.svg"
 import EmailIcon from "../../../../../public/svg/profile-email-edit.svg"
 import SelectUI from "../../../../ui/Selects/Select"
-import { saveUser } from "../../../../../redux/components/user"
+import { fetchUser } from "../../../../../redux/components/user"
 import { format } from "date-fns"
 import { useRouter } from "next/router"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
@@ -100,12 +100,9 @@ const Edits = () => {
             country: currentCountry.id,
             city: currentCity.id,
           }
-        const { data } = await formDataHttp(
-          newValues,
-          "/organizer/profile/edit/",
-          "patch"
-        )
-        dispatch(saveUser({ ...newValues, ...data }))
+        typeof values.avatar === "string" && delete newValues.avatar
+        await formDataHttp(newValues, "organizer/profile/edit/", "patch")
+        dispatch(fetchUser())
         routerPush("/lk-og/profile")
       } catch (e) {
         throw e
@@ -384,14 +381,18 @@ const Edits = () => {
           </p>
           <TextField
             sx={{ width: "100%" }}
-            name="address"
+            name="factAddress"
             onChange={formik.handleChange}
             id="outlined-basic"
-            value={formik.values?.address}
+            value={formik.values?.factAddress}
             placeholder="Фактический Адрес"
             variant="outlined"
-            error={formik.touched?.address && Boolean(formik.errors?.address)}
-            helperText={formik.touched?.address && formik.errors?.address}
+            error={
+              formik.touched?.factAddress && Boolean(formik.errors?.factAddress)
+            }
+            helperText={
+              formik.touched?.factAddress && formik.errors?.factAddress
+            }
           />
         </div>
 

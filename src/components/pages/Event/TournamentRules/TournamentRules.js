@@ -3,9 +3,9 @@ import styled from "styled-components"
 import Checkbox from "@mui/material/Checkbox"
 import Link from "next/link"
 
-function TournamentRules({ data, dataCategory }) {
+function TournamentRules({ event }) {
   const [checked, setChecked] = React.useState(false)
-//   console.log(dataCategory)
+  //   console.log(eventCategory)
 
   return (
     <TournamentRulesContainer>
@@ -15,59 +15,59 @@ function TournamentRules({ data, dataCategory }) {
       <Line />
       <TournamentRulesHeroInfo>
         <TournamentRulesHeroInfoText>
-          Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco
+          Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco
           cillum dolor. Voluptate exercitation incididunt aliquip deserunt
           reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea
           quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore
-          cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt
+          cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt
           sint deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit
-          cupidatat irure. Laborum magna nulla duis ullamco cillum dolor.
+          cupieventt irure. Laborum magna nulla duis ullamco cillum dolor.
           Voluptate exercitation incididunt aliquip deserunt reprehenderit elit
           laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
           Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor
-          enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut
-          voluptate aute id deserunt nisi.Nulla Lorem mollit cupidatat irure.
+          enim. Elit aute irure tempor cupieventt incididunt sint deserunt ut
+          voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure.
           Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation
           incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
           fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
           pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
-          aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute
-          id deserunt nisi.Nulla Lorem mollit cupidatat irure. Laborum magna
+          aute irure tempor cupieventt incididunt sint deserunt ut voluptate aute
+          id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum magna
           nulla duis ullamco cillum dolor. Voluptate exercitation incididunt
           aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud
           irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis
           deserunt mollit dolore cillum minim tempor enim. Elit aute irure
-          tempor cupidatat incididunt sint deserunt ut voluptate aute id
-          deserunt nisi.Nulla Lorem mollit cupidatat irure. Laborum magna nulla
+          tempor cupieventt incididunt sint deserunt ut voluptate aute id
+          deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla
           duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip
           deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
           duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
           mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupidatat incididunt sint deserunt ut voluptate aute id deserunt
-          nisi.Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
+          cupieventt incididunt sint deserunt ut voluptate aute id deserunt
+          nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis
           ullamco cillum dolor. Voluptate exercitation incididunt aliquip
           deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
           duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
           mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupidatat incididunt sint deserunt ut voluptate aute id deserunt
-          nisi.Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
+          cupieventt incididunt sint deserunt ut voluptate aute id deserunt
+          nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis
           ullamco cillum dolor. Voluptate exercitation incididunt aliquip
           deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
           duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
           mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupidatat incididunt sint deserunt ut voluptate aute id deserunt
-          nisi.Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
+          cupieventt incididunt sint deserunt ut voluptate aute id deserunt
+          nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis
           ullamco cillum dolor. Voluptate exercitation incididunt aliquip
           deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
           duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
           mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupidatat incididunt sint deserunt ut voluptate aute id deserunt
-          nisi.Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
+          cupieventt incididunt sint deserunt ut voluptate aute id deserunt
+          nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis
           ullamco cillum dolor. Voluptate exercitation incididunt aliquip
           deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
           duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
           mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.
+          cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.
         </TournamentRulesHeroInfoText>
         <TournamentRulesHeroBottomInfo>
           <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
@@ -78,10 +78,10 @@ function TournamentRules({ data, dataCategory }) {
       </TournamentRulesHeroInfo>
       <Line />
       <TournamentRulesBottomButtons>
-        <Link href={`/events/${data?.id}/`}>
+        <Link href={`/events/${event?.id}/`}>
           <TournamentRulesBottomButton>Отмена</TournamentRulesBottomButton>
         </Link>
-        <Link href={`/events/${data?.id}/registration`} passHref>
+        <Link href={`/events/${event?.id}/registration`} passHref>
           <TournamentRulesBottomButton
             disabled={!checked}
             background={
@@ -113,14 +113,13 @@ const TournamentRulesBottomButton = styled.button`
   border-radius: 16px;
   max-width: 256px;
   width: 100%;
-  height: 64px;
-  font-family: "Inter";
+  height: 64px;\
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
   line-height: 32px;
   text-align: center;
-  color: #bdbdbd;
+  color: #fff;
   margin-left: 32px;
 
   &:first-child {
@@ -152,7 +151,6 @@ const TournamentRulesHeroBottomInfo = styled.div`
 `
 
 const TournamentRulesHeroBottomInfoText = styled.p`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -161,7 +159,6 @@ const TournamentRulesHeroBottomInfoText = styled.p`
 `
 
 const TournamentRulesHeroInfoText = styled.p`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -170,7 +167,6 @@ const TournamentRulesHeroInfoText = styled.p`
 `
 
 const TournamentRulesHeadingText = styled.p`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
@@ -179,6 +175,6 @@ const TournamentRulesHeadingText = styled.p`
 `
 
 const Line = styled.div`
-  border: 1px solid #333333;
+  border-bottom: 1px solid #333333;
   width: 100%;
 `

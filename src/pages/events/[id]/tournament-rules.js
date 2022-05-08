@@ -7,8 +7,8 @@ import $api from "../../../services/axios"
 function TournamentRules({ data }) {
   return (
     <TournamentRulesContainer>
-      <Tournamentrules data={data} />
-      <AuthAthleteToEventAllAccordions data={data} />
+      <Tournamentrules event={data} />
+      <AuthAthleteToEventAllAccordions event={data} />
     </TournamentRulesContainer>
   )
 }

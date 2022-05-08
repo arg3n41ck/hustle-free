@@ -1,10 +1,9 @@
-import React, { useState } from "react"
+import React  from "react"
 import EdMainLayout from "../../../components/pages/Event/EDMainLayout"
 import $api from "../../../services/axios"
 import EventResults from "../../../components/pages/Event/Results/EventResults"
 
 function Results({ event }) {
-  const [filter, setFilter] = useState({})
 
   return (
     <EdMainLayout event={event}>

@@ -14,16 +14,14 @@ const createDataForTable = (pc = []) => {
     price: { standartPrice, currency },
   } = pc
   return levels
-    .map(() => {
-      return levels.map(({ id: lId, name: lName }, i) => ({
-        id: `${id}-${lId}-${i}`,
-        gender: getGender(gender, true),
-        age: `${fromAge} - ${toAge} лет`,
-        price: `${standartPrice} ${currency.toLowerCase()}`,
-        weight: `${fromWeight} - ${toWeight} кг`,
-        name: lName,
-      }))
-    })
+    .map(({ id: lId, name: lName }, i) => ({
+      id: `${id}-${lId}-${i}`,
+      gender: getGender(gender, true),
+      age: `${fromAge} - ${toAge} лет`,
+      price: `${standartPrice} ${currency.toLowerCase()}`,
+      weight: `${fromWeight} - ${toWeight} кг`,
+      name: lName,
+    }))
     .flat(Infinity)
 }
 

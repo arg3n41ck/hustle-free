@@ -91,7 +91,7 @@ function EventCategories() {
   )
 
   useEffect(() => {
-    getEventPC({ event_id: eventId }).then((data) => {
+    getEventPC({ event_id: eventId, "category-tab": true }).then((data) => {
       if (data?.length) {
         setPc(createPCList(data))
         setLevelOptions(getEnabledLevels(data))
@@ -102,7 +102,7 @@ function EventCategories() {
   return (
     <CollapseWrapper>
       <EDContentFilter
-        label={'Поиск'}
+        label={"Поиск"}
         onSearch={(value) => setSearch((value || "").toLowerCase())}
         openChildren={isFilterOpen}
       >

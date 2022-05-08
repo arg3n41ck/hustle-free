@@ -8,9 +8,9 @@ const DropdownData = ({
   active,
   setActive,
   additionalData = null,
+  isAthletes,
   heightWrapper = 96,
   children,
-  ...props
 }) => {
   const variants = useRef({
     open: { height: "100%" },
@@ -22,6 +22,7 @@ const DropdownData = ({
       animate={active ? "open" : "closed"}
       transition={{ transition: 0.2 }}
       variants={variants.current}
+      isAthletes={isAthletes}
     >
       <Header onClick={() => setActive((prev) => !prev)}>
         <Title>{title}</Title>
@@ -34,7 +35,7 @@ const DropdownData = ({
 }
 
 const Wrapper = styled(motion.div)`
-  background: #1b1c22;
+  background: ${({ isAthletes }) => (isAthletes ? "#1b1c22" : "transparent")};
   border: 1px solid #333333;
   box-sizing: border-box;
   border-radius: 16px;

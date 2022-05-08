@@ -2,35 +2,52 @@ import React from "react"
 import styled from "styled-components"
 import { ParticipantsItem, OgParticipantsItem } from "./ParticipantsItem"
 import $api from "../../../../services/axios"
+import { useRouter } from "next/router"
 
 const ParticipantsList = ({ participants, active = true, isOrganizer }) => {
+  const {
+    query: { id: eventId },
+  } = useRouter()
   const acceptHandler = async (id) => {
-    await $api.patch(`/organizer/change_participant/${id}/`)
+    await $api.post(`/organizer/event-add-participant/`, {
+      event_id: +eventId,
+      participant_id: id,
+      proposal: true,
+    })
   }
 
   const deleteHandler = async (id) => {
-    await $api.delete(`/organizer/change_participant/${id}/`)
+    await $api.post(`/organizer/event-add-participant/`, {
+      event_id: +eventId,
+      participant_id: id,
+      proposal: false,
+    })
   }
 
   return (
     <ParticipantsListUl active={active}>
       {isOrganizer ? (
         <>
-          {participants.map((participant) => (
-            <OgParticipantsItem
-              key={participant.id}
-              onDelete={deleteHandler}
-              onAccept={acceptHandler}
-              participant={participant}
-              isRegistered={participant.proposal === "add_event"}
-            />
-          ))}
+          {!!participants?.length &&
+            participants.map((participant) => (
+              <OgParticipantsItem
+                key={participant.id}
+                onDelete={deleteHandler}
+                onAccept={acceptHandler}
+                participant={participant}
+                isRegistered={participant.proposal === "add_event"}
+              />
+            ))}
         </>
       ) : (
         <>
-          {participants.map((participant) => (
-            <ParticipantsItem key={participant.id} participant={participant} />
-          ))}
+          {!!participants?.length &&
+            participants.map((participant) => (
+              <ParticipantsItem
+                key={participant.id}
+                participant={participant}
+              />
+            ))}
         </>
       )}
     </ParticipantsListUl>

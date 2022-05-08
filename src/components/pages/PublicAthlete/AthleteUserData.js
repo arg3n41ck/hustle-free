@@ -57,16 +57,22 @@ function AthleteUserData({ user }) {
           alt={`${user.avatar}`}
           sx={{ width: 264, height: 264 }}
         />
-        <h3>{`${user.firstName || ""} ${user.lastName || ""}`}</h3>
+        {!user?.fullName ? (
+          <h3>{`${user.firstName || ""} ${user.lastName || ""}`}</h3>
+        ) : (
+          <h3>{user.fullName}</h3>
+        )}
       </MainInfo>
-      <Contacts>
-        {contacts.map(({ content, icon }, i) => (
-          <div key={`AthleteUserData-Contacts-${i}`}>
-            {icon}
-            <p>{content}</p>
-          </div>
-        ))}
-      </Contacts>
+      {!!user.isVisible && (
+        <Contacts>
+          {contacts.map(({ content, icon }, i) => (
+            <div key={`AthleteUserData-Contacts-${i}`}>
+              {icon}
+              <p>{content}</p>
+            </div>
+          ))}
+        </Contacts>
+      )}
     </MainWrapper>
   )
 }
@@ -83,9 +89,6 @@ const MainInfo = styled.div`
   flex-direction: column;
   align-items: center;
   grid-row-gap: 16px;
-  border-bottom: 1px solid #333;
-  padding-bottom: 16px;
-  margin-bottom: 16px;
 
   h3 {
     font-weight: 700;
@@ -100,6 +103,9 @@ const Contacts = styled.div`
   display: flex;
   flex-direction: column;
   grid-gap: 16px;
+  border-top: 1px solid #333;
+  margin-top: 16px;
+  padding: 16px 0 0;
 
   div {
     display: grid;

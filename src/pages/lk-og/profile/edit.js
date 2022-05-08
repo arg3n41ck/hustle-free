@@ -6,7 +6,7 @@ import Edits from "../../../components/pages/LkOg/Tabs/Profile/Edits"
 const OgProfile = () => {
   return (
     <LkLayout tabs={lkOgTabs}>
-      <Edits  />
+      <Edits />
     </LkLayout>
   )
 }

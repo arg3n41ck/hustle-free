@@ -5,8 +5,10 @@ import EventsCreateLayout from "../../../../../../components/layouts/EventsCreat
 import EventContacts from "../../../../../../components/pages/LkOg/Tabs/Events/EventContacts"
 import { useRouter } from "next/router"
 import { getEventDefaultValues } from "./location"
+import { useSelector } from "react-redux"
 
 function Contacts() {
+  const user = useSelector((state) => state.user.user)
   const {
     query: { id: eventId },
   } = useRouter()
@@ -25,7 +27,14 @@ function Contacts() {
     <LkLayout tabs={lkOgTabs}>
       <EventsCreateLayout>
         {eventDefaultValues && (
-          <EventContacts defaultValue={eventDefaultValues} eventId={eventId} />
+          <EventContacts
+            defaultValue={{
+              ...eventDefaultValues,
+              ...user,
+              phoneNumber1: user.phoneNumber,
+            }}
+            eventId={eventId}
+          />
         )}
       </EventsCreateLayout>
     </LkLayout>

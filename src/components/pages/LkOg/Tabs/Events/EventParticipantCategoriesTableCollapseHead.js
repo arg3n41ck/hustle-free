@@ -50,7 +50,9 @@ function EventParticipantCategoriesTableCollapseHead({
           value={"none"}
           onChange={onClickChangeSomeRows}
         >
-          <MenuItem value={"none"}>Изменить</MenuItem>
+          <MenuItem value={"none"} sx={{ display: "none" }}>
+            Изменить
+          </MenuItem>
           <MenuItem value={"levels"}>Уровни</MenuItem>
           <MenuItem value={"gender"}>Пол</MenuItem>
           <MenuItem value={"age"}>Возраст</MenuItem>
@@ -59,8 +61,8 @@ function EventParticipantCategoriesTableCollapseHead({
         </Select>
       </THCell>
 
-      <THCell type="button" onClick={removeRowsFromTable}>
-        <Delete>Удалить</Delete>
+      <THCell onClick={removeRowsFromTable}>
+        <Delete type="button">Удалить</Delete>
       </THCell>
 
       <THCell>

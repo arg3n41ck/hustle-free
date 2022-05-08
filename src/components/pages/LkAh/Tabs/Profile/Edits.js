@@ -13,14 +13,12 @@ import {
   IconButton,
 } from "@mui/material"
 import { ru } from "date-fns/locale"
-import { DatePicker, LocalizationProvider, MobileDatePicker } from "@mui/lab"
+import { LocalizationProvider, MobileDatePicker } from "@mui/lab"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import Radio from "../../../../ui/Radio"
 import InputMask from "react-input-mask"
 import CustomButton from "../../../../ui/CustomButton"
-import LkDefaultHeader from "../../../../ui/LKui/LKDefaultHeader"
 import { TitleHeader } from "../../../../ui/LKui/HeaderContent"
-import CalendarIcon from "../../../../../public/svg/calendar-edit-profile.svg"
 import PhoneIcon from "../../../../../public/svg/profile-phone.svg"
 import EmailIcon from "../../../../../public/svg/profile-email-edit.svg"
 import { saveUser } from "../../../../../redux/components/user"
@@ -32,7 +30,6 @@ import {
   fetchCountries,
   selectCountriesAndCities,
 } from "../../../../../redux/components/countriesAndCities"
-import useQuery from "../../../../../hooks/useQuery"
 import { fetchUser } from "../../../../../redux/components/user"
 import { LocationIcon } from "../../../Events/EventsCatalog/EventsFilter"
 import { decamelizeKeys } from "humps"
@@ -45,7 +42,7 @@ const validationSchema = yup.object({
     .required("Заполните поле почты"),
   firstName: yup.string().required("Обязательное поле"),
   lastName: yup.string().required("Обязательное поле"),
-  phoneNumber: yup.string().min(12).required("Обязательное поле"),
+  phoneNumber: yup.string().min(12),
   gender: yup.mixed(),
   dateBirthday: yup.mixed().nullable(),
   country: yup.string().required("Обязательное поле"),
@@ -68,10 +65,10 @@ const emptyInitialValues = {
   address: "",
   old_password: "",
   new_password: "",
-  type_profile: "",
+  isVisible: true,
 }
 
-const Edits = ({ onToggleSidebar }) => {
+const Edits = () => {
   const {
     user: { user },
     countries: {
@@ -107,6 +104,7 @@ const Edits = ({ onToggleSidebar }) => {
               format(new Date(values.dateBirthday), "yyyy-MM-dd"),
             country: currentCountry.id,
             city: currentCity.id,
+            visible: !!values.isVisible,
           }),
           avatar,
         }
@@ -168,9 +166,7 @@ const Edits = ({ onToggleSidebar }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Header>
-        <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
-          <TitleHeader>Редактирование профиля</TitleHeader>
-        </LkDefaultHeader>
+        <TitleHeader>Редактирование профиля</TitleHeader>
       </Header>
       <Content>
         <Box
@@ -241,7 +237,7 @@ const Edits = ({ onToggleSidebar }) => {
                 onChange={(value) =>
                   formik.setFieldValue(
                     "dateBirthday",
-                    format(value, "yyyy-MM-dd")
+                    value && format(value, "yyyy-MM-dd")
                   )
                 }
                 inputFormat="dd/MM/yyyy"
@@ -314,7 +310,7 @@ const Edits = ({ onToggleSidebar }) => {
               noOptionsText={"Ничего не найдено"}
               onChange={(_, value) => [
                 changeCurrentCities(value),
-                formik.setFieldValue("country", value.id),
+                formik.setFieldValue("country", value?.id || null),
                 formik.setFieldValue("city", ""),
               ]}
               options={countries.map((option) => option) || []}
@@ -343,7 +339,9 @@ const Edits = ({ onToggleSidebar }) => {
 
             <Autocomplete
               noOptionsText={"Ничего не найдено"}
-              onChange={(_, value) => formik.setFieldValue("city", value.id)}
+              onChange={(_, value) =>
+                formik.setFieldValue("city", value?.id || null)
+              }
               options={
                 countries.find(({ id }) => id === formik.values?.country)
                   ?.cityCountry || []
@@ -397,25 +395,25 @@ const Edits = ({ onToggleSidebar }) => {
             </Box>
           </div>
 
-          {/* <div className="auth-wrapper__input">
+          <div className="auth-wrapper__input">
             <p className="auth-title__input">Тип профиля</p>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <RadioWrapper>
                 <Radio
                   text={"Открытый"}
-                  checked={formik.values?.type_profile === "open"}
-                  onChange={() => formik.setFieldValue("typeProfile", "open")}
+                  checked={formik.values?.isVisible}
+                  onChange={() => formik.setFieldValue("isVisible", true)}
                 />
               </RadioWrapper>
               <RadioWrapper>
                 <Radio
                   text={"Закрытый"}
-                  checked={formik.values?.type_profile === "closed"}
-                  onChange={() => formik.setFieldValue("typeProfile", "closed")}
+                  checked={!formik.values?.isVisible}
+                  onChange={() => formik.setFieldValue("isVisible", false)}
                 />
               </RadioWrapper>
             </Box>
-          </div> */}
+          </div>
         </Box>
         <div className="auth-wrapper__input">
           <p className="auth-title__input">Электронный адрес</p>

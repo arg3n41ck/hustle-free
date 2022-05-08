@@ -3,7 +3,7 @@ import styled from "styled-components"
 import DropdownData from "../../../ui/DropdownData"
 import ParticipantsList from "./ParticipantsList"
 
-const EventParticipantsItem = ({ eventParticipant, isOrganizer }) => {
+const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) => {
   const [open, setOpen] = useState(false)
   const { eventParticipantsCategory } = eventParticipant
 
@@ -51,6 +51,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer }) => {
   return (
     <Item>
       <DropdownData
+        isAthletes={isAthletes}
         active={open}
         setActive={setOpen}
         heightWrapper={"184px"}
@@ -59,7 +60,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer }) => {
       >
         {isOrganizer ? (
           <>
-            {!!participantsValues.isPaid.length && (
+            {!!participantsValues?.isPaid?.length && (
               <TitleList>Оплачено</TitleList>
             )}
             <ParticipantsList
@@ -67,7 +68,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer }) => {
               active={true}
               participants={participantsValues.isPaid}
             />
-            {!!participantsValues.isNotPaid.length && (
+            {!!participantsValues?.isNotPaid?.length && (
               <TitleList>Не оплачено</TitleList>
             )}
             <ParticipantsList
@@ -75,7 +76,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer }) => {
               active={false}
               participants={participantsValues.isNotPaid}
             />
-            {!!participantsValues.registered.length && (
+            {!!participantsValues?.registered?.length && (
               <TitleList>Подтвержденные</TitleList>
             )}
             <ParticipantsList
@@ -86,7 +87,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer }) => {
           </>
         ) : (
           <>
-            {!!participantsValues.registered.length && (
+            {!!participantsValues?.registered?.length && (
               <TitleList>Зарегистрированные</TitleList>
             )}
             <ParticipantsList
@@ -94,7 +95,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer }) => {
               active={true}
               participants={participantsValues.registered}
             />
-            {!!participantsValues.unconfirmed.length && (
+            {!!participantsValues?.unconfirmed?.length && (
               <TitleList>Неподтвержденные</TitleList>
             )}
             <ParticipantsList

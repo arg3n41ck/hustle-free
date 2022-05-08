@@ -3,9 +3,11 @@ import $api from "../../services/axios"
 
 export const fetchCategories = createAsyncThunk(
   "categories/fetchCategories",
-  async (_, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/directory/participants_categories/`)
+      const { data } = await $api.get(`/directory/participants_categories/`, {
+        params,
+      })
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)

@@ -3,12 +3,11 @@ import Accordion from "@mui/material/Accordion"
 import AccordionSummary from "@mui/material/AccordionSummary"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import Typography from "@mui/material/Typography"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import styled from "styled-components"
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import { getRusBetweenDate } from "../../helpers/helpers"
 
-function RegistrationAccordion({ data }) {
+function RegistrationAccordion({ event }) {
   return (
     <div>
       <RegistrationAccordionCustom
@@ -36,8 +35,8 @@ function RegistrationAccordion({ data }) {
           </RegistrationAccordionCustomHeadingText>
         </AccordionSummary>
         <Line />
-        <AccordionDetails sx={{ padding: "24px" }}>
-          {!!data?.registration?.earlyRegActive && (
+        <AccordionDetails sx={{ padding: "24px 24px 0" }}>
+          {!!event?.registration?.earlyRegActive && (
             <>
               <RegistrationAccordionItems>
                 <RegistrationIcon period="early" />
@@ -47,8 +46,8 @@ function RegistrationAccordion({ data }) {
                   </RegistrationAccordionItemTopText>
                   <RegistrationAccordionItemBottomText>
                     {getRusBetweenDate(
-                      data?.registration?.earlyRegStart,
-                      data?.registration?.earlyRegEnd
+                      event?.registration?.earlyRegStart,
+                      event?.registration?.earlyRegEnd
                     )}
                   </RegistrationAccordionItemBottomText>
                 </div>
@@ -64,14 +63,14 @@ function RegistrationAccordion({ data }) {
               </RegistrationAccordionItemTopText>
               <RegistrationAccordionItemBottomText>
                 {getRusBetweenDate(
-                  data?.registration?.standartRegStart,
-                  data?.registration?.standartRegEnd
+                  event?.registration?.standartRegStart,
+                  event?.registration?.standartRegEnd
                 )}
               </RegistrationAccordionItemBottomText>
             </div>
           </RegistrationAccordionItems>
           <Line margin={"24px 0"} />
-          {data?.registration?.late_reg_active && (
+          {event?.registration?.late_reg_active && (
             <>
               <RegistrationAccordionItems>
                 <RegistrationIcon period="late" />
@@ -81,8 +80,8 @@ function RegistrationAccordion({ data }) {
                   </RegistrationAccordionItemTopText>
                   <RegistrationAccordionItemBottomText>
                     {getRusBetweenDate(
-                      data?.registration?.lateRegStart,
-                      data?.registration?.lateRegEnd
+                      event?.registration?.lateRegStart,
+                      event?.registration?.lateRegEnd
                     )}
                   </RegistrationAccordionItemBottomText>
                 </div>
@@ -97,7 +96,7 @@ function RegistrationAccordion({ data }) {
                 Длительность турнира
               </RegistrationAccordionItemTopText>
               <RegistrationAccordionItemBottomText>
-                {getRusBetweenDate(data?.dateStart, data?.dateEnd)}
+                {getRusBetweenDate(event?.dateStart, event?.dateEnd)}
               </RegistrationAccordionItemBottomText>
             </div>
           </RegistrationAccordionItems>
@@ -110,7 +109,6 @@ function RegistrationAccordion({ data }) {
 export default RegistrationAccordion
 
 const RegistrationAccordionItemBottomText = styled.p`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -119,7 +117,6 @@ const RegistrationAccordionItemBottomText = styled.p`
 `
 
 const RegistrationAccordionItemTopText = styled.p`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -128,7 +125,6 @@ const RegistrationAccordionItemTopText = styled.p`
 `
 
 const RegistrationAccordionCustomHeadingText = styled(Typography)`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -140,18 +136,19 @@ const RegistrationAccordionCustom = styled(Accordion)`
   background-color: #1b1c22 !important ;
   border: 1px solid #333333 !important;
   border-radius: 16px !important;
-  padding: 24px 0px !important;
+  padding: 24px 0 !important;
   margin: 0 !important;
 `
 
 const RegistrationAccordionItems = styled.div`
   display: grid;
-  grid-template-columns: 2fr 10fr;
+  grid-template-columns: 40px auto;
+  grid-column-gap: 12px;
   align-items: flex-start;
 `
 
 const Line = styled.div`
-  border: 1px solid #333333;
+  border-bottom: 1px solid #333333;
   width: 100%;
   margin: ${({ margin }) => (!!margin ? margin : 0)};
 `
@@ -174,19 +171,19 @@ const RegistrationIcon = ({ period }) => {
           <path
             d="M15 8.33333C15 6.49238 16.4924 5 18.3333 5H21.6667C23.5076 5 25 6.49238 25 8.33333C25 10.1743 23.5076 11.6667 21.6667 11.6667H18.3333C16.4924 11.6667 15 10.1743 15 8.33333Z"
             stroke="#27AE60"
-            stroke-width="2"
+            strokeWidth="2"
           />
           <path
             d="M15 20L25 20"
             stroke="#27AE60"
-            stroke-width="2"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeLinecap="round"
           />
           <path
             d="M15 26.6665L21.6667 26.6665"
             stroke="#27AE60"
-            stroke-width="2"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeLinecap="round"
           />
         </svg>
       )}
@@ -205,19 +202,19 @@ const RegistrationIcon = ({ period }) => {
           <path
             d="M15 8.33333C15 6.49238 16.4924 5 18.3333 5H21.6667C23.5076 5 25 6.49238 25 8.33333C25 10.1743 23.5076 11.6667 21.6667 11.6667H18.3333C16.4924 11.6667 15 10.1743 15 8.33333Z"
             stroke="#2E79DD"
-            stroke-width="2"
+            strokeWidth="2"
           />
           <path
             d="M15 20L25 20"
             stroke="#2E79DD"
-            stroke-width="2"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeLinecap="round"
           />
           <path
             d="M15 26.6665L21.6667 26.6665"
             stroke="#2E79DD"
-            stroke-width="2"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeLinecap="round"
           />
         </svg>
       )}
@@ -236,19 +233,19 @@ const RegistrationIcon = ({ period }) => {
           <path
             d="M15 8.33333C15 6.49238 16.4924 5 18.3333 5H21.6667C23.5076 5 25 6.49238 25 8.33333C25 10.1743 23.5076 11.6667 21.6667 11.6667H18.3333C16.4924 11.6667 15 10.1743 15 8.33333Z"
             stroke="#EB5757"
-            stroke-width="2"
+            strokeWidth="2"
           />
           <path
             d="M15 20L25 20"
             stroke="#EB5757"
-            stroke-width="2"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeLinecap="round"
           />
           <path
             d="M15 26.6665L21.6667 26.6665"
             stroke="#EB5757"
-            stroke-width="2"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeLinecap="round"
           />
         </svg>
       )}
@@ -268,7 +265,7 @@ const RegistrationIcon = ({ period }) => {
             height="25"
             rx="2"
             stroke="#BDBDBD"
-            stroke-width="2"
+            strokeWidth="2"
           />
           <path
             d="M5 14C5 12.1144 5 11.1716 5.58579 10.5858C6.17157 10 7.11438 10 9 10H31C32.8856 10 33.8284 10 34.4142 10.5858C35 11.1716 35 12.1144 35 14V16.6667H5V14Z"
@@ -277,14 +274,14 @@ const RegistrationIcon = ({ period }) => {
           <path
             d="M11.667 5L11.667 10"
             stroke="#BDBDBD"
-            stroke-width="2"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeLinecap="round"
           />
           <path
             d="M28.333 5L28.333 10"
             stroke="#BDBDBD"
-            stroke-width="2"
-            stroke-linecap="round"
+            strokeWidth="2"
+            strokeLinecap="round"
           />
         </svg>
       )}

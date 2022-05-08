@@ -25,6 +25,7 @@ import { asiaTimezone } from "../../../../../services/asia-timezone"
 import { useRouter } from "next/router"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import Link from "next/link"
+import { toast } from "react-toastify"
 
 const emptyInitialValues = {
   name: "",
@@ -43,17 +44,23 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
       initialValues: defaultValues,
       validationSchema,
       onSubmit: async (values) => {
-        const { data } = await formDataHttp(
-          {
-            ...values,
-            allFieldsFilled: true,
-            dateStart: new Date(values.dateStart).toISOString(),
-            dateEnd: new Date(values.dateEnd).toISOString(),
-          },
-          `organizer/events/${eventId ? eventId + "/" : ""}`,
-          eventId ? "put" : "post"
-        )
-        routerPush(`/lk-og/profile/events/edit/${data.id}/location`)
+        try {
+          const { data } = await formDataHttp(
+            {
+              ...values,
+              allFieldsFilled: true,
+              dateStart: new Date(values.dateStart).toISOString(),
+              dateEnd: new Date(values.dateEnd).toISOString(),
+            },
+            `organizer/events/${eventId ? eventId + "/" : ""}`,
+            eventId ? "put" : "post"
+          )
+          routerPush(`/lk-og/profile/events/edit/${data.id}/location`)
+        } catch ({ response: { data } }) {
+          if (data["Wrong date"]) {
+            toast.error("Указаны неправильные даты!")
+          }
+        }
       },
     })
   const [sportTypes] = useSelector(selectSportTypes)

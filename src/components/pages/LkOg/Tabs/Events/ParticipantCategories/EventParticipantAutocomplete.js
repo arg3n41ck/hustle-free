@@ -54,18 +54,21 @@ function EventParticipantAutocomplete({ onSelectManual, manualEventPC }) {
         />
         {!!open && (
           <ResultWrapper>
-            <Head>
+            <ContentHead>
               <SelectAllWrapper>
                 <Checkbox
                   icon={icon}
                   checkedIcon={checkedIcon}
-                  checked={selectedItems.length === manualEventPC?.length}
+                  checked={
+                    selectedItems.length &&
+                    selectedItems.length === manualEventPC?.length
+                  }
                   onChange={selectAll}
                 />
                 <span>Выбрать все</span>
               </SelectAllWrapper>
-              <CancelSelect>Сбросить</CancelSelect>
-            </Head>
+              <CancelSelect type="button">Сбросить</CancelSelect>
+            </ContentHead>
             <Items>
               {manualEventPC
                 .filter(
@@ -88,8 +91,12 @@ function EventParticipantAutocomplete({ onSelectManual, manualEventPC }) {
                 ))}
             </Items>
             <Footer>
-              <CloseModal onClick={() => setOpen(false)}>Отмена</CloseModal>
-              <Submit onClick={handleOnSubmit}>Применить</Submit>
+              <CloseModal type="button" onClick={() => setOpen(false)}>
+                Отмена
+              </CloseModal>
+              <Submit type="button" onClick={handleOnSubmit}>
+                Применить
+              </Submit>
             </Footer>
           </ResultWrapper>
         )}
@@ -119,7 +126,7 @@ const ResultWrapper = styled.div`
   border-radius: 16px;
 `
 
-const Head = styled.div`
+const ContentHead = styled.div`
   height: 80px;
   display: flex;
   justify-content: space-between;

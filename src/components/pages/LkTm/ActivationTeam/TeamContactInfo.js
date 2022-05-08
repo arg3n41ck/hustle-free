@@ -29,7 +29,8 @@ const validationSchema = yup.object({
       "Заполните поле",
       (value) => !!(value || " ").replace(/\s/g, "")
     )
-    .required("Заполните поле"),
+    .required("Заполните поле")
+    .nullable(),
   country: yup
     .string()
     .test(
@@ -37,7 +38,8 @@ const validationSchema = yup.object({
       "Заполните поле",
       (value) => !!(value || "").replace(/\s/g, "")
     )
-    .required("Заполните поле"),
+    .required("Заполните поле")
+    .nullable(),
 
   city: yup
     .string()
@@ -46,11 +48,13 @@ const validationSchema = yup.object({
       "Заполните поле",
       (value) => !!(value || "").replace(/\s/g, "")
     )
-    .required("Заполните поле"),
+    .required("Заполните поле")
+    .nullable(),
   web_site: yup
     .string()
     .matches(regMatch, "Веб-сайт должен быть действительным URL")
-    .required("Заполните поле"),
+    .required("Заполните поле")
+    .nullable(),
   full_name_coach: yup
     .string()
     .test(
@@ -58,7 +62,8 @@ const validationSchema = yup.object({
       "Заполните поле",
       (value) => !!(value || "").replace(/\s/g, "")
     )
-    .required("Заполните поле"),
+    .required("Заполните поле")
+    .nullable(),
   email_coach: yup
     .string()
     .test(
@@ -67,21 +72,24 @@ const validationSchema = yup.object({
       (value) => !!(value || "").replace(/\s/g, "")
     )
     .email("Неверный адрес электронной почты")
-    .required("Заполните поле"),
+    .required("Заполните поле")
+    .nullable(),
   password: yup
     .string()
     .matches(
       /(?=.*[0-9])(?=.*[A-Z]){8,}/gi,
       "Пароль должен состоять из [A-z] [0-9] и не быть слишком простым..."
     )
-    .required("Заполните поле"),
+    .required("Заполните поле")
+    .nullable(),
   phone_coach: yup
     .string()
     .test("phone_coach", "phone min.", (value) => {
       if (typeof value === "undefined") return true
       return value?.replace(/[^0-9]/g, "")?.length >= 11
     })
-    .required("Заполните поле"),
+    .required("Заполните поле")
+    .nullable(),
 })
 
 const TeamContactInfo = ({ data, setData, setView }) => {
@@ -98,55 +106,35 @@ const TeamContactInfo = ({ data, setData, setView }) => {
       phone_coach: !!data?.phone_coach ? data.phone_coach : "",
       email_coach: !!data?.email_coach
         ? data.email_coach
-        : unescape(getCookie("email")) || "",
+        : (getCookie("email") && unescape(getCookie("email"))) || "",
       password: !!data?.password ? data.password : "",
     },
-    onSubmit: async (values) => {
-      if (
-        formik.values.full_name &&
-        !Boolean(formik.errors.full_name) &&
-        formik.values.country &&
-        !Boolean(formik.errors.country) &&
-        formik.values.city &&
-        !Boolean(formik.errors.city) &&
-        formik.values.web_site &&
-        !Boolean(formik.errors.web_site) &&
-        formik.values.full_name_coach &&
-        !Boolean(formik.errors.full_name_coach) &&
-        formik.values.phone_coach &&
-        !Boolean(formik.errors.phone_coach) &&
-        formik.values.email_coach &&
-        !Boolean(formik.errors.email_coach) &&
-        formik.values.password &&
-        !Boolean(formik.errors.password)
-      ) {
-        const data = {
-          full_name: values.full_name,
-          country: values.country,
-          city: values.city,
-          web_site: values.web_site,
-          full_name_coach: values.full_name_coach,
-          email_coach: values.email_coach,
-          phone_coach: `+${values.phone_coach.replace(/[^0-9]/g, "")}`,
-          password: values.password,
-        }
-        if (data.phone_number === "+") delete data.phone_number
-
-        for (let key in data) {
-          if (!data[key]) delete data[key]
-        }
-
-        setData(data)
-        setView("info")
-      }
-    },
     validationSchema,
+    onSubmit: async (values) => {
+      const data = {
+        full_name: values.full_name,
+        country: values.country,
+        city: values.city,
+        web_site: values.web_site,
+        full_name_coach: values.full_name_coach,
+        email_coach: values.email_coach,
+        phone_coach: `+${values.phone_coach.replace(/[^0-9]/g, "")}`,
+        password: values.password,
+      }
+      if (data.phone_number === "+") delete data.phone_number
+
+      for (let key in data) {
+        if (!data[key]) delete data[key]
+      }
+
+      setData(data)
+      setView("info")
+    },
   })
 
   const handleClickCities = (item) => {
     setCities(item)
   }
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
@@ -438,24 +426,8 @@ const TeamContactInfo = ({ data, setData, setView }) => {
       </div>
 
       <AuthButton
-        active={
-          formik.values.full_name &&
-          !Boolean(formik.errors.full_name) &&
-          formik.values.country &&
-          !Boolean(formik.errors.country) &&
-          formik.values.city &&
-          !Boolean(formik.errors.city) &&
-          formik.values.web_site &&
-          !Boolean(formik.errors.web_site) &&
-          formik.values.full_name_coach &&
-          !Boolean(formik.errors.full_name_coach) &&
-          formik.values.email_coach &&
-          !Boolean(formik.errors.email_coach) &&
-          formik.values.phone_coach &&
-          !Boolean(formik.errors.phone_coach) &&
-          formik.values.password &&
-          !Boolean(formik.errors.password)
-        }
+        disabled={!formik.isValid}
+        active={formik.isValid}
         type="submit"
       >
         Дальше
@@ -473,10 +445,7 @@ const Error = styled.p`
   line-height: 1.66;
   letter-spacing: 0.03333em;
   text-align: left;
-  margin-top: 3px;
-  margin-right: 14px;
-  margin-bottom: 0;
-  margin-left: 14px;
+  margin: 3px 14px 0;
 `
 
 export default TeamContactInfo

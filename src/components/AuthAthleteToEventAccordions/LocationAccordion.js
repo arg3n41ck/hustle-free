@@ -3,7 +3,6 @@ import Accordion from "@mui/material/Accordion"
 import AccordionSummary from "@mui/material/AccordionSummary"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import Typography from "@mui/material/Typography"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import styled from "styled-components"
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import AddressIcon from "../../public/svg/address.svg"
@@ -11,17 +10,17 @@ import { selectCountriesAndCities } from "../../redux/components/countriesAndCit
 import { useSelector } from "react-redux"
 import MapField from "../ui/Map/Field"
 
-function LocationAccordion({ data }) {
+function LocationAccordion({ event }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
 
-  const country = countries.find(({ id }) => id === data?.location.country)
-  const city = cities.find(({ id }) => id === data?.location.city)
+  const country = countries.find(({ id }) => id === event?.location.country)
+  const city = cities.find(({ id }) => id === event?.location.city)
 
   const mapPoints =
-    data?.location?.lat && data?.location?.long
+    event?.location?.lat && event?.location?.long
       ? {
-          lat: +data?.location?.lat,
-          lng: +data?.location?.long,
+          lat: +event?.location?.lat,
+          lng: +event?.location?.long,
         }
       : null
 
@@ -52,21 +51,28 @@ function LocationAccordion({ data }) {
           </LocationAccordionCustomHeadingText>
         </AccordionSummary>
         <Line />
-        <AccordionDetails sx={{ padding: "24px" }}>
+        <AccordionDetails
+          sx={{
+            padding: "24px 24px 0",
+            display: "flex",
+            flexDirection: "column",
+            gridRowGap: "24px",
+          }}
+        >
           <LocationAccordionItems>
             <LocationPageIcon type={"location"} />
             <div>
               <LocationItemsText>
-                {country?.name}, {city?.name}, {data?.location?.address}
+                {country?.name}, {city?.name}, {event?.location?.address}
               </LocationItemsText>
             </div>
           </LocationAccordionItems>
 
-          <LocationAccordionItems margin={"24px 0"}>
+          <LocationAccordionItems>
             <LocationPageIcon type={"address"} />
             <div>
               <LocationItemsText>
-                {data?.location?.placeName}, {data?.location?.weighingPlace}
+                {event?.location?.placeName}, {event?.location?.weighingPlace}
               </LocationItemsText>
             </div>
           </LocationAccordionItems>
@@ -92,7 +98,6 @@ const Map = styled.div`
 `
 
 const LocationAccordionCustomHeadingText = styled(Typography)`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -101,7 +106,6 @@ const LocationAccordionCustomHeadingText = styled(Typography)`
 `
 
 const LocationItemsText = styled(Typography)`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -112,13 +116,14 @@ const LocationItemsText = styled(Typography)`
 const LocationAccordionItems = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 2fr 10fr;
+  grid-template-columns: 24px auto;
+  grid-column-gap: 12px;
   align-items: flex-start;
-  margin: ${({ margin }) => (!!margin ? margin : 0)};
+  justify-items: center;
 `
 
 const Line = styled.div`
-  border: 1px solid #333333;
+  border-bottom: 1px solid #333333;
   width: 100%;
   margin: ${({ margin }) => (!!margin ? margin : 0)};
 `
@@ -127,7 +132,7 @@ const LocationAccordionCustom = styled(Accordion)`
   background-color: #1b1c22 !important ;
   border: 1px solid #333333 !important;
   border-radius: 16px !important;
-  padding: 24px 0px !important;
+  padding: 24px 0 !important;
   margin: 0 !important;
 `
 
@@ -143,8 +148,8 @@ const LocationPageIcon = ({ type }) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M12.398 19.804C13.881 19.0348 19 16.0163 19 11C19 7.13401 15.866 4 12 4C8.13401 4 5 7.13401 5 11C5 16.0163 10.119 19.0348 11.602 19.804C11.8548 19.9351 12.1452 19.9351 12.398 19.804ZM12 14C13.6569 14 15 12.6569 15 11C15 9.34315 13.6569 8 12 8C10.3431 8 9 9.34315 9 11C9 12.6569 10.3431 14 12 14Z"
             fill="#BDBDBD"
           />

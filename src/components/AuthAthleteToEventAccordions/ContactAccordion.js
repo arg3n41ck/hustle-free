@@ -3,13 +3,12 @@ import Accordion from "@mui/material/Accordion"
 import AccordionSummary from "@mui/material/AccordionSummary"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import Typography from "@mui/material/Typography"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import styled from "styled-components"
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import Link from "next/link"
 import phoneFormatter from "../../helpers/phoneFormatter"
 
-function ContactAccordion({ data }) {
+function ContactAccordion({ event }) {
   return (
     <div>
       <ContactAccordionCustom
@@ -48,36 +47,43 @@ function ContactAccordion({ data }) {
           <ContactAccordionItems>
             <ContactIcon social={"kub"} />
             <ContactItemsText>
-              {data?.contacts?.nameOrganization} {data?.typeSport}
+              {event?.contacts?.nameOrganization || "Не известно"}{" "}
+              {event?.typeSport}
             </ContactItemsText>
           </ContactAccordionItems>
 
           <ContactAccordionItems>
             <ContactIcon social={"user"} />
             <ContactItemsText>
-              {data?.contacts?.firstName} {data?.contacts?.lastName}
+              {event?.contacts?.firstName || event?.contacts?.lastName
+                ? `${event?.contacts?.firstName || ""} ${
+                    event?.contacts?.lastName || ""
+                  }`
+                : "Не известно"}
             </ContactItemsText>
           </ContactAccordionItems>
 
           <ContactAccordionItems>
             <ContactIcon social={"email"} />
-            <ContactItemsText>{data?.contacts?.email}</ContactItemsText>
+            <ContactItemsText>
+              {event?.contacts?.email || "Не известно"}
+            </ContactItemsText>
           </ContactAccordionItems>
 
-          {!!data?.contacts?.phoneNumber1 && (
+          {!!event?.contacts?.phoneNumber1 && (
             <ContactAccordionItems>
               <ContactIcon social={"phone"} />
               <ContactItemsText>
-                {phoneFormatter(data?.contacts?.phoneNumber1)}
+                {phoneFormatter(event?.contacts?.phoneNumber1 || "Не известно")}
               </ContactItemsText>
             </ContactAccordionItems>
           )}
 
-          {!!data?.contacts?.facebook && (
+          {!!event?.contacts?.facebook && (
             <ContactAccordionItems>
               <ContactIcon social={"facebook"} />
               <ContactItemsText>
-                <Link href={`${data?.contacts?.facebook}`} target={"_blank"}>
+                <Link href={`${event?.contacts?.facebook}`} target={"_blank"}>
                   Facebook
                 </Link>
               </ContactItemsText>
@@ -92,7 +98,7 @@ function ContactAccordion({ data }) {
 export default ContactAccordion
 
 const ContactItemsText = styled(Typography)`
-  font-family: "Inter";
+  justify-self: flex-start;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -102,13 +108,13 @@ const ContactItemsText = styled(Typography)`
 
 const ContactAccordionItems = styled.div`
   display: grid;
-  grid-template-columns: 2fr 10fr;
+  grid-template-columns: 24px auto;
+  justify-items: center;
+  grid-column-gap: 12px;
   align-items: flex-start;
-  margin: ${({ margin }) => (!!margin ? margin : 0)};
 `
 
 const ContactAccordionCustomHeadingText = styled(Typography)`
-  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -117,7 +123,7 @@ const ContactAccordionCustomHeadingText = styled(Typography)`
 `
 
 const Line = styled.div`
-  border: 1px solid #333333;
+  border-bottom: 1px solid #333333;
   width: 100%;
   margin: ${({ margin }) => (!!margin ? margin : 0)};
 `
@@ -126,7 +132,7 @@ const ContactAccordionCustom = styled(Accordion)`
   background-color: #1b1c22 !important;
   border: 1px solid #333333 !important;
   border-radius: 16px !important;
-  padding: 24px 0px !important;
+  padding: 24px 0 !important;
   margin: 0 !important;
 `
 
@@ -142,8 +148,8 @@ const ContactIcon = ({ social }) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M9.67505 19.3395L6.67505 17.1967C5.8539 16.6101 5.44333 16.3169 5.22166 15.8861C5 15.4554 5 14.9508 5 13.9417V10.0587C5 9.73732 5 9.46714 5.00716 9.23422L11 13.5148V20.2315C10.6433 20.0311 10.227 19.7338 9.67505 19.3395ZM13 20.2315C13.3567 20.0311 13.773 19.7338 14.325 19.3395L17.325 17.1967C18.1461 16.6101 18.5567 16.3169 18.7783 15.8861C19 15.4554 19 14.9508 19 13.9417V10.0587C19 9.73732 19 9.46714 18.9928 9.23422L13 13.5148V20.2315ZM18.1276 7.39447L12 11.7713L5.87244 7.39447C6.08372 7.22611 6.34653 7.03839 6.67505 6.80374L9.67505 4.66088C10.7977 3.85897 11.3591 3.45801 12 3.45801C12.6409 3.45801 13.2023 3.85897 14.325 4.66088L17.325 6.80374C17.6535 7.03839 17.9163 7.22611 18.1276 7.39447Z"
             fill="#BDBDBD"
           />
@@ -178,8 +184,8 @@ const ContactIcon = ({ social }) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M3.87868 5.87868C3 6.75736 3 8.17157 3 11V13C3 15.8284 3 17.2426 3.87868 18.1213C4.75736 19 6.17157 19 9 19H15C17.8284 19 19.2426 19 20.1213 18.1213C21 17.2426 21 15.8284 21 13V11C21 8.17157 21 6.75736 20.1213 5.87868C19.2426 5 17.8284 5 15 5H9C6.17157 5 4.75736 5 3.87868 5.87868ZM6.5547 8.16795C6.09517 7.8616 5.4743 7.98577 5.16795 8.4453C4.8616 8.90483 4.98577 9.5257 5.4453 9.83205L10.8906 13.4622C11.5624 13.9101 12.4376 13.9101 13.1094 13.4622L18.5547 9.83205C19.0142 9.5257 19.1384 8.90483 18.8321 8.4453C18.5257 7.98577 17.9048 7.8616 17.4453 8.16795L12 11.7982L6.5547 8.16795Z"
             fill="#BDBDBD"
           />

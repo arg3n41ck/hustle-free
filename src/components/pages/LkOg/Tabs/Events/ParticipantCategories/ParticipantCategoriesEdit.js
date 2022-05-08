@@ -52,9 +52,9 @@ function ParticipantCategoriesEdit({
       if (step !== 'price') {
         Array.isArray(id)
           ? await Promise.all(
-            id.map((_id) => editParticipantCategory(values, _id))
+            id.map((_id) => editParticipantCategory(values, +_id))
           )
-          : await editParticipantCategory(values, id)
+          : await editParticipantCategory(values, +id)
       }
       onCloseModals()
       setTimeout(() => {

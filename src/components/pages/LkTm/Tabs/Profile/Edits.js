@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import { fetchUser, saveUser } from "../../../../../redux/components/user"
 import styled from "styled-components"
-import { Box, Checkbox, TextField } from "@mui/material"
+import { Box, Checkbox, MenuItem, TextField } from "@mui/material"
 import SelectUI from "../../../../ui/Selects/Select"
 import CustomButton from "../../../../ui/CustomButton"
 import Image from "next/image"
@@ -16,6 +16,7 @@ import PhoneIcon from "../../../../../public/svg/phone-icon.svg"
 import EmailIcon from "../../../../../public/svg/email-profile.svg"
 import UploadIcon from "../../../../../public/svg/upload-profile-icon.svg"
 import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
+import $api from "../../../../../services/axios"
 
 const Edits = ({ onView }) => {
   const {
@@ -31,7 +32,7 @@ const Edits = ({ onView }) => {
     fullName: yup.string().nullable().required("Обязательное поле"),
     country: yup.mixed().required("Обязательное поле"),
     city: yup.mixed().required("Обязательное поле"),
-    webSite: yup.string().url().required("Обязательное поле"),
+    webSite: yup.string().required("Обязательное поле"),
     fullNameCoach: yup.string().required("Обязательное поле"),
     phoneCoach: yup.string().min(12).required("Обязательное поле"),
     emailCoach: yup
@@ -78,8 +79,22 @@ const Edits = ({ onView }) => {
           avatar,
         }
         if (typeof newValues.avatar === "string") delete newValues.avatar
-        const { data } = await formDataHttp(newValues, "teams/profile/edit/")
-        dispatch(saveUser({ ...values, ...data }))
+        const avaRes =
+          newValues.avatar &&
+          (await formDataHttp(
+            { avatar: newValues.avatar },
+            "teams/profile/edit/",
+            "patch"
+          ))
+        const { avatar: waste, ...rest } = newValues
+        const { data } = await $api.patch("teams/profile/edit/", rest)
+        dispatch(
+          saveUser({
+            ...values,
+            ...data,
+            avatar: avaRes?.data?.avatar || data.avatar,
+          })
+        )
         dispatch(fetchUser())
         onView("general")
       } catch (e) {
@@ -283,6 +298,7 @@ const Edits = ({ onView }) => {
               value={formik.values.emailCoach}
               onChange={formik.handleChange}
               id="outlined-basic"
+              disabled
               placeholder="Электронная почта"
               variant="outlined"
               error={
@@ -298,20 +314,26 @@ const Edits = ({ onView }) => {
 
         <div style={{ marginBottom: 16 }} className="auth-wrapper__input">
           <p className="auth-title__input">Вид спорта</p>
-          <SelectUI
-            error={!!(formik.touched.sports && formik.errors.sports)}
+          <TextField
+            select
+            sx={{ width: "100%", color: "white" }}
+            name="sports"
+            value={"none"}
             onChange={(e) => {
               if (e.target.value) {
+                console.log(e.target.value)
                 const obj = sportTypes.find(
                   (sportType) => sportType.name === e.target.value
                 )
                 setCurrentSportTypes((prev) => [...prev, obj])
               }
             }}
+            error={formik.touched.sports && Boolean(formik.errors.sports)}
+            helperText={formik.touched.sports && formik.errors.sports}
           >
-            <option style={{ color: "#BDBDBD" }} selected value={""}>
+            <MenuItem value="none" sx={{ display: "none" }}>
               Вид спорта
-            </option>
+            </MenuItem>
             {sportTypes
               .filter(
                 (sportType) =>
@@ -319,12 +341,12 @@ const Edits = ({ onView }) => {
                     (CSportType) => CSportType.id === sportType.id
                   )
               )
-              .map((sportType) => (
-                <option key={sportType.id} value={sportType.name}>
-                  {sportType.name}
-                </option>
+              .map((item) => (
+                <MenuItem key={item.id} value={item.name}>
+                  {item.name}
+                </MenuItem>
               ))}
-          </SelectUI>
+          </TextField>
         </div>
 
         {currentSportTypes.map((CSportType) => (
@@ -344,7 +366,7 @@ const Edits = ({ onView }) => {
         ))}
 
         <div className="auth-wrapper__input" style={{ marginTop: 32 }}>
-          <p className="auth-title__input">Электронная почта тренера</p>
+          <p className="auth-title__input">Описание</p>
           <Textarea
             name="description"
             value={formik.values.description}
@@ -478,9 +500,7 @@ export const GrayText = styled.p`
   line-height: 24px;
   color: #bdbdbd;
 `
-const WhiteText = styled(GrayText)`
-  color: #f2f2f2;
-`
+
 export const Gallery = styled.div`
   padding-bottom: 32px;
   border-bottom: 1px solid #333333;

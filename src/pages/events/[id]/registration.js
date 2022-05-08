@@ -3,19 +3,13 @@ import styled from "styled-components"
 import AuthAthleteToEventAllAccordions from "../../../components/AuthAthleteToEventAccordions/AuthAthleteToEventAllAccordions"
 import AuthorizationAthleteToEvent from "../../../components/pages/Authorization/AuthorizationAthleteToEvent"
 import $api from "../../../services/axios"
-import { useDispatch } from "react-redux"
 
-function Registration({ data, query }) {
-  const dispatch = useDispatch()
-
-  // React.useEffect(() => {
-    // dispatch(fetchUser())
-  // }, [])
+function Registration({ data }) {
 
   return (
     <RegistrationContainer>
-      <AuthorizationAthleteToEvent data={data} />
-      <AuthAthleteToEventAllAccordions data={data} />
+      <AuthorizationAthleteToEvent />
+      <AuthAthleteToEventAllAccordions event={data} />
     </RegistrationContainer>
   )
 }

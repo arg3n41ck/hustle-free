@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react"
 import styled from "styled-components"
-import { Avatar } from "@mui/material"
-import { motion } from "framer-motion"
+import { Avatar, Collapse } from "@mui/material"
 import Link from "next/link"
 import CustomButton from "../../../ui/CustomButton"
 
@@ -56,7 +55,7 @@ export const OgParticipantsItem = ({
               </div>
             </Info>
             {isRegistered && <Line style={{ margin: "24px 0" }} />}
-            <Link href={""} passHref>
+            <Link href={`/athlete/${participant.userId}`} passHref>
               {isRegistered ? (
                 <RegisteredBtnProfile>Просмотреть порфиль</RegisteredBtnProfile>
               ) : (
@@ -131,20 +130,12 @@ const Line = styled.div`
   background-color: #333333;
 `
 
-export const ParticipantsItem = ({ participant, maxHeight = 100 }) => {
+export const ParticipantsItem = ({ participant }) => {
   const [open, setOpen] = useState(false)
-  const variantsRef = useRef({
-    open: { height: 168 },
-    closed: { height: maxHeight },
-  })
 
   return (
     <Wrapper open={open} onClick={() => setOpen((prev) => !prev)}>
-      <ParticipantsItemLi
-        animate={open ? "open" : "closed"}
-        transition={{ transition: 0.2 }}
-        variants={variantsRef.current}
-      >
+      <ParticipantsItemLi>
         <Content>
           <Avatar
             src={participant?.avatar}
@@ -156,16 +147,18 @@ export const ParticipantsItem = ({ participant, maxHeight = 100 }) => {
             <ItemDescription>{participant.team}</ItemDescription>
           </ItemText>
         </Content>
-        <Info>
-          <div>
-            <InfoTitle>Страна</InfoTitle>
-            <InfoDescription>{participant.country}</InfoDescription>
-          </div>
-          <div>
-            <InfoTitle>Возраст</InfoTitle>
-            <InfoDescription>{participant.age} лет</InfoDescription>
-          </div>
-        </Info>
+        <Collapse in={open}>
+          <Info>
+            <div>
+              <InfoTitle>Страна</InfoTitle>
+              <InfoDescription>{participant.country}</InfoDescription>
+            </div>
+            <div>
+              <InfoTitle>Возраст</InfoTitle>
+              <InfoDescription>{participant.age} лет</InfoDescription>
+            </div>
+          </Info>
+        </Collapse>
       </ParticipantsItemLi>
     </Wrapper>
   )
@@ -179,6 +172,7 @@ const Wrapper = styled.div`
   border: 1px solid #333333;
   box-sizing: border-box;
   border-radius: 16px;
+  height: min-content;
   cursor: pointer;
   background: ${(p) =>
     p.open
@@ -189,9 +183,10 @@ const Wrapper = styled.div`
       #191a1f;
   }
 `
-const ParticipantsItemLi = styled(motion.li)`
+const ParticipantsItemLi = styled.li`
   max-width: 318px;
   width: 100%;
+  height: min-content;
 `
 const Content = styled.div`
   height: 52px;

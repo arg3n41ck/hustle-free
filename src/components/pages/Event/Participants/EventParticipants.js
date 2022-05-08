@@ -4,11 +4,21 @@ import EventParticipantsList from "./EventParticipantsList"
 import $api from "../../../../services/axios"
 import useDebounce from "../../../../hooks/useDebounce"
 import { useRouter } from "next/router"
+import { useSelector } from "react-redux"
+
+const getEventParticipants = async (url, query) => {
+  const { data } = await $api.get(url, { params: query })
+  return data?.length ? data : []
+}
 
 const EventParticipants = () => {
-  const router = useRouter()
+  const {
+    query: { id: eventId },
+  } = useRouter()
   const [eventParticipants, setEventParticipants] = useState([])
+  const [athletePCState, setAthletePCState] = useState([])
   const [levels, setLevels] = useState([])
+  const { user } = useSelector((state) => state.user)
   const [filter, setFilter] = useState({
     search: "",
     level: "",
@@ -30,23 +40,31 @@ const EventParticipants = () => {
 
   useEffect(async () => {
     const { data: levelsData } = await $api.get(`/directory/discipline_level/`)
-    const { data } = await $api.get(`/events/participant_category/`, {
-      params: {
-        event_id: router.query.id,
-        search: searchValue,
-        level: levelValue,
-        gender:
-          (genderValue === "Мужчина" && "male") ||
-          (genderValue === "Женщина" && "female") ||
-          "",
-        event_participants_category__from_weight: weightValue?.fromWeight || "",
-        event_participants_category__to_weight: weightValue?.fromTo || "",
-        country_id: countryValue,
-        team_id: teamValue,
-      },
-    })
+    const params = {
+      event_id: eventId,
+      search: searchValue,
+      level: levelValue,
+      gender:
+        (genderValue === "Мужчина" && "male") ||
+        (genderValue === "Женщина" && "female") ||
+        "",
+      "category-tab": false,
+      event_participants_category__from_weight: weightValue?.fromWeight || "",
+      event_participants_category__to_weight: weightValue?.toWeight || "",
+      country_id: countryValue,
+      team_id: teamValue,
+    }
+    const othersPC = await getEventParticipants(
+      `/events/participant_category/`,
+      params
+    )
+    const athletePC = await getEventParticipants(
+      `events/events/${eventId}/athlete_categories/`,
+      {}
+    )
     setLevels(levelsData)
-    setEventParticipants(data)
+    setEventParticipants(othersPC)
+    user?.role === "athlete" && setAthletePCState(athletePC)
   }, [
     searchValue,
     levelValue,
@@ -59,6 +77,9 @@ const EventParticipants = () => {
   return (
     <>
       <Filters levels={levels} onFilter={filterHandler} />
+      {!!athletePCState.length && (
+        <EventParticipantsList eventParticipants={athletePCState} isAthletes />
+      )}
       <EventParticipantsList eventParticipants={eventParticipants} />
     </>
   )

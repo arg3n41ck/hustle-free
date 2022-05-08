@@ -12,7 +12,6 @@ import { toast } from "react-toastify"
 import { formDataHttp } from "../../../../helpers/formDataHttp"
 import { useRouter } from "next/router"
 import { setCookie } from "../../../../services/JWTService"
-import { fetchUser } from "../../../../redux/components/user"
 
 const tabs = [
   {
@@ -34,6 +33,7 @@ function TeamTabs() {
   const router = useRouter()
   React.useEffect(() => {
     dispatch(fetchSportTypes())
+    dispatch(fetchCountries())
   }, [])
 
   const onSubmit = useCallback(async (submitData) => {

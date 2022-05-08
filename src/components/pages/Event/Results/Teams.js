@@ -91,6 +91,10 @@ const SearchButton = styled.button`
     color: #ffffff;
   }
 `
-const List = styled.ul``
+const List = styled.ul`
+  display: flex;
+  flex-direction: column;
+  grid-row-gap: 32px;
+`
 
 export default Teams
