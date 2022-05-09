@@ -3,13 +3,11 @@ import { useFormik } from "formik"
 import * as yup from "yup"
 import styled from "styled-components"
 import {
-  Box,
   FormControl,
   IconButton,
   InputAdornment,
   TextField,
 } from "@mui/material"
-import Link from "next/link"
 import { motion } from "framer-motion"
 import $api from "../../services/axios"
 import { useRouter } from "next/router"
@@ -71,7 +69,7 @@ const NewPassword = () => {
     >
       <div className="auth-container">
         <div className="auth-wrapper">
-          <h3 className="auth-title">Восстановления пароля</h3>
+          <h3 className="auth-title">Изменить пароль</h3>
           <p className="auth-description">
             Заполните поля, чтобы изменить пароль
           </p>
@@ -169,29 +167,6 @@ const NewPassword = () => {
           <AuthButton disabled={!isValid} active={isValid} type="submit">
             Подтвердить
           </AuthButton>
-
-          <div className="auth-additionally">
-            <Box
-              sx={{ marginBottom: 0.8, textAlign: "center" }}
-              className="auth-additionally__text"
-              component="p"
-            >
-              Уже есть аккаунт?{" "}
-              <Link href={"/login"} passHref>
-                <a className="auth-link">Войти</a>
-              </Link>
-            </Box>
-            <Box
-              sx={{ textAlign: "center" }}
-              className="auth-additionally__text"
-              component="p"
-            >
-              Нет аккаунта?{" "}
-              <Link href="/#user-roles" passHref>
-                <a className="auth-link">Зарегистрироваться</a>
-              </Link>
-            </Box>
-          </div>
         </div>
       </div>
     </Form>

@@ -447,7 +447,7 @@ const Edits = () => {
         </div>
         <div className="auth-wrapper__independent border-top">
           Вы можете{" "}
-          <Link href={"/auth/delete"}>
+          <Link href={`/auth/delete/${user.id}`}>
             <a>
               <span className="auth-link">удалить свой профиль</span>
             </a>

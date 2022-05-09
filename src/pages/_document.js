@@ -8,6 +8,7 @@ export default class MyDocument extends Document {
       <Html lang="ru">
         <Head>
           <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+          <meta charSet="utf-8" />
         </Head>
         <body>
           <Main />

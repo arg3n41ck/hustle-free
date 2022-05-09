@@ -19,6 +19,13 @@ import {
 import styled from "styled-components"
 import MapField from "../../../ui/Map/Field"
 import phoneFormatter from "../../../../helpers/phoneFormatter"
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  TelegramShareButton,
+  VKShareButton,
+} from "react-share"
+import { toast } from "react-toastify"
 
 const getContacts = (event) => {
   const { contacts } = event
@@ -44,7 +51,9 @@ const getContacts = (event) => {
     {
       id: "phone_4",
       label: "Номер телефона",
-      value: contacts?.phoneNumber1 ? phoneFormatter(contacts?.phoneNumber1) : "",
+      value: contacts?.phoneNumber1
+        ? phoneFormatter(contacts?.phoneNumber1)
+        : "",
       icon: <EventPhone />,
     },
   ]
@@ -110,6 +119,11 @@ const getParticipantCategories = () => {
   ]
 }
 
+const copyUrl = (url) => {
+  navigator.clipboard?.writeText(url)
+  toast.success(`Ссылка скопирована`)
+}
+
 function EventMainInfo({ event }) {
   const { contacts, addresses, categories } = useMemo(() => {
     return {
@@ -144,9 +158,33 @@ function EventMainInfo({ event }) {
         </ul>
         <h3>Социальные сети</h3>
         <ContactsSocials>
-          <EventFacebook />
-          <EventLinkedin />
-          <EventVK />
+          {event?.contacts?.facebook && (
+            <a
+              href={event?.contacts?.facebook}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              <EventFacebook />
+            </a>
+          )}
+          {event?.contacts?.linkedin && (
+            <a
+              href={event?.contacts?.linkedin}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              <EventLinkedin />
+            </a>
+          )}
+          {event?.contacts?.vk && (
+            <a
+              href={event?.contacts?.vk}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              <EventVK />
+            </a>
+          )}
         </ContactsSocials>
       </Column>
 
@@ -186,11 +224,39 @@ function EventMainInfo({ event }) {
 
         <CategoriesShareTitle>Поделиться</CategoriesShareTitle>
         <CategorySocials>
-          <EventGoogleHover />
-          <EventFacebookHover />
-          <EventVKHover />
-          <EventTGHover />
-          <EventLinkHover />
+          <EmailShareButton
+            subject={event.name}
+            body={event.description}
+            url={`https://dev.hustlefree.pro/en/events/${event.id}`}
+          >
+            <EventGoogleHover />
+          </EmailShareButton>
+          <FacebookShareButton
+            url={`https://dev.hustlefree.pro/en/events/${event.id}`}
+          >
+            <EventFacebookHover />
+          </FacebookShareButton>
+          <VKShareButton
+            url={`https://dev.hustlefree.pro/en/events/${event.id}`}
+            title={event.name}
+            image={event.image}
+            noParse={true}
+          >
+            <EventVKHover />
+          </VKShareButton>
+          <TelegramShareButton
+            url={`https://dev.hustlefree.pro/en/events/${event.id}`}
+            title={event.name}
+          >
+            <EventTGHover />
+          </TelegramShareButton>
+          <div
+            onClick={() =>
+              copyUrl(`https://dev.hustlefree.pro/en/events/${event.id}`)
+            }
+          >
+            <EventLinkHover />
+          </div>
         </CategorySocials>
       </Column>
     </MainWrapper>

@@ -27,13 +27,24 @@ const getEventStatus = (status) => {
 
 const createDataForTable = (events = []) => {
   return events.map((currentValue) => {
-    const { id, name, dateEnd, dateStart, statusPublish } = currentValue
+    const {
+      id,
+      name,
+      dateEnd,
+      dateStart,
+      statusPublish,
+      getRegisteredParticipantsCount,
+      getPaidCount,
+      maxParticipantCount,
+    } = currentValue
     return {
       id,
       name,
       date: getRusBetweenDate(dateStart, dateEnd),
-      registration: "5/10",
-      paid: "2/5",
+      registration: `${getRegisteredParticipantsCount || 0}/${
+        maxParticipantCount || 0
+      }`,
+      paid: `${getPaidCount || 0}/${getRegisteredParticipantsCount || 0}`,
       status: getEventStatus(statusPublish),
     }
   })
@@ -42,7 +53,6 @@ const createDataForTable = (events = []) => {
 function EventsTable({ events }) {
   const [rewrittenData, setRewrittenData] = useState([])
   const { push: routerPush } = useRouter()
-
   const columns = useMemo(() => {
     return [
       {

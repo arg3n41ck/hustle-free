@@ -36,25 +36,27 @@ function Teams({ data, column }) {
         </TeamsHeadingInfo>
         <Line />
 
-        <TeamsBottomInfo column={column}>
-          <TeamsBottomInfoCol column={column}>
+        <TeamsBottomInfo>
+          <TeamsBottomInfoCol>
             <LocationIcon />
             <TeamsBottonInfoText>
               {country?.name}, {city?.name}, {data?.address}{" "}
             </TeamsBottonInfoText>
           </TeamsBottomInfoCol>
-          <TeamsBottomInfoCol column={column}>
+          <TeamsBottomInfoCol>
             <UserIcon />
             <TeamsBottonInfoText>{data?.fullNameCoach}</TeamsBottonInfoText>
           </TeamsBottomInfoCol>
-          <TeamsBottomInfoCol column={column}>
-            <PhoneIcon />
-            <TeamsBottonInfoText> {data?.phoneCoach} </TeamsBottonInfoText>
-          </TeamsBottomInfoCol>
-          <TeamsBottomInfoCol column={column}>
-            <EmailIcon />
-            <TeamsBottonInfoText> {data?.emailCoach} </TeamsBottonInfoText>
-          </TeamsBottomInfoCol>
+          <CrtTeamsBottomInfoCol>
+            <TeamsBottomInfoCol>
+              <PhoneIcon />
+              <TeamsBottonInfoText> {data?.phoneCoach} </TeamsBottonInfoText>
+            </TeamsBottomInfoCol>
+            <TeamsBottomInfoCol>
+              <EmailIcon />
+              <TeamsBottonInfoText> {data?.emailCoach} </TeamsBottonInfoText>
+            </TeamsBottomInfoCol>
+          </CrtTeamsBottomInfoCol>
         </TeamsBottomInfo>
       </TeamsItems>
     </TeamsContainer>
@@ -96,15 +98,20 @@ const TeamsBottomInfoCol = styled.div`
   display: grid;
   align-items: flex-start;
   grid-template-columns: 1.5fr 10fr;
-  border-right: ${({ column }) => (!!column ? "none" : "1px solid #333")};
-  &:last-child {
-    border-right: none;
+`
+
+const CrtTeamsBottomInfoCol = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  grid-row-gap: 4px;
+
+  & ${TeamsBottomInfoCol} {
+    align-items: center;
   }
 `
 
-const TeamsItems = styled.div`
-  padding: 32px;
-`
+const TeamsItems = styled.div``
 
 const TeamsHeadingInfo = styled.div`
   display: grid;
@@ -116,8 +123,16 @@ const TeamsHeadingInfo = styled.div`
 
 const TeamsBottomInfo = styled.div`
   display: grid;
-  grid-template-columns: ${({ column }) => (!!column ? "1fr" : "1fr 1fr 1fr")};
-  grid-gap: ${({ column }) => (!!column ? "16px" : 0)};
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 16px;
+
+  & > div {
+    border-left: 1px solid #333;
+    padding-left: 16px;
+    &:first-child {
+      border-left: none;
+    }
+  }
 `
 
 const Line = styled.div`
