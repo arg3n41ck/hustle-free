@@ -36,7 +36,7 @@ function Teams({ data, column }) {
         </TeamsHeadingInfo>
         <Line />
 
-        <TeamsBottomInfo>
+        <TeamsBottomInfo column={column}>
           <TeamsBottomInfoCol>
             <LocationIcon />
             <TeamsBottonInfoText>
@@ -47,7 +47,7 @@ function Teams({ data, column }) {
             <UserIcon />
             <TeamsBottonInfoText>{data?.fullNameCoach}</TeamsBottonInfoText>
           </TeamsBottomInfoCol>
-          <CrtTeamsBottomInfoCol>
+          <CrtTeamsBottomInfoCol column={column}>
             <TeamsBottomInfoCol>
               <PhoneIcon />
               <TeamsBottonInfoText> {data?.phoneCoach} </TeamsBottonInfoText>
@@ -66,7 +66,7 @@ function Teams({ data, column }) {
 export default Teams
 
 const TeamsContainer = styled.div`
-  padding: ${({ column }) => (!!column ? 0 : "32px")};
+  padding: 32px;
   border: 1px solid #333333;
   border-radius: 16px;
   margin: ${({ column }) => (!!column ? 0 : "32px")};
@@ -97,14 +97,15 @@ const TeamsBottomInfoCol = styled.div`
   max-width: 296px;
   display: grid;
   align-items: flex-start;
-  grid-template-columns: 1.5fr 10fr;
+  grid-template-columns: 24px 10fr;
+  grid-column-gap: 8px;
 `
 
 const CrtTeamsBottomInfoCol = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  grid-row-gap: 4px;
+  grid-row-gap: ${({ column }) => (column ? "16px" : "4px")};
 
   & ${TeamsBottomInfoCol} {
     align-items: center;
@@ -123,20 +124,21 @@ const TeamsHeadingInfo = styled.div`
 
 const TeamsBottomInfo = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: ${({ column }) => (column ? "1fr" : "1fr 1fr 1fr")};
   grid-gap: 16px;
 
   & > div {
-    border-left: 1px solid #333;
-    padding-left: 16px;
+    border-left: ${({ column }) => (column ? 0 : "1px solid #333")};
+    padding-left: ${({ column }) => (column ? 0 : "16px")};
     &:first-child {
       border-left: none;
+      padding-left: 0;
     }
   }
 `
 
 const Line = styled.div`
-  border: 1px solid #333333;
+  border-bottom: 1px solid #333333;
   width: 100%;
   margin: 32px 0;
 `

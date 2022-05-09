@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { fetchCountries } from "../../../redux/components/countriesAndCities"
 import { useDispatch } from "react-redux"
 import { useRouter } from "next/router"
-import { fetchAthleteTeams } from "../../../redux/components/teams"
+import { fetchTeams } from "../../../redux/components/teams"
 import {
   fetchCategories,
   fetchLevel,
@@ -19,7 +19,7 @@ function AuthorizationAthleteToEvent() {
 
   useEffect(() => {
     dispatch(fetchCategories({ event: eventId }))
-    dispatch(fetchAthleteTeams())
+    dispatch(fetchTeams())
     dispatch(fetchLevel())
     dispatch(fetchCountries())
   }, [])

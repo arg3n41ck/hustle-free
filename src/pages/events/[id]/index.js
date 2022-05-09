@@ -3,7 +3,6 @@ import { Event as Content } from "../../../components/pages/Event/Event/Event"
 import $api from "../../../services/axios"
 import EdMainLayout from "../../../components/pages/Event/EDMainLayout"
 import Head from "next/head"
-import { useRouter } from "next/router"
 
 function EventsDetail({ event }) {
 

@@ -34,7 +34,7 @@ function RegistrationAthleteToEvent({ data }) {
     user: { user },
   } = useSelector((state) => state)
   const [categories, levels] = useSelector(categoriesSelector)
-  const [athleteTeams] = useSelector(teamsSelector)
+  const [, teams] = useSelector(teamsSelector)
   const [currentLevels, setCurrentLevels] = useState([])
   const [currentWeights, setCurrentWeights] = useState(null)
 
@@ -96,7 +96,6 @@ function RegistrationAthleteToEvent({ data }) {
         toWeight: findObj.toWeight,
       })
   }
-
   return (
     <form onSubmit={formik.handleSubmit}>
       <RegistrationAthleteToEventHeroInfo>
@@ -105,9 +104,16 @@ function RegistrationAthleteToEvent({ data }) {
           <Autocomplete
             noOptionsText={"Вы не зачислены ни в одну команду"}
             onChange={(_, value) => formik.setFieldValue("team", value?.id)}
-            options={athleteTeams.map((option) => option) || []}
+            options={
+              (teams?.results?.length &&
+                teams?.results?.map((option) => option)) ||
+              []
+            }
             getOptionLabel={(option) => option?.name}
-            value={athleteTeams.find(({ id }) => id === formik?.values?.team)}
+            value={
+              teams?.results?.length &&
+              teams?.results?.find(({ id }) => id === formik?.values?.team)
+            }
             fullWidth
             renderInput={(params) => (
               <TextField

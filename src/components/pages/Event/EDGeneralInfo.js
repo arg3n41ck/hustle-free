@@ -69,12 +69,21 @@ const dateKeys = [
     end: "standartRegEnd",
   },
 ]
+
+const getRegDates = (start, end) => {
+  const startDate = new Date(start)
+  const endDate = new Date(end)
+  const today = new Date()
+  return { startDate, endDate, today }
+}
+
 const getIsEventOnRegistration = (registration) => {
   return dateKeys.some(({ start, end }) => {
     if (registration[start] && registration[end]) {
-      const startDate = new Date(registration[start])
-      const endDate = new Date(registration[end])
-      const today = new Date()
+      const { today, endDate, startDate } = getRegDates(
+        registration[start],
+        registration[end]
+      )
       return startDate <= today && today < endDate
     }
   })
@@ -124,8 +133,10 @@ function EdGeneralInfo({ event }) {
 
   const canApplyToEvent = useMemo(
     () => event && getIsEventOnRegistration(event.registration),
-    [event]
+    [event, eventId]
   )
+
+  console.log({ canApplyToEvent })
 
   return (
     <>
@@ -164,7 +175,7 @@ function EdGeneralInfo({ event }) {
               {userStatusInEvent?.message === "event not found"
                 ? canApplyToEvent
                   ? "Зарегистрироваться на турнир"
-                  : "Регистрация еще не открыта"
+                  : "Регистрация закрыта"
                 : userStatusInEvent?.message === "user in waiting list"
                 ? "Запрошено"
                 : "Вы уже в турнире"}
