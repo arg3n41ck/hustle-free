@@ -100,7 +100,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           value={formik.values.nameOrganizer}
           name="nameOrganizer"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="Название организации"
           variant="outlined"
           error={
@@ -115,7 +114,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
       <div className="auth-wrapper__input">
         <p className="auth-title__input">Страна</p>
         <TextField
-          id="outlined-select-currency"
           select
           sx={{ width: "100%", color: "white" }}
           name="country"
@@ -140,7 +138,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
       <div className="auth-wrapper__input">
         <p className="auth-title__input">Город</p>
         <TextField
-          id="outlined-select-currency"
           select
           sx={{
             width: "100%",
@@ -179,7 +176,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           value={formik.values.actualAddress}
           name="actualAddress"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="Фактические адрес"
           variant="outlined"
         />
@@ -195,7 +191,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           value={formik.values.legalName}
           name="legalName"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="Юридическое название"
           variant="outlined"
         />
@@ -211,7 +206,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           value={formik.values.legalAddress}
           name="legalAddress"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="Юридический адрес"
           variant="outlined"
         />
@@ -228,7 +222,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           value={formik.values.bin}
           name="bin"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="БИН"
           variant="outlined"
         />
@@ -244,7 +237,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           value={formik.values.number}
           name="number"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="Номер счета"
           variant="outlined"
         />
@@ -259,7 +251,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           value={formik.values.swift}
           name="swift"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="SWIFT"
           variant="outlined"
         />
@@ -275,7 +266,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           value={formik.values.bankName}
           name="bankName"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="Название банка"
           variant="outlined"
         />

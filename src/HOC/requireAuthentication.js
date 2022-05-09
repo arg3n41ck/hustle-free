@@ -1,8 +1,6 @@
-import { useRouter } from "next/router"
-
 export function requireAuthentication(gssp) {
   return async (context) => {
-    const { req, res } = context
+    const { req } = context
     const token = req.cookies.token
 
     if (!token) {

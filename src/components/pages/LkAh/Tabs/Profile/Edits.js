@@ -24,7 +24,7 @@ import EmailIcon from "../../../../../public/svg/profile-email-edit.svg"
 import { saveUser } from "../../../../../redux/components/user"
 import { format } from "date-fns"
 import { useRouter } from "next/router"
-import { PasswordIcon } from "../../../../../pages/reset-password"
+import { PasswordIcon } from "../../../../../pages/auth/auth-reset-password"
 import { theme } from "../../../../../styles/theme"
 import {
   fetchCountries,
@@ -34,6 +34,7 @@ import { fetchUser } from "../../../../../redux/components/user"
 import { LocationIcon } from "../../../Events/EventsCatalog/EventsFilter"
 import { decamelizeKeys } from "humps"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
+import Link from "next/link"
 
 const validationSchema = yup.object({
   email: yup
@@ -278,7 +279,6 @@ const Edits = () => {
                 <TextField
                   {...inputProps}
                   sx={{ width: "100%" }}
-                  id="outlined-basic"
                   variant="outlined"
                   placeholder={"+7 (7"}
                   error={
@@ -422,7 +422,6 @@ const Edits = () => {
             name="email"
             value={formik.values?.email}
             onChange={() => {}}
-            id="outlined-basic"
             placeholder="Электронный адрес"
             variant="outlined"
             error={formik.touched.email && Boolean(formik.errors.email)}
@@ -445,7 +444,6 @@ const Edits = () => {
                 formik.touched?.old_password &&
                 Boolean(formik.errors?.old_password)
               }
-              id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
               endAdornment={
                 <InputAdornment position="end">
@@ -478,7 +476,6 @@ const Edits = () => {
                 formik.touched?.new_password &&
                 Boolean(formik.errors?.new_password)
               }
-              id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
               endAdornment={
                 <InputAdornment position="end">
@@ -497,6 +494,24 @@ const Edits = () => {
               <Error>{formik.errors?.new_password}</Error>
             )}
           </FormControl>
+        </div>
+        <div
+          className="auth-wrapper__independent"
+          style={{ margin: "0 0 32px", padding: "0" }}
+        >
+          <Link href={"/auth/auth-reset-password"}>
+            <a>
+              <p className="auth-link">Изменить пароль</p>
+            </a>
+          </Link>
+        </div>
+        <div className="auth-wrapper__independent border-top">
+          Вы можете{" "}
+          <Link href={"/auth/delete"}>
+            <a>
+              <span className="auth-link">удалить свой профиль</span>
+            </a>
+          </Link>
         </div>
       </Content>
       <Footer>

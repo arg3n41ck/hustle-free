@@ -7,101 +7,166 @@ import {
   FormControl,
   IconButton,
   InputAdornment,
-  OutlinedInput,
+  TextField,
 } from "@mui/material"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import $api from "../services/axios"
+import $api from "../../services/axios"
 import { useRouter } from "next/router"
+import { hide, show } from "./password/reset/confirm"
+import { toast } from "react-toastify"
 
 const validationSchema = yup.object({
-  password: yup
+  currentPassword: yup
+    .string()
+    .test("", "Заполните поле", (value) => !!(value || " ").replace(/\s/g, ""))
+    .required("Заполните поле почты"),
+  newPassword: yup
     .string()
     .test("", "Заполните поле", (value) => !!(value || " ").replace(/\s/g, ""))
     .required("Заполните поле почты")
-    .min(8),
+    .min(8, "Пароль должен содержать больше 8-ми символов"),
+  repeatPassword: yup
+    .string()
+    .required("Введите подтверждение пароля")
+    .oneOf([yup.ref("newPassword"), null], "Пароли не совпадают"),
 })
 
-export async function getServerSideProps(context) {
-  return {
-    props: { query: context.query },
-  }
-}
-
-const NewPassword = ({ query }) => {
+const NewPassword = () => {
   const [showPassword, setShowPassword] = useState(false)
+  const [showPassword2, setShowPassword2] = useState(false)
+  const [showPassword3, setShowPassword3] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
-  const router = useRouter()
-  const formik = useFormik({
-    initialValues: {
-      password: "",
-    },
-    onSubmit: async (values) => {
-      const { uid, token } = query
-      try {
-        await $api.post("/accounts/auth/users/reset_password_confirm/", {
-          uid,
-          token,
-          newPassword: values.password,
-        })
-        await router.push("/login")
-      } catch (e) {
-        setErrorMessage(
-          "Пароль должен состоять из [A-Z] [0-9] и не быть слишком простым."
-        )
-      }
-    },
-    validationSchema,
-  })
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault()
-  }
+  const { push: routerPush } = useRouter()
+  const { values, errors, touched, isValid, handleSubmit, handleChange } =
+    useFormik({
+      initialValues: {
+        newPassword: "",
+        currentPassword: "",
+        repeatPassword: "",
+      },
+      onSubmit: async ({ newPassword, currentPassword }) => {
+        try {
+          await $api.post("/accounts/auth/users/set_password/", {
+            newPassword,
+            currentPassword,
+          })
+          toast.success(`Вы успешно изменили пароль!`)
+          await routerPush("/")
+        } catch (e) {
+          toast.error("Что-то пошло не так")
+          setErrorMessage(
+            "Пароль должен состоять из [A-Z] [0-9] и не быть слишком простым."
+          )
+        }
+      },
+      validationSchema,
+    })
 
   return (
     <Form
       animate={{ translateX: ["20%", "0%"] }}
       transition={{ duration: 0.5 }}
-      onSubmit={formik.handleSubmit}
+      onSubmit={handleSubmit}
     >
       <div className="auth-container">
         <div className="auth-wrapper">
           <h3 className="auth-title">Восстановления пароля</h3>
-          <p className="auth-description">Введите свой новый пароль </p>
+          <p className="auth-description">
+            Заполните поля, чтобы изменить пароль
+          </p>
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Пароль</p>
             <FormControl sx={{ width: "100%" }} variant="outlined">
-              <OutlinedInput
-                name="password"
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                id="outlined-adornment-password"
-                value={formik.values.password}
-                type={showPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      <PasswordIcon show={showPassword} />
-                    </IconButton>
-                  </InputAdornment>
-                }
-                placeholder="Введите пароль"
-              />
+              <div className="auth-wrapper__input">
+                <p className="auth-title__input">Текущий пароль</p>
+                <TextField
+                  value={values.currentPassword}
+                  name="currentPassword"
+                  onChange={handleChange}
+                  placeholder="Введите текущий пароль"
+                  type={showPassword ? "text" : "password"}
+                  fullWidth
+                  error={
+                    touched.currentPassword && Boolean(errors.currentPassword)
+                  }
+                  helperText={touched.currentPassword && errors.currentPassword}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          onMouseDown={(e) => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showPassword ? show : hide}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+              <div className="auth-wrapper__input">
+                <p className="auth-title__input">Новый пароль</p>
+                <TextField
+                  value={values.newPassword}
+                  name="newPassword"
+                  onChange={handleChange}
+                  placeholder="Введите новый пароль"
+                  type={showPassword2 ? "text" : "password"}
+                  fullWidth
+                  error={touched.newPassword && Boolean(errors.newPassword)}
+                  helperText={touched.newPassword && errors.newPassword}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword2((prev) => !prev)}
+                          onMouseDown={(e) => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showPassword2 ? show : hide}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+              <div className="auth-wrapper__input">
+                <p className="auth-title__input">Повторите пароль</p>
+                <TextField
+                  value={values.repeatPassword}
+                  name="repeatPassword"
+                  onChange={handleChange}
+                  placeholder="Повторите пароль"
+                  type={showPassword3 ? "text" : "password"}
+                  fullWidth
+                  error={
+                    touched.repeatPassword && Boolean(errors.repeatPassword)
+                  }
+                  helperText={touched.repeatPassword && errors.repeatPassword}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword3((prev) => !prev)}
+                          onMouseDown={(e) => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showPassword3 ? show : hide}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+              {!!errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
             </FormControl>
-            {!!errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
           </div>
 
-          <AuthButton
-            active={formik.values.password && !Boolean(formik.errors.password)}
-            type="submit"
-          >
+          <AuthButton disabled={!isValid} active={isValid} type="submit">
             Подтвердить
           </AuthButton>
 
@@ -210,4 +275,3 @@ export const PasswordIcon = (show) => {
     </svg>
   )
 }
-

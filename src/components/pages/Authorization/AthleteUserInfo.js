@@ -216,7 +216,6 @@ const AthleteUserInfo = () => {
                 <TextField
                   {...inputProps}
                   sx={{ width: "100%" }}
-                  id="outlined-basic"
                   variant="outlined"
                   placeholder={"+7 (7"}
                   error={

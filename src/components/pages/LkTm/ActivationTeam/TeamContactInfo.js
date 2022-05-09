@@ -148,7 +148,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
           value={formik.values.full_name}
           name="full_name"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="Название команды"
           variant="outlined"
           error={formik.touched.full_name && Boolean(formik.errors.full_name)}
@@ -165,7 +164,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
         <div className="auth-wrapper__input">
           <p className="auth-title__input">Страна</p>
           <TextField
-            id="outlined-select-currency"
             select
             sx={{ width: "100%", color: "white" }}
             name="country"
@@ -190,7 +188,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
         <div className="auth-wrapper__input">
           <p className="auth-title__input">Город/Область</p>
           <TextField
-            id="outlined-select-currency"
             select
             sx={{
               width: "100%",
@@ -228,7 +225,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
           value={formik.values.web_site}
           name="web_site"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="Веб-сайт"
           variant="outlined"
           error={formik.touched.web_site && Boolean(formik.errors.web_site)}
@@ -242,7 +238,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
           value={formik.values.full_name_coach}
           name="full_name_coach"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="ФИО"
           variant="outlined"
           error={
@@ -273,7 +268,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
               <TextField
                 {...inputProps}
                 sx={{ width: "100%" }}
-                id="outlined-basic"
                 variant="outlined"
                 placeholder={"Контакты"}
                 InputProps={{
@@ -311,7 +305,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
             value={formik.values.email_coach}
             name="email_coach"
             onChange={formik.handleChange}
-            id="outlined-basic"
             placeholder="Электронная почта"
             variant="outlined"
             InputProps={{
@@ -356,7 +349,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
             value={formik.values.password}
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
-            id="outlined-adornment-password"
             type={showPassword ? "text" : "password"}
             endAdornment={
               <InputAdornment position="end">

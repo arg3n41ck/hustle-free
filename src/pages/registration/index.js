@@ -98,8 +98,6 @@ const Index = () => {
                 sx={{ width: "100%" }}
                 name="email"
                 onChange={formik.handleChange}
-                id="outlined-basic"
-                // label="Электронный адрес"
                 placeholder="Электронный адрес"
                 variant="outlined"
                 error={formik.touched.email && Boolean(formik.errors.email)}

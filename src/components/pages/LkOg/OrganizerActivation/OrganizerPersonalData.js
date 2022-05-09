@@ -24,7 +24,7 @@ import { styled as styl } from "@mui/material/styles"
 import RadioGroup, { useRadioGroup } from "@mui/material/RadioGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Radio from "@mui/material/Radio"
-import { PasswordIcon } from "../../../../pages/reset-password"
+import { PasswordIcon } from "../../../../pages/auth/auth-reset-password"
 
 const StyledFormControlLabel = styl((props) => <FormControlLabel {...props} />)(
   ({ theme, checked }) => ({
@@ -153,7 +153,6 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
                 e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
               )
             }
-            id="outlined-basic"
             placeholder="Фамилия"
             variant="outlined"
             error={formik.touched.lastName && Boolean(formik.errors.lastName)}
@@ -172,7 +171,6 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
                 e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
               )
             }
-            id="outlined-basic"
             placeholder="Имя"
             variant="outlined"
             error={formik.touched.firstName && Boolean(formik.errors.firstName)}
@@ -262,7 +260,6 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
             <TextField
               {...inputProps}
               sx={{ width: "100%" }}
-              id="outlined-basic"
               variant="outlined"
               placeholder={"+7 (7"}
               error={formik.touched.phone && Boolean(formik.errors.phone)}
@@ -295,7 +292,6 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
           value={formik.values.email}
           name="email"
           onChange={formik.handleChange}
-          id="outlined-basic"
           disabled
           placeholder="Электронный адрес"
           variant="outlined"
@@ -337,7 +333,6 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
           value={formik.values.position}
           name="position"
           onChange={formik.handleChange}
-          id="outlined-basic"
           placeholder="Позиция/ должность"
           variant="outlined"
           InputProps={{
@@ -377,7 +372,6 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
             value={formik.values.password}
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
-            id="outlined-adornment-password"
             type={showPassword ? "text" : "password"}
             endAdornment={
               <InputAdornment position="end">

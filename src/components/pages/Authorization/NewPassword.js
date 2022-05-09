@@ -53,7 +53,6 @@ const NewPassword = () => {
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
                 }
-                id="outlined-adornment-password"
                 type={showPassword ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">

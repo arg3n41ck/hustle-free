@@ -265,7 +265,6 @@ const Edits = () => {
               <TextField
                 {...inputProps}
                 sx={{ width: "100%" }}
-                id="outlined-basic"
                 variant="outlined"
                 placeholder={"+7 (7"}
                 error={
@@ -287,7 +286,6 @@ const Edits = () => {
             name="email"
             value={formik.values?.email}
             onChange={() => {}}
-            id="outlined-basic"
             placeholder="Электронный адрес"
             variant="outlined"
             error={formik.touched?.email && Boolean(formik.errors?.email)}
@@ -304,7 +302,6 @@ const Edits = () => {
             sx={{ width: "100%" }}
             name="nameOrganization"
             onChange={formik.handleChange}
-            id="outlined-basic"
             value={formik.values?.nameOrganization}
             placeholder="Название организации"
             variant="outlined"
@@ -383,7 +380,6 @@ const Edits = () => {
             sx={{ width: "100%" }}
             name="factAddress"
             onChange={formik.handleChange}
-            id="outlined-basic"
             value={formik.values?.factAddress}
             placeholder="Фактический Адрес"
             variant="outlined"
@@ -439,6 +435,24 @@ const Edits = () => {
             </GrayText>
           </GalleryBlock>
         </Gallery>
+        <div
+          className="auth-wrapper__independent"
+          style={{ margin: "0 0 32px" }}
+        >
+          <Link href={"/auth/auth-reset-password"}>
+            <a>
+              <p className="auth-link">Изменить пароль</p>
+            </a>
+          </Link>
+        </div>
+        <div className="auth-wrapper__independent border-top">
+          Вы можете{" "}
+          <Link href={"/auth/delete"}>
+            <a>
+              <span className="auth-link">удалить свой профиль</span>
+            </a>
+          </Link>
+        </div>
       </Content>
       <Footer>
         <Link href={"/lk-og/profile/"} passHref>
@@ -482,12 +496,10 @@ const Footer = styled.div`
   padding: 32px;
   display: flex;
   justify-content: flex-end;
+  grid-column-gap: 32px;
 `
 const ButtonWrapper = styled.div`
   max-width: 256px;
   width: 100%;
-  &:first-child {
-    margin-right: 32px;
-  }
 `
 export default Edits

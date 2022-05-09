@@ -17,7 +17,7 @@ import { useDispatch } from "react-redux"
 import { getCookie, setCookie } from "../../../../services/JWTService"
 import { useRouter } from "next/router"
 import { toast } from "react-toastify"
-import { PasswordIcon } from "../../../../pages/reset-password"
+import { PasswordIcon } from "../../../../pages/auth/auth-reset-password"
 
 const validationSchema = yup.object({
   lastName: yup
@@ -46,7 +46,6 @@ const validationSchema = yup.object({
 })
 
 const InputPersonalData = () => {
-  const dispatch = useDispatch()
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
   const formik = useFormik({
@@ -123,7 +122,6 @@ const InputPersonalData = () => {
                     e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
                   )
                 }
-                id="outlined-basic"
                 placeholder="Фамилия"
                 variant="outlined"
                 error={
@@ -144,7 +142,6 @@ const InputPersonalData = () => {
                     e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
                   )
                 }
-                id="outlined-basic"
                 placeholder="Имя"
                 variant="outlined"
                 error={
@@ -160,8 +157,6 @@ const InputPersonalData = () => {
               sx={{ width: "100%" }}
               value={formik.values.email}
               disabled
-              id="outlined-basic"
-              placeholder="Электронный адрес"
               name="email"
               variant="outlined"
               onChange={(e) => formik.setFieldValue("email", e.target.value)}
@@ -177,7 +172,6 @@ const InputPersonalData = () => {
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
                 }
-                id="outlined-adornment-password"
                 type={showPassword ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">

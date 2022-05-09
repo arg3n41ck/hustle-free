@@ -17,6 +17,7 @@ import EmailIcon from "../../../../../public/svg/email-profile.svg"
 import UploadIcon from "../../../../../public/svg/upload-profile-icon.svg"
 import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
 import $api from "../../../../../services/axios"
+import Link from "next/link"
 
 const Edits = ({ onView }) => {
   const {
@@ -152,7 +153,6 @@ const Edits = ({ onView }) => {
             sx={{ width: "100%" }}
             name="fullName"
             onChange={formik.handleChange}
-            id="outlined-basic"
             value={formik.values.fullName}
             placeholder="Название организации"
             variant="outlined"
@@ -223,7 +223,6 @@ const Edits = ({ onView }) => {
             sx={{ width: "100%" }}
             name="webSite"
             onChange={formik.handleChange}
-            id="outlined-basic"
             value={formik.values.webSite}
             placeholder="Веб-сайт"
             variant="outlined"
@@ -238,7 +237,6 @@ const Edits = ({ onView }) => {
             sx={{ width: "100%" }}
             name="fullNameCoach"
             onChange={formik.handleChange}
-            id="outlined-basic"
             value={formik.values.fullNameCoach}
             placeholder="ФИО"
             variant="outlined"
@@ -279,7 +277,6 @@ const Edits = ({ onView }) => {
                 <TextField
                   {...inputProps}
                   sx={{ width: "100%" }}
-                  id="outlined-basic"
                   variant="outlined"
                   placeholder={"Контакты"}
                   InputProps={{
@@ -297,7 +294,6 @@ const Edits = ({ onView }) => {
               name="emailCoach"
               value={formik.values.emailCoach}
               onChange={formik.handleChange}
-              id="outlined-basic"
               disabled
               placeholder="Электронная почта"
               variant="outlined"
@@ -422,6 +418,24 @@ const Edits = ({ onView }) => {
             </GrayText>
           </GalleryBlock>
         </Gallery>
+        <div
+          className="auth-wrapper__independent"
+          style={{ margin: "0 0 32px" }}
+        >
+          <Link href={"/auth/auth-reset-password"}>
+            <a>
+              <p className="auth-link">Изменить пароль</p>
+            </a>
+          </Link>
+        </div>
+        <div className="auth-wrapper__independent border-top">
+          Вы можете{" "}
+          <Link href={"/auth/delete"}>
+            <a>
+              <span className="auth-link">удалить свой профиль</span>
+            </a>
+          </Link>
+        </div>
       </Content>
       <Footer>
         <ButtonWrapper onClick={() => onView("general")}>

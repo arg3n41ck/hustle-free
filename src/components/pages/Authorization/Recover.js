@@ -71,7 +71,6 @@ const Recover = ({ onView }) => {
               sx={{ width: "100%" }}
               name="email"
               onChange={formik.handleChange}
-              id="outlined-basic"
               placeholder="Электронный адрес"
               variant="outlined"
               error={formik.touched.email && Boolean(formik.errors.email)}

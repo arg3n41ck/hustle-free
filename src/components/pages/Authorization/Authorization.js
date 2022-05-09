@@ -93,7 +93,6 @@ const Authorization = ({ onView }) => {
               sx={{ width: "100%" }}
               name="email"
               onChange={formik.handleChange}
-              id="outlined-basic"
               placeholder="Электронный адрес"
               variant="outlined"
               error={formik.touched.email && Boolean(formik.errors.email)}
@@ -135,7 +134,6 @@ const Authorization = ({ onView }) => {
                 error={
                   formik.touched.password && Boolean(formik.errors.password)
                 }
-                id="outlined-adornment-password"
                 type={showPassword ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">
