@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import $api from "../../../services/axios"
 import LkDefaultHeader from "../../ui/LKui/LKDefaultHeader"
 import { TitleHeader } from "../../ui/LKui/HeaderContent"
@@ -16,6 +16,7 @@ import {
   fetchCountries,
   selectCountriesAndCities,
 } from "../../../redux/components/countriesAndCities"
+import ApplyToTeam from "../../TeamProfile/ApplyToTeam"
 
 const getTeamData = async (teamId) => {
   const { data } = await $api.get(`/teams/teams/${teamId}/`)
@@ -31,7 +32,6 @@ function TeamInfo({
   const [team, setTeam] = useState(null)
   const [countries] = useSelector(selectCountriesAndCities)
   const user = useSelector((state) => state.user.user)
-  const [athHasBeenReq, setAthHasBeenReq] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -42,16 +42,6 @@ function TeamInfo({
   useEffect(() => {
     teamId && getTeamData(teamId).then(setTeam)
   }, [teamId])
-
-  const sendReq = useCallback(async () => {
-    try {
-      await $api.post("/teams/teams/requests/", { team: teamId })
-      setAthHasBeenReq(true)
-      checkUserStatus()
-    } catch (e) {
-      setAthHasBeenReq(true)
-    }
-  }, [user])
 
   const currentLocations = useMemo(() => {
     const country =
@@ -73,23 +63,10 @@ function TeamInfo({
         <HeaderWrapper>
           <TitleHeader>Профиль</TitleHeader>
           {user?.role === "athlete" && (
-            <CreateEventBTN
-              disabled={
-                athHasBeenReq || userStatusInTeam?.message !== "not found"
-              }
-              active={userStatusInTeam?.message === "not found"}
-              onClick={() => sendReq()}
-            >
-              {userStatusInTeam?.message === "not found" ? (
-                <>
-                  <PlusIcon /> Вступить в команду
-                </>
-              ) : userStatusInTeam?.message === "user in pending" ? (
-                "Запрошено"
-              ) : (
-                "Вы уже в команде"
-              )}
-            </CreateEventBTN>
+            <ApplyToTeam
+              userStatusInTeam={userStatusInTeam}
+              checkUserStatus={checkUserStatus}
+            />
           )}
         </HeaderWrapper>
       </LkDefaultHeader>

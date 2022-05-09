@@ -5,7 +5,7 @@ import { teamProfileTabs } from "../../../components/pages/Team/tabConstants"
 import TeamInfo from "../../../components/pages/Team/TeamProfile"
 import $api from "../../../services/axios"
 
-const getIsUserInTeam = async (teamId) => {
+export const getIsUserInTeam = async (teamId) => {
   const { data } = await $api.get(`/teams/check_athlete_team/${teamId}/`)
   return data
 }

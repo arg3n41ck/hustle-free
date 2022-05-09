@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import LkLayout from "../../../components/layouts/LkLayout"
 import { useRouter } from "next/router"
 import { teamProfileTabs } from "../../../components/pages/Team/tabConstants"
@@ -12,24 +12,27 @@ import { fetchCountries } from "../../../redux/components/countriesAndCities"
 import LkDefaultHeader from "../../../components/ui/LKui/LKDefaultHeader"
 import { HeaderWrapper } from "../../../components/pages/LkOg/Tabs/Events/Events/Events"
 import { TitleHeader } from "../../../components/ui/LKui/HeaderContent"
-import {
-  CreateEventBTN,
-  PlusIcon,
-} from "../../../components/pages/Team/TeamProfile"
 import Athlete from "../../../components/ui/Ahtletes/Athlete"
 import styled from "styled-components"
 import { TextField } from "@mui/material"
 import { SearchIcon } from "../../../components/pages/Events/EventsGlobalSearch/EventsGlobalSearch"
 import useDebounce from "../../../hooks/useDebounce"
+import ApplyToTeam from "../../../components/TeamProfile/ApplyToTeam"
+import { getIsUserInTeam } from "./index"
 
 function Athletes({ onToggleSidebar }) {
   const {
     query: { id: teamId },
   } = useRouter()
   const query = useQuery()
+  const [userStatusInTeam, setUserStatusInTeam] = useState(null)
+  const user = useSelector((state) => state.user.user)
   const [, athletes] = useSelector(selectAthletes)
   const [searchValue, setSearchValue] = useState("")
   const searchDebounced = useDebounce(searchValue, 500)
+  const checkUserStatus = useCallback(() => {
+    teamId && getIsUserInTeam(teamId).then(setUserStatusInTeam)
+  }, [teamId])
 
   const tabs = useMemo(() => {
     return teamProfileTabs(teamId)
@@ -48,14 +51,21 @@ function Athletes({ onToggleSidebar }) {
     dispatch(fetchAthletesByParams(query))
   }, [searchDebounced])
 
+  useEffect(() => {
+    checkUserStatus()
+  }, [teamId])
+
   return (
     <LkLayout tabs={tabs}>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
           <TitleHeader>Профиль</TitleHeader>
-          <CreateEventBTN onClick={() => {}}>
-            <PlusIcon /> Вступить в команду
-          </CreateEventBTN>
+          {user?.role === "athlete" && (
+            <ApplyToTeam
+              userStatusInTeam={userStatusInTeam}
+              checkUserStatus={checkUserStatus}
+            />
+          )}
         </HeaderWrapper>
       </LkDefaultHeader>
 
