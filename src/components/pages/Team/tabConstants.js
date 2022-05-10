@@ -1,5 +1,5 @@
-import ProfileIcon from "../../../public/svg/profile-icon.svg"
-import AthletesIcon from "../../../public/svg/users.svg"
+import ProfileIcon from "../../../assets/svg/profile-icon.svg"
+import AthletesIcon from "../../../assets/svg/users.svg"
 
 export const teamProfileTabs = (teamId) => [
   {

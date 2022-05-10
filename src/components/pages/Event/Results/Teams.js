@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Box, TextField } from "@mui/material"
-import SearchIcon from "../../../../public/svg/search-icon.svg"
+import SearchIcon from "../../../../assets/svg/search-icon.svg"
 import useDebounce from "../../../../hooks/useDebounce"
 import $api from "../../../../services/axios"
 import { useRouter } from "next/router"

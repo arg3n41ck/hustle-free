@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import BurgerIcon from "../../../public/svg/burger.svg"
+import BurgerIcon from "../../../assets/svg/burger.svg"
 
 const HeaderContent = ({ onToggle, children }) => {
   return (

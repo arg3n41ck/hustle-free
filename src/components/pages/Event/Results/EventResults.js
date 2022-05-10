@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from "react"
 import styled from "styled-components"
 import HorizontalTabsBorder from "../../../ui/tabs/HorizontalTabsBorder"
-import GoldMedal from "../../../../public/svg/gold-medal.svg"
-import SilverMedal from "../../../../public/svg/silver-medal.svg"
-import BronzeMedal from "../../../../public/svg/bronze-medal.svg"
+import GoldMedal from "../../../../assets/svg/gold-medal.svg"
+import SilverMedal from "../../../../assets/svg/silver-medal.svg"
+import BronzeMedal from "../../../../assets/svg/bronze-medal.svg"
 import Teams from "./Teams"
 import Participants from "./Participants"
 

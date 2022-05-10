@@ -10,7 +10,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import Radio from "../../ui/Radio"
 import InputMask from "react-input-mask"
 import CustomButton from "../../ui/CustomButton"
-import PhoneIcon from "../../../public/svg/profile-phone.svg"
+import PhoneIcon from "../../../assets/svg/profile-phone.svg"
 import { saveUser } from "../../../redux/components/user"
 import { format } from "date-fns"
 import {

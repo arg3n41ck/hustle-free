@@ -1,8 +1,7 @@
-import ExitIcon from "../../../../public/svg/exit-icon.svg"
-import SettingsIcon from "../../../../public/svg/settings.svg"
-import ProfileIcon from "../../../../public/svg/profile-icon.svg"
-import AthletesIcon from "../../../../public/svg/users.svg"
-import StatisticsIcon from "../../../../public/svg/statistics.svg"
+import SettingsIcon from "../../../../assets/svg/settings.svg"
+import ProfileIcon from "../../../../assets/svg/profile-icon.svg"
+import AthletesIcon from "../../../../assets/svg/users.svg"
+import StatisticsIcon from "../../../../assets/svg/statistics.svg"
 
 export const lkTmTabs = [
   {

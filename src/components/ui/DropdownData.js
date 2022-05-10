@@ -1,6 +1,6 @@
 import React, { useRef } from "react"
 import styled from "styled-components"
-import ArrowIcon from "../../public/svg/dropdown-arrow.svg"
+import ArrowIcon from "../../assets/svg/dropdown-arrow.svg"
 import { motion } from "framer-motion"
 
 const DropdownData = ({

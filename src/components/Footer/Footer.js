@@ -5,7 +5,14 @@ function Footer() {
   return (
     <FooterMainWrapper>
       <FooterIcon />
-      <p>Политика конфиденциальности</p>
+      <a
+        href="/docs/privacy_policy.pdf"
+        download
+        target="_blank"
+        rel="noreferrer"
+      >
+        <p>Политика конфиденциальности</p>
+      </a>
       <p>Пользовательское соглашение</p>
       <Social>
         <p>О нас</p>

@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import TwoDude from "../../../public/png/twoDutes.png"
+import TwoDude from "../../../assets/png/twoDutes.png"
 import Link from "next/link"
 import { useSelector } from "react-redux"
 

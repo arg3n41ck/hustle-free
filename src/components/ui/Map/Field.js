@@ -57,7 +57,7 @@ function MapField({ onPoint, defaultPoints, disabled }) {
             marker ? { lat: marker.lat, lng: marker.lng } : defaultPoints
           }
           // icon={{
-          //   url: "../../../public/svg/map-pointer.svg",
+          //   url: "../../../assets/svg/map-pointer.svg",
           //   origin: new window.google.maps.Point(0, 0),
           //   anchor: new window.google.maps.Point(15, 15),
           //   scaledSize: new window.google.maps.Size(30, 30),

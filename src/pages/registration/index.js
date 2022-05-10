@@ -172,7 +172,17 @@ const Index = () => {
               >
                 Регистрируясь, вы подтверждаете, что принимаете наши{" "}
                 <a href="" className="auth-link">
-                  Условия использования и Политику конфиденциальности.
+                  Условия использования
+                </a>{" "}
+                и{" "}
+                <a
+                  href="/docs/privacy_policy.pdf"
+                  className="auth-link"
+                  download
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Политику конфиденциальности.
                 </a>
               </Box>
             </Box>

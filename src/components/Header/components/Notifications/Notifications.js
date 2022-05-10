@@ -1,9 +1,29 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import NotificationModal from "./NotificationModal"
+import $api from "../../../../services/axios"
+import { useInterval } from "../../../../hooks/useInterval"
+
+const getNotifications = async () => {
+  try {
+    const { data } = await $api.get("/accounts/notifications/")
+    return data
+  } catch ({ response }) {
+    console.log(response)
+  }
+}
 
 const Notifications = () => {
   const [anchorNotifications, setAnchorNotifications] = useState(null)
+  const [notifications, setNotifications] = useState(null)
+
+  useInterval(async () => {
+    getNotifications().then(setNotifications)
+  }, 630000)
+
+  useEffect(() => {
+    getNotifications().then(setNotifications)
+  }, [])
 
   return (
     <NotificationWrapper>
@@ -11,6 +31,7 @@ const Notifications = () => {
       <NotificationModal
         anchorNotifications={anchorNotifications}
         setAnchorNotifications={setAnchorNotifications}
+        notifications={notifications}
       />
     </NotificationWrapper>
   )

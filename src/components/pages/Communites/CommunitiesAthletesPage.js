@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchTeams, teamsSelector } from "../../../redux/components/teams"
 import styled from "styled-components"
-import searchIcon from "../../../public/svg/searchIcon.svg"
+import searchIcon from "../../../assets/svg/searchIcon.svg"
 import { Autocomplete, TextField } from "@mui/material"
 import {
   selectCountriesAndCities,

@@ -1,9 +1,9 @@
 import React from "react"
 import HeaderContent, { TitleHeader } from "../../../../ui/LKui/HeaderContent"
 import styled from "styled-components"
-import GoldMedal from "../../../../../public/svg/gold-medal.svg"
-import SilverMedal from "../../../../../public/svg/silver-medal.svg"
-import BronzeMedal from "../../../../../public/svg/bronze-medal.svg"
+import GoldMedal from "../../../../../assets/svg/gold-medal.svg"
+import SilverMedal from "../../../../../assets/svg/silver-medal.svg"
+import BronzeMedal from "../../../../../assets/svg/bronze-medal.svg"
 
 const Statistics = ({ onToggleSidebar }) => {
   return (
@@ -70,9 +70,6 @@ const AwardText = styled.p`
 const AwardNumbers = styled(AwardText)`
   font-size: 48px;
   line-height: 56px;
-`
-const Content = styled.div`
-  margin: 32px 32px 0 32px;
 `
 
 export default Statistics

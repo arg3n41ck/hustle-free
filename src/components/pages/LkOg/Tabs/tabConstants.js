@@ -1,6 +1,6 @@
-import ProfileIcon from "../../../../public/svg/profile-icon.svg"
-import MyTournamentsIcon from "../../../../public/svg/my-tournaments-icon.svg"
-import SettingsIcon from "../../../../public/svg/settings.svg"
+import ProfileIcon from "../../../../assets/svg/profile-icon.svg"
+import MyTournamentsIcon from "../../../../assets/svg/my-tournaments-icon.svg"
+import SettingsIcon from "../../../../assets/svg/settings.svg"
 
 export const lkOgTabs = [
   {

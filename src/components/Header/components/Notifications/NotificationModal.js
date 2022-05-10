@@ -1,11 +1,14 @@
-import React, { useState } from "react"
+import React  from "react"
 import { Box, Popover } from "@mui/material"
 import styled from "styled-components"
 import NotificationItems from "./NotificationItems"
 
-function NotificationModal({ anchorNotifications, setAnchorNotifications }) {
+function NotificationModal({
+  notifications,
+  anchorNotifications,
+  setAnchorNotifications,
+}) {
   const idNotifications = !!anchorNotifications ? "simple-popover" : undefined
-  const [notification] = useState([])
 
   return (
     <Popover
@@ -32,7 +35,21 @@ function NotificationModal({ anchorNotifications, setAnchorNotifications }) {
             <HeaderTitle>Уведомление</HeaderTitle>
           </Header>
           <List>
-            <NotificationItems notifications={notification} />
+            {!!notifications?.length ? (
+              notifications.map(
+                (n) =>
+                  n?.kz &&
+                  n?.en &&
+                  n?.ru && (
+                    <NotificationItems
+                      key={`user-notifications-${n.id}`}
+                      notification={n}
+                    />
+                  )
+              )
+            ) : (
+              <EmptyText>У вас пока нет уведомлений</EmptyText>
+            )}
           </List>
         </Wrapper>
       </Box>
@@ -64,4 +81,15 @@ const List = styled.ul`
   & li:last-child {
     border-bottom: none;
   }
+`
+
+const EmptyText = styled.p`
+  height: 50px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  color: #d2d2d2;
 `

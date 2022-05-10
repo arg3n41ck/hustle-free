@@ -1,8 +1,8 @@
-import ProfileIcon from "../../../../public/svg/profile-icon.svg"
-import MyTournamentsIcon from "../../../../public/svg/my-tournaments-icon.svg"
-import SettingsIcon from "../../../../public/svg/settings.svg"
-import TeamsIcon from "../../../../public/svg/MyTeams.svg"
-import StoriesIcon from "../../../../public/svg/MyStories.svg"
+import ProfileIcon from "../../../../assets/svg/profile-icon.svg"
+import MyTournamentsIcon from "../../../../assets/svg/my-tournaments-icon.svg"
+import SettingsIcon from "../../../../assets/svg/settings.svg"
+import TeamsIcon from "../../../../assets/svg/MyTeams.svg"
+import StoriesIcon from "../../../../assets/svg/MyStories.svg"
 
 export const lkAhTabs = [
   {
