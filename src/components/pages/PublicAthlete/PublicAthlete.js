@@ -37,7 +37,6 @@ function PublicAthlete({ athleteData }) {
   useEffect(() => {
     dispatch(fetchCountries())
   }, [])
-  console.log(athleteData)
   return (
     <MainWrapper>
       <AthleteUserData user={user} />

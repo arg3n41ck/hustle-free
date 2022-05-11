@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 import clearCookies from "../helpers/clearCookies"
 
 const $api = axios.create({
-  baseURL: API_URL || process.env.NEXT_PUBLIC_API_URL,
+  baseURL: API_URL,
 })
 
 // export const refreshTokens = async () => {
@@ -41,7 +41,7 @@ $api.interceptors.response.use(
     ) {
       try {
         const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}accounts/auth/jwt/refresh/`,
+          `${API_URL}accounts/auth/jwt/refresh/`,
           {
             refresh: getCookie("refresh"),
           }

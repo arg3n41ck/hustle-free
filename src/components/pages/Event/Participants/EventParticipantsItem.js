@@ -3,28 +3,32 @@ import styled from "styled-components"
 import DropdownData from "../../../ui/DropdownData"
 import ParticipantsList from "./ParticipantsList"
 
-const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) => {
+const EventParticipantsItem = ({
+  eventParticipant,
+  isOrganizer,
+  isAthletes,
+}) => {
   const [open, setOpen] = useState(false)
   const { eventParticipantsCategory } = eventParticipant
 
   const participantsValues = useMemo(() => {
     if (isOrganizer) {
-      const isPaid = eventParticipant.participants.filter(
+      const isPaid = eventParticipant?.participants.filter(
         (participant) => participant.isPaid
       )
-      const isNotPaid = eventParticipant.participants.filter(
+      const isNotPaid = eventParticipant?.participants.filter(
         (participant) => !participant.isPaid
       )
-      const registered = eventParticipant.participants.filter(
+      const registered = eventParticipant?.participants.filter(
         (participant) => participant.proposal === "add_event"
       )
 
       return { isPaid, isNotPaid, registered }
     } else {
-      const registered = eventParticipant.participants.filter(
+      const registered = eventParticipant?.participants.filter(
         (participant) => participant.proposal === "add_event"
       )
-      const unconfirmed = eventParticipant.participants.filter(
+      const unconfirmed = eventParticipant?.participants.filter(
         (participant) => participant.proposal === "waiting_list"
       )
       return { registered, unconfirmed }
@@ -33,17 +37,21 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) =>
 
   const info = (
     <Info>
-      <InfoText>Всего: {eventParticipant.allParticipants}</InfoText>
-      {/*{isOrganizer && (*/}
-      {/*  <InfoText color={"#6D4EEA"}>*/}
-      {/*    Подтвержденные: {eventParticipant.allParticipants}*/}
-      {/*  </InfoText>*/}
-      {/*)}*/}
+      <InfoText>Всего: {eventParticipant?.allParticipants}</InfoText>
+      {isOrganizer && (
+        <InfoText color={"#6D4EEA"}>
+          Подтвержденные:{" "}
+          {eventParticipant?.allParticipants
+            ? (+eventParticipant?.allParticipants || 0) -
+              (+eventParticipant?.isNotAcceptParticipants || 0)
+            : 0}
+        </InfoText>
+      )}
       <InfoText color="#27AE60">
-        Регистраций: {eventParticipant.isAcceptParticipants}
+        Регистраций: {eventParticipant?.isAcceptParticipants}
       </InfoText>
       <InfoText color="#F2994A">
-        Неподтвержденных: {eventParticipant.isNotAcceptParticipants}
+        Неподтвержденных: {eventParticipant?.isNotAcceptParticipants}
       </InfoText>
     </Info>
   )
@@ -56,7 +64,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) =>
         setActive={setOpen}
         heightWrapper={"184px"}
         additionalData={info}
-        title={`${eventParticipantsCategory.name} / ${eventParticipant.level} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
+        title={`${eventParticipantsCategory.name} / ${eventParticipant?.level} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
       >
         {isOrganizer ? (
           <>

@@ -57,7 +57,6 @@ const AthleteUserInfo = () => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       try {
-        console.log({ values })
         const newValues = {
           ...decamelizeKeys({
             ...values,

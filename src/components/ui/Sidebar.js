@@ -21,7 +21,7 @@ const contentVariants = {
 }
 
 const Sidebar = ({ open, array }) => {
-  const { push: routerPush, pathname } = useRouter()
+  const { push: routerPush, pathname, asPath } = useRouter()
   const dispatch = useDispatch()
 
   const handleOnClickTab = (path) => {
@@ -37,8 +37,11 @@ const Sidebar = ({ open, array }) => {
     <Wrapper animate={open ? "open" : "closed"} variants={variantsSidebar}>
       {array.map((item, i) => {
         const active = !!item.children?.length
-          ? item.children.includes(pathname) || item.href === pathname
-          : pathname === item.href
+          ? item.children.includes(pathname) ||
+            item.href === pathname ||
+            item.href === asPath
+          : pathname === item.href || item.href === asPath
+
         return (
           <Item
             key={`${item.value}_${i}`}

@@ -32,7 +32,7 @@ function EDContentFilter({
         />
         <button className={"submit"}>
           <SearchIcon />
-          <span>{label ? label : "Поиск"}</span>
+          <span>Поиск</span>
         </button>
         {children && (
           <button onClick={() => children && setOpenChildren((s) => !s)}>
@@ -41,7 +41,9 @@ function EDContentFilter({
           </button>
         )}
       </Search>
-      <Collapse in={openChildren || isFilterOpen}>{children}</Collapse>
+      {children && (
+        <Collapse in={openChildren || isFilterOpen}>{children}</Collapse>
+      )}
     </MainWrapper>
   )
 }

@@ -44,10 +44,6 @@ export const teamsSlice = createSlice({
     })
     builder.addCase(fetchAthleteTeams.fulfilled, ({ teams }, action) => {
       teams.isLoading = false
-      console.log(
-        "action.payloadaction.payloadaction.payloadaction.payloadaction.payload",
-        action.payload
-      )
       teams.athleteTeams = action.payload
       teams.count = action.payload.count ?? action.payload.length
       teams.error = null

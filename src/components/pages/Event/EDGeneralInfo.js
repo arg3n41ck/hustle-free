@@ -136,8 +136,6 @@ function EdGeneralInfo({ event }) {
     [event, eventId]
   )
 
-  console.log({ canApplyToEvent })
-
   return (
     <>
       {!ogAndIsMyEvent ? (

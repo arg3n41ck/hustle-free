@@ -1,6 +1,7 @@
 import axios from "axios"
 import { objToFormData } from "./formData"
 import { getCookie } from "../services/JWTService"
+import { API_URL } from "../services/constants"
 
 export async function formDataHttp(
   data,
@@ -15,7 +16,7 @@ export async function formDataHttp(
   const formData = await objToFormData(data)
   return axios({
     method,
-    url: `${process.env.NEXT_PUBLIC_API_URL}${url}`,
+    url: `${API_URL}${url}`,
     data: formData,
     headers,
   })
