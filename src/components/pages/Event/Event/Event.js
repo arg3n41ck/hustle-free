@@ -11,21 +11,8 @@ function Event({ event }) {
         <Column>{event.description}</Column>
         <Column>
           <h4>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum, vero!
           </h4>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias
-            aperiam corporis culpa eos est eveniet <br /> ex, expedita explicabo
-            facere hic impedit incidunt iste iure iusto labore laboriosam
-            laborum magnam magni maiores molestiae nemo, obcaecati officia omnis
-            quae quam, quis sapiente sint voluptas voluptates. <br /> A deleniti
-            dicta dolorum error ex exercitationem explicabo ipsa laboriosam
-            nesciunt numquam, officia optio praesentium voluptatum. A delectus
-            dolorem quaerat. Doloremque, ex quod? Ad amet animi delectus
-            deleniti eum ex impedit modi omnis reiciendis voluptate! Amet
-            consequatur eligendi ex id ipsum modi molestias nemo officia rerum.
-            Atque eaque, eligendi facilis iste libero magnam rem tempora
-            veritatis.
           </p>
         </Column>
       </Columns>
