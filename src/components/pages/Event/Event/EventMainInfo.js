@@ -89,27 +89,27 @@ const getParticipantCategories = () => {
     {
       id: "getParticipantCategories_1",
       label: "Категории:",
-      value: "lorem ipsum dolor",
+      value: "",
     },
     {
       id: "getParticipantCategories_2",
       label: "Уровни:",
-      value: "lorem ipsum dolor",
+      value: "",
     },
     {
       id: "getParticipantCategories_3",
       label: "Пол:",
-      value: "lorem ipsum dolor",
+      value: "",
     },
     {
       id: "getParticipantCategories_4",
       label: "Возраст:",
-      value: "lorem ipsum dolor",
+      value: "",
     },
     {
       id: "getParticipantCategories_5",
       label: "Вес:",
-      value: "lorem ipsum dolor",
+      value: "",
     },
     {
       id: "getParticipantCategories_6",
