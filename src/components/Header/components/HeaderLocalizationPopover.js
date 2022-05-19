@@ -3,15 +3,23 @@ import { FormControl, MenuItem, Select } from "@mui/material"
 import styled from "styled-components"
 
 function HeaderLocalizationPopover() {
-  const [localization, setLocalization] = React.useState("ru")
+  const [localization, setLocalization] = React.useState(typeof window !== "undefined" && window.localStorage.getItem("locale") || "ru")
+
+  const onChangeLang = (value) => {
+    typeof window !== "undefined" && window.localStorage.setItem("locale",value)
+    setLocalization(value)
+  }
+
   return (
     <Localization>
       <LocalizationSelect
         value={localization}
-        onChange={setLocalization}
+        onChange={(e) => onChangeLang(e.target.value)}
         className="HeaderLocalization"
       >
         <MenuItem value={"ru"}>RU</MenuItem>
+        <MenuItem value={"kz"}>KZ</MenuItem>
+        <MenuItem value={"en"}>EN</MenuItem>
       </LocalizationSelect>
     </Localization>
   )

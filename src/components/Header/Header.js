@@ -34,6 +34,10 @@ const Header = () => {
     setUserMenu(false)
   }, [userAuthenticated])
 
+  useEffect(() => {
+    !window.localStorage.getItem("locale") && window.localStorage.setItem("locale", "ru")
+  }, [typeof window !== "undefined" && window])
+
   const changeMenu = (value) => {
     setAnchorUserMenu(null)
     if (value === "exit") {

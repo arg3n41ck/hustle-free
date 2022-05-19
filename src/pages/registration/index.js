@@ -44,6 +44,7 @@ const Index = () => {
     initialValues: {
       email: "",
       role,
+      language: typeof window !== "undefined" && window.localStorage.getItem("locale") || "ru"
     },
     onSubmit: async (values) => {
       setLoading(true)

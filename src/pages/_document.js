@@ -7,7 +7,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="ru">
         <Head>
-          <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+          <link rel="icon" href="/favicon.ico" />
           <meta charSet="utf-8" />
         </Head>
         <body>

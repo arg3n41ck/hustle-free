@@ -6,7 +6,7 @@ function Footer() {
     <FooterMainWrapper>
       <FooterIcon />
       <a
-        href="/docs/privacy_policy.pdf"
+        href="/privacy_policy.pdf"
         download
         target="_blank"
         rel="noreferrer"
