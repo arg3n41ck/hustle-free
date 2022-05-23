@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { useRouter } from "next/router"
 import Link from "next/link"
+import $api from "../../../../services/axios"
 
 //??? Notifications types (нужны для определения типа сслыки в Link)
 // ORGANIZER_EVENT_STATUS = 'oes'
@@ -9,6 +10,10 @@ import Link from "next/link"
 // ATHLETE_EVENT_STATUS = 'aes'
 // ATHLETE_TEAM_STATUS = 'ats'
 // TEAM_NEW_PARTICIPANTS = 'tnp'
+
+const setChecked = async (id) => {
+  await $api.patch(`/accounts/notifications/${id}/`, { checked: true })
+}
 
 const NotificationItems = ({ notification }) => {
   const { locale } = useRouter()
@@ -23,7 +28,7 @@ const NotificationItems = ({ notification }) => {
         passHref
         target={"_blank"}
       >
-        <a>
+        <a onClick={() => setChecked(notification.id)}>
           <ListItem>
             <Indicator />
             <Text>{notification[locale]}</Text>

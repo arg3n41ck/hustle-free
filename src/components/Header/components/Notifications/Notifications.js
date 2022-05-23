@@ -3,6 +3,7 @@ import styled from "styled-components"
 import NotificationModal from "./NotificationModal"
 import $api from "../../../../services/axios"
 import { useInterval } from "../../../../hooks/useInterval"
+import { useRouter } from "next/router"
 
 const getNotifications = async () => {
   try {
@@ -16,6 +17,7 @@ const getNotifications = async () => {
 const Notifications = () => {
   const [anchorNotifications, setAnchorNotifications] = useState(null)
   const [notifications, setNotifications] = useState(null)
+  const route = useRouter()
 
   useInterval(async () => {
     getNotifications().then(setNotifications)
@@ -23,7 +25,7 @@ const Notifications = () => {
 
   useEffect(() => {
     getNotifications().then(setNotifications)
-  }, [])
+  }, [route])
 
   return (
     <NotificationWrapper>

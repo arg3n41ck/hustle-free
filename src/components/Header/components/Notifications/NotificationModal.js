@@ -1,4 +1,4 @@
-import React  from "react"
+import React from "react"
 import { Box, Popover } from "@mui/material"
 import styled from "styled-components"
 import NotificationItems from "./NotificationItems"
@@ -9,7 +9,7 @@ function NotificationModal({
   setAnchorNotifications,
 }) {
   const idNotifications = !!anchorNotifications ? "simple-popover" : undefined
-
+  console.log(notifications)
   return (
     <Popover
       id={idNotifications}
