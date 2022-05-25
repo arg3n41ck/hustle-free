@@ -42,8 +42,8 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
   const formik = useFormik({
     initialValues: {
       nameOrganizer: !!data?.name_organization ? data.name_organization : "",
-      country: !!data?.country ? data.country : 1,
-      city: !!data?.city ? data.city : 1,
+      country: !!data?.country ? data.country : null,
+      city: !!data?.city ? data.city : null,
       actualAddress: !!data?.actual_address ? data.actual_address : "",
       legalName: !!data?.legal_name ? data.legal_name : "",
       legalAddress: !!data?.legal_address ? data.legal_address : "",
