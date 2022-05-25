@@ -26,6 +26,14 @@ import {
   VKShareButton,
 } from "react-share"
 import { toast } from "react-toastify"
+import dynamic from "next/dynamic"
+// import MapFiledLeafLet from "../../../ui/Map/FieldLeaflet"
+const MapFiledLeafLet  = dynamic(
+  () => import("../../../ui/Map/FieldLeaflet"),
+  {
+    ssr: false,
+  })
+
 
 const getContacts = (event) => {
   const { contacts } = event
@@ -202,8 +210,11 @@ function EventMainInfo({ event }) {
           ))}
         </ul>
         <div />
-        <Map active={!!mapPoints}>
+        {/* <Map active={!!mapPoints}>
           {mapPoints && <MapField defaultPoints={mapPoints} disabled />}
+        </Map> */}
+        <Map active={!!mapPoints}>
+        <MapFiledLeafLet defaultPoints={mapPoints}  />
         </Map>
       </Column>
 
@@ -329,7 +340,7 @@ const ContactsSocials = styled.div`
 `
 
 const Map = styled.div`
-  width: 100%;
+  width: 500px;
   height: 151px;
   border-radius: 16px;
   background: no-repeat

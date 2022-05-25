@@ -14,6 +14,7 @@ import { Autocomplete } from "@mui/material"
 import { LocationIcon } from "../../../Events/EventsCatalog/EventsFilter"
 import MapField from "../../../../ui/Map/Field"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
+import MapFiledLeafLet from "../../../../ui/Map/FieldLeaflet"
 
 const emptyInitialValues = {
   placeName: null,
@@ -155,7 +156,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
         <Field>
           <p className="auth-title__input">Карта локации адреса турнира</p>
           <div style={{ height: 300 }}>
-            <MapField
+            <MapFiledLeafLet
               onPoint={({ lat, lng }) => {
                 setFieldValue("lat", `${lat}`)
                 setFieldValue("long", `${lng}`)

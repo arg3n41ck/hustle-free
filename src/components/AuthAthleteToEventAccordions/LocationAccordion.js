@@ -9,6 +9,7 @@ import AddressIcon from "../../assets/svg/address.svg"
 import { selectCountriesAndCities } from "../../redux/components/countriesAndCities"
 import { useSelector } from "react-redux"
 import MapField from "../ui/Map/Field"
+import MapFiledLeafLet from "../ui/Map/FieldLeaflet"
 
 function LocationAccordion({ event }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
@@ -78,7 +79,7 @@ function LocationAccordion({ event }) {
           </LocationAccordionItems>
 
           <Map active={!!mapPoints}>
-            {mapPoints && <MapField defaultPoints={mapPoints} disabled />}
+            {mapPoints && <MapFiledLeafLet defaultPoints={mapPoints} disabled />}
           </Map>
         </AccordionDetails>
       </LocationAccordionCustom>
