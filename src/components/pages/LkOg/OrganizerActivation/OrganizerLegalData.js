@@ -2,12 +2,13 @@ import React, { useState } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
 import styled from "styled-components"
-import { TextField, MenuItem } from "@mui/material"
+import { TextField, MenuItem, Autocomplete } from "@mui/material"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
 import { useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
+import { LocationIcon } from "../../Events/EventsCatalog/EventsFilter"
 
 const validationSchema = yup.object({
   nameOrganizer: yup
@@ -37,8 +38,8 @@ const validationSchema = yup.object({
 })
 
 const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
-  const [cities, setCities] = useState(null)
-  const [countries] = useSelector(selectCountriesAndCities)
+  const [currentCities, setCurrentCities] = useState(null)
+  const [countries, cities] = useSelector(selectCountriesAndCities)
   const formik = useFormik({
     initialValues: {
       nameOrganizer: !!data?.name_organization ? data.name_organization : "",
@@ -91,6 +92,13 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
     setCities(item)
   }
 
+  const changeCurrentCities = (changeCountry) => {
+    const findObj = countries.find(
+      (country) => country?.id === changeCountry?.id
+    )
+    if (findObj) setCurrentCities(findObj.cityCountry)
+  }
+
   return (
     <Form onSubmit={formik.handleSubmit}>
       <div className="auth-wrapper__input">
@@ -113,57 +121,59 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
 
       <div className="auth-wrapper__input">
         <p className="auth-title__input">Страна</p>
-        <TextField
-          select
-          sx={{ width: "100%", color: "white" }}
-          name="country"
-          value={formik.values.country}
-          onChange={formik.handleChange}
-          error={formik.touched.country && Boolean(formik.errors.country)}
-          helperText={formik.touched.country && formik.errors.country}
-        >
-          {!!countries &&
-            countries.map((item) => (
-              <MenuItem
-                onClick={() => handleClickCities(item)}
-                key={item.id}
-                value={item.id}
-              >
-                {item.name}
-              </MenuItem>
-            ))}
-        </TextField>
+        <Autocomplete
+          noOptionsText={"Ничего не найдено"}
+          onChange={(_, value) => [
+            changeCurrentCities(value),
+            formik.setFieldValue("country", value?.id || null),
+            formik.setFieldValue("city", ""),
+          ]}
+          options={countries.map((option) => option) || []}
+          getOptionLabel={(option) => option.name}
+          value={
+            countries.find(({ id }) => id === formik.values?.country) || null
+          }
+          fullWidth
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              placeholder="Страна"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: <LocationIcon />,
+              }}
+            />
+          )}
+        />
       </div>
 
       <div className="auth-wrapper__input">
         <p className="auth-title__input">Город</p>
-        <TextField
-          select
-          sx={{
-            width: "100%",
-            color: "white",
-          }}
-          name="city"
-          value={formik.values.city}
-          onChange={formik.handleChange}
-          error={formik.touched.city && Boolean(formik.errors.city)}
-          helperText={formik.touched.city && formik.errors.city}
-        >
-          {!!cities
-            ? cities.cityCountry.map((item) => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
-            : !!countries &&
-              countries.map(
-                ({ cityCountry }) =>
-                  !!cityCountry &&
-                  cityCountry.map((item) => (
-                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                  ))
-              )}
-        </TextField>
+        <Autocomplete
+          noOptionsText={"Ничего не найдено"}
+          onChange={(_, value) =>
+            formik.setFieldValue("city", value?.id || null)
+          }
+          options={
+            countries.find(({ id }) => id === formik.values?.country)
+              ?.cityCountry || []
+          }
+          getOptionLabel={(option) => option?.name}
+          value={cities.find(({ id }) => id === formik.values.city) || null}
+          fullWidth
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              placeholder="Город"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: <LocationIcon />,
+              }}
+            />
+          )}
+        />
       </div>
 
       <div className="auth-wrapper__input">
