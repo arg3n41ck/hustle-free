@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
 import { getGender } from "../../LkOg/Tabs/Events/EventParticipantCategories"
 import { useTranslation } from "next-i18next"
+import Tooltip from '@mui/material/Tooltip';
 
 const createDataForTable = (pc = []) => {
   const {
@@ -50,10 +51,12 @@ function Table({ pc }) {
       },
       {
         column: (
+          <Tooltip style={{cursor: "pointer"}} title="Цена за стандартный период регистрации">
           <PriceHead>
             <span>Цена</span>
             <Info />
           </PriceHead>
+          </Tooltip>
         ),
         accessor: "price",
       },
