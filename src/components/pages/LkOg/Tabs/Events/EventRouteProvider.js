@@ -27,11 +27,23 @@ const eventProfileFormPaths = [
   "/lk-og/profile/events/edit",
 ]
 
+const pageNames = {
+  general: "general",
+  location: "location",
+  periods: "periods",
+  description: "description",
+  rules: "rules",
+  participantCategories: "participant-categories",
+  contacts: "contacts",
+}
+
 function EventRouteWrapper({ children }) {
   const {
     pathname,
     query: { id: eventId },
+    push: routerPush,
   } = useRouter()
+  const [activePage, setActivePage] = useState(null)
 
   const [ctxStep, setCtxStep] = useState({
     general: {
@@ -93,6 +105,16 @@ function EventRouteWrapper({ children }) {
     [eventId, pathname]
   )
 
+  useEffect(() => {
+    for (let key in ctxStep) {
+      const { allFieldsFilled, access } = ctxStep[key]
+
+      if (!allFieldsFilled && access) {
+        setActivePage(key)
+      }
+    }
+  }, [ctxStep])
+
   const isInOgProfile = useMemo(
     () => eventProfileFormPaths.includes(pathname),
     [eventId, pathname]
@@ -108,6 +130,18 @@ function EventRouteWrapper({ children }) {
           })
       : rowEventRoutes(null)
   }, [eventId, pathname])
+
+  useEffect(async () => {
+    const activePageName = pageNames[activePage]
+    const isInOtherEditPage = !pathname.includes(`${activePageName}`)
+
+    if (isInOgProfile && eventId && activePage && isInOtherEditPage) {
+      await routerPush({
+        pathname: `/lk-og/profile/events/edit/[id]/${activePageName}`,
+        query: { id: eventId },
+      })
+    }
+  }, [activePage])
 
   return (
     <EventRouteContext.Provider
