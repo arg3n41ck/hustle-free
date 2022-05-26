@@ -1,11 +1,7 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import { motion } from "framer-motion"
-import {
-  IconButton,
-  InputAdornment,
-  TextField,
-} from "@mui/material"
+import { IconButton, InputAdornment, TextField } from "@mui/material"
 import { useFormik } from "formik"
 import * as yup from "yup"
 import { theme } from "../../../../styles/theme"
@@ -13,6 +9,7 @@ import { toast } from "react-toastify"
 import $api from "../../../../services/axios"
 import useQuery from "../../../../hooks/useQuery"
 import { useRouter } from "next/router"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function Confirm() {
   const query = useQuery()
@@ -134,6 +131,12 @@ function Confirm() {
 }
 
 export default Confirm
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
 
 const Form = styled(motion.form)``
 

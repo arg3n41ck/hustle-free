@@ -3,9 +3,9 @@ import styled from "styled-components"
 import AuthAthleteToEventAllAccordions from "../../../components/AuthAthleteToEventAccordions/AuthAthleteToEventAllAccordions"
 import AuthorizationAthleteToEvent from "../../../components/pages/Authorization/AuthorizationAthleteToEvent"
 import $api from "../../../services/axios"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function Registration({ data }) {
-
   return (
     <RegistrationContainer>
       <AuthorizationAthleteToEvent />
@@ -17,11 +17,15 @@ function Registration({ data }) {
 export default Registration
 
 export async function getServerSideProps(context) {
-  const { query } = context
+  const { query, locale } = context
   const { data } = await $api.get(`/events/events/${query.id}/`)
 
   return {
-    props: { data, query }, // will be passed to the page component as props
+    props: {
+      data,
+      query,
+      ...(await serverSideTranslations(locale, ["header", "common"])),
+    }, // will be passed to the page component as props
   }
 }
 

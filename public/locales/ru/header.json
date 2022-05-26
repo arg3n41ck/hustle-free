@@ -1,0 +1,29 @@
+{
+  "navLinks": {
+    "events": "Турниры",
+    "more": "Подробнее",
+    "community": "Сообщество"
+  },
+  "userTabs": {
+    "athlete": {
+      "profile": "Профиль",
+      "events": "Мои турниры",
+      "history": "Моя история",
+      "team": "Мои команды",
+      "settings": "Настройки"
+    },
+    "team": {
+      "profile": "Профиль",
+      "athletes": "Атлеты",
+      "statistic": "Статистика",
+      "settings": "Настройки"
+    },
+    "organizer": {
+      "profile": "Профиль",
+      "events": "Мои турниры",
+      "settings": "Настройки"
+    },
+    "exit": "Выйти",
+    "login": "Войти"
+  }
+}

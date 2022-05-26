@@ -6,6 +6,7 @@ import EventParticipantCategories from "../../../../../../components/pages/LkOg/
 import { useRouter } from "next/router"
 import { getEventDefaultValues } from "./location"
 import $api from "../../../../../../services/axios"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 export const getSportTypeByEvent = async (eventId) => {
   const { data } = await $api.get(`/organizer/events/${eventId}/`)
   return data
@@ -56,3 +57,16 @@ function ParticipantCategories() {
 }
 
 export default ParticipantCategories
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  }
+}

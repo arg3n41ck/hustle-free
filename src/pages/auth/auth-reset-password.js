@@ -13,6 +13,7 @@ import $api from "../../services/axios"
 import { useRouter } from "next/router"
 import { hide, show } from "./password/reset/confirm"
 import { toast } from "react-toastify"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const validationSchema = yup.object({
   currentPassword: yup
@@ -250,3 +251,10 @@ export const PasswordIcon = (show) => {
     </svg>
   )
 }
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
+

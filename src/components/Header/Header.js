@@ -14,7 +14,8 @@ import { lkAhTabs } from "../pages/LkAh/Tabs/tabConstants"
 import ExitIcon from "../../assets/svg/exit-icon.svg"
 import { exitUser, selectIsUserAuth } from "../../redux/components/user"
 import HeaderLocalizationPopover from "./components/HeaderLocalizationPopover"
-import { getRoleInRu, truncateString } from "../../helpers/helpers"
+import { truncateString } from "../../helpers/helpers"
+import { useTranslation } from "next-i18next"
 
 const Header = () => {
   const { push: routerPush } = useRouter()
@@ -24,6 +25,8 @@ const Header = () => {
   const user = useSelector((state) => state.user.user)
   const [userAuthenticated] = useSelector(selectIsUserAuth)
   const dispatch = useDispatch()
+  const { t: tHeader } = useTranslation("header")
+  const { t: tCommon } = useTranslation("common")
   const activeTabs = userAuthenticated
     ? (user?.role === "organizer" && lkOgTabs) ||
       (user?.role === "team" && lkTmTabs) ||
@@ -34,18 +37,14 @@ const Header = () => {
     setUserMenu(false)
   }, [userAuthenticated])
 
-  useEffect(() => {
-    !window.localStorage.getItem("locale") && window.localStorage.setItem("locale", "ru")
-  }, [typeof window !== "undefined" && window])
-
-  const changeMenu = (value) => {
+  const changeMenu = async (value) => {
     setAnchorUserMenu(null)
     if (value === "exit") {
       clearCookies()
-      outHandler()
+      await outHandler()
       return
     }
-    routerPush(value)
+    await routerPush(value)
   }
 
   const outHandler = async () => {
@@ -70,17 +69,17 @@ const Header = () => {
           <NavbarTextList>
             <Link href={"/events"} passHref>
               <a>
-                <NavbarText>Турниры</NavbarText>
+                <NavbarText>{tHeader("navLinks.events")}</NavbarText>
               </a>
             </Link>
             <Link href={"/"} passHref>
               <a>
-                <NavbarText>Подробнее</NavbarText>
+                <NavbarText>{tHeader("navLinks.more")}</NavbarText>
               </a>
             </Link>
             <Link href={"/communities"} passHref>
               <a>
-                <NavbarText>Сообщество</NavbarText>
+                <NavbarText>{tHeader("navLinks.community")}</NavbarText>
               </a>
             </Link>
           </NavbarTextList>
@@ -109,7 +108,7 @@ const Header = () => {
                       }`
                     : truncateString(user?.fullNameCoach || "", 15)}
                 </UserName>
-                <UserRole>{getRoleInRu(user?.role)}</UserRole>
+                <UserRole>{tCommon(`userRoles.${user?.role}`)}</UserRole>
               </UserInfo>
               <svg
                 width="18"
@@ -126,7 +125,7 @@ const Header = () => {
             </UserMenu>
           ) : (
             <LoginButton onClick={() => routerPush("/login")}>
-              ВОЙТИ
+              {tHeader("userTabs.login")}
             </LoginButton>
           )}
           <Popover
@@ -159,7 +158,7 @@ const Header = () => {
                     >
                       <UserMenuItemContent>
                         <IconWrapper>{tab.icon}</IconWrapper>
-                        <p>{tab.name}</p>
+                        <p>{tHeader(`userTabs.${user?.role}.${tab.name}`)}</p>
                       </UserMenuItemContent>
                     </UserMenuItem>
                   ))}
@@ -168,7 +167,7 @@ const Header = () => {
                   <IconWrapper>
                     <ExitIcon />
                   </IconWrapper>
-                  <p>Выйти</p>
+                  <p>{tHeader("userTabs.exit")}</p>
                 </UserMenuItemContent>
               </UserMenuItem>
             </WrapperUserMenu>

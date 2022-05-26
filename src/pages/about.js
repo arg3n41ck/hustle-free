@@ -1,6 +1,7 @@
 import React  from "react"
 import { Container } from "../components/ui/Wrappers/Container"
 import { MainPageWrapper } from "../components/pages/MainPage/MainPage"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const About = () => {
 
@@ -14,3 +15,10 @@ const About = () => {
 }
 
 export default About
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
+

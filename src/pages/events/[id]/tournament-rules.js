@@ -3,6 +3,7 @@ import Tournamentrules from "../../../components/pages/Event/TournamentRules/Tou
 import styled from "styled-components"
 import AuthAthleteToEventAllAccordions from "../../../components/AuthAthleteToEventAccordions/AuthAthleteToEventAllAccordions"
 import $api from "../../../services/axios"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function TournamentRules({ data }) {
   return (
@@ -16,10 +17,13 @@ function TournamentRules({ data }) {
 export default TournamentRules
 
 export async function getServerSideProps(context) {
-  const { query } = context
+  const { query, locale } = context
   const { data } = await $api.get(`/events/events/${query.id}/`)
   return {
-    props: { data }, // will be passed to the page component as props
+    props: {
+      data,
+      ...(await serverSideTranslations(locale, ["header", "common"])),
+    }, // will be passed to the page component as props
   }
 }
 

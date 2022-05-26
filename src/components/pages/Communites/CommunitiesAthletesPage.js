@@ -18,6 +18,7 @@ import {
   selectAthletes,
 } from "../../../redux/components/athletes"
 import CommunitesAthletesList from "./CommunitiesAthleteList"
+import { useTranslation } from "next-i18next"
 
 const gender = [
   {
@@ -41,6 +42,7 @@ function CommunitesAthletesPage() {
   const [search, setSearch] = useState(searchValue)
   const [, athletes] = useSelector(selectAthletes)
   const { push: routerPush } = useRouter()
+  const { t: tCommon } = useTranslation("common")
 
   const teaamsValue =
     teams?.results?.length &&
@@ -170,7 +172,7 @@ function CommunitesAthletesPage() {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Пол"
+                  placeholder={tCommon('form.fieldsNames.gender.label')}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <GenderIcon />,

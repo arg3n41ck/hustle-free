@@ -13,6 +13,7 @@ import Link from "next/link"
 import $api from "../../services/axios"
 import { localStorageGetItem } from "../../helpers/helpers"
 import { useRouter } from "next/router"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const variants = {
   open: { opacity: 1, transaction: 5 },
@@ -32,7 +33,7 @@ const Index = () => {
   const [toggleInfoModal, setToggleInfoModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const role = localStorageGetItem("role")
-  const { push: routerPush } = useRouter()
+  const { push: routerPush, locale } = useRouter()
 
   useEffect(() => {
     if (!role) {
@@ -44,7 +45,7 @@ const Index = () => {
     initialValues: {
       email: "",
       role,
-      language: typeof window !== "undefined" && window.localStorage.getItem("locale") || "ru"
+      language: locale,
     },
     onSubmit: async (values) => {
       setLoading(true)
@@ -172,7 +173,14 @@ const Index = () => {
                 className="auth-additionally__text"
               >
                 Регистрируясь, вы подтверждаете, что принимаете наши{" "}
-                <a href="" className="auth-link">
+                <a
+                  href="/docs/privacy_policy.pdf"
+                  className="auth-link"
+                  className="auth-link"
+                  download
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Условия использования
                 </a>{" "}
                 и{" "}
@@ -203,6 +211,12 @@ const Index = () => {
     </>
   )
 }
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
 
 const ErrorMessage = styled.p`
   color: #eb5757;

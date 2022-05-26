@@ -8,11 +8,13 @@ import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
 import $api from "../../../../services/axios"
 import { useRouter } from "next/router"
+import { useTranslation } from "next-i18next"
 
 const Filters = ({ levels, onFilter }) => {
   const [weights, setWeights] = useState([])
   const [countries] = useSelector(selectCountriesAndCities)
   const [teams, setTeams] = useState([])
+  const { t: tCommon } = useTranslation("common")
   const router = useRouter()
 
   useEffect(async () => {
@@ -95,7 +97,7 @@ const Filters = ({ levels, onFilter }) => {
           </Field>
 
           <Field>
-            <p className="auth-title__input">Пол</p>
+            <p className="auth-title__input">{tCommon('form.fieldsNames.gender.label')}</p>
             <Autocomplete
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -117,7 +119,7 @@ const Filters = ({ levels, onFilter }) => {
               options={["Мужчина", "Женщина"].map((option) => option)}
               fullWidth
               renderInput={(params) => (
-                <TextField {...params} fullWidth placeholder="Пол" />
+                <TextField {...params} fullWidth placeholder={tCommon('form.fieldsNames.gender.label')} />
               )}
             />
           </Field>

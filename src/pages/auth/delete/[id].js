@@ -1,4 +1,4 @@
-import React  from "react"
+import React from "react"
 import styled from "styled-components"
 import { motion } from "framer-motion"
 import { useRouter } from "next/router"
@@ -8,6 +8,7 @@ import * as yup from "yup"
 import $api from "../../../services/axios"
 import { useDispatch } from "react-redux"
 import { exitUser } from "../../../redux/components/user"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const Delete = () => {
   const {
@@ -24,7 +25,7 @@ const Delete = () => {
     }),
     onSubmit: async () => {
       try {
-        await $api.delete(`/accounts/delete/${userId}/`);
+        await $api.delete(`/accounts/delete/${userId}/`)
         dispatch(exitUser())
         toast.success(`Вы успешно удалили свой профиль!`)
         await routerPush("/")
@@ -93,6 +94,19 @@ const Delete = () => {
       </div>
     </Form>
   )
+}
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  }
 }
 
 const Form = styled(motion.form)`

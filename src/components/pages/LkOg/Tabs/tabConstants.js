@@ -4,19 +4,19 @@ import SettingsIcon from "../../../../assets/svg/settings.svg"
 
 export const lkOgTabs = [
   {
-    name: "Профиль",
+    name: "profile",
     icon: <ProfileIcon />,
     href: "/lk-og/profile",
     children: ["/lk-og/profile/edit"],
   },
   {
-    name: "Мои турниры",
+    name: "events",
     icon: <MyTournamentsIcon />,
     href: "/lk-og/profile/events",
     children: ["/lk-og/profile/events/edit"],
   },
   {
-    name: "Настройки",
+    name: "settings",
     icon: <SettingsIcon />,
     href: "/lk-og/profile/",
   },

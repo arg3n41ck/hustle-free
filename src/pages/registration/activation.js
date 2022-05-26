@@ -4,6 +4,7 @@ import $api from "../../services/axios"
 import { fetchCountries } from "../../redux/components/countriesAndCities"
 import { useRouter } from "next/router"
 import { setCookie } from "../../services/JWTService"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const InputData = ({ query }) => {
   const dispatch = useDispatch()
@@ -30,8 +31,11 @@ const InputData = ({ query }) => {
 
 export default InputData
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({ query, locale }) {
   return {
-    props: { query: context.query }, // will be passed to the page component as props
+    props: {
+      query,
+      ...(await serverSideTranslations(locale, ["header", "common"])),
+    }, // will be passed to the page component as props
   }
 }

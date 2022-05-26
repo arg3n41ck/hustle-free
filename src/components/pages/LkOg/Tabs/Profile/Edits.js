@@ -29,6 +29,7 @@ import {
   ImageWrapper,
   UploadIconWrapper,
 } from "../../../LkTm/Tabs/Profile/Edits"
+import { useTranslation } from "next-i18next"
 
 const validationSchema = yup.object({
   email: yup
@@ -66,6 +67,7 @@ const Edits = () => {
   const dispatch = useDispatch()
   const { push: routerPush } = useRouter()
   const [currentCities, setCurrentCities] = useState([])
+  const { t: tCommon } = useTranslation("common")
   const formik = useFormik({
     initialValues: user.user && {
       email: "",
@@ -139,7 +141,7 @@ const Edits = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Header>
-        <Title>Редактирование профиля</Title>
+        <Title>{tCommon("form.titles.profileEdit")}</Title>
       </Header>
       <Content>
         <Box
@@ -150,7 +152,9 @@ const Edits = () => {
           }}
         >
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Фамилия</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.lastName")}
+            </p>
             <TextField
               sx={{ width: "100%" }}
               name="lastName"
@@ -161,7 +165,7 @@ const Edits = () => {
                   e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
                 )
               }
-              placeholder="Фамилия"
+              placeholder={tCommon("form.fieldsNames.lastName")}
               variant="outlined"
               error={
                 formik.touched?.lastName && Boolean(formik.errors?.lastName)
@@ -170,7 +174,9 @@ const Edits = () => {
             />
           </div>
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Имя</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.firstName")}
+            </p>
             <TextField
               sx={{ width: "100%" }}
               name="firstName"
@@ -181,7 +187,7 @@ const Edits = () => {
                   e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
                 )
               }
-              placeholder="Имя"
+              placeholder={tCommon("form.fieldsNames.firstName")}
               variant="outlined"
               error={
                 formik.touched?.firstName && Boolean(formik.errors?.firstName)
@@ -199,7 +205,10 @@ const Edits = () => {
           }}
           className="auth-wrapper__input"
         >
-          <p className="auth-title__input">Дата рождения (не обязательно)</p>
+          <p className="auth-title__input">
+            {tCommon("form.fieldsNames.birthDate")} (
+            {tCommon("form.fieldsNames.notNecessary")})
+          </p>
           <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
             <MobileDatePicker
               toolbarTitle={"Выбрать дату"}
@@ -229,18 +238,21 @@ const Edits = () => {
         </Box>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Пол (не обязательно)</p>
+          <p className="auth-title__input">
+            {tCommon("form.fieldsNames.gender.label")} (
+            {tCommon("form.fieldsNames.notNecessary")})
+          </p>
           <Box sx={{ display: "flex", flexWrap: "wrap" }}>
             <RadioWrapper>
               <Radio
-                text={"Женский"}
+                text={tCommon("form.fieldsNames.gender.female")}
                 checked={formik.values?.gender === "female"}
                 onChange={() => formik.setFieldValue("gender", "female")}
               />
             </RadioWrapper>
             <RadioWrapper>
               <Radio
-                text={"Мужской"}
+                text={tCommon("form.fieldsNames.gender.male")}
                 checked={formik.values?.gender === "male"}
                 onChange={() => formik.setFieldValue("gender", "male")}
               />
@@ -249,7 +261,9 @@ const Edits = () => {
         </div>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Номер телефона</p>
+          <p className="auth-title__input">
+            {tCommon("form.fieldsNames.phoneNumber")}
+          </p>
           <InputMask
             name={"phoneNumber"}
             onChange={(e) =>
@@ -266,7 +280,7 @@ const Edits = () => {
                 {...inputProps}
                 sx={{ width: "100%" }}
                 variant="outlined"
-                placeholder={"+7 (7"}
+                placeholder={"+7 (999) 999 99 99"}
                 error={
                   Boolean(formik.touched?.phoneNumber) &&
                   formik.errors?.phoneNumber
@@ -280,13 +294,15 @@ const Edits = () => {
         </div>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Электронный адрес</p>
+          <p className="auth-title__input">
+            {tCommon("form.fieldsNames.email")}
+          </p>
           <TextField
             sx={{ width: "100%" }}
             name="email"
             value={formik.values?.email}
             onChange={() => {}}
-            placeholder="Электронный адрес"
+            placeholder={tCommon("form.fieldsNames.email")}
             variant="outlined"
             error={formik.touched?.email && Boolean(formik.errors?.email)}
             helperText={formik.touched?.email && formik.errors?.email}
@@ -297,13 +313,15 @@ const Edits = () => {
         </div>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Название организации</p>
+          <p className="auth-title__input">
+            {tCommon("form.fieldsNames.organizationName")}
+          </p>
           <TextField
             sx={{ width: "100%" }}
             name="nameOrganization"
             onChange={formik.handleChange}
             value={formik.values?.nameOrganization}
-            placeholder="Название организации"
+            placeholder={tCommon("form.fieldsNames.organizationName")}
             variant="outlined"
             error={
               formik.touched?.nameOrganization &&
@@ -317,7 +335,9 @@ const Edits = () => {
         </div>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Страна</p>
+          <p className="auth-title__input">
+            {tCommon("form.fieldsNames.country")}
+          </p>
           <SelectUI
             error={!!(formik.touched?.country && formik.errors?.country)}
             onChange={(e) => {
@@ -334,7 +354,9 @@ const Edits = () => {
               selected
               value={formik.values?.country ?? ""}
             >
-              {!!formik.values?.country ? formik.values?.country : "Страна"}
+              {!!formik.values?.country
+                ? formik.values?.country
+                : tCommon("form.fieldsNames.country")}
             </option>
             {countries
               .filter((country) => country.name !== formik.values?.country)
@@ -347,7 +369,9 @@ const Edits = () => {
         </div>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Город</p>
+          <p className="auth-title__input">
+            {tCommon("form.fieldsNames.city")}
+          </p>
           <SelectUI
             error={!!(formik.touched?.city && formik.errors?.city)}
             onChange={formik.handleChange}
@@ -374,14 +398,15 @@ const Edits = () => {
 
         <div className="auth-wrapper__input">
           <p className="auth-title__input">
-            Фактический Адрес (не обязательно)
+            {tCommon("form.fieldsNames.actualAddress")} (
+            {tCommon("form.fieldsNames.notNecessary")})
           </p>
           <TextField
             sx={{ width: "100%" }}
             name="factAddress"
             onChange={formik.handleChange}
             value={formik.values?.factAddress}
-            placeholder="Фактический Адрес"
+            placeholder={tCommon("form.fieldsNames.actualAddress")}
             variant="outlined"
             error={
               formik.touched?.factAddress && Boolean(formik.errors?.factAddress)
@@ -393,9 +418,9 @@ const Edits = () => {
         </div>
 
         <Gallery>
-          <Title>Фотография профиля</Title>
+          <Title>{tCommon("form.fieldsNames.profileAvatar.label")}</Title>
           <GrayText style={{ marginTop: 4 }}>
-            Фотография показывается, например, рядом с вашими профилем
+            {tCommon("form.fieldsNames.profileAvatar.description")}
           </GrayText>
           <GalleryBlock>
             <GalleryLabel
@@ -430,8 +455,7 @@ const Edits = () => {
               />
             </GalleryLabel>
             <GrayText>
-              Рекомендуем использовать изображение размером не менее 600х600
-              пикселей в формате PNG. Размер файла – не более 4 МБ.
+              {tCommon("form.fieldsNames.profileAvatar.rules4mb")}
             </GrayText>
           </GalleryBlock>
         </Gallery>
@@ -441,15 +465,19 @@ const Edits = () => {
         >
           <Link href={"/auth/auth-reset-password"}>
             <a>
-              <p className="auth-link">Изменить пароль</p>
+              <p className="auth-link">
+                {tCommon("form.fieldsNames.changePassword")}
+              </p>
             </a>
           </Link>
         </div>
         <div className="auth-wrapper__independent border-top">
-          Вы можете{" "}
+          {tCommon("form.fieldsNames.deleteProfile.extra")}{" "}
           <Link href={`/auth/delete/${user.id}`}>
             <a>
-              <span className="auth-link">удалить свой профиль</span>
+              <span className="auth-link">
+                {tCommon("form.fieldsNames.deleteProfile.label")}
+              </span>
             </a>
           </Link>
         </div>
@@ -458,14 +486,14 @@ const Edits = () => {
         <Link href={"/lk-og/profile/"} passHref>
           <ButtonWrapper>
             <CustomButton type={"button"} typeButton={"secondary"}>
-              Отмена
+              {tCommon("form.fieldsNames.cancel")}
             </CustomButton>
           </ButtonWrapper>
         </Link>
 
         <ButtonWrapper>
           <CustomButton type={"submit"} typeButton={"primary"}>
-            Сохранить
+            {tCommon("form.fieldsNames.save")}
           </CustomButton>
         </ButtonWrapper>
       </Footer>

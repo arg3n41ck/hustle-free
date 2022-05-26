@@ -5,6 +5,7 @@ import EventsCreateLayout from "../../../../../../components/layouts/EventsCreat
 import EventDescription from "../../../../../../components/pages/LkOg/Tabs/Events/EventDescription"
 import { useRouter } from "next/router"
 import { getEventDefaultValues } from "./location"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function Description() {
   const {
@@ -38,3 +39,16 @@ function Description() {
 }
 
 export default Description
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  }
+}

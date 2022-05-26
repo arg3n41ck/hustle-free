@@ -4,6 +4,7 @@ import $api from "../../../../services/axios"
 import Statistic from "../../../../components/pages/LkTm/Tabs/Statistics/Statistic/Statistic"
 import { useRouter } from "next/router"
 import { teamProfileTabs } from "../../../../components/pages/Team/tabConstants"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function StatisticPage({ statistic }) {
   const { query } = useRouter()
@@ -23,11 +24,12 @@ function StatisticPage({ statistic }) {
 export default StatisticPage
 
 export async function getServerSideProps(context) {
-  const { query } = context
+  const { query, locale } = context
   const { data } = await $api.get(`/teams/team_statistic/${query.statId}/`)
   return {
     props: {
       statistic: data || null,
+      ...(await serverSideTranslations(locale, ["header", "common"])),
     },
   }
 }
