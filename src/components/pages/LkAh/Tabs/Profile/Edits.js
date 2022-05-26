@@ -7,10 +7,6 @@ import {
   Box,
   TextField,
   Autocomplete,
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
 } from "@mui/material"
 import { ru } from "date-fns/locale"
 import { LocalizationProvider, MobileDatePicker } from "@mui/lab"
@@ -24,7 +20,6 @@ import EmailIcon from "../../../../../assets/svg/profile-email-edit.svg"
 import { saveUser } from "../../../../../redux/components/user"
 import { format } from "date-fns"
 import { useRouter } from "next/router"
-import { PasswordIcon } from "../../../../../pages/auth/auth-reset-password"
 import { theme } from "../../../../../styles/theme"
 import {
   fetchCountries,
@@ -35,6 +30,7 @@ import { LocationIcon } from "../../../Events/EventsCatalog/EventsFilter"
 import { decamelizeKeys } from "humps"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import Link from "next/link"
+import { useTranslation } from "next-i18next"
 
 const validationSchema = yup.object({
   email: yup
@@ -64,8 +60,6 @@ const emptyInitialValues = {
   avatar: "",
   nameOrganization: "",
   address: "",
-  old_password: "",
-  new_password: "",
   isVisible: true,
 }
 
@@ -79,9 +73,9 @@ const Edits = () => {
   const dispatch = useDispatch()
   const { push: routerPush } = useRouter()
   const [currentCities, setCurrentCities] = useState([])
-  const [showPassword, setShowPassword] = useState(false)
   const [imageUrl, setImageUrl] = useState(null)
   const [, cities] = useSelector(selectCountriesAndCities)
+  const { t: tCommon } = useTranslation("common")
 
   const formik = useFormik({
     initialValues: !!user?.id
@@ -123,7 +117,7 @@ const Edits = () => {
 
         dispatch(saveUser({ ...newValues, ...data }))
         dispatch(fetchUser())
-        routerPush("/lk-ah/profile")
+        await routerPush("/lk-ah/profile")
       } catch (e) {
         throw e
       }
@@ -133,10 +127,6 @@ const Edits = () => {
   useEffect(() => {
     if (user) formik.setValues(user)
   }, [user])
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault()
-  }
 
   const changeCurrentCities = (changeCountry) => {
     const findObj = countries.find((country) => country.id === changeCountry.id)
@@ -167,7 +157,7 @@ const Edits = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Header>
-        <TitleHeader>Редактирование профиля</TitleHeader>
+        <TitleHeader>{tCommon("form.titles.profileEdit")}</TitleHeader>
       </Header>
       <Content>
         <Box
@@ -178,7 +168,9 @@ const Edits = () => {
           }}
         >
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Фамилия</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.lastName")}
+            </p>
             <TextField
               sx={{ width: "100%" }}
               name="lastName"
@@ -189,7 +181,7 @@ const Edits = () => {
                   e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
                 )
               }
-              placeholder="Фамилия"
+              placeholder={tCommon("form.fieldsNames.lastName")}
               variant="outlined"
               error={formik.touched.lastName && Boolean(formik.errors.lastName)}
               helperText={formik.touched.lastName && formik.errors.lastName}
@@ -197,7 +189,9 @@ const Edits = () => {
           </div>
 
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Имя</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.firstName")}
+            </p>
             <TextField
               sx={{ width: "100%" }}
               name="firstName"
@@ -208,7 +202,7 @@ const Edits = () => {
                   e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
                 )
               }
-              placeholder="Имя"
+              placeholder={tCommon("form.fieldsNames.firstName")}
               variant="outlined"
               error={
                 formik.touched.firstName && Boolean(formik.errors.firstName)
@@ -229,7 +223,10 @@ const Edits = () => {
           className="auth-wrapper__input"
         >
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Дата рождения (не обязательно)</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.birthDate")} (
+              {tCommon("form.fieldsNames.notNecessary")})
+            </p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
               <MobileDatePicker
                 toolbarTitle={"Выбрать дату"}
@@ -263,7 +260,10 @@ const Edits = () => {
             </LocalizationProvider>
           </div>
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Номер телефона (не обязательно)</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.phoneNumber")} (
+              {tCommon("form.fieldsNames.notNecessary")})
+            </p>
             <InputMask
               name={"phoneNumber"}
               onChange={(e) =>
@@ -305,7 +305,9 @@ const Edits = () => {
           className="auth-wrapper__input"
         >
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Страна</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.county")}
+            </p>
             <Autocomplete
               noOptionsText={"Ничего не найдено"}
               onChange={(_, value) => [
@@ -324,7 +326,7 @@ const Edits = () => {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Страна"
+                  placeholder={tCommon("form.fieldsNames.country")}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <LocationIcon />,
@@ -335,7 +337,9 @@ const Edits = () => {
           </div>
 
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Город</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.city")}
+            </p>
 
             <Autocomplete
               noOptionsText={"Ничего не найдено"}
@@ -353,7 +357,7 @@ const Edits = () => {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Город"
+                  placeholder={tCommon("form.fieldsNames.city")}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <LocationIcon />,
@@ -376,18 +380,20 @@ const Edits = () => {
           className="auth-wrapper__input"
         >
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Пол</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.gender.label")}
+            </p>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <RadioWrapper>
                 <Radio
-                  text={"Женский"}
+                  text={tCommon("form.fieldsNames.gender.female")}
                   checked={formik.values?.gender === "female"}
                   onChange={() => formik.setFieldValue("gender", "female")}
                 />
               </RadioWrapper>
               <RadioWrapper>
                 <Radio
-                  text={"Мужской"}
+                  text={tCommon("form.fieldsNames.gender.male")}
                   checked={formik.values?.gender === "male"}
                   onChange={() => formik.setFieldValue("gender", "male")}
                 />
@@ -396,18 +402,20 @@ const Edits = () => {
           </div>
 
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Тип профиля</p>
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.profileType")}
+            </p>
             <Box sx={{ display: "flex", flexWrap: "wrap" }}>
               <RadioWrapper>
                 <Radio
-                  text={"Открытый"}
+                  text={tCommon("form.fieldsNames.open")}
                   checked={formik.values?.isVisible}
                   onChange={() => formik.setFieldValue("isVisible", true)}
                 />
               </RadioWrapper>
               <RadioWrapper>
                 <Radio
-                  text={"Закрытый"}
+                  text={tCommon("form.fieldsNames.close")}
                   checked={!formik.values?.isVisible}
                   onChange={() => formik.setFieldValue("isVisible", false)}
                 />
@@ -416,13 +424,14 @@ const Edits = () => {
           </div>
         </Box>
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Электронный адрес</p>
+          <p className="auth-title__input">
+            {tCommon("form.fieldsNames.email")}
+          </p>
           <TextField
             sx={{ width: "100%" }}
             name="email"
             value={formik.values?.email}
-            onChange={() => {}}
-            placeholder="Электронный адрес"
+            placeholder={tCommon("form.fieldsNames.email")}
             variant="outlined"
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
@@ -431,85 +440,25 @@ const Edits = () => {
             }}
           />
         </div>
-
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">Старый пароль</p>
-          <FormControl sx={{ width: "100%" }} variant="outlined">
-            <OutlinedInput
-              placeholder="Старый пароль"
-              name="old_password"
-              value={formik.values?.old_password}
-              onChange={formik.handleChange}
-              error={
-                formik.touched?.old_password &&
-                Boolean(formik.errors?.old_password)
-              }
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    <PasswordIcon show={showPassword} />
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            {formik.touched?.old_password && (
-              <Error>{formik.errors?.old_password}</Error>
-            )}
-          </FormControl>
-        </div>
-
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">Новый пароль</p>
-          <FormControl sx={{ width: "100%" }} variant="outlined">
-            <OutlinedInput
-              placeholder="Новый пароль"
-              name="new_password"
-              value={formik.values?.new_password}
-              onChange={formik.handleChange}
-              error={
-                formik.touched?.new_password &&
-                Boolean(formik.errors?.new_password)
-              }
-              type={showPassword ? "text" : "password"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    <PasswordIcon show={showPassword} />
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            {formik.touched?.new_password && (
-              <Error>{formik.errors?.new_password}</Error>
-            )}
-          </FormControl>
-        </div>
         <div
           className="auth-wrapper__independent"
           style={{ margin: "0 0 32px", padding: "0" }}
         >
           <Link href={"/auth/auth-reset-password"}>
             <a>
-              <p className="auth-link">Изменить пароль</p>
+              <p className="auth-link">
+                {tCommon("form.fieldsNames.changePassword")}
+              </p>
             </a>
           </Link>
         </div>
         <div className="auth-wrapper__independent border-top">
-          Вы можете{" "}
+          {tCommon("form.fieldsNames.deleteProfile.extra")}{" "}
           <Link href={`/auth/delete/${user.id}`}>
             <a>
-              <span className="auth-link">удалить свой профиль</span>
+              <span className="auth-link">
+                {tCommon("form.fieldsNames.deleteProfile.label")}
+              </span>
             </a>
           </Link>
         </div>
@@ -517,21 +466,23 @@ const Edits = () => {
       <Footer>
         <ButtonWrapper onClick={() => routerPush("/lk-ah/profile")}>
           <CustomButton type={"button"} typeButton={"secondary"}>
-            Отмена
+            {tCommon("form.fieldsNames.cancel")}
           </CustomButton>
         </ButtonWrapper>
         <ButtonWrapper>
           <CustomButton type={"submit"} typeButton={"primary"}>
-            Сохранить
+            {tCommon("form.fieldsNames.save")}
           </CustomButton>
         </ButtonWrapper>
       </Footer>
 
       <Footer>
         <div className="auth-wrapper__input">
-          <h3 className="auth-title">Фотография профиля</h3>
+          <h3 className="auth-title">
+            {tCommon("form.fieldsNames.profileAvatar.label")}
+          </h3>
           <Description>
-            Фотография показывается, например, рядом с вашими профилем{" "}
+            {tCommon("form.fieldsNames.profileAvatar.description")}
           </Description>
           <AvatarWrapper>
             <FileUploadLabel
@@ -586,20 +537,7 @@ const Edits = () => {
 
             <div>
               <Description style={{ margin: 0 }}>
-                Рекомендуем использовать изображение размером не менее 600х600
-                пикселей в формате PNG.
-              </Description>
-
-              <Description
-                style={{
-                  margin: 0,
-                  color:
-                    formik.touched?.logo && Boolean(formik.errors?.logo)
-                      ? "#EB5757"
-                      : "#828282",
-                }}
-              >
-                Размер файла – не более 4 МБ.
+                {tCommon("form.fieldsNames.profileAvatar.rules4mb")}
               </Description>
             </div>
           </AvatarWrapper>

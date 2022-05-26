@@ -8,6 +8,7 @@ import { theme } from "../../../../styles/theme"
 import { toast } from "react-toastify"
 import $api from "../../../../services/axios"
 import AuthInfo from "../../../../components/ui/modals/AuthInfo"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const variants = {
   open: { opacity: 1, transaction: 5 },
@@ -76,6 +77,12 @@ function Reset() {
 }
 
 export default Reset
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
 
 const Form = styled(motion.form)``
 

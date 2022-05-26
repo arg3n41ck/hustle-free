@@ -9,7 +9,7 @@ function NotificationModal({
   setAnchorNotifications,
 }) {
   const idNotifications = !!anchorNotifications ? "simple-popover" : undefined
-  console.log(notifications)
+
   return (
     <Popover
       id={idNotifications}

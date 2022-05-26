@@ -6,6 +6,7 @@ import EventContacts from "../../../../../../components/pages/LkOg/Tabs/Events/E
 import { useRouter } from "next/router"
 import { getEventDefaultValues } from "./location"
 import { useSelector } from "react-redux"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function Contacts() {
   const user = useSelector((state) => state.user.user)
@@ -42,3 +43,16 @@ function Contacts() {
 }
 
 export default Contacts
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "userRoles": {
+    "organizer": "Organizer",
+    "team": "Team",
+    "athlete": "Athlete"
+  },
+  "form": {
+    "titles": {
+      "profileEdit": "Profile editing"
+    },
+    "fieldsNames": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "birthDate": "Date of birth",
+      "gender": {
+        "label": "Gender",
+        "male": "Male",
+        "female": "Female"
+      },
+      "notNecessary": "not necessary",
+      "phoneNumber": "Phone number",
+      "email": "Email",
+      "organizationName": "Name of the Organization",
+      "country": "Country",
+      "city": "City",
+      "actualAddress": "The actual address",
+      "profileAvatar": {
+        "label": "Profile photo",
+        "description": "The photo is displayed, for example, next to your profile",
+        "rules4mb": "We recommend using an image that is at least 600x600 pixels in PNG format. File size - no more than 4 MB."
+      },
+      "changePassword": "Change password",
+      "deleteProfile": {
+        "label": "delete profile",
+        "extra": "You can"
+      },
+      "edit": "Edit",
+      "contacts": "Contacts",
+      "profileType": "Type of profile",
+      "open": "Open",
+      "close": "Close",
+      "password": "password",
+      "oldPassword": "Old password",
+      "newPassword": "New password",
+      "cancel": "Cancel",
+      "save": "Save"
+    }
+  }
+}

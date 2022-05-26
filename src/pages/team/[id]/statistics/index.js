@@ -3,6 +3,7 @@ import LkLayout from "../../../../components/layouts/LkLayout"
 import { teamProfileTabs } from "../../../../components/pages/Team/tabConstants"
 import { useRouter } from "next/router"
 import Statistics from "../../../../components/pages/Team/Statistics"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function StatisticsPage() {
   const {
@@ -20,3 +21,17 @@ function StatisticsPage() {
 }
 
 export default StatisticsPage
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  }
+}
+

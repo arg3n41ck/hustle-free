@@ -1,0 +1,29 @@
+{
+  "navLinks": {
+    "events": "Events",
+    "more": "More",
+    "community": "Community"
+  },
+  "userTabs": {
+    "athlete": {
+      "profile": "Profile",
+      "events": "Events",
+      "history": "History",
+      "team": "My team",
+      "settings": "Settings"
+    },
+    "team": {
+      "profile": "Profile",
+      "athletes": "Athletes",
+      "statistic": "Statistic",
+      "settings": "Settings"
+    },
+    "organizer": {
+      "profile": "Profile",
+      "events": "My events",
+      "settings": "Settings"
+    },
+    "exit": "Exit",
+    "login": "Login"
+  }
+}

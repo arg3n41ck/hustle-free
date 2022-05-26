@@ -20,6 +20,7 @@ import {
   fetchCountries,
   selectCountriesAndCities,
 } from "../../../../../redux/components/countriesAndCities"
+import { useTranslation } from "next-i18next"
 
 const Info = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
@@ -30,6 +31,8 @@ const Info = ({ onToggleSidebar }) => {
     city: "",
   })
   const dispatch = useDispatch()
+  const { t: tHeader } = useTranslation("header")
+  const { t: tCommon } = useTranslation("common")
 
   useEffect(() => {
     dispatch(fetchCountries())
@@ -51,7 +54,7 @@ const Info = ({ onToggleSidebar }) => {
   return (
     <>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
-        <TitleHeader>Профиль</TitleHeader>
+        <TitleHeader>{tHeader("userTabs.organizer.profile")}</TitleHeader>
       </LkDefaultHeader>
       <Content>
         <Center>
@@ -68,7 +71,7 @@ const Info = ({ onToggleSidebar }) => {
               <IconWrapper>
                 <EditsIcon />
               </IconWrapper>
-              Редактировать
+              {tCommon("form.fieldsNames.edit")}
             </Button>
           </CenterRight>
         </Center>
@@ -77,14 +80,14 @@ const Info = ({ onToggleSidebar }) => {
             <WrapperIcon>
               <CompanyIcon />
             </WrapperIcon>
-            Название организации
+            {tCommon("form.fieldsNames.organizationName")}
           </Item>
           <Item>{user?.nameOrganization}</Item>
           <Item>
             <WrapperIcon>
               <CalendarIcon />
             </WrapperIcon>
-            День рождения:
+            {tCommon("form.fieldsNames.birthDate")}
           </Item>
           <Item>
             {!!user?.dateBirthday &&
@@ -96,31 +99,35 @@ const Info = ({ onToggleSidebar }) => {
             <WrapperIcon>
               <GenderIcon />
             </WrapperIcon>
-            Пол
+            {tCommon("form.fieldsNames.gender.label")}
           </Item>
-          <Item>{user?.gender === "male" ? "Мужской" : "Женский"}</Item>
+          <Item>
+            {user?.gender === "male"
+              ? tCommon("form.fieldsNames.gender.male")
+              : tCommon("form.fieldsNames.gender.female")}
+          </Item>
           <Item>
             <WrapperIcon>
               <LocationIcon />
             </WrapperIcon>
-            Страна, город
+            {tCommon("form.fieldsNames.country")}, {tCommon("form.fieldsNames.city")}
           </Item>
           <Item>
             {currentLocations.country || ""}
-            {currentLocations.city ? `, г. ${currentLocations.city}` : ""}
+            {currentLocations.city ? `, ${currentLocations.city}` : ""}
           </Item>
           <Item>
             <WrapperIcon>
               <PhoneIcon />
             </WrapperIcon>
-            Контакты
+            {tCommon("form.fieldsNames.contacts")}
           </Item>
           <Item>{phoneFormatter(user?.phoneNumber)}</Item>
           <Item>
             <WrapperIcon>
               <EmailIcon />
             </WrapperIcon>
-            E-mail
+            {tCommon("form.fieldsNames.email")}
           </Item>
           <Item>{user?.email}</Item>
         </List>
@@ -155,8 +162,9 @@ const Button = styled.button`
   border-radius: 4px;
   display: flex;
   align-content: center;
-  justify-content: center;
+  justify-content: flex-start;
   max-width: 202px;
+  padding: 0 10px;
   width: 100%;
   background: inherit;
   font-style: normal;

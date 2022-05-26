@@ -6,6 +6,7 @@ import EventLocation from "../../../../../../components/pages/LkOg/Tabs/Events/E
 import $api from "../../../../../../services/axios"
 import { useRouter } from "next/router"
 import { camelizeKeys } from "humps"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 export const getEventDefaultValues = async (href) => {
   try {
@@ -43,3 +44,16 @@ function Location() {
 }
 
 export default Location
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  }
+}

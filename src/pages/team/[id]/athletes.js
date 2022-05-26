@@ -19,6 +19,7 @@ import { SearchIcon } from "../../../components/pages/Events/EventsGlobalSearch/
 import useDebounce from "../../../hooks/useDebounce"
 import ApplyToTeam from "../../../components/TeamProfile/ApplyToTeam"
 import { getIsUserInTeam } from "./index"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function Athletes({ onToggleSidebar }) {
   const {
@@ -98,6 +99,19 @@ function Athletes({ onToggleSidebar }) {
 }
 
 export default Athletes
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})
+
+export const getStaticPaths = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  }
+}
 
 const AthletesWrapper = styled.div`
   display: flex;

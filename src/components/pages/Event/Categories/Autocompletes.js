@@ -5,6 +5,7 @@ import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
 import { useRouter } from "next/router"
 import styled from "styled-components"
+import { useTranslation } from "next-i18next"
 
 const encDecACOptions = [
   { name: "По убыванию", value: "increase" },
@@ -19,6 +20,7 @@ function Autocompletes({ levelOptions }) {
   const query = useQuery()
   const [countries] = useSelector(selectCountriesAndCities)
   const { push: routerPush } = useRouter()
+  const { t: tCommon } = useTranslation("common")
   const {
     query: {
       id: eventId,
@@ -87,7 +89,7 @@ function Autocompletes({ levelOptions }) {
           <TextField
             {...params}
             fullWidth
-            placeholder="Пол"
+            placeholder={tCommon('form.fieldsNames.gender.label')}
             InputProps={{
               ...params.InputProps,
             }}

@@ -6,31 +6,31 @@ import StoriesIcon from "../../../../assets/svg/MyStories.svg"
 
 export const lkAhTabs = [
   {
-    name: "Профиль",
+    name: "profile",
     icon: <ProfileIcon />,
     href: "/lk-ah/profile",
     children: ["/lk-ah/profile/edit"],
   },
   {
-    name: "Мои турниры",
+    name: "events",
     icon: <MyTournamentsIcon />,
     href: "/lk-ah/profile/events",
     children: ["/lk-ah/profile/events/create"],
   },
   {
-    name: "Моя история",
+    name: "history",
     icon: <StoriesIcon />,
     href: "/lk-ah/profile/stories",
     children: ["/lk-ah/profile/events/create"],
   },
   {
-    name: "Мои команды",
+    name: "team",
     icon: <TeamsIcon />,
     href: "/lk-ah/profile/teams",
     children: ["/lk-ah/profile/events/create"],
   },
   {
-    name: "Настройки",
+    name: "settings",
     icon: <SettingsIcon />,
     href: "/lk-ah/profile/",
   },

@@ -1,19 +1,22 @@
-import React from "react"
+import React  from "react"
 import { FormControl, MenuItem, Select } from "@mui/material"
 import styled from "styled-components"
+import { useRouter } from "next/router"
 
 function HeaderLocalizationPopover() {
-  const [localization, setLocalization] = React.useState(typeof window !== "undefined" && window.localStorage.getItem("locale") || "ru")
+  const { pathname, push, asPath, locale } = useRouter()
 
-  const onChangeLang = (value) => {
-    typeof window !== "undefined" && window.localStorage.setItem("locale",value)
-    setLocalization(value)
+  const onChangeLang = async (value) => {
+    typeof window !== "undefined" &&
+      window.localStorage.setItem("locale", value)
+    const url = pathname === asPath ? pathname : asPath
+    await push(url, url, { locale: value })
   }
 
   return (
     <Localization>
       <LocalizationSelect
-        value={localization}
+        value={locale}
         onChange={(e) => onChangeLang(e.target.value)}
         className="HeaderLocalization"
       >

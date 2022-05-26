@@ -1,13 +1,13 @@
 import React from "react"
-import Teams from "../../pages/LkAh/Tabs/Profile/Teams/Teams"
 import styled from "styled-components"
 import Athlete from "../../ui/Ahtletes/Athlete"
 import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
-import phoneFormatter from "../../../helpers/phoneFormatter"
+import { useTranslation } from "next-i18next"
 
 function CommunitesAthletesList({ data }) {
   const [countries] = useSelector(selectCountriesAndCities)
+  const { t: tCommon } = useTranslation("common")
 
   return (
     <CommunitesAthletesListItems>
@@ -26,7 +26,7 @@ function CommunitesAthletesList({ data }) {
               </AthletesBottomItem>
               <AthletesBottomItem>
                 <AthletesBottomItemTextHeading>
-                  Пол
+                  {tCommon('form.fieldsNames.gender.label')}
                 </AthletesBottomItemTextHeading>
                 <AthletesBottomItemText>
                   {user?.gender === "male"

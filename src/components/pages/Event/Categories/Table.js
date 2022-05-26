@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
 import { getGender } from "../../LkOg/Tabs/Events/EventParticipantCategories"
+import { useTranslation } from "next-i18next"
 
 const createDataForTable = (pc = []) => {
   const {
@@ -27,6 +28,7 @@ const createDataForTable = (pc = []) => {
 
 function Table({ pc }) {
   const [rewrittenData, setRewrittenData] = useState([])
+  const { t: tCommon } = useTranslation("common")
 
   const columns = useMemo(() => {
     return [
@@ -35,7 +37,7 @@ function Table({ pc }) {
         accessor: "name",
       },
       {
-        column: "Пол",
+        column: tCommon('form.fieldsNames.gender.label'),
         accessor: "gender",
       },
       {

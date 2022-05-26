@@ -4,6 +4,7 @@ import Recover from "../components/pages/Authorization/Recover"
 import { useRouter } from "next/router"
 import { useSelector } from "react-redux"
 import { selectIsUserAuth } from "../redux/components/user"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 const Login = () => {
   const [view, setView] = useState("login")
@@ -27,3 +28,9 @@ const Login = () => {
 }
 
 export default Login
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["header", "common"])),
+  },
+})

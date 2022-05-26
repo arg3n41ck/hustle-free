@@ -2,8 +2,9 @@ import React from "react"
 import styled from "styled-components"
 import { motion } from "framer-motion"
 import { useRouter } from "next/router"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { exitUser } from "../../redux/components/user"
+import { useTranslation } from "next-i18next"
 
 const variants = {
   open: { display: "block", x: 0, pointerEvents: "auto" },
@@ -23,6 +24,8 @@ const contentVariants = {
 const Sidebar = ({ open, array }) => {
   const { push: routerPush, pathname, asPath } = useRouter()
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user.user)
+  const { t: tHeader } = useTranslation("header")
 
   const handleOnClickTab = (path) => {
     if (path === "exit") {
@@ -54,7 +57,7 @@ const Sidebar = ({ open, array }) => {
             >
               <IconWrapper active={active}>{item.icon}</IconWrapper>
               <Text animate={open ? "open" : "closed"} variants={variants}>
-                {item.name}
+                {tHeader(`userTabs.${user?.role}.${item.name}`)}
               </Text>
             </ItemContent>
           </Item>
