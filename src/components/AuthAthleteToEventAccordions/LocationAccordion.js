@@ -8,8 +8,12 @@ import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp"
 import AddressIcon from "../../assets/svg/address.svg"
 import { selectCountriesAndCities } from "../../redux/components/countriesAndCities"
 import { useSelector } from "react-redux"
-import MapField from "../ui/Map/Field"
-import MapFiledLeafLet from "../ui/Map/FieldLeaflet"
+import dynamic from "next/dynamic"
+const MapFiledLeafLet  = dynamic(
+  () => import("../ui/Map/FieldLeaflet"),
+  {
+    ssr: false,
+  })
 
 function LocationAccordion({ event }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)

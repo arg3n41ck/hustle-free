@@ -12,9 +12,13 @@ import {
 import styled from "styled-components"
 import { Autocomplete } from "@mui/material"
 import { LocationIcon } from "../../../Events/EventsCatalog/EventsFilter"
-import MapField from "../../../../ui/Map/Field"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
-import MapFiledLeafLet from "../../../../ui/Map/FieldLeaflet"
+import dynamic from "next/dynamic"
+const MapFiledLeafLet  = dynamic(
+  () => import("../../../../ui/Map/FieldLeaflet"),
+  {
+    ssr: false,
+  })
 
 const emptyInitialValues = {
   placeName: null,

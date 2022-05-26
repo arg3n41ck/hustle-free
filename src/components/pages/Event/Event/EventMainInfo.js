@@ -17,7 +17,6 @@ import {
   EventVKHover,
 } from "./EventIcons"
 import styled from "styled-components"
-import MapField from "../../../ui/Map/Field"
 import phoneFormatter from "../../../../helpers/phoneFormatter"
 import {
   EmailShareButton,
@@ -27,7 +26,6 @@ import {
 } from "react-share"
 import { toast } from "react-toastify"
 import dynamic from "next/dynamic"
-// import MapFiledLeafLet from "../../../ui/Map/FieldLeaflet"
 const MapFiledLeafLet  = dynamic(
   () => import("../../../ui/Map/FieldLeaflet"),
   {
@@ -210,11 +208,8 @@ function EventMainInfo({ event }) {
           ))}
         </ul>
         <div />
-        {/* <Map active={!!mapPoints}>
-          {mapPoints && <MapField defaultPoints={mapPoints} disabled />}
-        </Map> */}
         <Map active={!!mapPoints}>
-        <MapFiledLeafLet defaultPoints={mapPoints}  />
+        <MapFiledLeafLet defaultPoints={mapPoints} disabled  />
         </Map>
       </Column>
 

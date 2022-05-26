@@ -1,78 +1,54 @@
-import { Map, Marker, Popup, TileLayer } from "react-leaflet"
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMapEvents,
+} from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
 import "leaflet-defaulticon-compatibility"
-import { useCallback, useEffect, useRef, useState } from "react"
-import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css';
-import { geosearch } from 'esri-leaflet-geocoder';
+import { useCallback, useRef, useState } from "react"
+import "esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css"
+import { DARK_THEME_MAP } from "../../../services/constants"
 
-
-const MapFiledLeafLet = ({ onPoint, defaultPoints, disabled }) => {
-  const position = [47.545449978946756, 56.37917854573184]
+const MapFieldLeafLet = ({ onPoint, defaultPoints, disabled }) => {
   const [marker, setMarker] = useState(defaultPoints || null)
-
-  console.log(marker)
-
-  const onMapClick = useCallback((e) => {
-    const newPoint = {
-      lat: e.latlng.lat,
-      lng: e.latlng.lng,
-    }
-    console.log(newPoint)
-    !disabled && setMarker(newPoint)
-    !disabled && onPoint && onPoint(newPoint)
-  }, [])
-
   const mapRef = useRef()
-  useEffect(() => {
-    const { current = {} } = mapRef;
-    const { leafletElement: map } = current;
 
-    if ( !map ) return;
-    console.log(map)
+  const LocationMarker = useCallback(() => {
+    useMapEvents({
+      click(e) {
+        const newPoint = {
+          lat: e.latlng?.lat,
+          lng: e.latlng?.lng,
+        }
+        !disabled && setMarker(newPoint)
+        onPoint && !disabled && onPoint(newPoint)
+      },
+    })
 
-    const control = geosearch();
+    return marker === null ? null : (
+      <Marker position={marker}/>
+    )
+  }, [marker])
 
-    control.addTo(map);
 
-    control.on('results', handleOnSearchResuts);
-
-    return () => {
-      control.off('results', handleOnSearchResuts);
-    }
-  }, []);
-
-//   const onMapLoad = useCallback((map) => {
-//       console.log(map)
-//     mapRef.current = map
-//   }, [])
-
-  function handleOnSearchResuts(data) {
-    console.log('Search results', data);
-  }
 
   return (
-    <Map
+    <MapContainer
       center={marker}
       zoom={13}
       style={{ height: "100%", width: "100%" }}
-    //   onLoad={onMapLoad}
       ref={mapRef}
-      onClick={onMapClick}
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`}
+        <TileLayer
+        url={`https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${DARK_THEME_MAP}`}
+        attribution='Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors, <a href=&quot;https://creativecommons.org/licenses/by-sa/2.0/&quot;>CC-BY-SA</a>, Imagery &copy; <a href=&quot;https://www.mapbox.com/&quot;>Mapbox</a>'
       />
-      <Marker
-    //   eventHandlers={{click: (e) => onMapClick(e.target)}}
-      position={marker}>
-        {/* <Popup>
-      A pretty CSS3 popup. <br /> Easily customizable.
-    </Popup> */}
-      </Marker>
-    </Map>
+      <LocationMarker />
+    </MapContainer>
   )
 }
 
-export default MapFiledLeafLet
+export default MapFieldLeafLet
