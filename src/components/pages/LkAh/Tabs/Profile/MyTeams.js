@@ -10,10 +10,13 @@ import styled from "styled-components"
 import { CalendarIcon, LocationIcon } from "../../../Events/EventsSlider"
 import Teams from "./Teams/Teams"
 import { fetchCountries } from "../../../../../redux/components/countriesAndCities"
+import { useTranslation } from "next-i18next"
 
 function MyTeams({ onToggleSidebar }) {
   const dispatch = useDispatch()
   const [athleteTeams] = useSelector(teamsSelector)
+  const { t: tLkAh } = useTranslation("lkAh")
+
 
   React.useEffect(() => {
     dispatch(fetchAthleteTeams())
@@ -23,7 +26,7 @@ function MyTeams({ onToggleSidebar }) {
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
-        <TitleHeader>Мои команды</TitleHeader>
+        <TitleHeader>{tLkAh("myTeams.myTeams")}</TitleHeader>
       </LkDefaultHeader>
 
       {!!athleteTeams?.length &&

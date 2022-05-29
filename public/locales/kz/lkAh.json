@@ -1,0 +1,31 @@
+{
+    "userProfile": {
+        "edit": "Редактировать",
+        "birthDay": "День рождения",
+        "gender": "Пол",
+        "countryAndCity": "Страна, город",
+        "contacts": "Контакты",
+        "email": "Email"
+    },
+    "myEvents": {
+        "myEvents": "Мои турниры",
+        "tabs": {
+            "all": "Все",
+            "past": "Прошедшие",
+            "now": "Сейчас",
+            "coming": "Предстоящие"
+        }
+    },
+    "myHistory": {
+        "myHistory": "Моя история",
+        "tabs": {
+            "all": "Все",
+            "wins": "Победы",
+            "draws": "Ничьи",
+            "defeats": "Поражений"
+        }
+    },
+    "myTeams": {
+        "myTeams": "Мои команды"
+    }
+}

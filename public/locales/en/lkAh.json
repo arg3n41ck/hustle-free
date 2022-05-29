@@ -1,0 +1,31 @@
+{
+    "userProfile": {
+        "edit": "Edit",
+        "birthDay": "Date of birth",
+        "gender": "Gender",
+        "countryAndCity": "Country, city",
+        "contacts": "Contacts",
+        "email": "Email"
+    },
+    "myEvents": {
+        "myEvents": "My tournaments",
+        "tabs": {
+            "all": "All",
+            "past": "Past",
+            "now": "Now",
+            "coming": "Future"
+        }
+    },
+    "myHistory": {
+        "myHistory": "My history",
+        "tabs": {
+            "all": "All",
+            "wins": "Wins",
+            "draws": "Draws",
+            "defeats": "Defeats"
+        }
+    },
+    "myTeams": {
+        "myTeams": "My team"
+    }
+}

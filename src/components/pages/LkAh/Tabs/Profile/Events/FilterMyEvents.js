@@ -8,6 +8,7 @@ import { useRouter } from "next/router"
 
 function FilterMyEvents({ data }) {
   const { push: routerPush } = useRouter()
+  
 
   return (
     <EventContainer key={data?.id}>

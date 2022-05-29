@@ -21,6 +21,7 @@ function Reset() {
     useFormik({
       initialValues: {
         email: "",
+        // language: typeof window !== "undefined" ? window.localStorage.getItem("locale") : "ru"
       },
       validationSchema: yup.object({
         email: yup.string().required("Обязательное поле!"),

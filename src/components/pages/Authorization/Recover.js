@@ -26,6 +26,7 @@ const Recover = ({ onView }) => {
   const formik = useFormik({
     initialValues: {
       email: "",
+      language: typeof window !== "undefined" ? window.localStorage.getItem("locale") : "ru"
     },
     onSubmit: async (values) => {
       try {

@@ -22,6 +22,7 @@ import {
   fetchCountries,
   selectCountriesAndCities,
 } from "../../../../../redux/components/countriesAndCities"
+import { useTranslation } from "next-i18next"
 
 const Info = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
@@ -30,6 +31,8 @@ const Info = ({ onToggleSidebar }) => {
   const {
     countries: { data: countries },
   } = useSelector((state) => state.countries)
+  const { t: tHeader } = useTranslation("header")
+  const { t: tLkAh } = useTranslation("lkAh")
   const [currentLocations, setCurrentLocations] = useState({
     country: "",
     city: "",
@@ -57,7 +60,7 @@ const Info = ({ onToggleSidebar }) => {
   return (
     <>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
-        <TitleHeader>Профиль</TitleHeader>
+        <TitleHeader>{tHeader("userTabs.athlete.profile")}</TitleHeader>
       </LkDefaultHeader>
       <Content>
         <Center>
@@ -74,7 +77,7 @@ const Info = ({ onToggleSidebar }) => {
               <IconWrapper>
                 <EditsIcon />
               </IconWrapper>
-              Редактировать
+              {tLkAh("userProfile.edit")}
             </Button>
           </CenterRight>
         </Center>
@@ -83,7 +86,7 @@ const Info = ({ onToggleSidebar }) => {
             <WrapperIcon>
               <CalendarIcon />
             </WrapperIcon>
-            День рождения:
+            {tLkAh("userProfile.birthDay")}:
           </Item>
           <Item>
             {!!user?.dateBirthday &&
@@ -95,7 +98,7 @@ const Info = ({ onToggleSidebar }) => {
             <WrapperIcon>
               <GenderIcon />
             </WrapperIcon>
-            Пол
+            {tLkAh("userProfile.gender")}
           </Item>
           <Item>{user?.gender === "male" ? "Мужской" : "Женский"}</Item>
           {(!!currentLocations?.country || !!currentLocations?.city) && (
@@ -104,7 +107,7 @@ const Info = ({ onToggleSidebar }) => {
                 <WrapperIcon>
                   <LocationIcon />
                 </WrapperIcon>
-                Страна, город
+                {tLkAh("userProfile.countryAndCity")}
               </Item>
               <Item>
                 {!!currentLocations?.country && `${currentLocations.country},`}
@@ -116,7 +119,7 @@ const Info = ({ onToggleSidebar }) => {
             <WrapperIcon>
               <PhoneIcon />
             </WrapperIcon>
-            Контакты
+            {tLkAh("userProfile.contacts")}
           </Item>
           {/* <Item>{phoneFormatter(user?.phoneNumber)}</Item> */}
           <Item>{user?.phoneNumber ? phoneFormatter(user?.phoneNumber) : ""}</Item>
@@ -124,7 +127,7 @@ const Info = ({ onToggleSidebar }) => {
             <WrapperIcon>
               <EmailIcon />
             </WrapperIcon>
-            E-mail
+            {tLkAh("userProfile.email")}
           </Item>
           <Item>{user?.email}</Item>
         </List>

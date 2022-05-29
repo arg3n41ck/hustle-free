@@ -10,34 +10,38 @@ import { useDispatch, useSelector } from "react-redux"
 import HorizontalTabsBorder from "../../../../ui/tabs/HorizontalTabsBorder"
 import FilterMyEvents from "./Events/FilterMyEvents"
 import { format, parseISO } from "date-fns"
-
-const tabs = [
-  {
-    id: 1,
-    name: "Все",
-    value: "all",
-  },
-  {
-    id: 2,
-    name: "Прошедшие",
-    value: "past",
-  },
-  {
-    id: 3,
-    name: "Сейчас",
-    value: "now",
-  },
-  {
-    id: 4,
-    name: "Предстоящие",
-    value: "future",
-  },
-]
+import { useTranslation } from "next-i18next"
 
 function MyEvents({ onToggleSidebar }) {
   const dispatch = useDispatch()
   const [, , , athleteEvents] = useSelector(selectEvents)
   const [view, setView] = React.useState("all") // all | past | now | future
+  const { t: tLkAh } = useTranslation("lkAh")
+
+  const tabs = [
+    {
+      id: 1,
+      name: tLkAh("myEvents.tabs.all"),
+      value: "all",
+    },
+    {
+      id: 2,
+      name: tLkAh("myEvents.tabs.past"),
+      value: "past",
+    },
+    {
+      id: 3,
+      name: tLkAh("myEvents.tabs.now"),
+      value: "now",
+    },
+    {
+      id: 4,
+      name: tLkAh("myEvents.tabs.coming"),
+      value: "future",
+    },
+  ]
+  
+
 
   React.useEffect(() => {
     dispatch(fetchEventsAthlete(view))
@@ -48,7 +52,7 @@ function MyEvents({ onToggleSidebar }) {
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
-        <TitleHeader>Мои турниры</TitleHeader>
+        <TitleHeader>{tLkAh("myEvents.myEvents")}</TitleHeader>
       </LkDefaultHeader>
       <HorizontalTabsBorder
         arrayTab={tabs}
