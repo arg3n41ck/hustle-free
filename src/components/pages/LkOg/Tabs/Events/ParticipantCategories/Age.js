@@ -4,18 +4,27 @@ import * as yup from "yup"
 import ParticipantCategoriesModal from "./Modal"
 import { FieldsRow } from "../EventLocation"
 import { TextField } from "@mui/material"
+import { useTranslation } from "next-i18next"
 
 const initialEmptyValues = {
   fromAge: 0,
   toAge: 0,
 }
 
-const validationSchema = yup.object({
-  fromAge: yup.mixed().required("Обязательное поле!"),
-  toAge: yup.mixed().required("Обязательное поле!"),
-})
+function Age({
+  open,
+  edit,
+  onClose,
+  submit,
+  defaultValues = initialEmptyValues,
+}) {
+  const { t: tLkOg } = useTranslation("lkOg")
 
-function Age({ open, edit, onClose, submit, defaultValues = initialEmptyValues }) {
+  const validationSchema = yup.object({
+    fromAge: yup.mixed().required(tLkOg("validation.required")),
+    toAge: yup.mixed().required(tLkOg("validation.required")),
+  })
+
   const { values, touched, errors, handleChange, handleSubmit } = useFormik({
     initialValues: defaultValues,
     validationSchema,
@@ -23,10 +32,11 @@ function Age({ open, edit, onClose, submit, defaultValues = initialEmptyValues }
       submit(values)
     },
   })
+
   return (
     <ParticipantCategoriesModal
       open={open}
-      title="Возрасты участников категории"
+      title={tLkOg("categoriesOfParticipants.agesParticipants")}
       onClose={onClose}
       onSubmit={handleSubmit}
       edit={edit}
@@ -34,7 +44,7 @@ function Age({ open, edit, onClose, submit, defaultValues = initialEmptyValues }
       <FieldsRow>
         <TextField
           name="fromAge"
-          placeholder="От"
+          placeholder={tLkOg("categoriesOfParticipants.from")}
           variant="outlined"
           fullWidth
           type="number"
@@ -45,7 +55,7 @@ function Age({ open, edit, onClose, submit, defaultValues = initialEmptyValues }
         />
         <TextField
           name="toAge"
-          placeholder="До"
+          placeholder={tLkOg("categoriesOfParticipants.to")}
           variant="outlined"
           fullWidth
           type="number"

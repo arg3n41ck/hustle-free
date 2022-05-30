@@ -3,8 +3,10 @@ import { Checkbox, TextField } from "@mui/material"
 import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material"
 import styled from "styled-components"
 import useClickOutside from "../../../../../../hooks/useClickOutside"
+import { useTranslation } from "next-i18next"
 
 function EventParticipantAutocomplete({ onSelectManual, manualEventPC }) {
+  const { t: tLkOg } = useTranslation("lkOg")
   const [selectedItems, setSelectedItems] = useState([])
   const [searchResult, setSearchResult] = useState("")
   const [open, setOpen] = useState(false)
@@ -43,14 +45,16 @@ function EventParticipantAutocomplete({ onSelectManual, manualEventPC }) {
   return (
     <>
       <MainWrapper ref={wrapperRef}>
-        <p className="auth-title__input">Выберите категории</p>
+        <p className="auth-title__input">
+          {tLkOg("categoriesOfParticipants.selectCategories")}
+        </p>
         <TextField
           fullWidth
           onChange={({ target: { value } }) =>
             setSearchResult(value.replace(" ", ""))
           }
           onClick={() => setOpen(true)}
-          placeholder="Категории"
+          placeholder={tLkOg("categoriesOfParticipants.categories")}
         />
         {!!open && (
           <ResultWrapper>
@@ -65,9 +69,11 @@ function EventParticipantAutocomplete({ onSelectManual, manualEventPC }) {
                   }
                   onChange={selectAll}
                 />
-                <span>Выбрать все</span>
+                <span>{tLkOg("categoriesOfParticipants.selectAll")}</span>
               </SelectAllWrapper>
-              <CancelSelect type="button">Сбросить</CancelSelect>
+              <CancelSelect type="button">
+                {tLkOg("categoriesOfParticipants.reset")}
+              </CancelSelect>
             </ContentHead>
             <Items>
               {manualEventPC
@@ -92,10 +98,10 @@ function EventParticipantAutocomplete({ onSelectManual, manualEventPC }) {
             </Items>
             <Footer>
               <CloseModal type="button" onClick={() => setOpen(false)}>
-                Отмена
+                {tLkOg("editEvent.cancel")}
               </CloseModal>
               <Submit type="button" onClick={handleOnSubmit}>
-                Применить
+                {tLkOg("editEvent.further")}
               </Submit>
             </Footer>
           </ResultWrapper>

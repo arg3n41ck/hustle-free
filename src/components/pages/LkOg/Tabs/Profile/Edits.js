@@ -31,33 +31,36 @@ import {
 } from "../../../LkTm/Tabs/Profile/Edits"
 import { useTranslation } from "next-i18next"
 
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email("Введите поле почты корректно")
-    .required("Заполните поле почты"),
-  firstName: yup.string().required("Обязательное поле"),
-  lastName: yup.string().required("Обязательное поле"),
-  phoneNumber: yup.string().min(12).required("Обязательное поле"),
-  gender: yup.mixed(),
-  dateBirthday: yup.mixed().nullable(),
-  country: yup.string().required("Обязательное поле"),
-  city: yup.string().required("Обязательное поле"),
-  nameOrganization: yup.string().nullable().required("Обязательное поле"),
-  factAddress: yup.string().nullable(),
-  address: yup.string().nullable(),
-  avatar: yup
-    .mixed()
-    .test("FILE_SIZE", "Размер файла должен быть – не более 4 МБ.", (value) => {
-      if (!value) return true
-      if (typeof value !== "string") {
-        return !!value && (value.size / 1024 / 1024).toFixed(2) <= 4
-      }
-      return true
-    }),
-})
-
 const Edits = () => {
+  const { t: tCommon } = useTranslation("common")
+  const validationSchema = yup.object({
+    email: yup
+      .string()
+      .email(tCommon("validation.emailValid"))
+      .required(tCommon("validation.emailRequired")),
+    firstName: yup.string().required(tCommon("validation.required")),
+    lastName: yup.string().required(tCommon("validation.required")),
+    phoneNumber: yup.string().min(12).required(tCommon("validation.required")),
+    gender: yup.mixed(),
+    dateBirthday: yup.mixed().nullable(),
+    country: yup.string().required(tCommon("validation.required")),
+    city: yup.string().required(tCommon("validation.required")),
+    nameOrganization: yup
+      .string()
+      .nullable()
+      .required(tCommon("validation.required")),
+    factAddress: yup.string().nullable(),
+    address: yup.string().nullable(),
+    avatar: yup
+      .mixed()
+      .test("FILE_SIZE", tCommon("validation.imageSizeValid"), (value) => {
+        if (!value) return true
+        if (typeof value !== "string") {
+          return !!value && (value.size / 1024 / 1024).toFixed(2) <= 4
+        }
+        return true
+      }),
+  })
   const {
     user,
     countries: {
@@ -67,7 +70,6 @@ const Edits = () => {
   const dispatch = useDispatch()
   const { push: routerPush } = useRouter()
   const [currentCities, setCurrentCities] = useState([])
-  const { t: tCommon } = useTranslation("common")
   const formik = useFormik({
     initialValues: user.user && {
       email: "",

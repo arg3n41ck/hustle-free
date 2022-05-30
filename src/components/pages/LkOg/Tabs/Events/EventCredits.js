@@ -1,36 +1,33 @@
 import React, { useEffect } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
-import {
-  TextField,
-} from "@mui/material"
+import { TextField } from "@mui/material"
 import { useDispatch } from "react-redux"
-import {
-  fetchSportTypes,
-} from "../../../../../redux/components/sportTypes"
+import { fetchSportTypes } from "../../../../../redux/components/sportTypes"
 import { useRouter } from "next/router"
 import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
 import { FormHR } from "./EventPeriods"
+import { useTranslation } from "next-i18next"
 
 const emptyInitialValues = {
   rules: "",
 }
 
 function EventCredits() {
-  const {
-    touched,
-    errors,
-    values,
-    handleChange,
-    handleSubmit,
-    isValid,
-  } = useFormik({
-    initialValues: emptyInitialValues,
-    validationSchema,
-    onSubmit: async (values) => {
-      console.log(values)
-    },
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    rules: yup.string().required(tLkOg("validation.required")).nullable(),
   })
+
+  const { touched, errors, values, handleChange, handleSubmit, isValid } =
+    useFormik({
+      initialValues: emptyInitialValues,
+      validationSchema,
+      onSubmit: async (values) => {
+        console.log(values)
+      },
+    })
 
   const { push: routerPush } = useRouter()
 
@@ -40,19 +37,22 @@ function EventCredits() {
     dispatch(fetchSportTypes())
   }, [])
 
-
   return (
     <Form onSubmit={handleSubmit}>
-      <p className="auth-title__input">Максимальное количество регистрации: 50</p>
-      <FormHR/>
+      <p className="auth-title__input">
+        {tLkOg("registrationPeriods.maximumNumberOfRegistrations")}: 50
+      </p>
+      <FormHR />
       <Field>
-        <p className="auth-title__input">Количество кредитов</p>
+        <p className="auth-title__input">
+          {tLkOg("registrationPeriods.amountOfCredits")}
+        </p>
         <TextField
           name="rules"
-          placeholder="Количество кредитов"
+          placeholder={tLkOg("registrationPeriods.amountOfCredits")}
           variant="outlined"
           fullWidth
-          type='number'
+          type="number"
           error={touched.rules && Boolean(errors.rules)}
           helperText={touched.rules && errors.rules}
           onChange={handleChange}
@@ -62,10 +62,10 @@ function EventCredits() {
 
       <EventFormFooter>
         <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
-          Отмена
+          {tLkOg("editEvent.cancel")}
         </Cancel>
         <Submit disabled={!isValid} type="submit">
-          Далее
+          {tLkOg("editEvent.further")}
         </Submit>
       </EventFormFooter>
     </Form>
@@ -73,7 +73,3 @@ function EventCredits() {
 }
 
 export default EventCredits
-
-const validationSchema = yup.object({
-  rules: yup.string().required("Обязательное поле").nullable(),
-})

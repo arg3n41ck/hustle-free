@@ -9,14 +9,11 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material"
+import { useTranslation } from "next-i18next"
 
 const initialEmptyValues = {
   gender: 0,
 }
-
-const validationSchema = yup.object({
-  gender: yup.mixed().required("Обязательное поле!"),
-})
 
 function Gender({
   open,
@@ -25,6 +22,12 @@ function Gender({
   submit,
   defaultValues = initialEmptyValues,
 }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    gender: yup.mixed().required(tLkOg("validation.required")),
+  })
+
   const { touched, errors, handleChange, values, handleSubmit } = useFormik({
     initialValues: defaultValues,
     validationSchema,
@@ -32,10 +35,11 @@ function Gender({
       submit(values)
     },
   })
+
   return (
     <ParticipantCategoriesModal
       open={open}
-      title="Пол участников категории"
+      title={tLkOg("categoriesOfParticipants.genderParticipants")}
       onClose={onClose}
       edit={edit}
       onSubmit={handleSubmit}
@@ -53,9 +57,13 @@ function Gender({
           <FormControlLabel
             value="female"
             control={<Radio />}
-            label="Женский"
+            label={tLkOg("categoriesOfParticipants.female")}
           />
-          <FormControlLabel value="male" control={<Radio />} label="Мужской" />
+          <FormControlLabel
+            value="male"
+            control={<Radio />}
+            label={tLkOg("categoriesOfParticipants.male")}
+          />
         </RadioGroup>
         <FormHelperText>{touched.gender && errors.gender}</FormHelperText>
       </FormControl>

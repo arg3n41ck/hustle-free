@@ -9,6 +9,12 @@
       "profileEdit": "Profile editing"
     },
     "fieldsNames": {
+      "region": "Region",
+      "website": "Website",
+      "fullNameMainCoach":"Name of head coach",
+      "emailCoach": "Trainer email",
+      "typeSport": "Kind of sport",
+      "description": "Description",
       "firstName": "First name",
       "lastName": "Last name",
       "birthDate": "Date of birth",
@@ -45,5 +51,11 @@
       "cancel": "Cancel",
       "save": "Save"
     }
+  },
+  "validation": {
+    "required": "Required field!",
+    "emailValid": "Enter the email field correctly",
+    "emailRequired": "Fill in the mail field",
+    "imageSizeValid": "The file size must be no more than 4 MB."
   }
 }

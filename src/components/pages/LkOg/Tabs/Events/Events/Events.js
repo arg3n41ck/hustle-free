@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { useRouter } from "next/router"
 import EventsTable from "./EventsTable"
 import $api from "../../../../../../services/axios"
+import { useTranslation } from "next-i18next"
 
 const getEvents = async () => {
   const { data } = await $api.get("/organizer/my_events_list/")
@@ -14,19 +15,21 @@ const getEvents = async () => {
 function EventsContent({ onToggleSidebar }) {
   const [events, setEvents] = useState([])
   const { push: routerPush } = useRouter()
+  const { t: tLkOg } = useTranslation("lkOg")
 
   useEffect(() => {
     getEvents().then(setEvents)
   }, [])
+
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
-          <TitleHeader>Мои турниры</TitleHeader>
+          <TitleHeader>{tLkOg("myEvents.myEvents")}</TitleHeader>
           <CreateEventBTN
             onClick={() => routerPush("/lk-og/profile/events/edit")}
           >
-            Создать новое мероприятие
+            {tLkOg("myEvents.createANewEvent")}
           </CreateEventBTN>
         </HeaderWrapper>
       </LkDefaultHeader>

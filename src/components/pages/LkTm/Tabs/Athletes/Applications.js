@@ -8,6 +8,7 @@ import CustomButton from "../../../../ui/CustomButton"
 import { theme } from "../../../../../styles/theme"
 import Athlete from "../../../../ui/Ahtletes/Athlete"
 import { fetchCountries } from "../../../../../redux/components/countriesAndCities"
+import { useTranslation } from "next-i18next"
 
 const Applications = ({ applications, onAcceptOrReject }) => {
   return (
@@ -41,6 +42,7 @@ const ApplicationItem = ({ applicationItem, onAcceptOrReject }) => {
   const [athleteItem, setAthleteItem] = useState(null)
   const dispatch = useDispatch()
   const { id, athlete } = applicationItem
+  const { t: tLkTm } = useTranslation("lkTm")
 
   useEffect(async () => {
     const { data } = await $api.get(`/athlete/athletes_list/${athlete}`)
@@ -69,7 +71,7 @@ const ApplicationItem = ({ applicationItem, onAcceptOrReject }) => {
           onClick={() => onAcceptOrReject(id, "cancel")}
           style={{ fontSize: 14 }}
         >
-          Отклонить
+          {tLkTm("athletes.reject")}
         </CustomButton>
 
         <CustomButton
@@ -78,7 +80,7 @@ const ApplicationItem = ({ applicationItem, onAcceptOrReject }) => {
           borderRadius={"4px"}
           onClick={() => onAcceptOrReject(id, "approved")}
         >
-          Подтвердить
+          {tLkTm("athletes.confirm")}
         </CustomButton>
       </WrapperButtons>
     </Athlete>

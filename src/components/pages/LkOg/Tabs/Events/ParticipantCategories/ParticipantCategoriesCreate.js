@@ -36,10 +36,10 @@ function ParticipantCategoriesCreate({
   onCloseModals,
   open,
   eventId,
-  sportType
+  sportType,
 }) {
   const [initialState, setInitialState] = useState(emptyState)
-  const [step, setStep] = useState("name");
+  const [step, setStep] = useState("name")
   const onClose = () => {
     setInitialState(emptyState)
     setStep("name")

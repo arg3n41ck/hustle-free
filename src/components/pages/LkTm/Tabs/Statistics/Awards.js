@@ -4,6 +4,7 @@ import SilverMedal from "../../../../../assets/svg/silver-medal.svg"
 import BronzeMedal from "../../../../../assets/svg/bronze-medal.svg"
 import styled from "styled-components"
 import $api from "../../../../../services/axios"
+import { useTranslation } from "next-i18next"
 
 const getAwards = async (teamId) => {
   const { data } = await $api.get(`/teams/teams/${teamId}/statistic/`)
@@ -12,6 +13,7 @@ const getAwards = async (teamId) => {
 
 function Awards({ teamId }) {
   const [awards, setAwards] = useState(null)
+  const { t: tLkTm } = useTranslation("lkTm")
 
   useEffect(() => {
     teamId && getAwards(teamId).then(setAwards)
@@ -22,7 +24,7 @@ function Awards({ teamId }) {
       <Award>
         <GoldMedal />
         <AwardInfo>
-          <AwardText color={"#FFC107"}>Золото:</AwardText>
+          <AwardText color={"#FFC107"}>{tLkTm("statistics.gold")}:</AwardText>
           <AwardNumbers color={"#FFC107"}>
             {awards?.places?.gold || "-"}
           </AwardNumbers>
@@ -31,7 +33,7 @@ function Awards({ teamId }) {
       <Award>
         <SilverMedal />
         <AwardInfo>
-          <AwardText color={"#E0E0E0"}>Серебро:</AwardText>
+          <AwardText color={"#E0E0E0"}>{tLkTm("statistics.silver")}:</AwardText>
           <AwardNumbers color={"#E0E0E0"}>
             {awards?.places?.silver || "-"}
           </AwardNumbers>
@@ -40,7 +42,7 @@ function Awards({ teamId }) {
       <Award>
         <BronzeMedal />
         <AwardInfo>
-          <AwardText color={"#D7832D"}>Бронза:</AwardText>
+          <AwardText color={"#D7832D"}>{tLkTm("statistics.bronze")}:</AwardText>
           <AwardNumbers color={"#D7832D"}>
             {awards?.places?.bronze || "-"}
           </AwardNumbers>

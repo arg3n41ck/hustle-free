@@ -9,6 +9,12 @@
       "profileEdit": "Редактирование профиля"
     },
     "fieldsNames": {
+      "region": "Область",
+      "website": "Веб-сайт",
+      "fullNameMainCoach":"ФИО главного тренера",
+      "emailCoach": "Электронная почта тренера",
+      "typeSport": "Вид спорта",
+      "description": "Описание",
       "firstName": "Имя",
       "lastName": "Фамилия",
       "birthDate": "Дата рождения",
@@ -45,5 +51,11 @@
       "cancel": "Отмена",
       "save": "Сохранить"
     }
+  },
+  "validation": {
+    "required": "Обязательное поле!",
+    "emailValid": "Введите поле почты корректно",
+    "emailRequired": "Заполните поле почты",
+    "imageSizeValid": "Размер файла должен быть – не более 4 МБ."
   }
 }

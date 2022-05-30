@@ -6,6 +6,7 @@ import { Form } from "../EventDefaults"
 import $api from "../../../../../../services/axios"
 import styled from "styled-components"
 import { Checkbox, FormControlLabel, TextField } from "@mui/material"
+import { useTranslation } from "next-i18next"
 
 const getLevelsBySportType = async (sportType) => {
   try {
@@ -21,13 +22,6 @@ const initialEmptyValues = {
   levels: [],
 }
 
-const validationSchema = yup.object({
-  levels: yup.mixed().test({
-    test: (array) => array.some((value) => value),
-    message: "Выберите хотя бы один уровень!",
-  }),
-})
-
 function Levels({
   open,
   edit,
@@ -36,6 +30,15 @@ function Levels({
   sportType,
   defaultValues = initialEmptyValues,
 }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    levels: yup.mixed().test({
+      test: (array) => array.some((value) => value),
+      message: tLkOg("validation.chooseAtLeastOneLevel"),
+    }),
+  })
+
   const [levels, setLevels] = useState(null)
   const [selectedLevels, setSelectedLevels] = useState(
     defaultValues?.levels || []
@@ -87,7 +90,7 @@ function Levels({
   return (
     <ParticipantCategoriesModal
       open={open}
-      title="Уровни категории"
+      title={tLkOg("categoriesOfParticipants.levelsCategories")}
       onClose={onClose}
       edit={edit}
       onSubmit={handleSubmit}
@@ -128,7 +131,7 @@ function Levels({
                 value && handleOnBlurNewLevel(value)
               }
               variant="standard"
-              placeholder="Добавить новый уровень"
+              placeholder={tLkOg("categoriesOfParticipants.addNewLevel")}
               error={touched.levels && Boolean(errors.levels)}
               helperText={touched.levels && errors.levels}
               fullWidth

@@ -7,22 +7,24 @@ import { fetchSportTypes } from "../../../../../redux/components/sportTypes"
 import { useRouter } from "next/router"
 import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
+import { useTranslation } from "next-i18next"
 
 const emptyInitialValues = {
   rules: "",
 }
 
 function EventRules({ eventId, defaultValues = emptyInitialValues }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+  const validationSchema = yup.object({
+    rules: yup.string().required(tLkOg("validation.required")).nullable(),
+  })
+
   const { touched, errors, values, handleChange, handleSubmit, isValid } =
     useFormik({
       initialValues: defaultValues,
       validationSchema,
       onSubmit: async (values) => {
-        await formDataHttp(
-          values,
-          `organizer/events/${eventId}/rules/`,
-          "put"
-        )
+        await formDataHttp(values, `organizer/events/${eventId}/rules/`, "put")
         routerPush(
           `/lk-og/profile/events/edit/${eventId}/participant-categories`
         )
@@ -42,7 +44,7 @@ function EventRules({ eventId, defaultValues = emptyInitialValues }) {
       <Field>
         <TextField
           name="rules"
-          placeholder="Правила турнира"
+          placeholder={tLkOg("tournamentRules.tournamentRules")}
           variant="outlined"
           fullWidth
           multiline
@@ -56,10 +58,10 @@ function EventRules({ eventId, defaultValues = emptyInitialValues }) {
 
       <EventFormFooter>
         <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
-          Отмена
+          {tLkOg("editEvent.cancel")}
         </Cancel>
         <Submit disabled={!isValid} type="submit">
-          Далее
+          {tLkOg("editEvent.further")}
         </Submit>
       </EventFormFooter>
     </Form>
@@ -67,7 +69,3 @@ function EventRules({ eventId, defaultValues = emptyInitialValues }) {
 }
 
 export default EventRules
-
-const validationSchema = yup.object({
-  rules: yup.string().required("Обязательное поле").nullable(),
-})

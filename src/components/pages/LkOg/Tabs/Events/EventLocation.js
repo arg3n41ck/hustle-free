@@ -14,11 +14,13 @@ import { Autocomplete } from "@mui/material"
 import { LocationIcon } from "../../../Events/EventsCatalog/EventsFilter"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import dynamic from "next/dynamic"
-const MapFiledLeafLet  = dynamic(
+const MapFiledLeafLet = dynamic(
   () => import("../../../../ui/Map/FieldLeaflet"),
   {
     ssr: false,
-  })
+  }
+)
+import { useTranslation } from "next-i18next"
 
 const emptyInitialValues = {
   placeName: null,
@@ -31,6 +33,21 @@ const emptyInitialValues = {
 }
 
 function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    placeName: yup.string().required(tLkOg("validation.required")).nullable(),
+    address: yup.string().required(tLkOg("validation.required")).nullable(),
+    country: yup.number().required(tLkOg("validation.required")).nullable(),
+    city: yup.number().required(tLkOg("validation.required")).nullable(),
+    lat: yup.string().required(tLkOg("validation.required")).nullable(),
+    long: yup.string().required(tLkOg("validation.required")).nullable(),
+    weighingPlace: yup
+      .string()
+      .required(tLkOg("validation.required"))
+      .nullable(),
+  })
+
   const { touched, errors, values, handleChange, setFieldValue, handleSubmit } =
     useFormik({
       initialValues: defaultValues,
@@ -60,10 +77,12 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
   return (
     <Form onSubmit={handleSubmit}>
       <Field>
-        <p className="auth-title__input">Название арены/здания</p>
+        <p className="auth-title__input">
+          {tLkOg("location.arenaBuildingName")}
+        </p>
         <TextField
           name="placeName"
-          placeholder="Название арены/здания"
+          placeholder={tLkOg("location.arenaBuildingName")}
           variant="outlined"
           fullWidth
           error={touched.placeName && Boolean(errors.placeName)}
@@ -75,10 +94,10 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
 
       <FieldsRow>
         <Field>
-          <p className="auth-title__input">Страна</p>
+          <p className="auth-title__input">{tLkOg("location.country")}</p>
           {!!countries?.length && (
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tLkOg("editEvent.generalInformation.nothingFound")}
               onChange={(_, value) => {
                 setFieldValue("country", value.id)
                 setFieldValue("city", null)
@@ -91,7 +110,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Страна"
+                  placeholder={tLkOg("location.country")}
                   error={touched.country && Boolean(errors.country)}
                   helperText={touched.country && errors.country}
                   InputProps={{
@@ -105,10 +124,10 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
         </Field>
 
         <Field>
-          <p className="auth-title__input">Город</p>
+          <p className="auth-title__input">{tLkOg("location.city")}</p>
           {!!cities?.length && (
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tLkOg("editEvent.generalInformation.nothingFound")}
               onChange={(_, value) => setFieldValue("city", value.id)}
               options={
                 countries
@@ -122,7 +141,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Город"
+                  placeholder={tLkOg("location.city")}
                   error={touched.city && Boolean(errors.city)}
                   helperText={touched.city && errors.city}
                   InputProps={{
@@ -137,10 +156,12 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
       </FieldsRow>
 
       <Field>
-        <p className="auth-title__input">Адрес проведения турнира</p>
+        <p className="auth-title__input">
+          {tLkOg("location.addressOfTheTournament")}
+        </p>
         <TextField
           name="address"
-          placeholder="Адрес проведения турнира"
+          placeholder={tLkOg("location.addressOfTheTournament")}
           variant="outlined"
           fullWidth
           error={touched.address && Boolean(errors.address)}
@@ -158,7 +179,9 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
         variant="standard"
       >
         <Field>
-          <p className="auth-title__input">Карта локации адреса турнира</p>
+          <p className="auth-title__input">
+            {tLkOg("location.tournamentAddressLocationMap")}
+          </p>
           <div style={{ height: 300 }}>
             <MapFiledLeafLet
               onPoint={({ lat, lng }) => {
@@ -179,10 +202,10 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
       </FormControl>
 
       <Field>
-        <p className="auth-title__input">Адрес взвешивания</p>
+        <p className="auth-title__input">{tLkOg("location.weighingAddress")}</p>
         <TextField
           name="weighingPlace"
-          placeholder="Адрес взвешивания"
+          placeholder={tLkOg("location.weighingAddress")}
           variant="outlined"
           fullWidth
           error={touched.weighingPlace && Boolean(errors.weighingPlace)}
@@ -194,9 +217,9 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
 
       <EventFormFooter>
         <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
-          Отмена
+          {tLkOg("editEvent.cancel")}
         </Cancel>
-        <Submit type="submit">Далее</Submit>
+        <Submit type="submit">{tLkOg("editEvent.further")}</Submit>
       </EventFormFooter>
     </Form>
   )
@@ -209,13 +232,3 @@ export const FieldsRow = styled.div`
   justify-content: space-between;
   grid-gap: 24px;
 `
-
-const validationSchema = yup.object({
-  placeName: yup.string().required("Обязательное поле").nullable(),
-  address: yup.string().required("Обязательное поле").nullable(),
-  country: yup.number().required("Обязательное поле").nullable(),
-  city: yup.number().required("Обязательное поле").nullable(),
-  lat: yup.string().required("Обязательное поле").nullable(),
-  long: yup.string().required("Обязательное поле").nullable(),
-  weighingPlace: yup.string().required("Обязательное поле").nullable(),
-})

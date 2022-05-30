@@ -9,6 +9,7 @@ import FileUploaderBig from "../../../../ui/LKui/FileUploaderBig"
 import { FormHR, FormSubTitle } from "./EventPeriods"
 import { TextField } from "@mui/material"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
+import { useTranslation } from "next-i18next"
 
 const emptyInitialValues = {
   description: "",
@@ -16,6 +17,13 @@ const emptyInitialValues = {
 }
 
 function EventForm({ defaultValues = emptyInitialValues, eventId }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    image: yup.mixed().nullable().required(tLkOg("validation.coverValid")),
+    description: yup.string().required(tLkOg("validation.required")),
+  })
+
   const {
     touched,
     errors,
@@ -67,12 +75,12 @@ function EventForm({ defaultValues = emptyInitialValues, eventId }) {
       />
 
       <FormHR />
-      <FormSubTitle>Описание</FormSubTitle>
+      <FormSubTitle>{tLkOg("coverAndDescription.description")}</FormSubTitle>
 
       <Field>
         <TextField
           name="description"
-          placeholder="Введите описание турнира"
+          placeholder={tLkOg("coverAndDescription.descriptionPlaceholder")}
           variant="outlined"
           fullWidth
           multiline
@@ -86,10 +94,10 @@ function EventForm({ defaultValues = emptyInitialValues, eventId }) {
 
       <EventFormFooter>
         <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
-          Отмена
+          {tLkOg("editEvent.cancel")}
         </Cancel>
         <Submit disabled={!isValid} type="submit">
-          Далее
+          {tLkOg("editEvent.further")}
         </Submit>
       </EventFormFooter>
     </Form>
@@ -97,8 +105,3 @@ function EventForm({ defaultValues = emptyInitialValues, eventId }) {
 }
 
 export default EventForm
-
-const validationSchema = yup.object({
-  image: yup.mixed().nullable().required("Обложка турнира обязательное поле!"),
-  description: yup.string().required("Обязательное поле!"),
-})

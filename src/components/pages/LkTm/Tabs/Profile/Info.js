@@ -11,10 +11,12 @@ import UserIcon from "../../../../../assets/svg/user.svg"
 import PhoneIcon from "../../../../../assets/svg/phone-icon.svg"
 import phoneFormatter from "../../../../../helpers/phoneFormatter"
 import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
+import { useTranslation } from "next-i18next"
 
 const Info = ({ onToggleSidebar, onView }) => {
   const { user } = useSelector((state) => state.user)
   const [countries] = useSelector(selectCountriesAndCities)
+  const { t: tLkTm } = useTranslation("lkTm")
   const [currentLocations, setCurrentLocations] = useState({
     country: "",
     city: "",
@@ -39,7 +41,7 @@ const Info = ({ onToggleSidebar, onView }) => {
     <>
       <HeaderWrapper>
         <HeaderContent onToggle={onToggleSidebar}>
-          <TitleHeader>Профиль</TitleHeader>
+          <TitleHeader>{tLkTm("teamProfile.profile")}</TitleHeader>
         </HeaderContent>
       </HeaderWrapper>
       <Content>
@@ -57,7 +59,7 @@ const Info = ({ onToggleSidebar, onView }) => {
             <IconWrapper>
               <EditsIcon />
             </IconWrapper>
-            Редактировать
+            {tLkTm("teamProfile.edit")}
           </Button>
         </Center>
         <Footer>
@@ -67,7 +69,7 @@ const Info = ({ onToggleSidebar, onView }) => {
                 <WrapperIcon>
                   <WebsiteIcon />
                 </WrapperIcon>
-                <p>Страна, город</p>
+                <p>{tLkTm("teamProfile.country")}, {tLkTm("teamProfile.city")}</p>
               </ItemTitle>
               <ItemDescription>
                 {currentLocations.country}, г. {currentLocations.city}
@@ -78,7 +80,7 @@ const Info = ({ onToggleSidebar, onView }) => {
                 <WrapperIcon>
                   <EmailIcon />
                 </WrapperIcon>
-                <p>E-mail</p>
+                <p>{tLkTm("teamProfile.email")}</p>
               </ItemTitle>
               <ItemDescription>{user?.email}</ItemDescription>
             </Item>
@@ -87,7 +89,7 @@ const Info = ({ onToggleSidebar, onView }) => {
                 <WrapperIcon>
                   <WebsiteIcon />
                 </WrapperIcon>
-                <p>Сайт</p>
+                <p>{tLkTm("teamProfile.website")}</p>
               </ItemTitle>
               <ItemDescription>
                 {
@@ -110,7 +112,7 @@ const Info = ({ onToggleSidebar, onView }) => {
                   <WrapperIcon>
                     <UserIcon />
                   </WrapperIcon>
-                  <p>Главный тренер</p>
+                  <p>{tLkTm("teamProfile.mainCoach")}</p>
                 </ItemTitle>
                 <ItemDescription>{user?.fullNameCoach}</ItemDescription>
               </CoachItem>
@@ -120,7 +122,7 @@ const Info = ({ onToggleSidebar, onView }) => {
                   <WrapperIcon>
                     <PhoneIcon />
                   </WrapperIcon>
-                  <p>Контакты</p>
+                  <p>{tLkTm("teamProfile.contacts")}</p>
                 </ItemTitle>
                 <ItemDescription>
                   {!!user?.phoneCoach && phoneFormatter(user?.phoneCoach)}

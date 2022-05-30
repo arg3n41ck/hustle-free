@@ -12,6 +12,7 @@ import { Collapse } from "@mui/material"
 import ParticipantCategoriesEdit from "./ParticipantCategories/ParticipantCategoriesEdit"
 import EventParticipantCategoriesTableCollapseHead from "./EventParticipantCategoriesTableCollapseHead"
 import EventParticipantAutocomplete from "./ParticipantCategories/EventParticipantAutocomplete"
+import { useTranslation } from "next-i18next"
 
 const emptyInitialValues = {
   pc: [],
@@ -59,6 +60,15 @@ function EventParticipantCategories({
   const [openPCME, setOpenPCME] = useState({ id: "" | [], step: "" })
   const [selectedInTableRows, setSelectedInTableRows] = useState([])
   const { push: routerPush } = useRouter()
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    pc: yup.mixed().test({
+      test: (array) => array.some((value) => value),
+      message: tLkOg("validation.chooseAtLeastOneCategory"),
+    }),
+  })
+
   const { handleSubmit, errors, touched, setFieldValue } = useFormik({
     initialValues: emptyInitialValues,
     validationSchema,
@@ -78,32 +88,32 @@ function EventParticipantCategories({
   const columns = useMemo(() => {
     return [
       {
-        column: "Категории",
+        column: tLkOg("categoriesOfParticipants.categories"),
         accessor: "name",
         onClick: (rowId) => setOpenPCME({ id: rowId, step: "name" }),
       },
       {
-        column: "Уровни",
+        column: tLkOg("categoriesOfParticipants.levels"),
         accessor: "level",
         onClick: (rowId) => setOpenPCME({ id: rowId, step: "levels" }),
       },
       {
-        column: "Пол",
+        column: tLkOg("categoriesOfParticipants.gender"),
         accessor: "gender",
         onClick: (rowId) => setOpenPCME({ id: rowId, step: "gender" }),
       },
       {
-        column: "Возраст",
+        column: tLkOg("categoriesOfParticipants.age"),
         accessor: "age",
         onClick: (rowId) => setOpenPCME({ id: rowId, step: "age" }),
       },
       {
-        column: "Вес",
+        column: tLkOg("categoriesOfParticipants.weight"),
         accessor: "weight",
         onClick: (rowId) => setOpenPCME({ id: rowId, step: "weight" }),
       },
       {
-        column: "Цена",
+        column: tLkOg("categoriesOfParticipants.price"),
         accessor: "price",
         onClick: (rowId) => setOpenPCME({ id: rowId, step: "price" }),
       },
@@ -170,16 +180,16 @@ function EventParticipantCategories({
 
         <EventFormFooter>
           <OpenPCM onClick={() => setOpenPCM(true)}>
-            + Добавить новую категорию
+            + {tLkOg("categoriesOfParticipants.addANewCategory")}
           </OpenPCM>
           <Cancel
             type="button"
             onClick={() => routerPush("/lk-og/profile/events")}
           >
-            Отмена
+            {tLkOg("editEvent.cancel")}
           </Cancel>
           <Submit type="submit" onClick={handleSubmit}>
-            Далее
+            {tLkOg("editEvent.further")}
           </Submit>
         </EventFormFooter>
       </Form>
@@ -207,13 +217,6 @@ function EventParticipantCategories({
 }
 
 export default EventParticipantCategories
-
-const validationSchema = yup.object({
-  pc: yup.mixed().test({
-    test: (array) => array.some((value) => value),
-    message: "Выберите хотя бы одну категорию участников!",
-  }),
-})
 
 const TableWrapper = styled.div`
   display: grid;

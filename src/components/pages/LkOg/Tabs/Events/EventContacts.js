@@ -11,6 +11,7 @@ import { FormHR, FormSubTitle } from "./EventPeriods"
 import InputMask from "react-input-mask"
 import PhoneIcon from "../../../../../assets/svg/profile-phone.svg"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
+import { useTranslation } from "next-i18next"
 
 const emptyInitialValues = {
   nameOrganization: "",
@@ -30,6 +31,31 @@ const emptyInitialValues = {
 }
 
 function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    nameOrganization: yup
+      .string()
+      .nullable()
+      .required(tLkOg("validation.required")),
+    firstName: yup.string().nullable().required(tLkOg("validation.required")),
+    lastName: yup.string().nullable().required(tLkOg("validation.required")),
+    phoneNumber1: yup
+      .string()
+      .nullable()
+      .required(tLkOg("validation.required")),
+    telegram: "",
+    instagram: "",
+    youtube: "",
+    tiktok: "",
+    facebook: "",
+    linkedin: "",
+    twitter: "",
+    vk: "",
+    email: yup.string().nullable().required(tLkOg("validation.required")),
+    webSite: "",
+  })
+
   const {
     touched,
     errors,
@@ -57,7 +83,6 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
       routerPush(`/lk-og/profile/events/`)
     },
   })
-
   const { push: routerPush } = useRouter()
 
   const dispatch = useDispatch()
@@ -68,12 +93,14 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormSubTitle>Организатор</FormSubTitle>
+      <FormSubTitle>{tLkOg("contacts.organizer")}</FormSubTitle>
       <Field>
-        <p className="auth-title__input">Название организации</p>
+        <p className="auth-title__input">
+          {tLkOg("contacts.nameOfTheOrganization")}
+        </p>
         <TextField
           name="nameOrganization"
-          placeholder="Название организации"
+          placeholder={tLkOg("contacts.nameOfTheOrganization")}
           variant="outlined"
           fullWidth
           error={touched.nameOrganization && Boolean(errors.nameOrganization)}
@@ -85,10 +112,10 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
 
       <FieldsRow>
         <Field>
-          <p className="auth-title__input">Фамилия</p>
+          <p className="auth-title__input">{tLkOg("contacts.surname")}</p>
           <TextField
             name="lastName"
-            placeholder="Фамилия"
+            placeholder={tLkOg("contacts.surname")}
             variant="outlined"
             fullWidth
             error={touched.lastName && Boolean(errors.lastName)}
@@ -98,10 +125,10 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
           />
         </Field>
         <Field>
-          <p className="auth-title__input">Имя</p>
+          <p className="auth-title__input">{tLkOg("contacts.name")}</p>
           <TextField
             name="firstName"
-            placeholder="Имя"
+            placeholder={tLkOg("contacts.name")}
             variant="outlined"
             fullWidth
             error={touched.firstName && Boolean(errors.firstName)}
@@ -113,10 +140,10 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
       </FieldsRow>
 
       <Field>
-        <p className="auth-title__input">Электронный адрес</p>
+        <p className="auth-title__input">{tLkOg("contacts.email")}</p>
         <TextField
           name="email"
-          placeholder="Электронный адрес"
+          placeholder={tLkOg("contacts.email")}
           variant="outlined"
           fullWidth
           type="email"
@@ -128,7 +155,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
       </Field>
 
       <Field>
-        <p className="auth-title__input">Номер телефона</p>
+        <p className="auth-title__input">{tLkOg("contacts.phoneNumber")}</p>
         <InputMask
           name={"phoneNumber1"}
           onChange={(e) =>
@@ -157,11 +184,11 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
 
       <FormHR />
 
-      <FormSubTitle>Соц. сети</FormSubTitle>
+      <FormSubTitle>{tLkOg("contacts.social")}</FormSubTitle>
 
       <Field>
         <p className="auth-title__input">
-          Facebook <span>(Необязательно)</span>
+          Facebook <span>({tLkOg("contacts.dispensable")})</span>
         </p>
         <TextField
           name="facebook"
@@ -178,7 +205,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
 
       <Field>
         <p className="auth-title__input">
-          Linkedin <span>(Необязательно)</span>
+          Linkedin <span>({tLkOg("contacts.dispensable")})</span>
         </p>
         <TextField
           name="linkedin"
@@ -195,7 +222,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
 
       <Field>
         <p className="auth-title__input">
-          Instagram <span>(Необязательно)</span>
+          Instagram <span>({tLkOg("contacts.dispensable")})</span>
         </p>
         <TextField
           name="instagram"
@@ -212,7 +239,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
 
       <Field>
         <p className="auth-title__input">
-          VK <span>(Необязательно)</span>
+          VK <span>({tLkOg("contacts.dispensable")})</span>
         </p>
         <TextField
           name="vk"
@@ -228,11 +255,14 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
       </Field>
 
       <EventFormFooter>
-        <Cancel type='button' onClick={() => routerPush("/lk-og/profile/events")}>
-          Отмена
+        <Cancel
+          type="button"
+          onClick={() => routerPush("/lk-og/profile/events")}
+        >
+          {tLkOg("editEvent.cancel")}
         </Cancel>
         <Submit disabled={!isValid} type="submit">
-          Далее
+          {tLkOg("editEvent.further")}
         </Submit>
       </EventFormFooter>
     </Form>
@@ -240,20 +270,3 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
 }
 
 export default EventContacts
-
-const validationSchema = yup.object({
-  nameOrganization: yup.string().nullable().required("Обязательное поле!"),
-  firstName: yup.string().nullable().required("Обязательное поле!"),
-  lastName: yup.string().nullable().required("Обязательное поле!"),
-  phoneNumber1: yup.string().nullable().required("Обязательное поле!"),
-  telegram: "",
-  instagram: "",
-  youtube: "",
-  tiktok: "",
-  facebook: "",
-  linkedin: "",
-  twitter: "",
-  vk: "",
-  email: yup.string().nullable().required("Обязательное поле!"),
-  webSite: "",
-})

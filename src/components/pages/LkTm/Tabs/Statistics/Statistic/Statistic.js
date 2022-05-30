@@ -2,9 +2,12 @@ import React from "react"
 import HeaderWithBack from "../../../../../ui/LKui/HeaderWithBack"
 import Row from "./Row"
 import styled from "styled-components"
+import { useTranslation } from "next-i18next"
 
 function Statistic({ statistic, isPublic = false, teamId }) {
   const { eventparticipantscategorySet, name } = statistic
+  const { t: tLkTm } = useTranslation("lkTm")
+
   return (
     <div>
       <HeaderWithBack
@@ -15,7 +18,7 @@ function Statistic({ statistic, isPublic = false, teamId }) {
         }
         title={name}
       />
-      <Title>Категории</Title>
+      <Title>{tLkTm("statistics.categories")}</Title>
       <Rows>
         {!!eventparticipantscategorySet?.length ? (
           eventparticipantscategorySet.map((ePC, index) => (
@@ -31,7 +34,7 @@ function Statistic({ statistic, isPublic = false, teamId }) {
             </>
           ))
         ) : (
-          <Empty>Нет категорий</Empty>
+          <Empty>{tLkTm("statistics.noCategories")}</Empty>
         )}
       </Rows>
     </div>

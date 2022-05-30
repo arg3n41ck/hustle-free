@@ -18,6 +18,7 @@ import UploadIcon from "../../../../../assets/svg/upload-profile-icon.svg"
 import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
 import $api from "../../../../../services/axios"
 import Link from "next/link"
+import { useTranslation } from "next-i18next"
 
 const Edits = ({ onView }) => {
   const {
@@ -29,26 +30,27 @@ const Edits = ({ onView }) => {
   const [countries] = useSelector(selectCountriesAndCities)
   const dispatch = useDispatch()
   const [currentSportTypes, setCurrentSportTypes] = useState([])
+  const { t: tCommon } = useTranslation("common")
   const validationSchema = yup.object({
-    fullName: yup.string().nullable().required("Обязательное поле"),
-    country: yup.mixed().required("Обязательное поле"),
-    city: yup.mixed().required("Обязательное поле"),
-    webSite: yup.string().required("Обязательное поле"),
-    fullNameCoach: yup.string().required("Обязательное поле"),
-    phoneCoach: yup.string().min(12).required("Обязательное поле"),
+    fullName: yup.string().nullable().required(tCommon("validation.required")),
+    country: yup.mixed().required(tCommon("validation.required")),
+    city: yup.mixed().required(tCommon("validation.required")),
+    webSite: yup.string().required(tCommon("validation.required")),
+    fullNameCoach: yup.string().required(tCommon("validation.required")),
+    phoneCoach: yup.string().min(12).required(tCommon("validation.required")),
     emailCoach: yup
       .string()
-      .email("Введите верно")
-      .required("Обязательное поле"),
+      .email(tCommon("validation.emailValid"))
+      .required(tCommon("validation.required")),
     sports: yup.array().test({
-      message: "Обязательное поле",
+      message: tCommon("validation.required"),
       test: () => !!currentSportTypes.length,
     }),
     avatar: yup
       .mixed()
       .test(
         "FILE_SIZE",
-        "Размер файла должен быть – не более 4 МБ.",
+        tCommon("validation.imageSizeValid"),
         (value) => {
           if (!value) return true
           if (typeof value !== "string") {
@@ -144,17 +146,17 @@ const Edits = ({ onView }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Header>
-        <Title>Редактирование профиля</Title>
+        <Title>{tCommon("form.titles.profileEdit")}</Title>
       </Header>
       <Content>
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Название организации</p>
+          <p className="auth-title__input">{tCommon("form.fieldsNames.organizationName")}</p>
           <TextField
             sx={{ width: "100%" }}
             name="fullName"
             onChange={formik.handleChange}
             value={formik.values.fullName}
-            placeholder="Название организации"
+            placeholder={tCommon("form.fieldsNames.organizationName")}
             variant="outlined"
             error={formik.touched.fullName && Boolean(formik.errors.fullName)}
             helperText={formik.touched.fullName && formik.errors.fullName}
@@ -162,7 +164,7 @@ const Edits = ({ onView }) => {
         </div>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Страна</p>
+          <p className="auth-title__input">{tCommon("form.fieldsNames.country")}</p>
           <SelectUI
             error={!!(formik.touched.country && formik.errors.country)}
             onChange={(e) => {
@@ -179,7 +181,7 @@ const Edits = ({ onView }) => {
               selected
               value={formik.values.country ?? ""}
             >
-              {!!formik.values.country ? formik.values.country : "Страна"}
+              {!!formik.values.country ? formik.values.country : tCommon("form.fieldsNames.country")}
             </option>
             {countries
               .filter((country) => country.name !== formik.values.country)
@@ -192,7 +194,7 @@ const Edits = ({ onView }) => {
         </div>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Город/Область</p>
+          <p className="auth-title__input">{tCommon("form.fieldsNames.city")}/{tCommon("form.fieldsNames.region")}</p>
           <SelectUI
             error={!!(formik.touched.city && formik.errors.city)}
             onChange={formik.handleChange}
@@ -205,7 +207,7 @@ const Edits = ({ onView }) => {
               selected
               value={formik.values.city ?? ""}
             >
-              {!!formik.values.city ? formik.values.city : "Город/Область"}
+              {!!formik.values.city ? formik.values.city : `${tCommon("form.fieldsNames.city")}/${tCommon("form.fieldsNames.region")}`}
             </option>
             {currentCities
               .filter((city) => city.name !== formik.values.city)
@@ -218,13 +220,13 @@ const Edits = ({ onView }) => {
         </div>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Веб-сайт</p>
+          <p className="auth-title__input">{tCommon("form.fieldsNames.website")}</p>
           <TextField
             sx={{ width: "100%" }}
             name="webSite"
             onChange={formik.handleChange}
             value={formik.values.webSite}
-            placeholder="Веб-сайт"
+            placeholder={tCommon("form.fieldsNames.website")}
             variant="outlined"
             error={formik.touched.webSite && Boolean(formik.errors.webSite)}
             helperText={formik.touched.webSite && formik.errors.webSite}
@@ -232,13 +234,13 @@ const Edits = ({ onView }) => {
         </div>
 
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">ФИО главного тренер</p>
+          <p className="auth-title__input">{tCommon("form.fieldsNames.fullNameMainCoach")}</p>
           <TextField
             sx={{ width: "100%" }}
             name="fullNameCoach"
             onChange={formik.handleChange}
             value={formik.values.fullNameCoach}
-            placeholder="ФИО"
+            placeholder={tCommon("form.fieldsNames.fullNameMainCoach")}
             variant="outlined"
             error={
               formik.touched.fullNameCoach &&
@@ -258,7 +260,7 @@ const Edits = ({ onView }) => {
           }}
         >
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Номер телефона</p>
+            <p className="auth-title__input">{tCommon("form.fieldsNames.phoneNumber")}</p>
             <InputMask
               name={"phoneCoach"}
               onChange={(e) =>
@@ -278,7 +280,7 @@ const Edits = ({ onView }) => {
                   {...inputProps}
                   sx={{ width: "100%" }}
                   variant="outlined"
-                  placeholder={"Контакты"}
+                  placeholder={tCommon("form.fieldsNames.contacts")}
                   InputProps={{
                     endAdornment: <PhoneIcon />,
                   }}
@@ -288,14 +290,14 @@ const Edits = ({ onView }) => {
           </div>
 
           <div className="auth-wrapper__input">
-            <p className="auth-title__input">Электронная почта тренера</p>
+            <p className="auth-title__input">{tCommon("form.fieldsNames.emailCoach")}</p>
             <TextField
               sx={{ width: "100%" }}
               name="emailCoach"
               value={formik.values.emailCoach}
               onChange={formik.handleChange}
               disabled
-              placeholder="Электронная почта"
+              placeholder={tCommon("form.fieldsNames.emailCoach")}
               variant="outlined"
               error={
                 formik.touched.emailCoach && Boolean(formik.errors.emailCoach)
@@ -309,7 +311,7 @@ const Edits = ({ onView }) => {
         </Box>
 
         <div style={{ marginBottom: 16 }} className="auth-wrapper__input">
-          <p className="auth-title__input">Вид спорта</p>
+          <p className="auth-title__input">{tCommon("form.fieldsNames.typeSport")}</p>
           <TextField
             select
             sx={{ width: "100%", color: "white" }}
@@ -328,7 +330,7 @@ const Edits = ({ onView }) => {
             helperText={formik.touched.sports && formik.errors.sports}
           >
             <MenuItem value="none" sx={{ display: "none" }}>
-              Вид спорта
+            {tCommon("form.fieldsNames.typeSport")}
             </MenuItem>
             {sportTypes
               .filter(
@@ -362,13 +364,13 @@ const Edits = ({ onView }) => {
         ))}
 
         <div className="auth-wrapper__input" style={{ marginTop: 32 }}>
-          <p className="auth-title__input">Описание</p>
+          <p className="auth-title__input">{tCommon("form.fieldsNames.description")}</p>
           <Textarea
             name="description"
             value={formik.values.description}
             onChange={formik.handleChange}
             rows={4}
-            placeholder={"Описание"}
+            placeholder={tCommon("form.fieldsNames.description")}
             error={
               formik.touched.description && Boolean(formik.errors.description)
             }
@@ -376,9 +378,9 @@ const Edits = ({ onView }) => {
         </div>
 
         <Gallery>
-          <Title>Фотография профиля</Title>
+          <Title>{tCommon("form.fieldsNames.profileAvatar.label")}</Title>
           <GrayText style={{ marginTop: 4 }}>
-            Фотография показывается, например, рядом с вашими профилем
+            {tCommon("form.fieldsNames.profileAvatar.description")}
           </GrayText>
           <GalleryBlock>
             <GalleryLabel
@@ -413,8 +415,7 @@ const Edits = ({ onView }) => {
               />
             </GalleryLabel>
             <GrayText>
-              Рекомендуем использовать изображение размером не менее 600х600
-              пикселей в формате PNG. Размер файла – не более 4 МБ.
+              {tCommon("form.fieldsNames.profileAvatar.rules4mb")}
             </GrayText>
           </GalleryBlock>
         </Gallery>
@@ -424,15 +425,15 @@ const Edits = ({ onView }) => {
         >
           <Link href={"/auth/auth-reset-password"}>
             <a>
-              <p className="auth-link">Изменить пароль</p>
+              <p className="auth-link">{tCommon("form.fieldsNames.changePassword")}</p>
             </a>
           </Link>
         </div>
         <div className="auth-wrapper__independent border-top">
-          Вы можете{" "}
+          {tCommon("form.fieldsNames.deleteProfile.label")}{" "}
           <Link href={`/auth/delete/${user.id}`}>
             <a>
-              <span className="auth-link">удалить свой профиль</span>
+              <span className="auth-link">{tCommon("form.fieldsNames.deleteProfile.extra")}</span>
             </a>
           </Link>
         </div>
@@ -440,12 +441,12 @@ const Edits = ({ onView }) => {
       <Footer>
         <ButtonWrapper onClick={() => onView("general")}>
           <CustomButton type={"button"} typeButton={"secondary"}>
-            Отмена
+            {tCommon("form.fieldsNames.cancel")}
           </CustomButton>
         </ButtonWrapper>
         <ButtonWrapper>
           <CustomButton type={"submit"} typeButton={"primary"}>
-            Сохранить
+            {tCommon("form.fieldsNames.save")}
           </CustomButton>
         </ButtonWrapper>
       </Footer>
