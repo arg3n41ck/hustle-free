@@ -50,7 +50,7 @@ const getPrice = async (id) => {
   return data
 }
 
-function Price({ open, edit, onClose, submit, priceId, eventId, id: pcId }) {
+function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }) {
   const [defaultValues, setDefaultValues] = useState(initialEmptyValues)
 
   const { values, setFieldValue, touched, errors, handleChange, handleSubmit } =
@@ -91,7 +91,7 @@ function Price({ open, edit, onClose, submit, priceId, eventId, id: pcId }) {
   return (
     <ParticipantCategoriesModal
       open={open}
-      title="Цены регистрации категории"
+      title={name}
       onClose={onClose}
       onSubmit={handleSubmit}
       edit={edit}

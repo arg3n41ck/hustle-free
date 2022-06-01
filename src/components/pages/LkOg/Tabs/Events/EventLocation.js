@@ -14,11 +14,12 @@ import { Autocomplete } from "@mui/material"
 import { LocationIcon } from "../../../Events/EventsCatalog/EventsFilter"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import dynamic from "next/dynamic"
-const MapFiledLeafLet  = dynamic(
+const MapFiledLeafLet = dynamic(
   () => import("../../../../ui/Map/FieldLeaflet"),
   {
     ssr: false,
-  })
+  }
+)
 
 const emptyInitialValues = {
   placeName: null,
@@ -159,7 +160,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
       >
         <Field>
           <p className="auth-title__input">Карта локации адреса турнира</p>
-          <div style={{ height: 300 }}>
+          <MapWrapper style={{ height: 300 }}>
             <MapFiledLeafLet
               onPoint={({ lat, lng }) => {
                 setFieldValue("lat", `${lat}`)
@@ -171,7 +172,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
                   : null
               }
             />
-          </div>
+          </MapWrapper>
         </Field>
         <FormHelperText>
           {(touched.lat && errors.lat) || (touched.long && errors.long)}
@@ -208,6 +209,10 @@ export const FieldsRow = styled.div`
   display: flex;
   justify-content: space-between;
   grid-gap: 24px;
+`
+export const MapWrapper = styled.div`
+  //border: 1px solid #333333;
+  //border-radius: 16px;
 `
 
 const validationSchema = yup.object({

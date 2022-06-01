@@ -50,7 +50,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
         ...rest
       } = values
       await formDataHttp(
-        { ...rest, phone_number_1: phoneNumber1, allFieldsFilled: true },
+        { ...rest, allFieldsFilled: true },
         `organizer/events/${eventId}/contact/`,
         "put"
       )
@@ -228,7 +228,10 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
       </Field>
 
       <EventFormFooter>
-        <Cancel type='button' onClick={() => routerPush("/lk-og/profile/events")}>
+        <Cancel
+          type="button"
+          onClick={() => routerPush("/lk-og/profile/events")}
+        >
           Отмена
         </Cancel>
         <Submit disabled={!isValid} type="submit">

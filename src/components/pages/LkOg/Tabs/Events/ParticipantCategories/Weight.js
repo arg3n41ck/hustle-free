@@ -4,6 +4,7 @@ import * as yup from "yup"
 import ParticipantCategoriesModal from "./Modal"
 import { FieldsRow } from "../EventLocation"
 import { TextField } from "@mui/material"
+import { PCFieldName } from "./Name"
 
 const initialEmptyValues = {
   fromWeight: 0,
@@ -19,6 +20,7 @@ function Weight({
   open,
   edit,
   onClose,
+  name,
   submit,
   defaultValues = initialEmptyValues,
 }) {
@@ -33,10 +35,13 @@ function Weight({
     <ParticipantCategoriesModal
       open={open}
       edit={edit}
-      title="Веса участников категории"
+      title={name}
       onClose={onClose}
       onSubmit={handleSubmit}
     >
+      <PCFieldName>
+        Вес
+      </PCFieldName>
       <FieldsRow>
         <TextField
           name="fromWeight"

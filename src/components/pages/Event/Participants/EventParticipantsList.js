@@ -12,7 +12,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
         <Title>
           {isAthletes
             ? "Категории на основе сведений в вашем профиле"
-            : "Отсальные категории"}
+            : "Остальные категории"}
         </Title>
       )}
       {eventParticipants.map((eventParticipant) => (

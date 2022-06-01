@@ -34,8 +34,6 @@ function EventsFilter() {
     dispatch(fetchSportTypes())
   }, [])
 
-  const sortHandler = (_) => {}
-
   const handleFilter = useCallback(
     (name, value) => {
       value ? query.set(name, value.name) : query.delete(name)
@@ -195,24 +193,24 @@ function EventsFilter() {
               )}
             />
           </LocalizationProvider>
-          <Autocomplete
-            noOptionsText={"Ничего не найдено"}
-            onChange={(e, value) => sortHandler(e, value)}
-            options={countries.map((option) => option)}
-            getOptionLabel={(option) => option.name}
-            fullWidth
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                fullWidth
-                placeholder="Сортировать"
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: <FieldFilterIcon />,
-                }}
-              />
-            )}
-          />
+          {/*<Autocomplete*/}
+          {/*  noOptionsText={"Ничего не найдено"}*/}
+          {/*  onChange={(e, value) => sortHandler(e, value)}*/}
+          {/*  options={countries.map((option) => option)}*/}
+          {/*  getOptionLabel={(option) => option.name}*/}
+          {/*  fullWidth*/}
+          {/*  renderInput={(params) => (*/}
+          {/*    <TextField*/}
+          {/*      {...params}*/}
+          {/*      fullWidth*/}
+          {/*      placeholder="Сортировать"*/}
+          {/*      InputProps={{*/}
+          {/*        ...params.InputProps,*/}
+          {/*        startAdornment: <FieldFilterIcon />,*/}
+          {/*      }}*/}
+          {/*    />*/}
+          {/*  )}*/}
+          {/*/>*/}
         </Filters>
       </Collapse>
     </div>
@@ -406,16 +404,16 @@ export const LocationIcon = () => (
   </svg>
 )
 
-const FieldFilterIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M5 7H19" stroke="#828282" strokeWidth="2" strokeLinecap="round" />
-    <path d="M5 12H15" stroke="#828282" strokeWidth="2" strokeLinecap="round" />
-    <path d="M5 17H11" stroke="#828282" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-)
+// const FieldFilterIcon = () => (
+//   <svg
+//     width="24"
+//     height="24"
+//     viewBox="0 0 24 24"
+//     fill="none"
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <path d="M5 7H19" stroke="#828282" strokeWidth="2" strokeLinecap="round" />
+//     <path d="M5 12H15" stroke="#828282" strokeWidth="2" strokeLinecap="round" />
+//     <path d="M5 17H11" stroke="#828282" strokeWidth="2" strokeLinecap="round" />
+//   </svg>
+// )

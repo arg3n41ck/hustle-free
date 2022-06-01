@@ -37,20 +37,20 @@ const Header = () => {
     setUserMenu(false)
   }, [userAuthenticated])
 
+  const outHandler = async () => {
+    dispatch(exitUser())
+    console.log("clearing token WHEN LOGOUT")
+    clearCookies()
+    await routerPush("/login")
+  }
+
   const changeMenu = async (value) => {
     setAnchorUserMenu(null)
     if (value === "exit") {
-      clearCookies()
       await outHandler()
       return
     }
     await routerPush(value)
-  }
-
-  const outHandler = async () => {
-    dispatch(exitUser())
-    clearCookies()
-    await routerPush("/login")
   }
 
   return (

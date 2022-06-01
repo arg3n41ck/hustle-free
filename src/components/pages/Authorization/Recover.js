@@ -7,6 +7,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import $api from "../../../services/axios"
 import AuthInfo from "../../ui/modals/AuthInfo"
+import { useRouter } from "next/router"
 
 const variants = {
   open: { opacity: 1, transaction: 5 },
@@ -23,13 +24,17 @@ const validationSchema = yup.object({
 const Recover = ({ onView }) => {
   const [toggleInfoModal, setToggleInfoModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
+  const { locale } = useRouter()
   const formik = useFormik({
     initialValues: {
       email: "",
     },
     onSubmit: async (values) => {
       try {
-        await $api.post("/accounts/auth/users/reset_password/", values)
+        await $api.post("/accounts/auth/users/reset_password/", {
+          ...values,
+          language: locale,
+        })
         setToggleInfoModal(true)
         setErrorMessage(null)
       } catch (e) {

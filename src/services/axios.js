@@ -54,6 +54,7 @@ $api.interceptors.response.use(
           },
         })
       } catch (e) {
+        console.log("clearing token AXIOS")
         clearCookies()
         if (getCookie("token")) {
           location.href = "/login"

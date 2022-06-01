@@ -73,7 +73,7 @@ const EventParticipants = () => {
     countryValue,
     teamValue,
   ])
-
+  console.log({ athletePCState, eventParticipants })
   return (
     <>
       <Filters levels={levels} onFilter={filterHandler} />

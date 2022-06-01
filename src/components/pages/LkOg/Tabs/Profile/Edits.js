@@ -206,8 +206,7 @@ const Edits = () => {
           className="auth-wrapper__input"
         >
           <p className="auth-title__input">
-            {tCommon("form.fieldsNames.birthDate")} (
-            {tCommon("form.fieldsNames.notNecessary")})
+            {tCommon("form.fieldsNames.birthDate")}
           </p>
           <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
             <MobileDatePicker

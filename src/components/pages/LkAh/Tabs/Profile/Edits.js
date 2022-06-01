@@ -3,11 +3,7 @@ import { useFormik } from "formik"
 import { useDispatch, useSelector } from "react-redux"
 import * as yup from "yup"
 import styled from "styled-components"
-import {
-  Box,
-  TextField,
-  Autocomplete,
-} from "@mui/material"
+import { Box, TextField, Autocomplete } from "@mui/material"
 import { ru } from "date-fns/locale"
 import { LocalizationProvider, MobileDatePicker } from "@mui/lab"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
@@ -224,8 +220,7 @@ const Edits = () => {
         >
           <div className="auth-wrapper__input">
             <p className="auth-title__input">
-              {tCommon("form.fieldsNames.birthDate")} (
-              {tCommon("form.fieldsNames.notNecessary")})
+              {tCommon("form.fieldsNames.birthDate")}
             </p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
               <MobileDatePicker
@@ -454,7 +449,7 @@ const Edits = () => {
         </div>
         <div className="auth-wrapper__independent border-top">
           {tCommon("form.fieldsNames.deleteProfile.extra")}{" "}
-          <Link href={`/auth/delete/${user.id}`}>
+          <Link href={`/auth/delete/${user?.id}`}>
             <a>
               <span className="auth-link">
                 {tCommon("form.fieldsNames.deleteProfile.label")}
