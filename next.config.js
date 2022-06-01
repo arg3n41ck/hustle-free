@@ -1,11 +1,7 @@
-const path = require("path")
 const { i18n } = require("./next-i18next.config")
 
 module.exports = {
   reactStrictMode: true,
-  sassOptions: {
-    includePaths: [path.join(__dirname, "src/styles")],
-  },
   images: {
     domains: [
       "assets.vercel.com",
@@ -13,13 +9,11 @@ module.exports = {
       "unsplash.com",
       "api.dev.main.jva.vc",
     ],
-    formats: ["image/avif", "image/webp"],
   },
   i18n,
   env: {
     BASE_URL: process.env.NEXT_PUBLIC_API_URL,
   },
-  loader: "babel-loader",
   experimental: {
     // Enables the styled-components SWC transform
     styledComponents: true,
