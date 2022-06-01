@@ -32,7 +32,9 @@ const DropdownData = ({
         }
       >
         <Title>{title}</Title>
-        <ArrowIconS open={children && active} right={!children} />
+        <ArrowIconS open={children && active} right={!children} >
+          <ArrowIcon/>
+        </ArrowIconS>
       </Header>
       {additionalData && additionalData}
       {children && <Content>{children}</Content>}
@@ -67,7 +69,7 @@ const Content = styled.div`
   padding: 32px;
   border-top: 1px solid #333333;
 `
-const ArrowIconS = styled(ArrowIcon)`
+const ArrowIconS = styled.div`
   transition: 0.2s;
   transform: rotate(
     ${({ open, right }) => (right ? "-90deg" : open ? "-180deg" : "0")}

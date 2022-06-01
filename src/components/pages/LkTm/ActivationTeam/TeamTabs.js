@@ -1,6 +1,7 @@
-import React, { useCallback } from "react"
-import { useSelector } from "react-redux"
+import React, { useCallback, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import {
+  fetchSportTypes,
   selectSportTypes,
 } from "../../../../redux/components/sportTypes"
 import HorizontalTabs from "../../../ui/tabs/HorizontalTabs"
@@ -10,6 +11,7 @@ import { toast } from "react-toastify"
 import { formDataHttp } from "../../../../helpers/formDataHttp"
 import { useRouter } from "next/router"
 import { setCookie } from "../../../../services/JWTService"
+import { fetchCountries } from "../../../../redux/components/countriesAndCities"
 
 const tabs = [
   {
@@ -27,7 +29,13 @@ function TeamTabs() {
   const [dataContactInfo, setDataContactInfo] = React.useState(null)
   const [dataInfo, setDataInfo] = React.useState(null)
   const [sportTypes] = useSelector(selectSportTypes)
+  const dispatch = useDispatch()
   const router = useRouter()
+
+  useEffect(() => {
+    dispatch(fetchCountries())
+    dispatch(fetchSportTypes())
+  }, [])
 
   const onSubmit = useCallback(async (submitData) => {
     try {
