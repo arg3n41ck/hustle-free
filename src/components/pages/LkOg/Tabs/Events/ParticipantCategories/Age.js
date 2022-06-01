@@ -4,6 +4,7 @@ import * as yup from "yup"
 import ParticipantCategoriesModal from "./Modal"
 import { FieldsRow } from "../EventLocation"
 import { TextField } from "@mui/material"
+import { PCFieldName } from "./Name"
 
 const initialEmptyValues = {
   fromAge: 0,
@@ -15,7 +16,7 @@ const validationSchema = yup.object({
   toAge: yup.mixed().required("Обязательное поле!"),
 })
 
-function Age({ open, edit, onClose, submit, defaultValues = initialEmptyValues }) {
+function Age({ open, edit, name, onClose, submit, defaultValues = initialEmptyValues }) {
   const { values, touched, errors, handleChange, handleSubmit } = useFormik({
     initialValues: defaultValues,
     validationSchema,
@@ -26,11 +27,14 @@ function Age({ open, edit, onClose, submit, defaultValues = initialEmptyValues }
   return (
     <ParticipantCategoriesModal
       open={open}
-      title="Возрасты участников категории"
+      title={name}
       onClose={onClose}
       onSubmit={handleSubmit}
       edit={edit}
     >
+      <PCFieldName>
+        Возраст
+      </PCFieldName>
       <FieldsRow>
         <TextField
           name="fromAge"

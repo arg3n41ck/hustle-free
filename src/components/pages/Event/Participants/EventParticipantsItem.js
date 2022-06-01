@@ -89,7 +89,7 @@ const EventParticipantsItem = ({
             )}
             <ParticipantsList
               isOrganizer={true}
-              active={false}
+              active={true}
               participants={participantsValues.registered}
             />
           </>

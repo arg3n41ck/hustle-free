@@ -9,6 +9,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material"
+import { PCFieldName } from "./Name"
 
 const initialEmptyValues = {
   gender: 0,
@@ -22,6 +23,7 @@ function Gender({
   open,
   edit,
   onClose,
+  name,
   submit,
   defaultValues = initialEmptyValues,
 }) {
@@ -35,11 +37,14 @@ function Gender({
   return (
     <ParticipantCategoriesModal
       open={open}
-      title="Пол участников категории"
+      title={name}
       onClose={onClose}
       edit={edit}
       onSubmit={handleSubmit}
     >
+      <PCFieldName>
+        Пол
+      </PCFieldName>
       <FormControl
         error={touched.gender && Boolean(errors.gender)}
         variant="standard"

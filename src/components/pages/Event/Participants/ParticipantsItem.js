@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { Avatar, Collapse } from "@mui/material"
 import Link from "next/link"
 import CustomButton from "../../../ui/CustomButton"
+import { useRouter } from "next/router"
 
 export const OgParticipantsItem = ({
   participant,
@@ -55,7 +56,7 @@ export const OgParticipantsItem = ({
               </div>
             </Info>
             {isRegistered && <Line style={{ margin: "24px 0" }} />}
-            <Link href={`/athlete/${participant.userId}`} passHref>
+            <Link href={`/athlete/${participant.athleteId}`} passHref>
               {isRegistered ? (
                 <RegisteredBtnProfile>Просмотреть порфиль</RegisteredBtnProfile>
               ) : (
@@ -132,7 +133,7 @@ const Line = styled.div`
 
 export const ParticipantsItem = ({ participant }) => {
   const [open, setOpen] = useState(false)
-
+  const { push: routerPush } = useRouter()
   return (
     <Wrapper open={open} onClick={() => setOpen((prev) => !prev)}>
       <ParticipantsItemLi>
@@ -143,7 +144,13 @@ export const ParticipantsItem = ({ participant }) => {
             alt={`${participant.fullName}`}
           />
           <ItemText>
-            <ItemTitle>{participant.fullName}</ItemTitle>
+            <ItemTitle
+              onClick={async () =>
+                routerPush(`/athlete/${participant.athleteId}`)
+              }
+            >
+              {participant.fullName}
+            </ItemTitle>
             <ItemDescription>{participant.team}</ItemDescription>
           </ItemText>
         </Content>

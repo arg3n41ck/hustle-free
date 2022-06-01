@@ -2,7 +2,6 @@ import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
 import $api from "../../services/axios"
 import { camelizeKeys } from "humps"
 import { localStorageRemoveItem } from "../../helpers/helpers"
-import clearCookies from "../../helpers/clearCookies"
 
 // async actions
 export const fetchUser = createAsyncThunk(
@@ -67,15 +66,12 @@ export const profileMenuSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUser.pending, (state, action) => {
-      state.userAuthenticated = true
-    })
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.user = action.payload
       state.error = false
+      state.userAuthenticated = true
     })
     builder.addCase(fetchUser.rejected, (state, action) => {
-      clearCookies()
       state.error = action.payload
       state.userAuthenticated = false
     })
