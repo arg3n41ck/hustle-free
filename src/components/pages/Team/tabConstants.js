@@ -1,6 +1,6 @@
-import ProfileIcon from "../../../assets/svg/profile-icon.svg"
-import AthletesIcon from "../../../assets/svg/users.svg"
-import StatisticsIcon from "../../../assets/svg/statistics.svg"
+import { ProfileIcon } from "../../../assets/svg/icons"
+import { UserIcon } from "../../../assets/svg/icons"
+import { StatisticsIcon } from "../../../assets/svg/icons"
 
 export const teamProfileTabs = (teamId) => [
   {
@@ -11,7 +11,7 @@ export const teamProfileTabs = (teamId) => [
   {
     name: "Атлеты",
     href: `/team/${teamId}/athletes`,
-    icon: <AthletesIcon />,
+    icon: <UserIcon />,
   },
   {
     name: "Статистика",

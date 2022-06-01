@@ -5,11 +5,11 @@ import { TitleHeader } from "../../ui/LKui/HeaderContent"
 import { HeaderWrapper } from "../LkOg/Tabs/Events/Events/Events"
 import styled from "styled-components"
 import { Avatar, Box } from "@mui/material"
-import WebsiteIcon from "../../../assets/svg/website-icon.svg"
-import EmailIcon from "../../../assets/svg/email-profile.svg"
-import LinkIcon from "../../../assets/svg/link-icon.svg"
-import UserIcon from "../../../assets/svg/user.svg"
-import PhoneIcon from "../../../assets/svg/phone-icon.svg"
+import { WebsiteIcon } from "../../../assets/svg/icons"
+import { DefaultEmailIcon } from "../../../assets/svg/icons"
+import { LinkIcon } from "../../../assets/svg/icons"
+import { UserIcon } from "../../../assets/svg/icons"
+import { DefaultPhoneIcon } from "../../../assets/svg/icons"
 import phoneFormatter from "../../../helpers/phoneFormatter"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -101,7 +101,7 @@ function TeamInfo({
               <Item>
                 <ItemTitle>
                   <WrapperIcon>
-                    <EmailIcon />
+                    <DefaultEmailIcon />
                   </WrapperIcon>
                   <p>E-mail</p>
                 </ItemTitle>
@@ -149,7 +149,7 @@ function TeamInfo({
                 <CoachItem style={{ marginTop: 16 }}>
                   <ItemTitle>
                     <WrapperIcon>
-                      <PhoneIcon />
+                      <DefaultPhoneIcon />
                     </WrapperIcon>
                     <p>Контакты</p>
                   </ItemTitle>

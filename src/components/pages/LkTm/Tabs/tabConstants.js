@@ -1,7 +1,9 @@
-import SettingsIcon from "../../../../assets/svg/settings.svg"
-import ProfileIcon from "../../../../assets/svg/profile-icon.svg"
-import AthletesIcon from "../../../../assets/svg/users.svg"
-import StatisticsIcon from "../../../../assets/svg/statistics.svg"
+import {
+  SettingsIcon,
+  ProfileIcon,
+  UserIcon,
+  StatisticsIcon,
+} from "../../../../assets/svg/icons"
 
 export const lkTmTabs = [
   {
@@ -12,7 +14,7 @@ export const lkTmTabs = [
   {
     name: "athletes",
     href: "/lk-tm/profile/athletes",
-    icon: <AthletesIcon />,
+    icon: <UserIcon />,
   },
   {
     name: "statistic",

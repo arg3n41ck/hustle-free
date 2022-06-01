@@ -9,7 +9,7 @@ import { TextField } from "@mui/material"
 import { FieldsRow } from "./EventLocation"
 import { FormHR, FormSubTitle } from "./EventPeriods"
 import InputMask from "react-input-mask"
-import PhoneIcon from "../../../../../assets/svg/profile-phone.svg"
+import { PhoneIcon } from "../../../../../assets/svg/icons"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 
 const emptyInitialValues = {

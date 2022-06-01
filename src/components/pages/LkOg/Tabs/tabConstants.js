@@ -1,6 +1,6 @@
-import ProfileIcon from "../../../../assets/svg/profile-icon.svg"
-import MyTournamentsIcon from "../../../../assets/svg/my-tournaments-icon.svg"
-import SettingsIcon from "../../../../assets/svg/settings.svg"
+import { ProfileIcon } from "../../../../assets/svg/icons"
+import { BigCalendarIcon } from "../../../../assets/svg/icons"
+import { SettingsIcon } from "../../../../assets/svg/icons"
 
 export const lkOgTabs = [
   {
@@ -11,7 +11,7 @@ export const lkOgTabs = [
   },
   {
     name: "events",
-    icon: <MyTournamentsIcon />,
+    icon: <BigCalendarIcon />,
     href: "/lk-og/profile/events",
     children: ["/lk-og/profile/events/edit"],
   },

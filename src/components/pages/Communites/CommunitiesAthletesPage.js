@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchTeams, teamsSelector } from "../../../redux/components/teams"
 import styled from "styled-components"
-import searchIcon from "../../../assets/svg/searchIcon.svg"
 import { Autocomplete, TextField } from "@mui/material"
 import {
   selectCountriesAndCities,
@@ -19,6 +18,7 @@ import {
 } from "../../../redux/components/athletes"
 import CommunitesAthletesList from "./CommunitiesAthleteList"
 import { useTranslation } from "next-i18next"
+import { SearchIcon } from "../../../assets/svg/icons"
 
 const gender = [
   {
@@ -110,7 +110,7 @@ function CommunitesAthletesPage() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Поиск"
             />
-            <CommunitesHeadingButton type="submit" searchIcon={searchIcon}>
+            <CommunitesHeadingButton type="submit">
               <SearchIcon />
               Найти
             </CommunitesHeadingButton>
@@ -255,7 +255,6 @@ const CommunitesHeadingButton = styled.button`
   border-radius: 0 16px 16px 0;
   height: 100%;
   color: #ffffff;
-  background-image: url(${({ searchIcon }) => searchIcon});
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -268,23 +267,6 @@ const CommunitesHeadingButton = styled.button`
   align-items: center;
   padding: 23px;
 `
-
-const SearchIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.9036 19 14.652 18.3351 16.0255 17.2249C16.0661 17.4016 16.1552 17.5694 16.2929 17.7071L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.7071 16.2929C17.5694 16.1552 17.4016 16.0661 17.2249 16.0255C18.3351 14.652 19 12.9036 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z"
-      fill="white"
-    />
-  </svg>
-)
 
 const UsersIcon = () => (
   <svg

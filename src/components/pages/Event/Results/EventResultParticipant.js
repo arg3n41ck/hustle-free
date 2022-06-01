@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import GoldIcon from "../../../../assets/svg/second-gold-medal.svg"
-import SilverIcon from "../../../../assets/svg/second-silver-medal.svg"
-import BronzeIcon from "../../../../assets/svg/second-bronze-medal.svg"
+import { FirstPlaceIcon } from "../../../../assets/svg/icons"
+import { SecondPlaceIcon } from "../../../../assets/svg/icons"
+import { ThirdPlaceIcon } from "../../../../assets/svg/icons"
 import PlaceField from "./PlaceField"
 import styled from "styled-components"
 import $api from "../../../../services/axios"
@@ -31,9 +31,9 @@ function EventResultParticipant({ participant, updatePC }) {
   return (
     <Item key={participant.id}>
       <Left>
-        {(place === 1 && <GoldIcon />) ||
-          (place === 2 && <SilverIcon />) ||
-          (place === 3 && <BronzeIcon />) || (
+        {(place === 1 && <FirstPlaceIcon />) ||
+          (place === 2 && <SecondPlaceIcon />) ||
+          (place === 3 && <ThirdPlaceIcon />) || (
             <OtherPlace>
               <p>{place}</p>
             </OtherPlace>
