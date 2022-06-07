@@ -4,6 +4,7 @@ import * as yup from "yup"
 import ParticipantCategoriesModal from "./Modal"
 import { Field } from "../EventDefaults"
 import { TextField } from "@mui/material"
+import styled from "styled-components"
 import { useTranslation } from "next-i18next"
 
 const initialEmptyValues = {
@@ -39,6 +40,9 @@ function Name({
       onSubmit={handleSubmit}
     >
       <Field>
+        <PCFieldName>
+          {tLkOg("categoriesOfParticipants.nameCategory")}
+        </PCFieldName>
         <TextField
           name="name"
           placeholder={tLkOg("categoriesOfParticipants.nameCategory")}
@@ -55,3 +59,11 @@ function Name({
 }
 
 export default Name
+
+export const PCFieldName = styled.p`
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 32px;
+  color: #F2F2F2;
+  margin-bottom: 10px;
+`

@@ -7,11 +7,11 @@ import { useRouter } from "next/router"
 import Link from "next/link"
 import { theme } from "../../styles/theme"
 import clearCookies from "../../helpers/clearCookies"
-import LogoIcon from "../../assets/svg/logo.svg"
+import { LogoIcon } from "../../assets/svg/icons"
 import { lkOgTabs } from "../pages/LkOg/Tabs/tabConstants"
 import { lkTmTabs } from "../pages/LkTm/Tabs/tabConstants"
 import { lkAhTabs } from "../pages/LkAh/Tabs/tabConstants"
-import ExitIcon from "../../assets/svg/exit-icon.svg"
+import { ExitIcon } from "../../assets/svg/icons"
 import { exitUser, selectIsUserAuth } from "../../redux/components/user"
 import HeaderLocalizationPopover from "./components/HeaderLocalizationPopover"
 import { truncateString } from "../../helpers/helpers"
@@ -37,20 +37,20 @@ const Header = () => {
     setUserMenu(false)
   }, [userAuthenticated])
 
+  const outHandler = async () => {
+    dispatch(exitUser())
+    console.log("clearing token WHEN LOGOUT")
+    clearCookies()
+    await routerPush("/login")
+  }
+
   const changeMenu = async (value) => {
     setAnchorUserMenu(null)
     if (value === "exit") {
-      clearCookies()
       await outHandler()
       return
     }
     await routerPush(value)
-  }
-
-  const outHandler = async () => {
-    dispatch(exitUser())
-    clearCookies()
-    await routerPush("/login")
   }
 
   return (

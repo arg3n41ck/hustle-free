@@ -136,6 +136,8 @@ const TeamContactInfo = ({ data, setData, setView }) => {
     event.preventDefault()
   }
 
+  console.log(formik)
+
   return (
     <Form onSubmit={formik.handleSubmit}>
       <div className="auth-wrapper__input">

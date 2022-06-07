@@ -3,12 +3,12 @@ import { useSelector } from "react-redux"
 import HeaderContent, { TitleHeader } from "../../../../ui/LKui/HeaderContent"
 import styled from "styled-components"
 import { Avatar, Box } from "@mui/material"
-import EditsIcon from "../../../../../assets/svg/edits-icon.svg"
-import EmailIcon from "../../../../../assets/svg/email-profile.svg"
-import WebsiteIcon from "../../../../../assets/svg/website-icon.svg"
-import LinkIcon from "../../../../../assets/svg/link-icon.svg"
-import UserIcon from "../../../../../assets/svg/user.svg"
-import PhoneIcon from "../../../../../assets/svg/phone-icon.svg"
+import { EditIcon } from "../../../../../assets/svg/icons"
+import { DefaultEmailIcon } from "../../../../../assets/svg/icons"
+import { WebsiteIcon } from "../../../../../assets/svg/icons"
+import { LinkIcon } from "../../../../../assets/svg/icons"
+import { UserIcon } from "../../../../../assets/svg/icons"
+import { DefaultPhoneIcon } from "../../../../../assets/svg/icons"
 import phoneFormatter from "../../../../../helpers/phoneFormatter"
 import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
 import { useTranslation } from "next-i18next"
@@ -57,7 +57,7 @@ const Info = ({ onToggleSidebar, onView }) => {
           </CenterText>
           <Button onClick={() => onView("edit")}>
             <IconWrapper>
-              <EditsIcon />
+              <EditIcon />
             </IconWrapper>
             {tLkTm("teamProfile.edit")}
           </Button>
@@ -78,7 +78,7 @@ const Info = ({ onToggleSidebar, onView }) => {
             <Item>
               <ItemTitle>
                 <WrapperIcon>
-                  <EmailIcon />
+                  <DefaultEmailIcon />
                 </WrapperIcon>
                 <p>{tLkTm("teamProfile.email")}</p>
               </ItemTitle>
@@ -120,7 +120,7 @@ const Info = ({ onToggleSidebar, onView }) => {
               <CoachItem style={{ marginTop: 16 }}>
                 <ItemTitle>
                   <WrapperIcon>
-                    <PhoneIcon />
+                    <DefaultPhoneIcon />
                   </WrapperIcon>
                   <p>{tLkTm("teamProfile.contacts")}</p>
                 </ItemTitle>

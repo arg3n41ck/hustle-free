@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import TwoDude from "../../../assets/png/twoDutes.png"
 import Link from "next/link"
 import { useSelector } from "react-redux"
 
@@ -25,9 +24,7 @@ function HeroMainPageForNotAuth() {
             </a>
           </Link>
           {(!user || user.role === "organizer") && (
-            <Link
-              href={!user ? "/#user-roles" : "/lk-og/profile/events/edit"}
-            >
+            <Link href={!user ? "/#user-roles" : "/lk-og/profile/events/edit"}>
               <a>
                 <HeroInfoButtonForCreateEvents>
                   Создать турнир
@@ -37,7 +34,7 @@ function HeroMainPageForNotAuth() {
           )}
         </HeroInfoButtons>
       </HeroInfo>
-      <HeroBackgroundImage twoDude={TwoDude} />
+      <HeroBackgroundImage />
     </HeroWrapper>
   )
 }
@@ -60,7 +57,7 @@ const HeroBackgroundImage = styled.div`
 
   background: no-repeat
       linear-gradient(0deg, rgba(98, 89, 232, 0.1), rgba(98, 89, 232, 0.3)),
-    url(${({ twoDude }) => twoDude.src}) center / cover;
+    url("/assets/png/twoDutes.png") center / cover;
   background-blend-mode: multiply, normal;
 `
 

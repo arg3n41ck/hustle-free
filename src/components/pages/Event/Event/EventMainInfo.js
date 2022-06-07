@@ -26,12 +26,9 @@ import {
 } from "react-share"
 import { toast } from "react-toastify"
 import dynamic from "next/dynamic"
-const MapFiledLeafLet  = dynamic(
-  () => import("../../../ui/Map/FieldLeaflet"),
-  {
-    ssr: false,
-  })
-
+const MapFiledLeafLet = dynamic(() => import("../../../ui/Map/FieldLeaflet"), {
+  ssr: false,
+})
 
 const getContacts = (event) => {
   const { contacts } = event
@@ -211,7 +208,7 @@ function EventMainInfo({ event }) {
         </ul>
         <div />
         <Map active={!!mapPoints}>
-        <MapFiledLeafLet defaultPoints={mapPoints} disabled  />
+          <MapFiledLeafLet defaultPoints={mapPoints} disabled />
         </Map>
       </Column>
 
@@ -341,9 +338,6 @@ const Map = styled.div`
   width: 500px;
   height: 151px;
   border-radius: 16px;
-  background: no-repeat
-    url("https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1700&q=80")
-    center / cover;
 `
 
 const CategorySocials = styled.div`

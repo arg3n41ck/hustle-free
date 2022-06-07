@@ -5,6 +5,7 @@ import ParticipantCategoriesModal from "./Modal"
 import { FieldsRow } from "../EventLocation"
 import { TextField } from "@mui/material"
 import { useTranslation } from "next-i18next"
+import { PCFieldName } from "./Name"
 
 const initialEmptyValues = {
   fromWeight: 0,
@@ -15,6 +16,7 @@ function Weight({
   open,
   edit,
   onClose,
+  name,
   submit,
   defaultValues = initialEmptyValues,
 }) {
@@ -35,10 +37,13 @@ function Weight({
     <ParticipantCategoriesModal
       open={open}
       edit={edit}
-      title={tLkOg("categoriesOfParticipants.weightsOfCategoryParticipants")}
+      title={name}
       onClose={onClose}
       onSubmit={handleSubmit}
     >
+      <PCFieldName>
+        {tLkOg("categoriesOfParticipants.weightsOfCategoryParticipants")}
+      </PCFieldName>
       <FieldsRow>
         <TextField
           name="fromWeight"

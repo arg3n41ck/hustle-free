@@ -5,6 +5,7 @@ import ParticipantCategoriesModal from "./Modal"
 import { FieldsRow } from "../EventLocation"
 import { TextField } from "@mui/material"
 import { useTranslation } from "next-i18next"
+import { PCFieldName } from "./Name"
 
 const initialEmptyValues = {
   fromAge: 0,
@@ -14,6 +15,7 @@ const initialEmptyValues = {
 function Age({
   open,
   edit,
+  name,
   onClose,
   submit,
   defaultValues = initialEmptyValues,
@@ -36,11 +38,14 @@ function Age({
   return (
     <ParticipantCategoriesModal
       open={open}
-      title={tLkOg("categoriesOfParticipants.agesParticipants")}
+      title={name}
       onClose={onClose}
       onSubmit={handleSubmit}
       edit={edit}
     >
+      <PCFieldName>
+        {tLkOg("categoriesOfParticipants.agesParticipants")}
+      </PCFieldName>
       <FieldsRow>
         <TextField
           name="fromAge"

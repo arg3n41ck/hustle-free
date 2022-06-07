@@ -182,7 +182,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
           <p className="auth-title__input">
             {tLkOg("location.tournamentAddressLocationMap")}
           </p>
-          <div style={{ height: 300 }}>
+          <MapWrapper style={{ height: 300 }}>
             <MapFiledLeafLet
               onPoint={({ lat, lng }) => {
                 setFieldValue("lat", `${lat}`)
@@ -194,7 +194,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
                   : null
               }
             />
-          </div>
+          </MapWrapper>
         </Field>
         <FormHelperText>
           {(touched.lat && errors.lat) || (touched.long && errors.long)}
@@ -216,7 +216,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId }) {
       </Field>
 
       <EventFormFooter>
-        <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
+        <Cancel onClick={() => routerPush("/lk-og/profile/events")} type='button'>
           {tLkOg("editEvent.cancel")}
         </Cancel>
         <Submit type="submit">{tLkOg("editEvent.further")}</Submit>
@@ -232,3 +232,4 @@ export const FieldsRow = styled.div`
   justify-content: space-between;
   grid-gap: 24px;
 `
+export const MapWrapper = styled.div``

@@ -81,6 +81,7 @@ function ParticipantCategoriesEdit({
           onClose={onClose}
           eventId={eventId}
           sportType={sportType}
+          name={initialState.name}
           defaultValues={{
             levels:
               initialState?.levels?.length &&
@@ -98,6 +99,7 @@ function ParticipantCategoriesEdit({
             fromAge: initialState.fromAge,
             toAge: initialState.toAge,
           }}
+          name={initialState.name}
           submit={(values) => onSubmit(values)}
         />
       )
@@ -110,6 +112,7 @@ function ParticipantCategoriesEdit({
             fromWeight: initialState.fromWeight,
             toWeight: initialState.toWeight,
           }}
+          name={initialState.name}
           submit={(values) => onSubmit(values)}
         />
       )
@@ -121,6 +124,7 @@ function ParticipantCategoriesEdit({
           defaultValues={{
             gender: initialState.gender,
           }}
+          name={initialState.name}
           submit={(values) => onSubmit(values)}
         />
       )
@@ -131,6 +135,7 @@ function ParticipantCategoriesEdit({
           onClose={onClose}
           id={id}
           edit
+          name={initialState.name}
           eventId={eventId}
           priceId={initialState.price?.id}
           submit={(values) => onSubmit(values)}

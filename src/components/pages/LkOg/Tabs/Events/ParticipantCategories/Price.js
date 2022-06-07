@@ -47,9 +47,19 @@ const getPrice = async (id) => {
   return data
 }
 
-function Price({ open, edit, onClose, submit, priceId, eventId, id: pcId }) {
+function Price({
+  open,
+  name,
+  edit,
+  onClose,
+  submit,
+  priceId,
+  eventId,
+  id: pcId,
+}) {
   const [defaultValues, setDefaultValues] = useState(initialEmptyValues)
   const { t: tLkOg } = useTranslation("lkOg")
+  const { t: tCommon } = useTranslation("common")
 
   const validationSchema = yup.object({
     standartPrice: yup.string().required(tLkOg("validation.required")),
@@ -90,16 +100,25 @@ function Price({ open, edit, onClose, submit, priceId, eventId, id: pcId }) {
     priceId && getPrice(priceId).then(setDefaultValues)
   }, [priceId])
 
+  const currencyOptions = [
+    { name: tCommon("currency.kzt"), value: "kzt" },
+    { name: tCommon("currency.usd"), value: "usd" },
+    { name: tCommon("currency.eur"), value: "eur" },
+  ]
+
   return (
     <ParticipantCategoriesModal
       open={open}
-      title={tLkOg("categoriesOfParticipants.categoryRegistrationPrices")}
+      title={name}
       onClose={onClose}
       onSubmit={handleSubmit}
       edit={edit}
     >
       <Form>
-        <FormSubTitle>{tLkOg("categoriesOfParticipants.price")}</FormSubTitle>
+        <FormSubTitle>
+          {tLkOg("categoriesOfParticipants.categoryRegistrationPrices")}
+        </FormSubTitle>
+
         <Field>
           <p className="auth-title__input">
             {tLkOg("registrationPeriods.earlyRegistration")}
@@ -193,12 +212,6 @@ function Price({ open, edit, onClose, submit, priceId, eventId, id: pcId }) {
 }
 
 export default Price
-
-export const currencyOptions = [
-  { name: "Тенге", value: "kzt" },
-  { name: "Доллар", value: "usd" },
-  { name: "Евро", value: "eur" },
-]
 
 const Form = styled.div`
   height: max-content;

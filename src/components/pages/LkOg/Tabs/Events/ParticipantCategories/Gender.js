@@ -9,6 +9,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material"
+import { PCFieldName } from "./Name"
 import { useTranslation } from "next-i18next"
 
 const initialEmptyValues = {
@@ -19,6 +20,7 @@ function Gender({
   open,
   edit,
   onClose,
+  name,
   submit,
   defaultValues = initialEmptyValues,
 }) {
@@ -39,11 +41,14 @@ function Gender({
   return (
     <ParticipantCategoriesModal
       open={open}
-      title={tLkOg("categoriesOfParticipants.genderParticipants")}
+      title={name}
       onClose={onClose}
       edit={edit}
       onSubmit={handleSubmit}
     >
+      <PCFieldName>
+        {tLkOg("categoriesOfParticipants.genderParticipants")}
+      </PCFieldName>
       <FormControl
         error={touched.gender && Boolean(errors.gender)}
         variant="standard"

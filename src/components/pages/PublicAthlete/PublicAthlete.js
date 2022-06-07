@@ -39,7 +39,7 @@ function PublicAthlete({ athleteData }) {
   }, [])
   return (
     <MainWrapper>
-      <AthleteUserData user={user} />
+      {user && <AthleteUserData user={user} />}
       {!!teams && !!participations ? (
         <TeamsAndPartWrapper>
           <Teams teams={teams} />

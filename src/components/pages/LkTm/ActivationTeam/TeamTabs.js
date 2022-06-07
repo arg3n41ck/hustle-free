@@ -1,17 +1,17 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
-  selectSportTypes,
   fetchSportTypes,
+  selectSportTypes,
 } from "../../../../redux/components/sportTypes"
 import HorizontalTabs from "../../../ui/tabs/HorizontalTabs"
 import TeamContactInfo from "./TeamContactInfo"
 import TeamInfo from "./TeamInfo"
-import { fetchCountries } from "../../../../redux/components/countriesAndCities"
 import { toast } from "react-toastify"
 import { formDataHttp } from "../../../../helpers/formDataHttp"
 import { useRouter } from "next/router"
 import { setCookie } from "../../../../services/JWTService"
+import { fetchCountries } from "../../../../redux/components/countriesAndCities"
 
 const tabs = [
   {
@@ -26,14 +26,15 @@ const tabs = [
 
 function TeamTabs() {
   const [view, setView] = React.useState("contactInfo") // contactInfo | info
-  const dispatch = useDispatch()
   const [dataContactInfo, setDataContactInfo] = React.useState(null)
   const [dataInfo, setDataInfo] = React.useState(null)
   const [sportTypes] = useSelector(selectSportTypes)
+  const dispatch = useDispatch()
   const router = useRouter()
-  React.useEffect(() => {
-    dispatch(fetchSportTypes())
+
+  useEffect(() => {
     dispatch(fetchCountries())
+    dispatch(fetchSportTypes())
   }, [])
 
   const onSubmit = useCallback(async (submitData) => {

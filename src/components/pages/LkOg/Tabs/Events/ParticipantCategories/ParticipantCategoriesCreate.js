@@ -78,6 +78,7 @@ function ParticipantCategoriesCreate({
           open={step === "levels" && open}
           onClose={onClose}
           eventId={eventId}
+          name={initialState.name}
           sportType={sportType}
           defaultValues={{ levels: initialState.levels }}
           submit={(values) => onSubmit(values, "age")}
@@ -88,6 +89,7 @@ function ParticipantCategoriesCreate({
         <Age
           open={step === "age" && open}
           onClose={onClose}
+          name={initialState.name}
           defaultValues={{
             fromAge: initialState.fromAge,
             toAge: initialState.toAge,
@@ -100,6 +102,7 @@ function ParticipantCategoriesCreate({
         <Weight
           open={step === "weight" && open}
           onClose={onClose}
+          name={initialState.name}
           defaultValues={{
             fromWeight: initialState.fromWeight,
             toWeight: initialState.toWeight,
@@ -112,6 +115,7 @@ function ParticipantCategoriesCreate({
         <Gender
           open={step === "gender" && open}
           onClose={onClose}
+          name={initialState.name}
           defaultValues={{
             gender: initialState.gender,
           }}
@@ -123,6 +127,7 @@ function ParticipantCategoriesCreate({
         <Price
           open={step === "price" && open}
           onClose={onClose}
+          name={initialState.name}
           eventId={eventId}
           priceId={initialState.price}
           submit={(values) => onSubmit(values, "close")}

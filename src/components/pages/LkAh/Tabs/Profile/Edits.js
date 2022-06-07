@@ -17,8 +17,8 @@ import Radio from "../../../../ui/Radio"
 import InputMask from "react-input-mask"
 import CustomButton from "../../../../ui/CustomButton"
 import { TitleHeader } from "../../../../ui/LKui/HeaderContent"
-import PhoneIcon from "../../../../../assets/svg/profile-phone.svg"
-import EmailIcon from "../../../../../assets/svg/profile-email-edit.svg"
+import { PhoneIcon } from "../../../../../assets/svg/icons"
+import { EmailIcon } from "../../../../../assets/svg/icons"
 import { saveUser } from "../../../../../redux/components/user"
 import { format } from "date-fns"
 import { useRouter } from "next/router"
@@ -268,8 +268,7 @@ const Edits = () => {
         >
           <div className="auth-wrapper__input">
             <p className="auth-title__input">
-              {tCommon("form.fieldsNames.birthDate")} (
-              {tCommon("form.fieldsNames.notNecessary")})
+              {tCommon("form.fieldsNames.birthDate")}
             </p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
               <MobileDatePicker

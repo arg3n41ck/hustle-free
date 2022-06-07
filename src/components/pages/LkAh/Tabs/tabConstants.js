@@ -1,8 +1,8 @@
-import ProfileIcon from "../../../../assets/svg/profile-icon.svg"
-import MyTournamentsIcon from "../../../../assets/svg/my-tournaments-icon.svg"
-import SettingsIcon from "../../../../assets/svg/settings.svg"
-import TeamsIcon from "../../../../assets/svg/MyTeams.svg"
-import StoriesIcon from "../../../../assets/svg/MyStories.svg"
+import {
+  ProfileIcon,
+  BigCalendarIcon,
+  SettingsIcon, StoriesIcon, TeamsIcon
+} from "../../../../assets/svg/icons"
 
 export const lkAhTabs = [
   {
@@ -13,7 +13,7 @@ export const lkAhTabs = [
   },
   {
     name: "events",
-    icon: <MyTournamentsIcon />,
+    icon: <BigCalendarIcon />,
     href: "/lk-ah/profile/events",
     children: ["/lk-ah/profile/events/create"],
   },

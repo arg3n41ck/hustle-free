@@ -31,6 +31,8 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
         </>
       ) : userStatusInTeam?.message === "user in pending" ? (
         "Запрошено"
+      ) : userStatusInTeam?.message === "user rejected" ? (
+        "Вас не приняли"
       ) : (
         "Вы уже в команде"
       )}

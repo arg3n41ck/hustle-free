@@ -8,6 +8,7 @@ import { formDataHttp } from "../../../helpers/formDataHttp"
 import { fetchOgEvents, selectOgEvents } from "../../../redux/components/user"
 import ParticipantsAreFilledModal from "./EventModal/ParticipantsAreFilledModal"
 import $api from "../../../services/axios"
+import { toast } from "react-toastify"
 
 const regArray = (event) => {
   return [
@@ -91,7 +92,7 @@ const getIsEventOnRegistration = (registration) => {
 
 function EdGeneralInfo({ event }) {
   const regData = useMemo(() => regArray(event), [event])
-  const user = useSelector((state) => state.user.user)
+  const { user, userAuthenticated } = useSelector((state) => state.user)
   const [ogEvents] = useSelector(selectOgEvents)
   const [openFullPcModal, setOpenFullPcModal] = useState(false)
   const [userStatusInEvent, setUserStatusInTeam] = useState()
@@ -131,10 +132,46 @@ function EdGeneralInfo({ event }) {
     [user, eventId]
   )
 
-  const canApplyToEvent = useMemo(
-    () => event && getIsEventOnRegistration(event.registration),
-    [event, eventId]
+  const canApplyToEventByDate = useMemo(() => {
+    return event && getIsEventOnRegistration(event.registration)
+  }, [event, eventId])
+
+  const onClickApply = useCallback(
+    (id) => {
+      if (userAuthenticated && user?.role === "athlete") {
+        event?.registration?.maxParticipantCount !== event?.participantsCount
+          ? routerPush(`/events/${id}/tournament-rules`)
+          : setOpenFullPcModal(true)
+      } else {
+        toast.info("Пройдите регистрацию в роли атлета", { autoClose: 5000 })
+        routerPush(`/#user-roles`)
+      }
+    },
+    [eventId, userAuthenticated, user, event]
   )
+
+  const { regDisabled, regText } = useMemo(() => {
+    let regDisabled = false,
+      regText = ""
+    if (
+      userStatusInEvent?.message === "need to authorize" ||
+      userStatusInEvent?.message === "event not found"
+    ) {
+      if (canApplyToEventByDate) {
+        regText = "Зарегистрироваться на турнир"
+      } else {
+        regText = "Регистрация закрыта"
+        regDisabled = true
+      }
+    } else if (userStatusInEvent?.message === "user in waiting list") {
+      regText = "Запрошено"
+      regDisabled = true
+    } else if (userStatusInEvent?.message === "user in event") {
+      regText = "Вы уже в турнире"
+      regDisabled = true
+    }
+    return { regDisabled, regText }
+  }, [canApplyToEventByDate, eventId, userStatusInEvent])
 
   return (
     <>
@@ -152,31 +189,14 @@ function EdGeneralInfo({ event }) {
       )}
       <TitlePart>
         <h1>{event.name}</h1>
-        {(user?.role || "") === "athlete" ? (
+        {!userAuthenticated || (user?.role || "") === "athlete" ? (
           <>
             <ERegBtn
-              onClick={() => {
-                event?.registration?.maxParticipantCount !==
-                event?.participantsCount
-                  ? routerPush(`/events/${event?.id}/tournament-rules`)
-                  : setOpenFullPcModal(true)
-              }}
-              disabled={
-                userStatusInEvent?.message !== "event not found" ||
-                !canApplyToEvent
-              }
-              active={
-                userStatusInEvent?.message === "event not found" &&
-                canApplyToEvent
-              }
+              onClick={() => onClickApply(eventId)}
+              disabled={regDisabled}
+              active={!regDisabled}
             >
-              {userStatusInEvent?.message === "event not found"
-                ? canApplyToEvent
-                  ? "Зарегистрироваться на турнир"
-                  : "Регистрация закрыта"
-                : userStatusInEvent?.message === "user in waiting list"
-                ? "Запрошено"
-                : "Вы уже в турнире"}
+              {regText}
             </ERegBtn>
             <ParticipantsAreFilledModal
               open={openFullPcModal}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
-import GoldMedal from "../../../../../assets/svg/gold-medal.svg"
-import SilverMedal from "../../../../../assets/svg/silver-medal.svg"
-import BronzeMedal from "../../../../../assets/svg/bronze-medal.svg"
+import { GoldMedalIcon } from "../../../../../assets/svg/icons"
+import { SilverMedalIcon } from "../../../../../assets/svg/icons"
+import { BronzeMedalIcon } from "../../../../../assets/svg/icons"
 import styled from "styled-components"
 import $api from "../../../../../services/axios"
 import { useTranslation } from "next-i18next"
@@ -22,7 +22,7 @@ function Awards({ teamId }) {
   return (
     <AwardsWrapper>
       <Award>
-        <GoldMedal />
+        <GoldMedalIcon />
         <AwardInfo>
           <AwardText color={"#FFC107"}>{tLkTm("statistics.gold")}:</AwardText>
           <AwardNumbers color={"#FFC107"}>
@@ -31,7 +31,7 @@ function Awards({ teamId }) {
         </AwardInfo>
       </Award>
       <Award>
-        <SilverMedal />
+        <SilverMedalIcon />
         <AwardInfo>
           <AwardText color={"#E0E0E0"}>{tLkTm("statistics.silver")}:</AwardText>
           <AwardNumbers color={"#E0E0E0"}>
@@ -40,7 +40,7 @@ function Awards({ teamId }) {
         </AwardInfo>
       </Award>
       <Award>
-        <BronzeMedal />
+        <BronzeMedalIcon />
         <AwardInfo>
           <AwardText color={"#D7832D"}>{tLkTm("statistics.bronze")}:</AwardText>
           <AwardNumbers color={"#D7832D"}>

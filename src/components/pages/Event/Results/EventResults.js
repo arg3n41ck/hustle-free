@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from "react"
 import styled from "styled-components"
 import HorizontalTabsBorder from "../../../ui/tabs/HorizontalTabsBorder"
-import GoldMedal from "../../../../assets/svg/gold-medal.svg"
-import SilverMedal from "../../../../assets/svg/silver-medal.svg"
-import BronzeMedal from "../../../../assets/svg/bronze-medal.svg"
+import { GoldMedalIcon } from "../../../../assets/svg/icons"
+import { SilverMedalIcon } from "../../../../assets/svg/icons"
+import { BronzeMedalIcon } from "../../../../assets/svg/icons"
 import Teams from "./Teams"
 import Participants from "./Participants"
 
@@ -49,21 +49,21 @@ const EventResults = () => {
       <MedalsTitle>Всего боев: {all}</MedalsTitle>
       <Medals>
         <Medal>
-          <GoldMedal />
+          <GoldMedalIcon />
           <MedalInfo>
             <MedalText color={"#FFC107"}>Золото:</MedalText>
             <MedalText color={"#FFC107"}>{first}</MedalText>
           </MedalInfo>
         </Medal>
         <Medal>
-          <SilverMedal />
+          <SilverMedalIcon />
           <MedalInfo>
             <MedalText color={"#D7832D"}>Серебро:</MedalText>
             <MedalText color={"#E0E0E0"}>{second}</MedalText>
           </MedalInfo>
         </Medal>
         <Medal>
-          <BronzeMedal />
+          <BronzeMedalIcon />
           <MedalInfo>
             <MedalText color={"#E0E0E0"}>Бронза:</MedalText>
             <MedalText color={"#D7832D"}>{third}</MedalText>

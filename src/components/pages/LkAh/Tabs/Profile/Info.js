@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import EditsIcon from "../../../../../assets/svg/edits-icon.svg"
 import { Avatar } from "@mui/material"
 import { useSelector } from "react-redux"
-import CompanyIcon from "../../../../../assets/svg/company-icon.svg"
-import LocationIcon from "../../../../../assets/svg/place-icon.svg"
-import CalendarIcon from "../../../../../assets/svg/calendar-profile.svg"
-import GenderIcon from "../../../../../assets/svg/gender.svg"
-import EmailIcon from "../../../../../assets/svg/email-profile.svg"
-import PhoneIcon from "../../../../../assets/svg/phone-icon.svg"
+import { EditIcon, LocationIcon } from "../../../../../assets/svg/icons"
+import { CalendarIcon } from "../../../../../assets/svg/icons"
+import { GenderIcon } from "../../../../../assets/svg/icons"
+import { DefaultEmailIcon } from "../../../../../assets/svg/icons"
+import { DefaultPhoneIcon } from "../../../../../assets/svg/icons"
 import { theme } from "../../../../../styles/theme"
 import phoneFormatter from "../../../../../helpers/phoneFormatter"
 import { format, parseISO } from "date-fns"
@@ -20,7 +18,6 @@ import { useDispatch } from "react-redux"
 
 import {
   fetchCountries,
-  selectCountriesAndCities,
 } from "../../../../../redux/components/countriesAndCities"
 import { useTranslation } from "next-i18next"
 
@@ -75,7 +72,7 @@ const Info = ({ onToggleSidebar }) => {
             </FullName>
             <Button onClick={() => routerPush("/lk-ah/profile/edit")}>
               <IconWrapper>
-                <EditsIcon />
+                <EditIcon />
               </IconWrapper>
               {tLkAh("userProfile.edit")}
             </Button>
@@ -117,7 +114,7 @@ const Info = ({ onToggleSidebar }) => {
           )}
           <Item>
             <WrapperIcon>
-              <PhoneIcon />
+              <DefaultPhoneIcon />
             </WrapperIcon>
             {tLkAh("userProfile.contacts")}
           </Item>
@@ -125,7 +122,7 @@ const Info = ({ onToggleSidebar }) => {
           <Item>{user?.phoneNumber ? phoneFormatter(user?.phoneNumber) : ""}</Item>
           <Item>
             <WrapperIcon>
-              <EmailIcon />
+              <DefaultEmailIcon />
             </WrapperIcon>
             {tLkAh("userProfile.email")}
           </Item>

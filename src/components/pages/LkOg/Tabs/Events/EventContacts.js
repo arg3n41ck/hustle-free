@@ -9,7 +9,7 @@ import { TextField } from "@mui/material"
 import { FieldsRow } from "./EventLocation"
 import { FormHR, FormSubTitle } from "./EventPeriods"
 import InputMask from "react-input-mask"
-import PhoneIcon from "../../../../../assets/svg/profile-phone.svg"
+import { PhoneIcon } from "../../../../../assets/svg/icons"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import { useTranslation } from "next-i18next"
 
@@ -76,7 +76,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId }) {
         ...rest
       } = values
       await formDataHttp(
-        { ...rest, phone_number_1: phoneNumber1, allFieldsFilled: true },
+        { ...rest, allFieldsFilled: true },
         `organizer/events/${eventId}/contact/`,
         "put"
       )

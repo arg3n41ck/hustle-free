@@ -12,9 +12,9 @@ import CustomButton from "../../../../ui/CustomButton"
 import Image from "next/image"
 import { decamelizeKeys } from "humps"
 
-import PhoneIcon from "../../../../../assets/svg/phone-icon.svg"
-import EmailIcon from "../../../../../assets/svg/email-profile.svg"
-import UploadIcon from "../../../../../assets/svg/upload-profile-icon.svg"
+import { DefaultPhoneIcon } from "../../../../../assets/svg/icons"
+import { DefaultEmailIcon } from "../../../../../assets/svg/icons"
+import { UploadIcon } from "../../../../../assets/svg/icons"
 import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
 import $api from "../../../../../services/axios"
 import Link from "next/link"
@@ -284,7 +284,7 @@ const Edits = ({ onView }) => {
                   variant="outlined"
                   placeholder={tCommon("form.fieldsNames.contacts")}
                   InputProps={{
-                    endAdornment: <PhoneIcon />,
+                    endAdornment: <DefaultPhoneIcon />,
                   }}
                 />
               )}
@@ -306,7 +306,7 @@ const Edits = ({ onView }) => {
               }
               helperText={formik.touched.emailCoach && formik.errors.emailCoach}
               InputProps={{
-                endAdornment: <EmailIcon />,
+                endAdornment: <DefaultEmailIcon />,
               }}
             />
           </div>
