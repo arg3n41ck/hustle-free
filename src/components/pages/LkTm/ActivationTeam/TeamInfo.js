@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
 import styled from "styled-components"
-import { TextField, MenuItem, Checkbox, Box } from "@mui/material"
+import { TextField,  Checkbox, Box, Autocomplete } from "@mui/material"
 import { motion } from "framer-motion"
 import { AuthButton } from "../../Authorization/Authorization"
 import { toast } from "react-toastify"
@@ -27,12 +27,12 @@ const TeamInfo = ({
   setDataInfo,
   onSubmit,
 }) => {
-  const [checked, setChecked] = useState(false)
+  const [checked, setChecked] = useState(true)
   const [imageUrl, setImageUrl] = useState(null)
 
   const formik = useFormik({
     initialValues: {
-      sports: !!data?.sports ? data.sports : 1,
+      sports: !!data?.sports ? data.sports : "",
       description: !!data?.description ? data.description : "",
       avatar: !!data?.avatar ? data.avatar : "",
     },
@@ -60,22 +60,24 @@ const TeamInfo = ({
     <Form onSubmit={formik.handleSubmit}>
       <div className="auth-wrapper__input">
         <p className="auth-title__input">Вид спорта</p>
-        <TextField
-          select
-          sx={{ width: "100%", color: "white" }}
-          name="sports"
-          value={formik.values.sports}
-          onChange={formik.handleChange}
-          error={formik.touched.sports && Boolean(formik.errors.sports)}
-          helperText={formik.touched.sports && formik.errors.sports}
-        >
-          {!!sportTypes &&
-            sportTypes.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.name}
-              </MenuItem>
-            ))}
-        </TextField>
+        <Autocomplete
+              noOptionsText={"Ничего не найдено"}
+              onChange={(e, value) => formik.setFieldValue("sports", value?.id)}
+              options={sportTypes.map((option) => option)}
+              getOptionLabel={(option) => option.name}
+              fullWidth
+              value={sportTypes.find(({ id }) => id === formik.values?.sports) || null}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  fullWidth
+                  placeholder="Вид спорта"
+                  InputProps={{
+                    ...params.InputProps,
+                  }}
+                />
+              )}
+            />
       </div>
 
       <div className="auth-wrapper__input">
@@ -104,7 +106,7 @@ const TeamInfo = ({
           <input
             id={"avatar"}
             name={"avatar"}
-            accept="image/png"
+            accept={"image/jpeg, image/png"}
             onChange={(e) => {
               uploadImageToClient(e)
               const file = e.target.files[0]
@@ -207,8 +209,8 @@ const TeamInfo = ({
       </Box>
 
       <AuthButton
-        disabled={!formik.isValid}
-        active={formik.values.sports && !Boolean(formik.errors.sports)}
+        disabled={!formik.isValid || checked === false}
+        active={formik.values.sports && !Boolean(formik.errors.sports) && checked}
         type="submit"
       >
         Дальше

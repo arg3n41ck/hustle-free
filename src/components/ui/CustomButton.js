@@ -7,6 +7,7 @@ const CustomButton = ({
   borderRadius = "16px",
   height = "64px",
   children,
+  disabled=false,
   ...props
 }) => {
   return (
@@ -15,6 +16,7 @@ const CustomButton = ({
       borderRadius={borderRadius}
       typeButton={typeButton}
       {...props}
+      disabled={disabled}
     >
       {children}
     </Button>

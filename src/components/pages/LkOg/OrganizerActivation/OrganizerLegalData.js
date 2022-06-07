@@ -38,7 +38,6 @@ const validationSchema = yup.object({
 })
 
 const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
-  const [currentCities, setCurrentCities] = useState(null)
   const [countries, cities] = useSelector(selectCountriesAndCities)
   const formik = useFormik({
     initialValues: {
@@ -88,16 +87,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
     validationSchema,
   })
 
-  const handleClickCities = (item) => {
-    setCities(item)
-  }
-
-  const changeCurrentCities = (changeCountry) => {
-    const findObj = countries.find(
-      (country) => country?.id === changeCountry?.id
-    )
-    if (findObj) setCurrentCities(findObj.cityCountry)
-  }
 
   return (
     <Form onSubmit={formik.handleSubmit}>
@@ -124,7 +113,6 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
         <Autocomplete
           noOptionsText={"Ничего не найдено"}
           onChange={(_, value) => [
-            changeCurrentCities(value),
             formik.setFieldValue("country", value?.id || null),
             formik.setFieldValue("city", ""),
           ]}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useFormik } from "formik"
+import { ErrorMessage, useFormik } from "formik"
 import { useDispatch, useSelector } from "react-redux"
 import * as yup from "yup"
 import styled from "styled-components"
@@ -7,6 +7,8 @@ import {
   Box,
   TextField,
   Autocomplete,
+  InputAdornment,
+  IconButton,
 } from "@mui/material"
 import { ru } from "date-fns/locale"
 import { LocalizationProvider, MobileDatePicker } from "@mui/lab"
@@ -31,6 +33,9 @@ import { decamelizeKeys } from "humps"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import Link from "next/link"
 import { useTranslation } from "next-i18next"
+import { hide, show } from "../../../../../pages/auth/password/reset/confirm"
+import $api from "../../../../../services/axios"
+import { toast } from "react-toastify"
 
 const emptyInitialValues = {
   email: "",
@@ -49,6 +54,11 @@ const emptyInitialValues = {
   isVisible: true,
 }
 
+const ChangePasswordValues = {
+  currentPassword: "",
+  newPassword: "",
+}
+
 const Edits = () => {
   const {
     user: { user },
@@ -61,6 +71,8 @@ const Edits = () => {
   const [currentCities, setCurrentCities] = useState([])
   const [imageUrl, setImageUrl] = useState(null)
   const [, cities] = useSelector(selectCountriesAndCities)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword2, setShowPassword2] = useState(false)
   const { t: tCommon } = useTranslation("common")
 
   const validationSchema = yup.object({
@@ -75,6 +87,38 @@ const Edits = () => {
     dateBirthday: yup.mixed().nullable(),
     country: yup.string().required(tCommon("validation.required")),
     city: yup.string().required(tCommon("validation.required")),
+  })
+
+  const validationSchemaChangePassword = yup.object({
+    currentPassword: yup
+    .string()
+    .test("", "Заполните поле", (value) => !!(value || " ").replace(/\s/g, ""))
+    .required("Заполните поле почты"),
+  newPassword: yup
+    .string()
+    .test("", "Заполните поле", (value) => !!(value || " ").replace(/\s/g, ""))
+    .required("Заполните поле почты")
+    .min(8, "Пароль должен содержать больше 8-ми символов"),
+  })
+
+  const formikForChangePassword = useFormik({
+    initialValues: ChangePasswordValues,
+    validationSchema: validationSchemaChangePassword,
+    onSubmit: async (values, {resetForm}) => {
+      try {
+        await $api.post("/accounts/auth/users/set_password/", values)
+        resetForm()
+        toast.success(`Вы успешно изменили пароль!`)
+      } catch (e) {
+        if(!!e.response.data.current_password){
+          toast.error("Неверный старый пароль")
+        }else if(!!e.response.data.new_password){
+          toast.warning("Этот пароль слишком распространен")
+        }else{
+          toast.error("Что-то пошло не так")
+        }
+      }
+    }
   })
 
   const formik = useFormik({
@@ -423,6 +467,9 @@ const Edits = () => {
             </Box>
           </div>
         </Box>
+
+        <Line />
+
         <div className="auth-wrapper__input">
           <p className="auth-title__input">
             {tCommon("form.fieldsNames.email")}
@@ -440,7 +487,80 @@ const Edits = () => {
             }}
           />
         </div>
-        <div
+
+        <form>
+          <div className="auth-wrapper__input">
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.oldPassword")}
+            </p>
+            <TextField
+              placeholder={tCommon("form.fieldsNames.enterOldPassword")}
+              type={showPassword ? "text" : "password"}
+              value={formikForChangePassword.values.currentPassword}
+              name="currentPassword"
+              fullWidth
+              error={
+                formikForChangePassword.touched.currentPassword && Boolean(formikForChangePassword.errors.currentPassword)
+              }
+              helperText={formikForChangePassword.touched.currentPassword && formikForChangePassword.errors.currentPassword}
+              onChange={formikForChangePassword.handleChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showPassword ? show : hide}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+
+          <div className="auth-wrapper__input">
+            <p className="auth-title__input">
+              {tCommon("form.fieldsNames.newPassword")}
+            </p>
+            <TextField
+              placeholder={tCommon("form.fieldsNames.enterNewPassword")}
+              type={showPassword2 ? "text" : "password"}
+              fullWidth
+              value={formikForChangePassword.values.newPassword}
+              name="newPassword"
+              onChange={formikForChangePassword.handleChange}
+              error={
+                formikForChangePassword.touched.newPassword && Boolean(formikForChangePassword.errors.newPassword)
+              }
+              helperText={formikForChangePassword.touched.newPassword && formikForChangePassword.errors.newPassword}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword2((prev) => !prev)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showPassword2 ? show : hide}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+
+
+          <ButtonWrapper width={"100%"} onClick={formikForChangePassword.handleSubmit} >
+          <CustomButton disabled={!formikForChangePassword.values.newPassword.length || !formikForChangePassword.values.currentPassword.length} typeButton={!!formikForChangePassword.values.newPassword.length && !!formikForChangePassword.values.currentPassword.length ? "primary" : "secondary"}>
+            {tCommon("form.fieldsNames.save")}
+          </CustomButton>
+        </ButtonWrapper>
+        </form>
+        {/* <div
           className="auth-wrapper__independent"
           style={{ margin: "0 0 32px", padding: "0" }}
         >
@@ -451,30 +571,8 @@ const Edits = () => {
               </p>
             </a>
           </Link>
-        </div>
-        <div className="auth-wrapper__independent border-top">
-          {tCommon("form.fieldsNames.deleteProfile.extra")}{" "}
-          <Link href={`/auth/delete/${user.id}`}>
-            <a>
-              <span className="auth-link">
-                {tCommon("form.fieldsNames.deleteProfile.label")}
-              </span>
-            </a>
-          </Link>
-        </div>
+        </div> */}
       </Content>
-      <Footer>
-        <ButtonWrapper onClick={() => routerPush("/lk-ah/profile")}>
-          <CustomButton type={"button"} typeButton={"secondary"}>
-            {tCommon("form.fieldsNames.cancel")}
-          </CustomButton>
-        </ButtonWrapper>
-        <ButtonWrapper>
-          <CustomButton type={"submit"} typeButton={"primary"}>
-            {tCommon("form.fieldsNames.save")}
-          </CustomButton>
-        </ButtonWrapper>
-      </Footer>
 
       <Footer>
         <div className="auth-wrapper__input">
@@ -546,9 +644,53 @@ const Edits = () => {
           )}
         </div>
       </Footer>
+
+      <DeleteProfileContent>
+        {tCommon("form.fieldsNames.deleteProfile.extra")}
+        <Link href={`/auth/delete/${user.id}`}>
+          <a>
+            <span>{tCommon("form.fieldsNames.deleteProfile.label")}</span>
+          </a>
+        </Link>
+      </DeleteProfileContent>
+
+      <Footer>
+        <ButtonWrapper onClick={() => routerPush("/lk-ah/profile")}>
+          <CustomButton type={"button"} typeButton={"secondary"}>
+            {tCommon("form.fieldsNames.cancel")}
+          </CustomButton>
+        </ButtonWrapper>
+        <ButtonWrapper>
+          <CustomButton type={"submit"} typeButton={"primary"}>
+            {tCommon("form.fieldsNames.save")}
+          </CustomButton>
+        </ButtonWrapper>
+      </Footer>
     </form>
   )
 }
+
+const Line = styled.div`
+  border: 1px solid #333333;
+  margin: 32px 0;
+`
+
+const DeleteProfileContent = styled.div`
+  border-top: 1px solid #333333;
+  padding: 32px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  color: #f2f2f2;
+
+  a {
+    margin-left: 5px;
+    text-decoration: underline;
+  }
+`
 
 const ImageS = styled.img`
   position: absolute;
@@ -579,7 +721,7 @@ const Footer = styled.div`
   justify-content: flex-end;
 `
 const ButtonWrapper = styled.div`
-  max-width: 256px;
+  max-width: ${({width}) => width ? width : "256px"};
   width: 100%;
   &:first-child {
     margin-right: 32px;

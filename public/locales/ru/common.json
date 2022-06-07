@@ -11,7 +11,7 @@
     "fieldsNames": {
       "region": "Область",
       "website": "Веб-сайт",
-      "fullNameMainCoach":"ФИО главного тренера",
+      "fullNameMainCoach": "ФИО главного тренера",
       "emailCoach": "Электронная почта тренера",
       "typeSport": "Вид спорта",
       "description": "Описание",
@@ -40,6 +40,8 @@
         "label": "удалить свой профиль",
         "extra": "Вы можете"
       },
+      "enterOldPassword": "Введите старый пароль",
+      "enterNewPassword": "Введите новый пароль",
       "edit": "Редактировать",
       "contacts": "Контакты",
       "profileType": "Тип профиля",
@@ -57,5 +59,5 @@
     "emailValid": "Введите поле почты корректно",
     "emailRequired": "Заполните поле почты",
     "imageSizeValid": "Размер файла должен быть – не более 4 МБ."
-}
+  }
 }

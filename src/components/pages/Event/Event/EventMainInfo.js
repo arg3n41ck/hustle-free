@@ -139,6 +139,8 @@ function EventMainInfo({ event }) {
     }
   }, [event])
 
+  console.log(event)
+
   const mapPoints =
     event?.location?.lat && event?.location?.long
       ? {
@@ -216,6 +218,7 @@ function EventMainInfo({ event }) {
       <Column listWrapped>
         <h3>Категории участников</h3>
 
+            
         <ul>
           {categories.map(({ id, label, value, icon }) => (
             <li key={`EventMainInfoContacts_${id}`}>
