@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
 import ParticipantCategoriesModal from "./Modal"
@@ -9,6 +9,7 @@ import styled from "styled-components"
 import $api from "../../../../../../services/axios"
 import { editParticipantCategory } from "./ParticipantCategoriesEdit"
 import { useTranslation } from "next-i18next"
+import { useRouter } from "next/router"
 
 const initialEmptyValues = {
   earlyPrice: "",
@@ -49,6 +50,7 @@ const getPrice = async (id) => {
 
 function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }) {
   const [defaultValues, setDefaultValues] = useState(initialEmptyValues)
+  const {locale} = useRouter();
   const { t: tLkOg } = useTranslation("lkOg")
 
   const validationSchema = yup.object({
@@ -89,6 +91,14 @@ function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }
   useEffect(() => {
     priceId && getPrice(priceId).then(setDefaultValues)
   }, [priceId])
+
+  const currencyOptions = useMemo(() => {
+    return  [
+      { name: "Тенге", value: "kzt" },
+      { name: "Доллар", value: "usd" },
+      { name: "Евро", value: "eur" },
+    ]
+  }, [locale]);
 
   return (
     <ParticipantCategoriesModal
@@ -194,12 +204,6 @@ function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }
 }
 
 export default Price
-
-export const currencyOptions = [
-  { name: "Тенге", value: "kzt" },
-  { name: "Доллар", value: "usd" },
-  { name: "Евро", value: "eur" },
-]
 
 const Form = styled.div`
   height: max-content;

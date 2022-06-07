@@ -11,7 +11,7 @@
     "fieldsNames": {
       "region": "Region",
       "website": "Website",
-      "fullNameMainCoach":"Name of head coach",
+      "fullNameMainCoach": "Name of head coach",
       "emailCoach": "Trainer email",
       "typeSport": "Kind of sport",
       "description": "Description",
@@ -57,5 +57,10 @@
     "emailValid": "Enter the email field correctly",
     "emailRequired": "Fill in the mail field",
     "imageSizeValid": "The file size must be no more than 4 MB."
+  },
+  "locales": {
+    "kzt": "Tenge",
+    "usd": "Dollar",
+    "eur": "Euro"
   }
 }

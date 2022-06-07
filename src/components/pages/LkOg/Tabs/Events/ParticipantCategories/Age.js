@@ -12,8 +12,14 @@ const initialEmptyValues = {
   toAge: 0,
 }
 
-
-function Age({ open, edit, name, onClose, submit, defaultValues = initialEmptyValues }) {
+function Age({
+  open,
+  edit,
+  name,
+  onClose,
+  submit,
+  defaultValues = initialEmptyValues,
+}) {
   const { t: tLkOg } = useTranslation("lkOg")
 
   const validationSchema = yup.object({
@@ -32,14 +38,13 @@ function Age({ open, edit, name, onClose, submit, defaultValues = initialEmptyVa
   return (
     <ParticipantCategoriesModal
       open={open}
-      //tLkOg("categoriesOfParticipants.agesParticipants")
       title={name}
       onClose={onClose}
       onSubmit={handleSubmit}
       edit={edit}
     >
       <PCFieldName>
-        Возраст
+        {tLkOg("categoriesOfParticipants.agesParticipants")}
       </PCFieldName>
       <FieldsRow>
         <TextField
