@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useFormik } from "formik"
 import * as yup from "yup"
 import ParticipantCategoriesModal from "./Modal"
@@ -9,7 +9,6 @@ import styled from "styled-components"
 import $api from "../../../../../../services/axios"
 import { editParticipantCategory } from "./ParticipantCategoriesEdit"
 import { useTranslation } from "next-i18next"
-import { useRouter } from "next/router"
 
 const initialEmptyValues = {
   earlyPrice: "",
@@ -48,10 +47,19 @@ const getPrice = async (id) => {
   return data
 }
 
-function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }) {
+function Price({
+  open,
+  name,
+  edit,
+  onClose,
+  submit,
+  priceId,
+  eventId,
+  id: pcId,
+}) {
   const [defaultValues, setDefaultValues] = useState(initialEmptyValues)
-  const {locale} = useRouter();
   const { t: tLkOg } = useTranslation("lkOg")
+  const { t: tCommon } = useTranslation("common")
 
   const validationSchema = yup.object({
     standartPrice: yup.string().required(tLkOg("validation.required")),
@@ -92,13 +100,11 @@ function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }
     priceId && getPrice(priceId).then(setDefaultValues)
   }, [priceId])
 
-  const currencyOptions = useMemo(() => {
-    return  [
-      { name: "Тенге", value: "kzt" },
-      { name: "Доллар", value: "usd" },
-      { name: "Евро", value: "eur" },
-    ]
-  }, [locale]);
+  const currencyOptions = [
+    { name: tCommon("currency.kzt"), value: "kzt" },
+    { name: tCommon("currency.usd"), value: "usd" },
+    { name: tCommon("currency.eur"), value: "eur" },
+  ]
 
   return (
     <ParticipantCategoriesModal
@@ -109,7 +115,9 @@ function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }
       edit={edit}
     >
       <Form>
-        <FormSubTitle>{tLkOg("categoriesOfParticipants.categoryRegistrationPrices")}</FormSubTitle>
+        <FormSubTitle>
+          {tLkOg("categoriesOfParticipants.categoryRegistrationPrices")}
+        </FormSubTitle>
 
         <Field>
           <p className="auth-title__input">
