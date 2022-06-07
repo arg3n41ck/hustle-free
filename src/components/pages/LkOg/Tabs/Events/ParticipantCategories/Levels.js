@@ -6,6 +6,7 @@ import { Form } from "../EventDefaults"
 import $api from "../../../../../../services/axios"
 import styled from "styled-components"
 import { Checkbox, FormControlLabel, TextField } from "@mui/material"
+import { useTranslation } from "next-i18next"
 import { PCFieldName } from "./Name"
 
 const getLevelsBySportType = async (sportType) => {
@@ -22,13 +23,6 @@ const initialEmptyValues = {
   levels: [],
 }
 
-const validationSchema = yup.object({
-  levels: yup.mixed().test({
-    test: (array) => array.some((value) => value),
-    message: "Выберите хотя бы один уровень!",
-  }),
-})
-
 function Levels({
   open,
   edit,
@@ -38,6 +32,15 @@ function Levels({
   name,
   defaultValues = initialEmptyValues,
 }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    levels: yup.mixed().test({
+      test: (array) => array.some((value) => value),
+      message: tLkOg("validation.chooseAtLeastOneLevel"),
+    }),
+  })
+
   const [levels, setLevels] = useState(null)
   const [fieldError, setFieldError] = useState(null)
   const [newLevel, setNewLevel] = useState("")
@@ -96,7 +99,7 @@ function Levels({
       edit={edit}
       onSubmit={handleSubmit}
     >
-      <PCFieldName>Уровни</PCFieldName>
+      <PCFieldName>{tLkOg("categoriesOfParticipants.levelsCategories")}</PCFieldName>
       <Form>
         <LevelsUl>
           {!!levels?.length &&
@@ -147,7 +150,7 @@ function Levels({
                 setFieldError(null)
               }}
               variant="standard"
-              placeholder="Добавить новый уровень"
+              placeholder={tLkOg("categoriesOfParticipants.addNewLevel")}
               error={fieldError || (touched.levels && Boolean(errors.levels))}
               helperText={fieldError || (touched.levels && errors.levels)}
               fullWidth

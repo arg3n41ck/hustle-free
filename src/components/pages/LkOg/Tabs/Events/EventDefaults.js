@@ -26,6 +26,7 @@ import { useRouter } from "next/router"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import Link from "next/link"
 import { toast } from "react-toastify"
+import { useTranslation } from "next-i18next"
 
 const emptyInitialValues = {
   name: "",
@@ -38,6 +39,35 @@ const emptyInitialValues = {
 }
 
 function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    name: yup.string().required(tLkOg("validation.required")).nullable(),
+    typeSport: yup.number().required(tLkOg("validation.required")).nullable(),
+    dateStart: yup
+      .date()
+      .nullable()
+      .required(tLkOg("validation.fillInTheField"))
+      .test({
+        message: tLkOg("validation.requiredStandartPeriodRegistration"),
+        test: function (value) {
+          return (
+            this.parent.dateEnd &&
+            new Date(this.parent.dateEnd).getTime() > new Date(value).getTime()
+          )
+        },
+      })
+      .test({
+        message: tLkOg("validation.validDate"),
+        test: function (value) {
+          return new Date().getTime() < new Date(value).getTime()
+        },
+      }),
+    dateEnd: yup.date().nullable().required(tLkOg("validation.fillInTheField")),
+    timezone: yup.string().required(tLkOg("validation.required")).nullable(),
+    formatEvent: yup.string().required(tLkOg("validation.required")).nullable(),
+  })
+
   const { push: routerPush } = useRouter()
   const { touched, errors, values, handleChange, setFieldValue, handleSubmit } =
     useFormik({
@@ -64,6 +94,7 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
       },
     })
   const [sportTypes] = useSelector(selectSportTypes)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -73,10 +104,12 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
   return (
     <Form onSubmit={handleSubmit}>
       <Field>
-        <p className="auth-title__input">Название турнира</p>
+        <p className="auth-title__input">
+          {tLkOg("editEvent.generalInformation.nameEvent")}
+        </p>
         <TextField
           name="name"
-          placeholder="Название турнира"
+          placeholder={tLkOg("editEvent.generalInformation.nameEvent")}
           variant="outlined"
           fullWidth
           error={touched.name && Boolean(errors.name)}
@@ -87,10 +120,12 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
       </Field>
 
       <Field>
-        <p className="auth-title__input">Вид спорта</p>
+        <p className="auth-title__input">
+          {tLkOg("editEvent.generalInformation.typeSport")}
+        </p>
         {!!sportTypes?.length && (
           <Autocomplete
-            noOptionsText={"Ничего не найдено"}
+            noOptionsText={tLkOg("editEvent.generalInformation.nothingFound")}
             onChange={(_, value) => setFieldValue("typeSport", value.id)}
             options={sportTypes.map((option) => option)}
             getOptionLabel={(option) => option.name}
@@ -100,7 +135,7 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
               <TextField
                 {...params}
                 fullWidth
-                placeholder="Вид спорта"
+                placeholder={tLkOg("editEvent.generalInformation.typeSport")}
                 error={touched.typeSport && Boolean(errors.typeSport)}
                 helperText={touched.typeSport && errors.typeSport}
                 InputProps={{
@@ -114,11 +149,15 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
       </Field>
 
       <Field>
-        <p className="auth-title__input">Дата начала турнира</p>
+        <p className="auth-title__input">
+          {tLkOg("editEvent.generalInformation.tournamentStartDate")}
+        </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
           <MobileDatePicker
-            toolbarTitle={"Дата начала турнира"}
-            cancelText={"Отмена"}
+            toolbarTitle={tLkOg(
+              "editEvent.generalInformation.tournamentStartDate"
+            )}
+            cancelText={tLkOg("editEvent.cancel")}
             value={values.dateStart}
             onChange={(value) => setFieldValue("dateStart", value)}
             inputFormat="dd/MM/yyyy"
@@ -130,7 +169,7 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
                 helperText={touched.dateStart && errors.dateStart}
                 inputProps={{
                   ...params.inputProps,
-                  placeholder: "ДД/ММ/ГГГГ",
+                  placeholder: tLkOg("editEvent.registrationPeriods.ddMmYy"),
                 }}
               />
             )}
@@ -139,11 +178,15 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
       </Field>
 
       <Field>
-        <p className="auth-title__input">Дата окончания турнира</p>
+        <p className="auth-title__input">
+          {tLkOg("editEvent.generalInformation.tournamentEndDate")}
+        </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
           <MobileDatePicker
-            toolbarTitle={"Дата начала турнира"}
-            cancelText={"Отмена"}
+            toolbarTitle={tLkOg(
+              "editEvent.generalInformation.tournamentEndDate"
+            )}
+            cancelText={tLkOg("editEvent.cancel")}
             value={values.dateEnd}
             onChange={(value) => setFieldValue("dateEnd", value)}
             inputFormat="dd/MM/yyyy"
@@ -155,7 +198,7 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
                 helperText={touched.dateEnd && errors.dateEnd}
                 inputProps={{
                   ...params.inputProps,
-                  placeholder: "ДД/ММ/ГГГГ",
+                  placeholder: tLkOg("editEvent.registrationPeriods.ddMmYy"),
                 }}
               />
             )}
@@ -164,9 +207,11 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
       </Field>
 
       <Field>
-        <p className="auth-title__input">Часовой пояс</p>
+        <p className="auth-title__input">
+          {tLkOg("editEvent.generalInformation.timezone")}
+        </p>
         <Autocomplete
-          noOptionsText={"Ничего не найдено"}
+          noOptionsText={tLkOg("editEvent.generalInformation.nothingFound")}
           onChange={(_, value) => value && setFieldValue("timezone", value.tz)}
           options={asiaTimezone.map((option) => option)}
           getOptionLabel={(option) => `${option.country} ${option.tz}`}
@@ -178,7 +223,9 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
               fullWidth
               error={touched.timezone && Boolean(errors.timezone)}
               helperText={touched.timezone && errors.timezone}
-              placeholder="(GMT+0600) Местное время"
+              placeholder={`(GMT+0600) ${tLkOg(
+                "registrationPeriods.theLocalTime"
+              )}`}
               InputProps={{
                 ...params.InputProps,
                 startAdornment: <ClockIcon />,
@@ -188,7 +235,9 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
         />
       </Field>
       <Field>
-        <p className="auth-title__input">Формат</p>
+        <p className="auth-title__input">
+          {tLkOg("editEvent.generalInformation.format")}
+        </p>
         <FormControl
           error={touched.formatEvent && Boolean(errors.formatEvent)}
           variant="standard"
@@ -202,12 +251,12 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
             <FormControlLabel
               value="olympic"
               control={<Radio />}
-              label="Олимпийский"
+              label={tLkOg("editEvent.generalInformation.olympic")}
             />
             <FormControlLabel
               value="circular"
               control={<Radio />}
-              label="Круговой"
+              label={tLkOg("editEvent.generalInformation.circular")}
             />
           </RadioGroup>
           <FormHelperText>
@@ -218,43 +267,15 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
 
       <EventFormFooter>
         <Link href="/lk-og/profile/events">
-          <Cancel>Отмена</Cancel>
+          <Cancel>{tLkOg("editEvent.cancel")}</Cancel>
         </Link>
-        <Submit type="submit">Далее</Submit>
+        <Submit type="submit">{tLkOg("editEvent.further")}</Submit>
       </EventFormFooter>
     </Form>
   )
 }
 
 export default EventDefaults
-
-const validationSchema = yup.object({
-  name: yup.string().required("Обязательное поле").nullable(),
-  typeSport: yup.number().required("Обязательное поле").nullable(),
-  dateStart: yup
-    .date()
-    .nullable()
-    .required("Заполните поле")
-    .test({
-      message:
-        "Дата начала стандартной турнира не должна быть позднее даты окончания турнира",
-      test: function (value) {
-        return (
-          this.parent.dateEnd &&
-          new Date(this.parent.dateEnd).getTime() > new Date(value).getTime()
-        )
-      },
-    })
-    .test({
-      message: "Укажите действительную дату",
-      test: function (value) {
-        return new Date().getTime() < new Date(value).getTime()
-      },
-    }),
-  dateEnd: yup.date().nullable().required("Заполните поле"),
-  timezone: yup.string().required("Обязательное поле").nullable(),
-  formatEvent: yup.string().required("Обязательное поле").nullable(),
-})
 
 export const Form = styled.form`
   height: max-content;

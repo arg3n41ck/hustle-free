@@ -1,10 +1,12 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import { Box } from "@mui/material"
+import { useTranslation } from "next-i18next"
 
 function FileUploaderBig({ onChange, defaultImage: defaultStateImage, error }) {
   const [file, setFile] = useState(null)
   const [defaultImage, setDefaultImage] = useState(defaultStateImage)
+  const { t: tLkOg } = useTranslation("lkOg")
   const image = defaultImage
     ? defaultImage
     : file
@@ -38,9 +40,9 @@ function FileUploaderBig({ onChange, defaultImage: defaultStateImage, error }) {
       >
         <FileUploadSVG />
         <UploadText>
-          Перетащите изображения или <span>загрузите</span>
+          {tLkOg("coverAndDescription.coverPlaceholder")} <span>{tLkOg("coverAndDescription.download")}</span>
         </UploadText>
-        <UploadDescription>Поддерживаемые форматы: PNG, JPG</UploadDescription>
+        <UploadDescription>{tLkOg("coverAndDescription.coverPlaceholder2")}</UploadDescription>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </Box>
 

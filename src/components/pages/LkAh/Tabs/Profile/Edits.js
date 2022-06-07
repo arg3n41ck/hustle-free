@@ -28,20 +28,6 @@ import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import Link from "next/link"
 import { useTranslation } from "next-i18next"
 
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email("Введите поле почты корректно")
-    .required("Заполните поле почты"),
-  firstName: yup.string().required("Обязательное поле"),
-  lastName: yup.string().required("Обязательное поле"),
-  phoneNumber: yup.string().min(12),
-  gender: yup.mixed(),
-  dateBirthday: yup.mixed().nullable(),
-  country: yup.string().required("Обязательное поле"),
-  city: yup.string().required("Обязательное поле"),
-})
-
 const emptyInitialValues = {
   email: "",
   firstName: "",
@@ -72,6 +58,20 @@ const Edits = () => {
   const [imageUrl, setImageUrl] = useState(null)
   const [, cities] = useSelector(selectCountriesAndCities)
   const { t: tCommon } = useTranslation("common")
+
+  const validationSchema = yup.object({
+    email: yup
+      .string()
+      .email(tCommon("validation.emailValid"))
+      .required(tCommon("validation.emailRequired")),
+    firstName: yup.string().required(tCommon("validation.required")),
+    lastName: yup.string().required(tCommon("validation.required")),
+    phoneNumber: yup.string().min(12),
+    gender: yup.mixed(),
+    dateBirthday: yup.mixed().nullable(),
+    country: yup.string().required(tCommon("validation.required")),
+    city: yup.string().required(tCommon("validation.required")),
+  })
 
   const formik = useFormik({
     initialValues: !!user?.id

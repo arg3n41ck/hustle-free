@@ -1,0 +1,46 @@
+{
+    "teamProfile": {
+        "profile": "Profile",
+        "edit": "Edit",
+        "website": "Website",
+        "country": "Country",
+        "city": "City",
+        "contacts": "Contacts",
+        "mainCoach": "Head coach",
+        "email": "Email"
+    },
+    "athletes": {
+        "athletes": "Athletes",
+        "tabs": {
+            "participants": "Participants",
+            "applications": "Applications"
+        },
+
+        "reject": "Reject",
+        "confirm": "Confirm"
+    },
+    "statistics":{
+        "participants": "Participants",
+        "points": "Points",
+        "events": "Events",
+        "eventsSearch": "Events search",
+        "noEvents": "No events",
+        "statistic": "Statistics",
+        "participant": "Participant",
+        "point": "Point",
+        "wins": "Wins",
+        "defeats": "Defeats",
+        "gold": "Gold",
+        "silver": "Silver",
+        "bronze": "Bronze",
+        "categories": "Categories",
+        "noCategories": "No categories",
+        "win": "Won",
+        "defeat": "Lost",
+        "onPoints": "on points",
+        "noParticipants": "No participants",
+        "back": "Back",
+        "search": "Search",
+        "filter": "Filter"
+    }
+}

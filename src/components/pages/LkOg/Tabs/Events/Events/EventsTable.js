@@ -4,75 +4,78 @@ import { getRusBetweenDate } from "../../../../../../helpers/helpers"
 import { IconButton } from "@mui/material"
 import { Edit } from "@mui/icons-material"
 import { useRouter } from "next/router"
-
-const getEventStatus = (status) => {
-  switch (status) {
-    case "published":
-      return {
-        name: "Скоро",
-        value: status,
-      }
-    case "in_proccessing":
-      return {
-        name: "Сейчас идет",
-        value: status,
-      }
-    default:
-      return {
-        name: "Черновик",
-        value: status,
-      }
-  }
-}
-
-const createDataForTable = (events = []) => {
-  return events.map((currentValue) => {
-    const {
-      id,
-      name,
-      dateEnd,
-      dateStart,
-      statusPublish,
-      getRegisteredParticipantsCount,
-      getPaidCount,
-      maxParticipantCount,
-    } = currentValue
-    return {
-      id,
-      name,
-      date: getRusBetweenDate(dateStart, dateEnd),
-      registration: `${getRegisteredParticipantsCount || 0}/${
-        maxParticipantCount || 0
-      }`,
-      paid: `${getPaidCount || 0}/${getRegisteredParticipantsCount || 0}`,
-      status: getEventStatus(statusPublish),
-    }
-  })
-}
+import { useTranslation } from "next-i18next"
 
 function EventsTable({ events }) {
   const [rewrittenData, setRewrittenData] = useState([])
   const { push: routerPush } = useRouter()
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const getEventStatus = (status) => {
+    switch (status) {
+      case "published":
+        return {
+          name: tLkOg("myEvents.soon"),
+          value: status,
+        }
+      case "in_proccessing":
+        return {
+          name: tLkOg("myEvents.nowGoes"),
+          value: status,
+        }
+      default:
+        return {
+          name: tLkOg("myEvents.draft"),
+          value: status,
+        }
+    }
+  }
+
+  const createDataForTable = (events = []) => {
+    return events.map((currentValue) => {
+      const {
+        id,
+        name,
+        dateEnd,
+        dateStart,
+        statusPublish,
+        getRegisteredParticipantsCount,
+        getPaidCount,
+        maxParticipantCount,
+      } = currentValue
+      return {
+        id,
+        name,
+        date: getRusBetweenDate(dateStart, dateEnd),
+        registration: `${getRegisteredParticipantsCount || 0}/${
+          maxParticipantCount || 0
+        }`,
+        paid: `${getPaidCount || 0}/${getRegisteredParticipantsCount || 0}`,
+        status: getEventStatus(statusPublish),
+      }
+    })
+  }
+
   const columns = useMemo(() => {
     return [
       {
-        column: "Турнир",
+        column: tLkOg("myEvents.event"),
         accessor: "name",
       },
       {
-        column: "Дата",
+        column: tLkOg("myEvents.date"),
         accessor: "date",
       },
       {
-        column: "Регистрации",
+        column: tLkOg("myEvents.registrations"),
         accessor: "registration",
       },
       {
-        column: "Оплачено",
+        column: tLkOg("myEvents.paid"),
         accessor: "paid",
       },
       {
-        column: "Статус",
+        column: tLkOg("myEvents.status"),
         accessor: "status",
       },
     ]

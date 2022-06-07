@@ -1,6 +1,7 @@
 import React from "react"
 import { Modal } from "@mui/material"
 import styled from "styled-components"
+import { useTranslation } from "next-i18next"
 
 function ParticipantCategoriesModal({
   open,
@@ -10,6 +11,8 @@ function ParticipantCategoriesModal({
   edit,
   children,
 }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+
   return (
     <Modal
       sx={{
@@ -24,9 +27,11 @@ function ParticipantCategoriesModal({
         <Title>{title}</Title>
         <Content>{children}</Content>
         <Footer>
-          <Button onClick={onClose}>Отмена</Button>
+          <Button onClick={onClose}>{tLkOg("editEvent.cancel")}</Button>
           <Button type="submit" onClick={onSubmit} className="primary">
-            {edit ? "Применить" : "Далее"}
+            {edit
+              ? tLkOg("categoriesOfParticipants.apply")
+              : tLkOg("editEvent.further")}
           </Button>
         </Footer>
       </Wrapper>

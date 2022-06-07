@@ -2,9 +2,12 @@ import React, { useState } from "react"
 import DropdownData from "../../../../../ui/DropdownData"
 import { PlaceIcon } from "../../../../LkAh/Tabs/Profile/Stories/FilterMyStories"
 import styled from "styled-components"
+import { useTranslation } from "next-i18next"
 
 function Row({ ePC, participants }) {
   const [open, setOpen] = useState(false)
+  const { t: tLkTm } = useTranslation("lkTm")
+
   return (
     <DropdownData
       title={`
@@ -22,14 +25,14 @@ function Row({ ePC, participants }) {
             <AthleteName>{athleteName}</AthleteName>
             <WDWrapper>
               <WinDefeat>
-                <p className="win">Выиграл</p>
+                <p className="win">{tLkTm("statistics.win")}</p>
                 <p>{athleteName}</p>
-                <p>по очкам 9–2</p>
+                <p>{tLkTm("statistics.onPoints")} 9–2</p>
               </WinDefeat>
               <WinDefeat>
-                <p className="defeat">Проиграл</p>
+                <p className="defeat">{tLkTm("statistics.defeat")}</p>
                 <p>{athleteName}</p>
-                <p>по очкам 9–2</p>
+                <p>{tLkTm("statistics.onPoints")} 9–2</p>
               </WinDefeat>
             </WDWrapper>
           </AthleteWrapper>

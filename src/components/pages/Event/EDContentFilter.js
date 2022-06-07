@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Collapse, TextField } from "@mui/material"
 import styled from "styled-components"
+import { useTranslation } from "next-i18next"
 
 function EDContentFilter({
   label,
@@ -11,6 +12,7 @@ function EDContentFilter({
 }) {
   const [search, setSearch] = useState("")
   const [openChildren, setOpenChildren] = useState(false)
+  const { t: tLkTm } = useTranslation("lkTm")
 
   return (
     <MainWrapper>
@@ -32,12 +34,12 @@ function EDContentFilter({
         />
         <button className={"submit"}>
           <SearchIcon />
-          <span>Поиск</span>
+          <span>{tLkTm("statistics.search")}</span>
         </button>
         {children && (
           <button onClick={() => children && setOpenChildren((s) => !s)}>
             <FilterIcon />
-            <span>Фильтр</span>
+            <span>{tLkTm("statistics.filter")}</span>
           </button>
         )}
       </Search>

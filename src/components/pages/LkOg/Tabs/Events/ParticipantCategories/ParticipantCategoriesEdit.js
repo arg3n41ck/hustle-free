@@ -49,11 +49,11 @@ function ParticipantCategoriesEdit({
   const onSubmit = useCallback(
     async (values) => {
       //!Это из-за Алиаскара, Алиаскар к∆т∆кбас, и сама архитектура хvњня
-      if (step !== 'price') {
+      if (step !== "price") {
         Array.isArray(id)
           ? await Promise.all(
-            id.map((_id) => editParticipantCategory(values, +_id))
-          )
+              id.map((_id) => editParticipantCategory(values, +_id))
+            )
           : await editParticipantCategory(values, +id)
       }
       onCloseModals()

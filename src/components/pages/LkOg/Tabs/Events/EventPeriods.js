@@ -20,6 +20,7 @@ import { useRouter } from "next/router"
 import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
 import { formDataHttp } from "../../../../../helpers/formDataHttp"
 import { format } from "date-fns"
+import { useTranslation } from "next-i18next"
 
 const emptyInitialValues = {
   maxParticipantCount: "",
@@ -34,6 +35,7 @@ const emptyInitialValues = {
 }
 
 function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
+  const { t: tLkOg } = useTranslation("lkOg")
   const { touched, errors, values, handleChange, setFieldValue, handleSubmit } =
     useFormik({
       initialValues: defaultValues,
@@ -79,10 +81,14 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
   return (
     <Form onSubmit={handleSubmit}>
       <Field>
-        <p className="auth-title__input">Максимальное количество регистрации</p>
+        <p className="auth-title__input">
+          {tLkOg("registrationPeriods.maximumNumberOfRegistrations")}
+        </p>
         <TextField
           name="maxParticipantCount"
-          placeholder="Максимальное количество регистрации"
+          placeholder={tLkOg(
+            "registrationPeriods.maximumNumberOfRegistrations"
+          )}
           variant="outlined"
           fullWidth
           type="number"
@@ -95,7 +101,9 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
         />
       </Field>
       <FormHR />
-      <FormSubTitle>Ранняя регистрация</FormSubTitle>
+      <FormSubTitle>
+        {tLkOg("registrationPeriods.earlyRegistration")}
+      </FormSubTitle>
       <div>
         <Field>
           <FormControl
@@ -107,7 +115,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
               onChange={handleChange}
               checked={values.earlyRegActive}
               control={<Checkbox />}
-              label="Да"
+              label={tLkOg("registrationPeriods.yes")}
             />
             <FormHelperText>
               {touched.earlyRegActive && errors.earlyRegActive}
@@ -119,12 +127,12 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
           <FieldsColumn>
             <Field style={{ marginTop: 24 }}>
               <p className="auth-title__input">
-                Дата начала ранней регистрации
+                {tLkOg("registrationPeriods.sunriseStartDate")}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
                 <MobileDatePicker
-                  toolbarTitle={"Дата начала ранней регистрации"}
-                  cancelText={"Отмена"}
+                  toolbarTitle={tLkOg("registrationPeriods.sunriseStartDate")}
+                  cancelText={tLkOg("editEvent.cancel")}
                   value={values.earlyRegStart}
                   onChange={(value) => setFieldValue("earlyRegStart", value)}
                   inputFormat="dd/MM/yyyy"
@@ -138,7 +146,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                       helperText={touched.earlyRegStart && errors.earlyRegStart}
                       inputProps={{
                         ...params.inputProps,
-                        placeholder: "ДД/ММ/ГГГГ",
+                        placeholder: tLkOg("registrationPeriods.ddMmYy"),
                       }}
                     />
                   )}
@@ -147,12 +155,14 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
             </Field>
             <Field>
               <p className="auth-title__input">
-                Дата окончания ранней регистрации
+                {tLkOg("registrationPeriods.endDateForEarlyRegistration")}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
                 <MobileDatePicker
-                  toolbarTitle={"Дата окончания ранней регистрации"}
-                  cancelText={"Отмена"}
+                  toolbarTitle={tLkOg(
+                    "registrationPeriods.endDateForEarlyRegistration"
+                  )}
+                  cancelText={tLkOg("editEvent.cancel")}
                   value={values.earlyRegEnd}
                   onChange={(value) => setFieldValue("earlyRegEnd", value)}
                   inputFormat="dd/MM/yyyy"
@@ -164,15 +174,14 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                       helperText={touched.earlyRegEnd && errors.earlyRegEnd}
                       inputProps={{
                         ...params.inputProps,
-                        placeholder: "ДД/ММ/ГГГГ",
+                        placeholder: tLkOg("registrationPeriods.ddMmYy"),
                       }}
                     />
                   )}
                 />
               </LocalizationProvider>
               <ExtraInfo>
-                Даты ранней регистрации должна быть раньше даты начала
-                стандартной регистрации
+                {tLkOg("registrationPeriods.descriptionEarly")}
               </ExtraInfo>
             </Field>
           </FieldsColumn>
@@ -181,14 +190,20 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
 
       <FormHR />
 
-      <FormSubTitle>Стандартная регистрация</FormSubTitle>
+      <FormSubTitle>
+        {tLkOg("registrationPeriods.standartRegistrations")}
+      </FormSubTitle>
 
       <Field>
-        <p className="auth-title__input">Дата начала стандартной регистрации</p>
+        <p className="auth-title__input">
+          {tLkOg("registrationPeriods.standardEnrollmentStartDate")}
+        </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
           <MobileDatePicker
-            toolbarTitle={"Дата начала стандартной регистрации"}
-            cancelText={"Отмена"}
+            toolbarTitle={tLkOg(
+              "registrationPeriods.standardEnrollmentStartDate"
+            )}
+            cancelText={tLkOg("editEvent.cancel")}
             value={values.standartRegStart}
             onChange={(value) => setFieldValue("standartRegStart", value)}
             inputFormat="dd/MM/yyyy"
@@ -202,7 +217,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                 helperText={touched.standartRegStart && errors.standartRegStart}
                 inputProps={{
                   ...params.inputProps,
-                  placeholder: "ДД/ММ/ГГГГ",
+                  placeholder: tLkOg("registrationPeriods.ddMmYy"),
                 }}
               />
             )}
@@ -212,12 +227,14 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
 
       <Field>
         <p className="auth-title__input">
-          Дата окончания стандартной регистрации
+          {tLkOg("registrationPeriods.endDateOfStandardRegistration")}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
           <MobileDatePicker
-            toolbarTitle={"Дата окончания стандартной регистрации"}
-            cancelText={"Отмена"}
+            toolbarTitle={tLkOg(
+              "registrationPeriods.endDateOfStandardRegistration"
+            )}
+            cancelText={tLkOg("editEvent.cancel")}
             value={values.standartRegEnd}
             onChange={(value) => setFieldValue("standartRegEnd", value)}
             inputFormat="dd/MM/yyyy"
@@ -229,7 +246,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                 helperText={touched.standartRegEnd && errors.standartRegEnd}
                 inputProps={{
                   ...params.inputProps,
-                  placeholder: "ДД/ММ/ГГГГ",
+                  placeholder: tLkOg("registrationPeriods.ddMmYy"),
                 }}
               />
             )}
@@ -239,7 +256,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
 
       <FormHR />
 
-      <FormSubTitle>Поздняя регистрация</FormSubTitle>
+      <FormSubTitle>{tLkOg("registrationPeriods.tateCheckIn")}</FormSubTitle>
       <div>
         <Field>
           <FormControl
@@ -251,7 +268,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
               checked={values.lateRegActive}
               onChange={handleChange}
               control={<Checkbox />}
-              label="Да"
+              label={tLkOg("registrationPeriods.yes")}
             />
             <FormHelperText>
               {touched.lateRegActive && errors.lateRegActive}
@@ -263,12 +280,14 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
           <FieldsColumn>
             <Field style={{ marginTop: 24 }}>
               <p className="auth-title__input">
-                Дата начала поздней регистрации
+                {tLkOg("registrationPeriods.lateRegistrationStartDate")}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
                 <MobileDatePicker
-                  toolbarTitle={"Дата начала поздней регистрации"}
-                  cancelText={"Отмена"}
+                  toolbarTitle={tLkOg(
+                    "registrationPeriods.lateRegistrationStartDate"
+                  )}
+                  cancelText={tLkOg("editEvent.cancel")}
                   value={values.lateRegStart}
                   onChange={(value) => setFieldValue("lateRegStart", value)}
                   inputFormat="dd/MM/yyyy"
@@ -282,7 +301,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                       helperText={touched.lateRegStart && errors.lateRegStart}
                       inputProps={{
                         ...params.inputProps,
-                        placeholder: "ДД/ММ/ГГГГ",
+                        placeholder: tLkOg("registrationPeriods.ddMmYy"),
                       }}
                     />
                   )}
@@ -291,12 +310,14 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
             </Field>
             <Field>
               <p className="auth-title__input">
-                Дата окончания поздней регистрации
+                {tLkOg("registrationPeriods.lateRegistrationEndDate")}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
                 <MobileDatePicker
-                  toolbarTitle={"Дата окончания поздней регистрации"}
-                  cancelText={"Отмена"}
+                  toolbarTitle={tLkOg(
+                    "registrationPeriods.lateRegistrationEndDate"
+                  )}
+                  cancelText={tLkOg("editEvent.cancel")}
                   value={values.lateRegEnd}
                   onChange={(value) => setFieldValue("lateRegEnd", value)}
                   inputFormat="dd/MM/yyyy"
@@ -308,15 +329,14 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                       helperText={touched.lateRegEnd && errors.lateRegEnd}
                       inputProps={{
                         ...params.inputProps,
-                        placeholder: "ДД/ММ/ГГГГ",
+                        placeholder: tLkOg("registrationPeriods.ddMmYy"),
                       }}
                     />
                   )}
                 />
               </LocalizationProvider>
               <ExtraInfo>
-                Даты поздней регистрации должна быть посднее даты окончания
-                стандартной регистрации
+                {tLkOg("registrationPeriods.descriptionLate")}
               </ExtraInfo>
             </Field>
           </FieldsColumn>
@@ -327,9 +347,9 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
 
       <EventFormFooter>
         <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
-          Отмена
+          {tLkOg("editEvent.cancel")}
         </Cancel>
-        <Submit type="submit">Далее</Submit>
+        <Submit type="submit">{tLkOg("editEvent.further")}</Submit>
       </EventFormFooter>
     </Form>
   )

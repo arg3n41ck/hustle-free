@@ -8,6 +8,7 @@ import { Autocomplete, TextField } from "@mui/material"
 import styled from "styled-components"
 import $api from "../../../../../../services/axios"
 import { editParticipantCategory } from "./ParticipantCategoriesEdit"
+import { useTranslation } from "next-i18next"
 
 const initialEmptyValues = {
   earlyPrice: "",
@@ -15,10 +16,6 @@ const initialEmptyValues = {
   latePrice: "",
   currency: "kzt",
 }
-
-const validationSchema = yup.object({
-  standartPrice: yup.string().required("Обязательное поле!"),
-})
 
 const createPrice = async (values) => {
   try {
@@ -52,6 +49,11 @@ const getPrice = async (id) => {
 
 function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }) {
   const [defaultValues, setDefaultValues] = useState(initialEmptyValues)
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    standartPrice: yup.string().required(tLkOg("validation.required")),
+  })
 
   const { values, setFieldValue, touched, errors, handleChange, handleSubmit } =
     useFormik({
@@ -97,13 +99,15 @@ function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }
       edit={edit}
     >
       <Form>
-        <FormSubTitle>Цена</FormSubTitle>
+        <FormSubTitle>{tLkOg("categoriesOfParticipants.categoryRegistrationPrices")}</FormSubTitle>
 
         <Field>
-          <p className="auth-title__input">Ранняя регистрация</p>
+          <p className="auth-title__input">
+            {tLkOg("registrationPeriods.earlyRegistration")}
+          </p>
           <TextField
             name="earlyPrice"
-            placeholder="Цена"
+            placeholder={tLkOg("categoriesOfParticipants.price")}
             variant="outlined"
             fullWidth
             type="number"
@@ -119,10 +123,12 @@ function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }
         </Field>
 
         <Field>
-          <p className="auth-title__input">Стандартная регистрация</p>
+          <p className="auth-title__input">
+            {tLkOg("registrationPeriods.standartRegistrations")}
+          </p>
           <TextField
             name="standartPrice"
-            placeholder="Цена"
+            placeholder={tLkOg("categoriesOfParticipants.price")}
             variant="outlined"
             fullWidth
             type="number"
@@ -138,10 +144,12 @@ function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }
         </Field>
 
         <Field>
-          <p className="auth-title__input">Поздняя регистрация</p>
+          <p className="auth-title__input">
+            {tLkOg("registrationPeriods.tateCheckIn")}
+          </p>
           <TextField
             name="latePrice"
-            placeholder="Цена"
+            placeholder={tLkOg("categoriesOfParticipants.price")}
             variant="outlined"
             fullWidth
             type="number"
@@ -155,9 +163,11 @@ function Price({ open, name, edit, onClose, submit, priceId, eventId, id: pcId }
         </Field>
 
         <Field>
-          <p className="auth-title__input">Валюта</p>
+          <p className="auth-title__input">
+            {tLkOg("categoriesOfParticipants.valuta")}
+          </p>
           <Autocomplete
-            noOptionsText={"Ничего не найдено"}
+            noOptionsText={tLkOg("editEvent.generalInformation.nothingFound")}
             onChange={(_, value) =>
               value && setFieldValue("currency", value.value)
             }

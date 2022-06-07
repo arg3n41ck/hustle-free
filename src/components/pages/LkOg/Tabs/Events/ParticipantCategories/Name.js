@@ -5,14 +5,11 @@ import ParticipantCategoriesModal from "./Modal"
 import { Field } from "../EventDefaults"
 import { TextField } from "@mui/material"
 import styled from "styled-components"
+import { useTranslation } from "next-i18next"
 
 const initialEmptyValues = {
   name: "",
 }
-
-const validationSchema = yup.object({
-  name: yup.string().required("Обязательное поле!"),
-})
 
 function Name({
   open,
@@ -21,6 +18,11 @@ function Name({
   submit,
   defaultValues = initialEmptyValues,
 }) {
+  const { t: tLkOg } = useTranslation("lkOg")
+
+  const validationSchema = yup.object({
+    name: yup.string().required(tLkOg("validation.required")),
+  })
   const { values, touched, errors, handleChange, handleSubmit } = useFormik({
     initialValues: defaultValues,
     validationSchema,
@@ -28,21 +30,22 @@ function Name({
       submit(values)
     },
   })
+
   return (
     <ParticipantCategoriesModal
       open={open}
-      title="Название категории"
+      title={tLkOg("categoriesOfParticipants.nameCategory")}
       onClose={onClose}
       edit={edit}
       onSubmit={handleSubmit}
     >
       <Field>
         <PCFieldName>
-          Название категории
+          {tLkOg("categoriesOfParticipants.nameCategory")}
         </PCFieldName>
         <TextField
           name="name"
-          placeholder="Название категории"
+          placeholder={tLkOg("categoriesOfParticipants.nameCategory")}
           variant="outlined"
           fullWidth
           error={touched.name && Boolean(errors.name)}

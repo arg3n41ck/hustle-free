@@ -1,0 +1,122 @@
+{
+    "myEvents": {
+        "myEvents": "My events",
+        "createANewEvent": "Create a new event",
+        "event": "Event",
+        "date": "Date",
+        "registrations": "Registration",
+        "paid": "Paid",
+        "status": "Status",
+        "createEvent": "Create an event",
+        "saveToArchive": "Save to draft",
+        "soon": "Soon",
+        "nowGoes": "Now goes",
+        "draft": "Draft"
+    },
+    "editEvent": {
+        "cancel": "Cancel",
+        "further": "Further",
+        "generalInformation":{
+            "generalInformation": "General information",
+            "nameEvent": "Name event",
+            "typeSport": "Kind of sport",
+            "tournamentStartDate": "Tournament start date",
+            "tournamentEndDate": "Tournament end date",
+            "timezone": "Timezone",
+            "format": "Format",
+            "olympic": "Olympic",
+            "circular": "Circular",
+            "nothingFound": "Nothing found"
+        }
+    },
+    "location": {
+        "location": "Location",
+        "arenaBuildingName": "Name of arena/building",
+        "country": "Country",
+        "city": "City",
+        "addressOfTheTournament": "Address of the tournament",
+        "tournamentAddressLocationMap": "Tournament address location map",
+        "weighingAddress": "Weighing address"
+    },
+    "registrationPeriods": {
+        "registrationPeriods": "Registration periods",
+        "maximumNumberOfRegistrations": "Maximum number of registrations",
+        "earlyRegistration": "Early Registration",
+        "yes": "Yes",
+        "sunriseStartDate": "Sunrise start date",
+        "ddMmYy": "DD/MM/YY",
+        "endDateForEarlyRegistration": "End date for early registration",
+        "descriptionEarly": "Sunrise date must be earlier than standard registration start date",
+        "standartRegistrations": "Standard Registration",
+        "standardEnrollmentStartDate": "Standard enrollment start date",
+        "endDateOfStandardRegistration": "End date of standard registration",
+        "tateCheckIn": "Late check-in",
+        "lateRegistrationStartDate":"Late registration start date",
+        "lateRegistrationEndDate": "Late registration end date",
+        "descriptionLate": "The late enrollment date must be after the standard enrollment end date",
+        "amountOfCredits": "Amount of credits",
+        "theLocalTime": "The local time"
+    },
+    "coverAndDescription": {
+        "coverAndDescription": "Cover and description",
+        "coverPlaceholder": "Drag images or",
+        "download": "download",
+        "coverPlaceholder2": "Supported formats: PNG, JPG",
+        "description": "Description",
+        "descriptionPlaceholder": "Enter Tournament Description"
+    },
+    "tournamentRules": {
+        "tournamentRules": "Tournament rules"
+    },
+    "categoriesOfParticipants": {
+        "categoriesOfParticipants": "Categories of participants",
+        "selectCategories": "Select categories",
+        "categories": "Categories",
+        "levels": "Levels",
+        "gender": "Gender",
+        "age": "Age",
+        "weight": "Weight",
+        "price": "Price",
+        "addANewCategory": "Add a new category",
+        "selectAll": "Select All",
+        "reset": "Reset",
+        "cancel": "Cancel",
+        "apply": "Apply",
+        "selected": "Selected",
+        "category": "categories",
+        "edit": "Edit",
+        "delete": "Delete",
+        "agesParticipants": "Ages of category participants",
+        "from": "From",
+        "to": "To",
+        "genderParticipants": "Gender of category participants",
+        "male": "Male",
+        "female": "Female",
+        "levelsCategories": "Category levels",
+        "addNewLevel": "Add new level",
+        "nameCategory": "Name of category",
+        "categoryRegistrationPrices": "Category registration prices",
+        "valuta": "Currency",
+        "weightsOfCategoryParticipants": "Weights of category participants"
+    },
+    "contacts": {
+        "contacts": "Contacts",
+        "organizer": "Organizer",
+        "nameOfTheOrganization": "Name of the organization",
+        "surname": "Surname",
+        "name": "Name",
+        "email": "Email",
+        "phoneNumber": "Phone number",
+        "social": "Social networks",
+        "dispensable": "Dispensable"
+    },
+    "validation": {
+        "required": "Required field!",
+        "chooseAtLeastOneLevel": "Choose at least one level!",
+        "fillInTheField": "Fill in the field",
+        "requiredStandartPeriodRegistration": "The start date of a standard tournament must not be later than the end date of the tournament",
+        "validDate": "Enter a valid date",
+        "coverValid": "The cover of the tournament is a required field!",
+        "chooseAtLeastOneCategory": "Choose at least one category of participants!"
+    }
+}

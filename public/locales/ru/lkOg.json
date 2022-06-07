@@ -1,0 +1,122 @@
+{
+    "myEvents": {
+        "myEvents": "Мои турниры",
+        "createANewEvent": "Создать новое мероприятие",
+        "event": "Турнир",
+        "date": "Дата",
+        "registrations": "Регистрации",
+        "paid": "Оплачено",
+        "status": "Статус",
+        "createEvent": "Создание турнира",
+        "saveToArchive": "Сохранить в черновик",
+        "soon": "Скоро",
+        "nowGoes": "Сейчас идёт",
+        "draft": "Черновик"
+    },
+    "editEvent": {
+        "cancel": "Отмена",
+        "further": "Далее",
+        "generalInformation": {
+            "generalInformation": "Общая информация",
+            "nameEvent": "Название турнира",
+            "typeSport": "Вид спорта",
+            "tournamentStartDate": "Дата начала турнира",
+            "tournamentEndDate": "Дата окончания турнира",
+            "timezone": "Часовой пояс",
+            "format": "Формат",
+            "olympic": "Олимпийский",
+            "circular": "Круговой",
+            "nothingFound": "Ничего не найдено"
+        }
+    },
+    "location": {
+        "location": "Локация",
+        "arenaBuildingName": "Название арены/здания",
+        "country": "Страна",
+        "city": "Город",
+        "addressOfTheTournament": "Адрес проведения турнира",
+        "tournamentAddressLocationMap": "Карта локации адреса турнира",
+        "weighingAddress": "Адрес взвешивания"
+    },
+    "registrationPeriods": {
+        "registrationPeriods": "Периоды регистрации",
+        "maximumNumberOfRegistrations": "Максимальное количество регистрации",
+        "earlyRegistration": "Ранняя регистрация",
+        "yes": "Да",
+        "sunriseStartDate": "Дата начала ранней регистрации",
+        "ddMmYy": "ДД/ММ/ГГ",
+        "endDateForEarlyRegistration": "Дата окончания ранней регистрации",
+        "descriptionEarly": "Даты ранней регистрации должна быть раньше даты начала стандартной регистрации",
+        "standartRegistrations": "Стандартная регистрация",
+        "standardEnrollmentStartDate": "Дата начала стандартной регистрации",
+        "endDateOfStandardRegistration": "Дата окончания стандартной регистрации",
+        "tateCheckIn": "Поздняя регистрация",
+        "lateRegistrationStartDate": "Дата начала поздней регистрации",
+        "lateRegistrationEndDate": "Дата окончания поздней регистрации",
+        "descriptionLate": "Даты поздней регистрации должна быть посднее даты окончания стандартной регистрации",
+        "amountOfCredits": "Количество кредитов",
+        "theLocalTime": "Местное время"
+    },
+    "coverAndDescription": {
+        "coverAndDescription": "Обложка и описание",
+        "coverPlaceholder": "Перетащите изображения или",
+        "download": "загрузите",
+        "coverPlaceholder2": "Поддерживаемые форматы: PNG, JPG",
+        "description": "Описание",
+        "descriptionPlaceholder": "Введите описание турнира"
+    },
+    "tournamentRules": {
+        "tournamentRules": "Правила турнира"
+    },
+    "categoriesOfParticipants": {
+        "categoriesOfParticipants": "Категории участников",
+        "selectCategories": "Выберите категории",
+        "categories": "Категории",
+        "levels": "Уровни",
+        "gender": "Пол",
+        "age": "Возраст",
+        "weight": "Вес",
+        "price": "Цена",
+        "addANewCategory": "Добавить новую категорию",
+        "selectAll": "Выбрать всё",
+        "reset": "Сбросить",
+        "cancel": "Отмена",
+        "apply": "Применить",
+        "selected": "Выбрано",
+        "category": "категории",
+        "edit": "Изменить",
+        "delete": "Удалить",
+        "agesParticipants": "Возрасты участников категории",
+        "from": "От",
+        "to": "До",
+        "genderParticipants": "Пол участников категории",
+        "male": "Мужской",
+        "female": "Женский",
+        "levelsCategories": "Уровни категории",
+        "addNewLevel": "Добавить новый уровень",
+        "nameCategory": "Название категории",
+        "categoryRegistrationPrices": "Цены регистрации категории",
+        "valuta": "Валюта",
+        "weightsOfCategoryParticipants": "Веса участников категории"
+    },
+    "contacts": {
+        "contacts": "Контакты",
+        "organizer": "Организатор",
+        "nameOfTheOrganization": "Название организации",
+        "surname": "Фамилия",
+        "name": "Имя",
+        "email": "Электронный адрес",
+        "phoneNumber": "Номер телефона",
+        "social": "Соц. сети",
+        "dispensable": "Необязательно"
+    },
+    "validation": {
+        "required": "Обязательное поле!",
+        "chooseAtLeastOneLevel": "Выберите хотя бы один уровень!",
+        "fillInTheField": "Заполните поле",
+        "requiredStandartPeriodRegistration": "Дата начала стандартной турнира не должна быть позднее даты окончания турнира",
+        "validDate": "Укажите действительную дату",
+        "coverValid": "Обложка турнира обязательное поле!",
+        "chooseAtLeastOneCategory": "Выберите хотя бы одну категорию участников!"
+    }
+}

@@ -6,6 +6,7 @@ import useDebounce from "../../../../../hooks/useDebounce"
 import { useRouter } from "next/router"
 import $api from "../../../../../services/axios"
 import EventRow from "./EventRow"
+import { useTranslation } from "next-i18next"
 
 const getStatistics = async (teamId, params) => {
   const { data } = await $api.get(`/teams/team_statistic/?team_id=${teamId}`, {
@@ -19,6 +20,7 @@ function Events({ teamId, isPublic = false }) {
   const debouncedSearch = useDebounce(search, 300)
   const [statics, setStatics] = useState([])
   const { push: routerPush } = useRouter()
+  const { t: tLkTm } = useTranslation("lkTm")
   const query = useQuery()
 
   useEffect(async () => {
@@ -39,8 +41,8 @@ function Events({ teamId, isPublic = false }) {
     <MainWrapper>
       <EDContentFilter
         onSearch={setSearch}
-        label="Турниры"
-        searchPlaceholder="Поиск по турнирам"
+        label={tLkTm("statistics.events")}
+        searchPlaceholder={tLkTm("statistics.eventsSearch")}
       />
       <EventRows>
         {!!statics?.length ? (
@@ -53,7 +55,7 @@ function Events({ teamId, isPublic = false }) {
             />
           ))
         ) : (
-          <p>Нет терниров</p>
+          <p>{tLkTm("statistics.noEvents")}</p>
         )}
       </EventRows>
     </MainWrapper>

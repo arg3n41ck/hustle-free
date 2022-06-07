@@ -2,6 +2,7 @@ import React, { useCallback } from "react"
 import { MenuItem, Select } from "@mui/material"
 import styled from "styled-components"
 import $api from "../../../../../services/axios"
+import { useTranslation } from "next-i18next"
 
 const deleteRow = (id) => {
   $api.delete(`/directory/participants_categories/${id}/`)
@@ -14,6 +15,7 @@ function EventParticipantCategoriesTableCollapseHead({
   onClickChangeSomeRows,
   refreshPC,
 }) {
+  const { t: tLkOg } = useTranslation("lkOg")
   const removeRowsFromTable = useCallback(async () => {
     selectedInTableRows.length &&
       (await Promise.all(selectedInTableRows.map(deleteRow)).then(() =>
@@ -26,13 +28,15 @@ function EventParticipantCategoriesTableCollapseHead({
     <TableCollapseHead>
       <THCell>
         <ThText>
-          Выбрано {selectedInTableRows?.length} категории.{" "}
+          {tLkOg("categoriesOfParticipants.selected")}{" "}
+          {selectedInTableRows?.length}{" "}
+          {tLkOg("categoriesOfParticipants.category")}.{" "}
           <span
             onClick={() =>
               setSelectedInTableRows(selectedRows.map(({ id }) => id))
             }
           >
-            Выбрать все
+            {tLkOg("categoriesOfParticipants.selectAll")}
           </span>
         </ThText>
       </THCell>
@@ -51,23 +55,35 @@ function EventParticipantCategoriesTableCollapseHead({
           onChange={onClickChangeSomeRows}
         >
           <MenuItem value={"none"} sx={{ display: "none" }}>
-            Изменить
+            {tLkOg("categoriesOfParticipants.edit")}
           </MenuItem>
-          <MenuItem value={"levels"}>Уровни</MenuItem>
-          <MenuItem value={"gender"}>Пол</MenuItem>
-          <MenuItem value={"age"}>Возраст</MenuItem>
-          <MenuItem value={"weight"}>Вес</MenuItem>
-          <MenuItem value={"price"}>Цена</MenuItem>
+          <MenuItem value={"levels"}>
+            {tLkOg("categoriesOfParticipants.levels")}
+          </MenuItem>
+          <MenuItem value={"gender"}>
+            {tLkOg("categoriesOfParticipants.gender")}
+          </MenuItem>
+          <MenuItem value={"age"}>
+            {tLkOg("categoriesOfParticipants.age")}
+          </MenuItem>
+          <MenuItem value={"weight"}>
+            {tLkOg("categoriesOfParticipants.weight")}
+          </MenuItem>
+          <MenuItem value={"price"}>
+            {tLkOg("categoriesOfParticipants.price")}
+          </MenuItem>
         </Select>
       </THCell>
 
       <THCell onClick={removeRowsFromTable}>
-        <Delete type="button">Удалить</Delete>
+        <Delete type="button">
+          {tLkOg("categoriesOfParticipants.delete")}
+        </Delete>
       </THCell>
 
       <THCell>
         <THCancel type="button" onClick={() => setSelectedInTableRows([])}>
-          <XIcon /> Сбросить
+          <XIcon /> {tLkOg("categoriesOfParticipants.reset")}
         </THCancel>
       </THCell>
     </TableCollapseHead>

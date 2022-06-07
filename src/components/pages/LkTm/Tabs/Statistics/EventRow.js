@@ -2,38 +2,41 @@ import React from "react"
 import DropdownData from "../../../../ui/DropdownData"
 import styled from "styled-components"
 import { useRouter } from "next/router"
+import { useTranslation } from "next-i18next"
 
 function EventRow({ eventResults, isPublic, teamId }) {
   const { push: routerPush } = useRouter()
+  const { t: tLkTm } = useTranslation("lkTm")
+
   const info = (
     <Info>
       <InfoItem color={"#828282"}>
         <p>542</p>
-        <div>Участника</div>
+        <div>{tLkTm("statistics.participant")}</div>
       </InfoItem>
       <InfoItem color={"#2E79DD"}>
         <p>0</p>
-        <div>Балла</div>
+        <div>{tLkTm("statistics.point")}</div>
       </InfoItem>
       <InfoItem color={"#27AE60"}>
         <p>0</p>
-        <div>Побед</div>
+        <div>{tLkTm("statistics.wins")}</div>
       </InfoItem>
       <InfoItem color={"#EB5757"}>
         <p>0</p>
-        <div>Поражений</div>
+        <div>{tLkTm("statistics.defeats")}</div>
       </InfoItem>
       <InfoItem color={"#FFC107"}>
         <p>{eventResults?.placesCount?.gold || 0}</p>
-        <div>Золото</div>
+        <div>{tLkTm("statistics.gold")}</div>
       </InfoItem>
       <InfoItem color={"#E0E0E0"}>
         <p>{eventResults?.placesCount?.silver || 0}</p>
-        <div>Серебро</div>
+        <div>{tLkTm("statistics.silver")}</div>
       </InfoItem>
       <InfoItem color={"#D7832D"}>
         <p>{eventResults?.placesCount?.bronze || 0}</p>
-        <div>Бронзо</div>
+        <div>{tLkTm("statistics.bronze")}</div>
       </InfoItem>
     </Info>
   )
