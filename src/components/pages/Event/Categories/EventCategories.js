@@ -7,7 +7,7 @@ import EDContentFilter from "../EDContentFilter"
 import Autocompletes from "./Autocompletes"
 import { useSelector } from "react-redux"
 
-const getEventPC = async (query) => {
+export const getEventPC = async (query) => {
   const { data } = await $api.get(`/events/participant_category/`, {
     params: query,
   })

@@ -27,7 +27,6 @@ function Athletes({ onToggleSidebar }) {
   } = useRouter()
   const query = useQuery()
   const [userStatusInTeam, setUserStatusInTeam] = useState(null)
-  const user = useSelector((state) => state.user.user)
   const [, athletes] = useSelector(selectAthletes)
   const [searchValue, setSearchValue] = useState("")
   const searchDebounced = useDebounce(searchValue, 500)
@@ -61,12 +60,10 @@ function Athletes({ onToggleSidebar }) {
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
           <TitleHeader>Профиль</TitleHeader>
-          {user?.role === "athlete" && (
-            <ApplyToTeam
-              userStatusInTeam={userStatusInTeam}
-              checkUserStatus={checkUserStatus}
-            />
-          )}
+          <ApplyToTeam
+            userStatusInTeam={userStatusInTeam}
+            checkUserStatus={checkUserStatus}
+          />
         </HeaderWrapper>
       </LkDefaultHeader>
 

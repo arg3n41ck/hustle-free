@@ -136,10 +136,9 @@ function EventRouteWrapper({ children }) {
     const isInOtherEditPage = !pathname.includes(`${activePageName}`)
 
     if (isInOgProfile && eventId && activePage && isInOtherEditPage) {
-      await routerPush({
-        pathname: `/lk-og/profile/events/edit/[id]/${activePageName}`,
-        query: { id: eventId },
-      })
+      await routerPush(
+        `/lk-og/profile/events/edit/${eventId}/${activePageName}`
+      )
     }
   }, [activePage])
 

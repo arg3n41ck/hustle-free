@@ -31,7 +31,6 @@ function TeamInfo({
 }) {
   const [team, setTeam] = useState(null)
   const [countries] = useSelector(selectCountriesAndCities)
-  const user = useSelector((state) => state.user.user)
 
   const dispatch = useDispatch()
 
@@ -62,12 +61,10 @@ function TeamInfo({
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
           <TitleHeader>Профиль</TitleHeader>
-          {user?.role === "athlete" && (
-            <ApplyToTeam
-              userStatusInTeam={userStatusInTeam}
-              checkUserStatus={checkUserStatus}
-            />
-          )}
+          <ApplyToTeam
+            userStatusInTeam={userStatusInTeam}
+            checkUserStatus={checkUserStatus}
+          />
         </HeaderWrapper>
       </LkDefaultHeader>
       {team && (

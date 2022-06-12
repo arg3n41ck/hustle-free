@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
 import { getGender } from "../../LkOg/Tabs/Events/EventParticipantCategories"
 import { useTranslation } from "next-i18next"
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip"
 
 const createDataForTable = (pc = []) => {
   const {
@@ -20,7 +20,7 @@ const createDataForTable = (pc = []) => {
       id: `${id}-${lId}-${i}`,
       gender: getGender(gender, true),
       age: `${fromAge} - ${toAge} лет`,
-      price: `${standartPrice} ${currency.toLowerCase()}`,
+      price: `${Math.round(standartPrice)} ${currency.toLowerCase()}`,
       weight: `${fromWeight} - ${toWeight} кг`,
       name: lName,
     }))
@@ -38,7 +38,7 @@ function Table({ pc }) {
         accessor: "name",
       },
       {
-        column: tCommon('form.fieldsNames.gender.label'),
+        column: tCommon("form.fieldsNames.gender.label"),
         accessor: "gender",
       },
       {
@@ -51,11 +51,14 @@ function Table({ pc }) {
       },
       {
         column: (
-          <Tooltip style={{cursor: "pointer"}} title="Цена за стандартный период регистрации">
-          <PriceHead>
-            <span>Цена</span>
-            <Info />
-          </PriceHead>
+          <Tooltip
+            style={{ cursor: "pointer" }}
+            title="Цена за стандартный период регистрации"
+          >
+            <PriceHead>
+              <span>Цена</span>
+              <Info />
+            </PriceHead>
           </Tooltip>
         ),
         accessor: "price",

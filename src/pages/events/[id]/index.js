@@ -6,6 +6,7 @@ import Head from "next/head"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function EventsDetail({ event }) {
+
   return (
     <EdMainLayout event={event}>
       <Head>

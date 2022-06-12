@@ -10,7 +10,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       event: data || null,
-      ...(await serverSideTranslations(locale, ["header", "common"])),
+      ...(await serverSideTranslations(locale, ["header", "common", "lkTm"])),
     },
   }
 }

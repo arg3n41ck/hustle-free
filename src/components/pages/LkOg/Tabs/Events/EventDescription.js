@@ -21,7 +21,7 @@ function EventForm({ defaultValues = emptyInitialValues, eventId }) {
 
   const validationSchema = yup.object({
     image: yup.mixed().nullable().required(tLkOg("validation.coverValid")),
-    description: yup.string().required(tLkOg("validation.required")),
+    description: yup.string().nullable().required(tLkOg("validation.required")),
   })
 
   const {
