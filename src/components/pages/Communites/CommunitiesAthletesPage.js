@@ -7,9 +7,7 @@ import {
   selectCountriesAndCities,
   fetchCountries,
 } from "../../../redux/components/countriesAndCities"
-import {
-  fetchSportTypes,
-} from "../../../redux/components/sportTypes"
+import { fetchSportTypes } from "../../../redux/components/sportTypes"
 import useQuery from "../../../hooks/useQuery"
 import { useRouter } from "next/router"
 import {
@@ -19,19 +17,6 @@ import {
 import CommunitesAthletesList from "./CommunitiesAthleteList"
 import { useTranslation } from "next-i18next"
 import { SearchIcon } from "../../../assets/svg/icons"
-
-const gender = [
-  {
-    id: 1,
-    value: "male",
-    name: "Мужчина",
-  },
-  {
-    id: 2,
-    value: "female",
-    name: "Женщина",
-  },
-]
 
 function CommunitesAthletesPage() {
   const dispatch = useDispatch()
@@ -43,6 +28,20 @@ function CommunitesAthletesPage() {
   const [, athletes] = useSelector(selectAthletes)
   const { push: routerPush } = useRouter()
   const { t: tCommon } = useTranslation("common")
+  const { t: tCommunities } = useTranslation("communities")
+
+  const gender = [
+    {
+      id: 1,
+      value: "male",
+      name: tCommunities("communities.male"),
+    },
+    {
+      id: 2,
+      value: "female",
+      name: tCommunities("communities.female"),
+    },
+  ]
 
   const teaamsValue =
     teams?.results?.length &&
@@ -108,11 +107,11 @@ function CommunitesAthletesPage() {
             <CommunitesHeadingInput
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Поиск"
+              placeholder={tCommunities("communities.search")}
             />
             <CommunitesHeadingButton type="submit">
               <SearchIcon />
-              Найти
+              {tCommunities("communities.find")}
             </CommunitesHeadingButton>
           </CommunitesHeadingInputAndButton>
         </form>
@@ -120,7 +119,7 @@ function CommunitesAthletesPage() {
         <CommunitesAutoCompletes>
           {!!teams?.results?.length && (
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tCommunities("communities.nothingFound")}
               onChange={(e, value) => handleTeamsTypesFilter(e, value)}
               options={teams?.results?.map((option) => option)}
               getOptionLabel={(option) => option.name}
@@ -130,7 +129,7 @@ function CommunitesAthletesPage() {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Команда"
+                  placeholder={tCommunities("communities.team")}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <UsersIcon />,
@@ -141,7 +140,7 @@ function CommunitesAthletesPage() {
           )}
           {!!countries?.length && (
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tCommunities("communities.nothingFound")}
               onChange={(e, value) => handleCountriesFilter(e, value)}
               options={countries.map((option) => option)}
               getOptionLabel={(option) => option.name}
@@ -151,7 +150,7 @@ function CommunitesAthletesPage() {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Страна"
+                  placeholder={tCommunities("communities.country")}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <LocationIcon />,
@@ -162,7 +161,7 @@ function CommunitesAthletesPage() {
           )}
           {!!gender?.length && (
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tCommunities("communities.nothingFound")}
               onChange={(e, value) => handleGendersFilter(e, value)}
               options={gender.map((option) => option)}
               getOptionLabel={(option) => option.name}
@@ -172,7 +171,7 @@ function CommunitesAthletesPage() {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder={tCommon('form.fieldsNames.gender.label')}
+                  placeholder={tCommon("form.fieldsNames.gender.label")}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <GenderIcon />,
@@ -184,7 +183,9 @@ function CommunitesAthletesPage() {
         </CommunitesAutoCompletes>
 
         <CommunitesItem>
-          <CommunitesHeadingText>Участники</CommunitesHeadingText>
+          <CommunitesHeadingText>
+            {tCommunities("communities.participants")}
+          </CommunitesHeadingText>
         </CommunitesItem>
         <CommunitesAthletesList data={athletes} />
       </CommunitesItems>

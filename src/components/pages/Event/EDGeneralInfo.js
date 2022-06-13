@@ -9,48 +9,7 @@ import { fetchOgEvents, selectOgEvents } from "../../../redux/components/user"
 import ParticipantsAreFilledModal from "./EventModal/ParticipantsAreFilledModal"
 import $api from "../../../services/axios"
 import { toast } from "react-toastify"
-
-const regArray = (event) => {
-  return [
-    {
-      id: "earlyReg_1",
-      label: "Ранняя регистрация",
-      value:
-        event.registration.earlyRegActive &&
-        getRusBetweenDate(
-          event.registration.earlyRegStart,
-          event.registration.earlyRegEnd
-        ),
-      icon: EarlyRegIcon,
-    },
-    {
-      id: "standardReg_2",
-      label: "Стандартная регистрация",
-      value: getRusBetweenDate(
-        event.registration.standartRegStart,
-        event.registration.standartRegEnd
-      ),
-      icon: StandardRegIcon,
-    },
-    {
-      id: "lateReg_3",
-      label: "Поздняя регистрация",
-      value:
-        event.registration.lateRegActive &&
-        getRusBetweenDate(
-          event.registration.lateRegStart,
-          event.registration.lateRegEnd
-        ),
-      icon: LateRegIcon,
-    },
-    {
-      id: "durationReg_1",
-      label: "Длительность турнира",
-      value: getRusBetweenDate(event.dateStart, event.dateEnd),
-      icon: RegDurationIcon,
-    },
-  ]
-}
+import { useTranslation } from "next-i18next"
 
 const getIsUserInEvent = async (eventId) => {
   const { data } = await $api.get(`/events/check_athlete_event/${eventId}/`)
@@ -90,13 +49,56 @@ const getIsEventOnRegistration = (registration) => {
   })
 }
 
+const regArray = (event) => {
+  return [
+    {
+      id: "earlyReg_1",
+      label: "event.EDGeneralInfo.earlyRegistration",
+      value:
+        event.registration.earlyRegActive &&
+        getRusBetweenDate(
+          event.registration.earlyRegStart,
+          event.registration.earlyRegEnd
+        ),
+      icon: EarlyRegIcon,
+    },
+    {
+      id: "standardReg_2",
+      label: "event.EDGeneralInfo.standartRegistration",
+      value: getRusBetweenDate(
+        event.registration.standartRegStart,
+        event.registration.standartRegEnd
+      ),
+      icon: StandardRegIcon,
+    },
+    {
+      id: "lateReg_3",
+      label: "event.EDGeneralInfo.lateRegistration",
+      value:
+        event.registration.lateRegActive &&
+        getRusBetweenDate(
+          event.registration.lateRegStart,
+          event.registration.lateRegEnd
+        ),
+      icon: LateRegIcon,
+    },
+    {
+      id: "durationReg_1",
+      label: "event.EDGeneralInfo.durationEvent",
+      value: getRusBetweenDate(event.dateStart, event.dateEnd),
+      icon: RegDurationIcon,
+    },
+  ]
+}
+
 function EdGeneralInfo({ event }) {
-  const regData = useMemo(() => regArray(event), [event])
+  const { t: tEventDetail } = useTranslation("eventDetail")
   const { user, userAuthenticated } = useSelector((state) => state.user)
   const [ogEvents] = useSelector(selectOgEvents)
   const [openFullPcModal, setOpenFullPcModal] = useState(false)
   const [userStatusInEvent, setUserStatusInTeam] = useState()
 
+  const regData = useMemo(() => regArray(event), [event])
   const {
     query: { id: eventId },
     push: routerPush,
@@ -143,7 +145,9 @@ function EdGeneralInfo({ event }) {
           ? routerPush(`/events/${id}/tournament-rules`)
           : setOpenFullPcModal(true)
       } else {
-        toast.info("Пройдите регистрацию в роли атлета", { autoClose: 5000 })
+        toast.info(tEventDetail("event.EDGeneralInfo.registerAsAnAthlete"), {
+          autoClose: 5000,
+        })
         routerPush(`/#user-roles`)
       }
     },
@@ -158,16 +162,16 @@ function EdGeneralInfo({ event }) {
       userStatusInEvent?.message === "event not found"
     ) {
       if (canApplyToEventByDate) {
-        regText = "Зарегистрироваться на турнир"
+        regText = tEventDetail("event.EDGeneralInfo.registrationEvent")
       } else {
-        regText = "Регистрация закрыта"
+        regText = tEventDetail("event.EDGeneralInfo.registrationClosed")
         regDisabled = true
       }
     } else if (userStatusInEvent?.message === "user in waiting list") {
-      regText = "Запрошено"
+      regText = tEventDetail("event.EDGeneralInfo.requested")
       regDisabled = true
     } else if (userStatusInEvent?.message === "user in event") {
-      regText = "Вы уже в турнире"
+      regText = tEventDetail("event.EDGeneralInfo.alreadyInEvent")
       regDisabled = true
     }
     return { regDisabled, regText }
@@ -212,21 +216,22 @@ function EdGeneralInfo({ event }) {
               }
             >
               <EditIcon />
-              <span>Редактировать турнир</span>
+              <span>{tEventDetail("event.EDGeneralInfo.editEvent")}</span>
             </ERegBtn>
           )
         )}
       </TitlePart>
       <RegInfoUl>
-        {regData.map(({ id, label, value, icon }) => (
-          <RegInfoLi key={`EdGeneralInfo_${id}`}>
-            {icon}
-            <div>
-              <span>{label}</span>
-              <p>{value}</p>
-            </div>
-          </RegInfoLi>
-        ))}
+        {!!regData?.length &&
+          regData.map(({ id, label, value, icon }) => (
+            <RegInfoLi key={`EdGeneralInfo_${id}`}>
+              {icon}
+              <div>
+                <span>{tEventDetail(label)}</span>
+                <p>{value}</p>
+              </div>
+            </RegInfoLi>
+          ))}
       </RegInfoUl>
     </>
   )

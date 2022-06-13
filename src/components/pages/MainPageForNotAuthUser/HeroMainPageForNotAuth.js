@@ -2,24 +2,29 @@ import React from "react"
 import styled from "styled-components"
 import Link from "next/link"
 import { useSelector } from "react-redux"
+import { useTranslation } from "next-i18next"
 
 function HeroMainPageForNotAuth() {
   const user = useSelector((state) => state.user.user)
+  const { t: tMainPageFotNotAuthUser } = useTranslation(
+    "mainPageForNotAuthUser"
+  )
+
   return (
     <HeroWrapper>
       <HeroInfo>
         <HeroInfoHeading>
-          Упростите <br /> управление турнирами
+          {tMainPageFotNotAuthUser("mainPage.hero.simplify")} <br />{" "}
+          {tMainPageFotNotAuthUser("mainPage.hero.tournamentManagement")}
         </HeroInfoHeading>
         <HeroInfoDescription>
-          Самый лучший способ принимать участие, организовывать и следить за
-          соревнованиями
+          {tMainPageFotNotAuthUser("mainPage.hero.bestParticipate")}
         </HeroInfoDescription>
         <HeroInfoButtons>
           <Link href={"/events/"} passHref>
             <a>
               <HeroInfoButtonForViewEvents>
-                Смотреть турниры
+                {tMainPageFotNotAuthUser("mainPage.hero.viewEvents")}
               </HeroInfoButtonForViewEvents>
             </a>
           </Link>
@@ -27,7 +32,7 @@ function HeroMainPageForNotAuth() {
             <Link href={!user ? "/#user-roles" : "/lk-og/profile/events/edit"}>
               <a>
                 <HeroInfoButtonForCreateEvents>
-                  Создать турнир
+                  {tMainPageFotNotAuthUser("mainPage.hero.viewEvent")}
                 </HeroInfoButtonForCreateEvents>
               </a>
             </Link>

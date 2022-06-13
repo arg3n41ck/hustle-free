@@ -1,0 +1,20 @@
+{
+    "events": {
+        "events": "Events",
+        "filter": {
+            "upcoming": "Upcoming",
+            "past": "Past",
+            "filter": "Filter",
+            "nothingFound": "Nothing found",
+            "kindOfSport": "Kind of sport",
+            "country": "Country",
+            "selectDateFrom": "Select date from",
+            "cancel": "Cancel",
+            "putAway": "Put away",
+            "dateFrom": "Date from",
+            "selectDateBefore": "Select date before",
+            "dateTo": "Date to"
+        },
+        "search": "Search"
+    }
+}

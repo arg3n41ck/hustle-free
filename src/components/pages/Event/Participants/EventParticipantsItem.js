@@ -1,3 +1,4 @@
+import { useTranslation } from "next-i18next"
 import React, { useMemo, useState } from "react"
 import styled from "styled-components"
 import DropdownData from "../../../ui/DropdownData"
@@ -10,7 +11,7 @@ const EventParticipantsItem = ({
 }) => {
   const [open, setOpen] = useState(false)
   const { eventParticipantsCategory } = eventParticipant
-
+  const { t: tEventDetail } = useTranslation("eventDetail")
   const participantsValues = useMemo(() => {
     if (isOrganizer) {
       const isPaid = eventParticipant?.participants.filter(
@@ -37,10 +38,13 @@ const EventParticipantsItem = ({
 
   const info = (
     <Info>
-      <InfoText>Всего: {eventParticipant?.allParticipants}</InfoText>
+      <InfoText>
+        {tEventDetail("event.participants.eventParticipantsItem.total")}:{" "}
+        {eventParticipant?.allParticipants}
+      </InfoText>
       {isOrganizer && (
         <InfoText color={"#6D4EEA"}>
-          Подтвержденные:{" "}
+          {tEventDetail("event.participants.eventParticipantsItem.confirmed")}:{" "}
           {eventParticipant?.allParticipants
             ? (+eventParticipant?.allParticipants || 0) -
               (+eventParticipant?.isNotAcceptParticipants || 0)
@@ -48,10 +52,12 @@ const EventParticipantsItem = ({
         </InfoText>
       )}
       <InfoText color="#27AE60">
-        Регистраций: {eventParticipant?.isAcceptParticipants}
+        {tEventDetail("event.participants.eventParticipantsItem.registrations")}
+        : {eventParticipant?.isAcceptParticipants}
       </InfoText>
       <InfoText color="#F2994A">
-        Неподтвержденных: {eventParticipant?.isNotAcceptParticipants}
+        {tEventDetail("event.participants.eventParticipantsItem.unconfirmed")}:{" "}
+        {eventParticipant?.isNotAcceptParticipants}
       </InfoText>
     </Info>
   )
@@ -69,7 +75,9 @@ const EventParticipantsItem = ({
         {isOrganizer ? (
           <>
             {!!participantsValues?.isPaid?.length && (
-              <TitleList>Оплачено</TitleList>
+              <TitleList>
+                {tEventDetail("event.participants.eventParticipantsItem.paid")}
+              </TitleList>
             )}
             <ParticipantsList
               isOrganizer={true}
@@ -77,7 +85,11 @@ const EventParticipantsItem = ({
               participants={participantsValues.isPaid}
             />
             {!!participantsValues?.isNotPaid?.length && (
-              <TitleList>Не оплачено</TitleList>
+              <TitleList>
+                {tEventDetail(
+                  "event.participants.eventParticipantsItem.notPaid"
+                )}
+              </TitleList>
             )}
             <ParticipantsList
               isOrganizer={true}
@@ -85,7 +97,11 @@ const EventParticipantsItem = ({
               participants={participantsValues.isNotPaid}
             />
             {!!participantsValues?.registered?.length && (
-              <TitleList>Подтвержденные</TitleList>
+              <TitleList>
+                {tEventDetail(
+                  "event.participants.eventParticipantsItem.confirmed"
+                )}
+              </TitleList>
             )}
             <ParticipantsList
               isOrganizer={true}
@@ -96,7 +112,11 @@ const EventParticipantsItem = ({
         ) : (
           <>
             {!!participantsValues?.registered?.length && (
-              <TitleList>Зарегистрированные</TitleList>
+              <TitleList>
+                {tEventDetail(
+                  "event.participants.eventParticipantsItem.registers"
+                )}
+              </TitleList>
             )}
             <ParticipantsList
               isOrganizer={false}
@@ -104,7 +124,11 @@ const EventParticipantsItem = ({
               participants={participantsValues.registered}
             />
             {!!participantsValues?.unconfirmed?.length && (
-              <TitleList>Неподтвержденные</TitleList>
+              <TitleList>
+                {tEventDetail(
+                  "event.participants.eventParticipantsItem.unconfirmeds"
+                )}
+              </TitleList>
             )}
             <ParticipantsList
               isOrganizer={false}

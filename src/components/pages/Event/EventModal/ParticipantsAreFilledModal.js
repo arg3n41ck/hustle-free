@@ -3,6 +3,7 @@ import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import styled from "styled-components"
 import ApplicationSuccessfullySent from "./ApplicationSuccessfullySent"
+import { useTranslation } from "next-i18next"
 
 const style = {
   position: "absolute",
@@ -21,6 +22,7 @@ const style = {
 export default function ParticipantsAreFilledModal({ open, setOpen }) {
   const [openApplicationSentModal, setOpenApplicationSentModal] =
     React.useState(false)
+  const { t: tEventDetail } = useTranslation("eventDetail")
 
   return (
     <div>
@@ -31,17 +33,22 @@ export default function ParticipantsAreFilledModal({ open, setOpen }) {
       >
         <Box sx={style}>
           <ParticipantAreFilledModalHeadingText>
-            Оставить заявку
+            {tEventDetail(
+              "event.eventModal.participantsAreFiledModal.submitYourApplication"
+            )}
           </ParticipantAreFilledModalHeadingText>
           <ParticipantAreFilledModalText>
-            Лимит участников исчерпан, вы можете оставить заявку для включения в
-            резерв участников
+            {tEventDetail(
+              "event.eventModal.participantsAreFiledModal.membershipLimitReached"
+            )}
           </ParticipantAreFilledModalText>
           <ParticipantAreFilledModalBottomButtons>
             <ParticipantAreFilledModalBottomButton
               onClick={() => setOpen(false)}
             >
-              Отмена
+              {tEventDetail(
+                "event.eventModal.participantsAreFiledModal.cancel"
+              )}
             </ParticipantAreFilledModalBottomButton>
             <ParticipantAreFilledModalBottomButtonSend
               onClick={() => [
@@ -49,7 +56,7 @@ export default function ParticipantsAreFilledModal({ open, setOpen }) {
                 setOpen(false),
               ]}
             >
-              Отправить
+              {tEventDetail("event.eventModal.participantsAreFiledModal.send")}
             </ParticipantAreFilledModalBottomButtonSend>
           </ParticipantAreFilledModalBottomButtons>
         </Box>

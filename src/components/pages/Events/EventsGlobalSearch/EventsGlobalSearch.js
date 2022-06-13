@@ -6,12 +6,14 @@ import useClickOutside from "../../../../hooks/useClickOutside"
 import useFetch from "../../../../hooks/useFetch"
 import useDebounce from "../../../../hooks/useDebounce"
 import { API_URL } from "../../../../services/constants"
+import { useTranslation } from "next-i18next"
 
 function EventsGlobalSearch() {
   const [open, setOpen] = useState(false)
   const wrapperRef = useRef(null)
   const [searchValue, setSearchValue] = useState("")
   const debouncedValue = useDebounce(searchValue, 500)
+  const { t: tEvents } = useTranslation("events")
 
   useClickOutside(wrapperRef, () => {
     setOpen(false)
@@ -35,11 +37,11 @@ function EventsGlobalSearch() {
           onChange={(e) => setSearchValue(e.target.value)}
           onFocus={() => setOpen(true)}
           fullWidth
-          placeholder={"Поиск"}
+          placeholder={tEvents("events.search")}
         />
         <SearchButton>
           <SearchIcon />
-          <span>Поиск</span>
+          <span>{tEvents("events.search")}</span>
         </SearchButton>
       </Field>
 

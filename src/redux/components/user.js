@@ -67,7 +67,7 @@ export const profileMenuSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      state.user = action.payload
+      state.user = action?.payload
       state.error = false
       state.userAuthenticated = true
     })

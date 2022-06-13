@@ -4,17 +4,20 @@ import { StatisticsIcon } from "../../../assets/svg/icons"
 
 export const teamProfileTabs = (teamId) => [
   {
-    name: "Профиль",
+    name: "profile",
+    role: "public.team",
     href: `/team/${teamId}`,
     icon: <ProfileIcon />,
   },
   {
-    name: "Атлеты",
+    name: "athletes",
+    role: "public.team",
     href: `/team/${teamId}/athletes`,
     icon: <UserIcon />,
   },
   {
-    name: "Статистика",
+    name: "statistic",
+    role: "public.team",
     href: `/team/${teamId}/statistics`,
     icon: <StatisticsIcon />,
   },

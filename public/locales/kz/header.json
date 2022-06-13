@@ -18,6 +18,13 @@
       "statistic": "Статистика",
       "settings": "Настройки"
     },
+    "public": {
+      "team": {
+        "profile": "Профиль",
+        "athletes": "Атлеты",
+        "statistic": "Статистика"
+      }
+    },
     "organizer": {
       "profile": "Профиль",
       "events": "Мои турниры",

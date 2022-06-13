@@ -6,21 +6,23 @@ import { SilverMedalIcon } from "../../../../assets/svg/icons"
 import { BronzeMedalIcon } from "../../../../assets/svg/icons"
 import Teams from "./Teams"
 import Participants from "./Participants"
-
-const tabs = [
-  {
-    name: "Участники",
-    value: "participants",
-  },
-  {
-    name: "Команды",
-    value: "teams",
-  },
-]
+import { useTranslation } from "next-i18next"
 
 const EventResults = () => {
   const [view, setView] = useState("participants") // participants | teams
   const [resultsPlaces, setResultsPlaces] = useState([])
+  const { t: tEventDetail } = useTranslation("eventDetail")
+
+  const tabs = [
+    {
+      name: tEventDetail("event.results.eventResults.participants"),
+      value: "participants",
+    },
+    {
+      name: tEventDetail("event.results.eventResults.teams"),
+      value: "teams",
+    },
+  ]
 
   const onloadPC = (data) => {
     data.length &&
@@ -46,26 +48,34 @@ const EventResults = () => {
 
   return (
     <>
-      <MedalsTitle>Всего боев: {all}</MedalsTitle>
+      <MedalsTitle>
+        {tEventDetail("event.results.eventResults.totalFights")}: {all}
+      </MedalsTitle>
       <Medals>
         <Medal>
           <GoldMedalIcon />
           <MedalInfo>
-            <MedalText color={"#FFC107"}>Золото:</MedalText>
+            <MedalText color={"#FFC107"}>
+              {tEventDetail("event.results.eventResults.gold")}:
+            </MedalText>
             <MedalText color={"#FFC107"}>{first}</MedalText>
           </MedalInfo>
         </Medal>
         <Medal>
           <SilverMedalIcon />
           <MedalInfo>
-            <MedalText color={"#D7832D"}>Серебро:</MedalText>
+            <MedalText color={"#D7832D"}>
+              {tEventDetail("event.results.eventResults.silver")}:
+            </MedalText>
             <MedalText color={"#E0E0E0"}>{second}</MedalText>
           </MedalInfo>
         </Medal>
         <Medal>
           <BronzeMedalIcon />
           <MedalInfo>
-            <MedalText color={"#E0E0E0"}>Бронза:</MedalText>
+            <MedalText color={"#E0E0E0"}>
+              {tEventDetail("event.results.eventResults.bronze")}:
+            </MedalText>
             <MedalText color={"#D7832D"}>{third}</MedalText>
           </MedalInfo>
         </Medal>

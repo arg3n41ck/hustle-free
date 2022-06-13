@@ -58,6 +58,7 @@
     "emailRequired": "Fill in the mail field",
     "imageSizeValid": "The file size must be no more than 4 MB."
   },
+  "more": "More",
   "currency": {
     "kzt": "Tenge",
     "usd": "Dollar",

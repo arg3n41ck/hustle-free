@@ -11,7 +11,7 @@
     "fieldsNames": {
       "region": "Область",
       "website": "Веб-сайт",
-      "fullNameMainCoach":"ФИО главного тренера",
+      "fullNameMainCoach": "ФИО главного тренера",
       "emailCoach": "Электронная почта тренера",
       "typeSport": "Вид спорта",
       "description": "Описание",
@@ -58,9 +58,10 @@
     "emailRequired": "Заполните поле почты",
     "imageSizeValid": "Размер файла должен быть – не более 4 МБ."
   },
+  "more": "Подробнее",
   "currency": {
-    "kzt":"Тенге",
-    "usd":"Доллар",
+    "kzt": "Тенге",
+    "usd": "Доллар",
     "eur": "Евро"
   }
 }

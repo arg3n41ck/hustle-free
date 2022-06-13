@@ -6,6 +6,7 @@ import styled from "styled-components"
 import EDContentFilter from "../EDContentFilter"
 import Autocompletes from "./Autocompletes"
 import { useSelector } from "react-redux"
+import { useTranslation } from "next-i18next"
 
 const getEventPC = async (query) => {
   const { data } = await $api.get(`/events/participant_category/`, {
@@ -60,6 +61,8 @@ const filterPc = ({
 }
 
 function EventCategories() {
+  const { t: tEventDetail } = useTranslation("eventDetail")
+
   const {
     query: {
       id: eventId,
@@ -102,7 +105,7 @@ function EventCategories() {
   return (
     <CollapseWrapper>
       <EDContentFilter
-        label={"Поиск"}
+        label={tEventDetail("event.categories.eventCategories.search")}
         onSearch={(value) => setSearch((value || "").toLowerCase())}
         openChildren={isFilterOpen}
       >

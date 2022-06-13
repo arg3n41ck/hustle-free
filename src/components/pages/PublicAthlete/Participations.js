@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { Collapse } from "@mui/material"
 import StoryCollapse from "../LkAh/Tabs/Profile/Stories/StoryCollapse"
+import { useTranslation } from "next-i18next"
 
 function Participations({
   eventName,
@@ -13,13 +14,14 @@ function Participations({
   toWeight,
 }) {
   const [open, setOpen] = React.useState(false)
+  const { t: tLkAh } = useTranslation("lkAh")
 
   return (
     <EventsWrapper>
       <EventsMainInfo onClick={() => setOpen((s) => !s)}>
         <MedalContainer>
           <MedalInfoPlace>0</MedalInfoPlace>
-          <MedalInfoPlaceText>место</MedalInfoPlaceText>
+          <MedalInfoPlaceText>{tLkAh("place")}</MedalInfoPlaceText>
         </MedalContainer>
         <EventsInfo>
           <EventInfoHeadingText>{eventName || ""}</EventInfoHeadingText>
@@ -27,9 +29,9 @@ function Participations({
             {(name && `${name} / `) || ""}
             {(level && `${level} / `) || ""}
             {(fromAge && `${fromAge}-`) || ""}
-            {(toAge && `${toAge} лет / `) || ""}
-            {(fromWeight && `${fromWeight} кг - `) || ""}
-            {(toWeight && `${toWeight}  кг`) || ""}
+            {(toAge && `${toAge} ${tLkAh("years")} / `) || ""}
+            {(fromWeight && `${fromWeight} ${tLkAh("kg")} - `) || ""}
+            {(toWeight && `${toWeight}  ${tLkAh("kg")}`) || ""}
           </EventInfoParticipantsInfo>
         </EventsInfo>
       </EventsMainInfo>

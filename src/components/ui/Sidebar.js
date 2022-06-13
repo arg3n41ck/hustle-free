@@ -45,6 +45,8 @@ const Sidebar = ({ open, array }) => {
             item.href === asPath
           : pathname === item.href || item.href === asPath
 
+        const path = item?.role || user?.role
+
         return (
           <Item
             key={`${item.value}_${i}`}
@@ -57,7 +59,7 @@ const Sidebar = ({ open, array }) => {
             >
               <IconWrapper active={active}>{item.icon}</IconWrapper>
               <Text animate={open ? "open" : "closed"} variants={variants}>
-                {tHeader(`userTabs.${user?.role}.${item.name}`)}
+                {tHeader(`userTabs.${path}.${item.name}`)}
               </Text>
             </ItemContent>
           </Item>

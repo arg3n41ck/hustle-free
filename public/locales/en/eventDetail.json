@@ -1,0 +1,166 @@
+{
+    "event": {
+        "eventDescription": "Description",
+        "categories": {
+            "autocompletes": {
+                "nothingFound": "Nothing found",
+                "level": "Level",
+                "gender": "Gender",
+                "weight": "Weight",
+                "age": "Age",
+                "male": "Male",
+                "female": "Female",
+                "descending": "Descending",
+                "ascending": "Ascending"
+            },
+            "eventCategories": {
+                "search": "Search"
+            },
+            "table": {
+                "levels": "Levels",
+                "gender": "Gender",
+                "age": "Age",
+                "weight": "Weight",
+                "priceForStandardRegistrationPeriod": "Price for standard registration period",
+                "price": "Price"
+            }
+        },
+        "eventModal": {
+            "applicationSuccessfullySent": {
+                "submitYourApplication": "Submit your application",
+                "yourApplicationHasBeenSuccessfullySent": "Your application has been successfully sent"
+            },
+            "participantsAreFiledModal": {
+                "submitYourApplication": "Submit your application",
+                "membershipLimitReached": "The limit of participants has been exhausted, you can leave a request to be included in the reserve of participants",
+                "cancel": "Cancel",
+                "send": "Send"
+            }
+        },
+        "participants": {
+            "eventParticipants": {
+                "male": "Male",
+                "female": "Female"
+            },
+            "eventParticipantsList": {
+                "categoriesBasedProfile": "Categories based on your profile information",
+                "otherCategories": "Other categories"
+            },
+            "eventParticipantsItem": {
+                "total": "Total",
+                "confirmed": "Confirmed",
+                "registrations": "Registrations",
+                "unconfirmed": "Unconfirmed",
+                "paid": "Paid",
+                "notPaid": "Not paid",
+                "registers": "Registered",
+                "unconfirmeds": "Unconfirmed"
+            },
+            "filters": {
+                "team": "Team",
+                "nothingFound": "Nothing found",
+                "level": "Level",
+                "gender": "Gender",
+                "male": "Male",
+                "female": "Female",
+                "weight": "Weight",
+                "country": "Country"
+            },
+            "participantsItem": {
+                "country": "Country",
+                "age": "Age",
+                "viewProfile": "View Profile",
+                "reject": "Reject",
+                "confirm": "Confirm",
+                "years": "years old"
+            }
+        },
+        "results": {
+            "eventResultsParticipant": {
+                "team": "Teams",
+                "country": "Country"
+            },
+            "eventResults": {
+                "participants": "Participants",
+                "teams": "Teams",
+                "totalFights": "Total fights",
+                "gold": "Gold",
+                "silver": "Silver",
+                "bronze": "Bronze"
+            },
+            "eventResultsItem": {
+                "years": "years old",
+                "kg": "kg"
+            },
+            "filter": {
+                "search": "Search",
+                "categories": "Categories",
+                "nothingFound": "Nothing found",
+                "country": "Country",
+                "team": "Teams"
+            },
+            "participants": {
+                "allResultsEvent": "All tournament results"
+            },
+            "teamItem": {
+                "participant": "Member",
+                "points": "Point",
+                "wins": "Victories",
+                "defeats": "Defeats",
+                "gold": "Gold",
+                "silver": "Silver",
+                "bronze": "Bronze"
+            },
+            "teams": {
+                "search": "Search",
+                "find": "Find",
+                "allTeams": "All teams"
+            }
+        },
+        "tournamentRules": {
+            "tournamentRules": "Tournament rules",
+            "agree": "I agree with the terms of participation in the tournament",
+            "cancel": "Cancel",
+            "further": "Further"
+        },
+        "EDGeneralInfo": {
+            "earlyRegistration": "Early registration",
+            "standartRegistration": "Standard registration",
+            "lateRegistration": "Late registration",
+            "durationEvent": "Tournament duration",
+            "registerAsAnAthlete": "Register as an athlete",
+            "registrationEvent": "Register for the tournament",
+            "registrationClosed": "Registration is closed",
+            "requested": "Requested",
+            "alreadyInEvent": "You are already in the tournament",
+            "editEvent": "Edit tournament"
+        },
+        "EDMainLayout": {
+            "info": "Infomation",
+            "categories": "Categories",
+            "participants": "Participants",
+            "results": "Results"
+        }
+    },
+    "eventMainInfo": {
+        "nameOfTheOrganization": "Name of the organization",
+        "organizer": "Organizer",
+        "email": "Email",
+        "phoneNumber": "Phone number",
+        "addressOfTheEvent": "Address of the event",
+        "weighingAddress": "Weighing address",
+        "arenaName": "Arena name",
+        "categories": "Categories",
+        "levels": "Levels",
+        "gender": "Gender",
+        "age": "Age",
+        "weight": "Weight",
+        "price": "Prices",
+        "linkСopied": "Link copied",
+        "contacts": "Contacts",
+        "socialNetworks": "Social networks",
+        "location": "Location",
+        "participantsCategories": "Categories of participants",
+        "share": "Share"
+    }
+}

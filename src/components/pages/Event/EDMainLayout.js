@@ -2,8 +2,11 @@ import React from "react"
 import styled from "styled-components"
 import EdGeneralInfo from "./EDGeneralInfo"
 import ActiveLink from "../../ActiveLink"
+import { useTranslation } from "next-i18next"
 
 function EdMainLayout({ event, children }) {
+  const { t: tEventDetail } = useTranslation("eventDetail")
+
   return (
     <MainWrapper>
       <EdGeneralInfo event={event} />
@@ -14,7 +17,7 @@ function EdMainLayout({ event, children }) {
               activeClassName="activeEDLink"
               href={`/events/${event.id}`}
             >
-              <a href="">Информация</a>
+              <a href="">{tEventDetail("event.EDMainLayout.info")}</a>
             </ActiveLink>
           </li>
           <li>
@@ -22,7 +25,7 @@ function EdMainLayout({ event, children }) {
               activeClassName="activeEDLink"
               href={`/events/${event.id}/categories`}
             >
-              <a href="">Категории</a>
+              <a href="">{tEventDetail("event.EDMainLayout.categories")}</a>
             </ActiveLink>
           </li>
           <li>
@@ -30,7 +33,9 @@ function EdMainLayout({ event, children }) {
               activeClassName="activeEDLink"
               href={`/events/${event.id}/participants`}
             >
-              <a href="">{`Участники (${event.participantsCount || 0})`}</a>
+              <a href="">{`${tEventDetail(
+                "event.EDMainLayout.participants"
+              )} (${event.participantsCount || 0})`}</a>
             </ActiveLink>
           </li>
           <li>
@@ -38,7 +43,7 @@ function EdMainLayout({ event, children }) {
               activeClassName="activeEDLink"
               href={`/events/${event.id}/results`}
             >
-              <a href="">Результаты</a>
+              <a href="">{tEventDetail("event.EDMainLayout.results")}</a>
             </ActiveLink>
           </li>
         </NavigationUl>

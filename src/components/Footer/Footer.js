@@ -1,21 +1,19 @@
+import { useTranslation } from "next-i18next"
 import React from "react"
 import styled from "styled-components"
 
 function Footer() {
+  const { t: tFooter } = useTranslation("footer")
+
   return (
     <FooterMainWrapper>
       <FooterIcon />
-      <a
-        href="/privacy_policy.pdf"
-        download
-        target="_blank"
-        rel="noreferrer"
-      >
-        <p>Политика конфиденциальности</p>
+      <a href="/privacy_policy.pdf" download target="_blank" rel="noreferrer">
+        <p>{tFooter("footer.privacyPolicy")}</p>
       </a>
-      <p>Пользовательское соглашение</p>
+      <p>{tFooter("footer.termsOfUse")}</p>
       <Social>
-        <p>О нас</p>
+        <p>{tFooter("footer.aboutUs")}</p>
         <Icons>
           <Facebook />
           <Twitter />

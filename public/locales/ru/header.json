@@ -23,6 +23,13 @@
       "events": "Мои турниры",
       "settings": "Настройки"
     },
+    "public": {  
+      "team": {
+        "profile": "Профиль",
+        "athletes": "Атлеты",
+        "statistic": "Статистика"
+      }
+    },
     "exit": "Выйти",
     "login": "Войти"
   }

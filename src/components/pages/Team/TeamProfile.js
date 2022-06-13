@@ -17,6 +17,7 @@ import {
   selectCountriesAndCities,
 } from "../../../redux/components/countriesAndCities"
 import ApplyToTeam from "../../TeamProfile/ApplyToTeam"
+import { useTranslation } from "next-i18next"
 
 const getTeamData = async (teamId) => {
   const { data } = await $api.get(`/teams/teams/${teamId}/`)
@@ -32,6 +33,7 @@ function TeamInfo({
   const [team, setTeam] = useState(null)
   const [countries] = useSelector(selectCountriesAndCities)
   const user = useSelector((state) => state.user.user)
+  const { t: tLkTm } = useTranslation("lkTm")
 
   const dispatch = useDispatch()
 
@@ -61,7 +63,7 @@ function TeamInfo({
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
-          <TitleHeader>Профиль</TitleHeader>
+          <TitleHeader>{tLkTm("teamProfile.profile")}</TitleHeader>
           {user?.role === "athlete" && (
             <ApplyToTeam
               userStatusInTeam={userStatusInTeam}
@@ -90,7 +92,9 @@ function TeamInfo({
                   <WrapperIcon>
                     <WebsiteIcon />
                   </WrapperIcon>
-                  <p>Страна, город</p>
+                  <p>
+                    {tLkTm("teamProfile.country")}, {tLkTm("teamProfile.city")}
+                  </p>
                 </ItemTitle>
                 {currentLocations && (
                   <ItemDescription>
@@ -103,7 +107,7 @@ function TeamInfo({
                   <WrapperIcon>
                     <DefaultEmailIcon />
                   </WrapperIcon>
-                  <p>E-mail</p>
+                  <p>{tLkTm("teamProfile.email")}</p>
                 </ItemTitle>
                 {team?.emailCoach && (
                   <ItemDescription>{team?.emailCoach}</ItemDescription>
@@ -114,7 +118,7 @@ function TeamInfo({
                   <WrapperIcon>
                     <WebsiteIcon />
                   </WrapperIcon>
-                  <p>Сайт</p>
+                  <p>{tLkTm("teamProfile.website")}</p>
                 </ItemTitle>
                 <ItemDescription>
                   {
@@ -141,7 +145,7 @@ function TeamInfo({
                     <WrapperIcon>
                       <UserIcon />
                     </WrapperIcon>
-                    <p>Главный тренер</p>
+                    <p>{tLkTm("teamProfile.mainCoach")}</p>
                   </ItemTitle>
                   <ItemDescription>{team?.fullNameCoach || ""}</ItemDescription>
                 </CoachItem>
@@ -151,7 +155,7 @@ function TeamInfo({
                     <WrapperIcon>
                       <DefaultPhoneIcon />
                     </WrapperIcon>
-                    <p>Контакты</p>
+                    <p>{tLkTm("teamProfile.contacts")}</p>
                   </ItemTitle>
                   <ItemDescription>
                     {!!team?.phoneCoach && phoneFormatter(team?.phoneCoach)}

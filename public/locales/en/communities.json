@@ -1,0 +1,16 @@
+{
+    "communities": {
+        "search": "Search",
+        "find": "Find",
+        "participants": "Participants",
+        "seeAll": "See all",
+        "teams": "Teams",
+        "nothingFound": "Nothing found",
+        "kindOfSport": "Kind of sport",
+        "country": "Country",
+        "male": "Male",
+        "female": "Female",
+        "notSpecified": "Not specified",
+        "team": "Team"
+    }
+}

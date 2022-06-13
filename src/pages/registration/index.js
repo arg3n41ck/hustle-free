@@ -176,7 +176,6 @@ const Index = () => {
                 <a
                   href="/docs/privacy_policy.pdf"
                   className="auth-link"
-                  className="auth-link"
                   download
                   target="_blank"
                   rel="noreferrer"
@@ -214,7 +213,7 @@ const Index = () => {
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "common"])),
+    ...(await serverSideTranslations(locale, ["header", "common", "auth"])),
   },
 })
 

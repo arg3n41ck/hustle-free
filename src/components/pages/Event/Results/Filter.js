@@ -9,12 +9,14 @@ import $api from "../../../../services/axios"
 import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
 import { useRouter } from "next/router"
+import { useTranslation } from "next-i18next"
 
 const Filter = ({ onFilter }) => {
   const [teams, setTeams] = useState([])
   const [categories, setCategories] = useState([])
   const [countries] = useSelector(selectCountriesAndCities)
   const router = useRouter()
+  const { t: tEventDetail } = useTranslation("eventDetail")
 
   useEffect(async () => {
     const { data } = await $api.get(`/events/event_teams/`)
@@ -28,7 +30,7 @@ const Filter = ({ onFilter }) => {
   return (
     <>
       <TitleBlock sx={{ margin: "32px 0 -16px 0" }} component={"h4"}>
-        Поиск
+        {tEventDetail("event.results.filter.search")}
       </TitleBlock>
       <EDContentFilter
         onSearch={(value) =>
@@ -42,7 +44,9 @@ const Filter = ({ onFilter }) => {
       >
         <Fields>
           <Field>
-            <p className="auth-title__input">Категории</p>
+            <p className="auth-title__input">
+              {tEventDetail("event.results.filter.categories")}
+            </p>
             <Autocomplete
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -52,7 +56,7 @@ const Filter = ({ onFilter }) => {
                   right: "20px !important",
                 },
               }}
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEventDetail("event.results.filter.nothingFound")}
               onChange={(_, value) =>
                 onFilter({
                   target: {
@@ -71,9 +75,11 @@ const Filter = ({ onFilter }) => {
           </Field>
 
           <Field>
-            <p className="auth-title__input">Страна</p>
+            <p className="auth-title__input">
+              {tEventDetail("event.results.filter.country")}
+            </p>
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEventDetail("event.results.filter.nothingFound")}
               onChange={(_, value) =>
                 onFilter({
                   target: {
@@ -87,13 +93,19 @@ const Filter = ({ onFilter }) => {
               options={countries.map((option) => option.name)}
               fullWidth
               renderInput={(params) => (
-                <TextField {...params} fullWidth placeholder="Страна" />
+                <TextField
+                  {...params}
+                  fullWidth
+                  placeholder={tEventDetail("event.results.filter.country")}
+                />
               )}
             />
           </Field>
 
           <Field>
-            <p className="auth-title__input">Команда</p>
+            <p className="auth-title__input">
+              {tEventDetail("event.results.filter.team")}
+            </p>
             <Autocomplete
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -103,7 +115,7 @@ const Filter = ({ onFilter }) => {
                   right: "20px !important",
                 },
               }}
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEventDetail("event.results.filter.nothingFound")}
               onChange={(_, value) =>
                 onFilter({
                   target: {
@@ -116,7 +128,11 @@ const Filter = ({ onFilter }) => {
               getOptionLabel={(option) => option.name}
               fullWidth
               renderInput={(params) => (
-                <TextField {...params} fullWidth placeholder="Команда" />
+                <TextField
+                  {...params}
+                  fullWidth
+                  placeholder={tEventDetail("event.results.filter.team")}
+                />
               )}
             />
           </Field>

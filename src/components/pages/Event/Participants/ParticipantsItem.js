@@ -4,6 +4,7 @@ import { Avatar, Collapse } from "@mui/material"
 import Link from "next/link"
 import CustomButton from "../../../ui/CustomButton"
 import { useRouter } from "next/router"
+import { useTranslation } from "next-i18next"
 
 export const OgParticipantsItem = ({
   participant,
@@ -12,6 +13,7 @@ export const OgParticipantsItem = ({
   onDelete,
 }) => {
   const [open, setOpen] = useState(false)
+  const { t: tEventDetail } = useTranslation("eventDetail")
   const [isRegistered, setIsRegistered] = useState(isRegisteredValue)
   const variantsRefIsRegistered = useRef({
     open: { height: 214 },
@@ -47,21 +49,34 @@ export const OgParticipantsItem = ({
           <>
             <Info>
               <div>
-                <InfoTitle>Страна</InfoTitle>
+                <InfoTitle>
+                  {tEventDetail("event.participants.participantsItem.country")}
+                </InfoTitle>
                 <InfoDescription>{participant.country}</InfoDescription>
               </div>
               <div>
-                <InfoTitle>Возраст</InfoTitle>
-                <InfoDescription>{participant.age} лет</InfoDescription>
+                <InfoTitle>
+                  {tEventDetail("event.participants.participantsItem.age")}
+                </InfoTitle>
+                <InfoDescription>
+                  {participant.age}{" "}
+                  {tEventDetail("event.participants.participantsItem.years")}
+                </InfoDescription>
               </div>
             </Info>
             {isRegistered && <Line style={{ margin: "24px 0" }} />}
             <Link href={`/athlete/${participant.athleteId}`} passHref>
               {isRegistered ? (
-                <RegisteredBtnProfile>Просмотреть порфиль</RegisteredBtnProfile>
+                <RegisteredBtnProfile>
+                  {tEventDetail(
+                    "event.participants.participantsItem.viewProfile"
+                  )}
+                </RegisteredBtnProfile>
               ) : (
                 <NotRegisteredBtnProfile>
-                  Просмотреть порфиль
+                  {tEventDetail(
+                    "event.participants.participantsItem.viewProfile"
+                  )}
                 </NotRegisteredBtnProfile>
               )}
             </Link>
@@ -77,7 +92,7 @@ export const OgParticipantsItem = ({
             onClick={() => onDelete(participant.id)}
             style={{ fontSize: 14, color: "#fff", background: "none" }}
           >
-            Отклонить
+            {tEventDetail("event.participants.participantsItem.reject")}
           </CustomButton>
 
           <CustomButton
@@ -86,7 +101,7 @@ export const OgParticipantsItem = ({
             borderRadius={"4px"}
             onClick={() => onAccept(participant.id)}
           >
-            Подтвердить
+            {tEventDetail("event.participants.participantsItem.confirm")}
           </CustomButton>
         </BtnWrapper>
       )}

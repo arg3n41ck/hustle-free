@@ -21,7 +21,11 @@ function EDContentFilter({
         <TextField
           value={search}
           fullWidth
-          placeholder={searchPlaceholder}
+          placeholder={
+            searchPlaceholder === "Поиск"
+              ? tLkTm("statistics.search")
+              : searchPlaceholder
+          }
           onChange={({ target: { value } }) => {
             setSearch(value)
             onSearch && onSearch(value)

@@ -2,15 +2,19 @@ import React from "react"
 import styled from "styled-components"
 import Checkbox from "@mui/material/Checkbox"
 import Link from "next/link"
+import { useTranslation } from "next-i18next"
 
 function TournamentRules({ event }) {
   const [checked, setChecked] = React.useState(false)
+  const { t: tEventDetail } = useTranslation("eventDetail")
   //   console.log(eventCategory)
 
   return (
     <TournamentRulesContainer>
       <TournamentRulesHeading>
-        <TournamentRulesHeadingText>Правила турнира</TournamentRulesHeadingText>
+        <TournamentRulesHeadingText>
+          {tEventDetail("event.results.tournamentRules.tournamentRules")}
+        </TournamentRulesHeadingText>
       </TournamentRulesHeading>
       <Line />
       <TournamentRulesHeroInfo>
@@ -31,55 +35,58 @@ function TournamentRules({ event }) {
           incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
           fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
           pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
-          aute irure tempor cupieventt incididunt sint deserunt ut voluptate aute
-          id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum magna
-          nulla duis ullamco cillum dolor. Voluptate exercitation incididunt
-          aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud
-          irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis
-          deserunt mollit dolore cillum minim tempor enim. Elit aute irure
-          tempor cupieventt incididunt sint deserunt ut voluptate aute id
-          deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla
-          duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip
-          deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
-          duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
-          mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupieventt incididunt sint deserunt ut voluptate aute id deserunt
-          nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis
-          ullamco cillum dolor. Voluptate exercitation incididunt aliquip
-          deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
-          duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
-          mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupieventt incididunt sint deserunt ut voluptate aute id deserunt
-          nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis
-          ullamco cillum dolor. Voluptate exercitation incididunt aliquip
-          deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
-          duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
-          mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupieventt incididunt sint deserunt ut voluptate aute id deserunt
-          nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis
-          ullamco cillum dolor. Voluptate exercitation incididunt aliquip
-          deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
-          duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
-          mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupieventt incididunt sint deserunt ut voluptate aute id deserunt
-          nisi.Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis
-          ullamco cillum dolor. Voluptate exercitation incididunt aliquip
-          deserunt reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex
-          duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
-          mollit dolore cillum minim tempor enim. Elit aute irure tempor
-          cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.
+          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
+          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation
+          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
+          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
+          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
+          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
+          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation
+          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
+          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
+          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
+          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
+          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation
+          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
+          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
+          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
+          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
+          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation
+          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
+          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
+          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
+          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
+          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation
+          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
+          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
+          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
+          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
+          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation
+          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
+          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
+          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
+          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
+          aute id deserunt nisi.
         </TournamentRulesHeroInfoText>
         <TournamentRulesHeroBottomInfo>
           <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
           <TournamentRulesHeroBottomInfoText>
-            Я согласен(-на) с условиями участия в турнире
+            {tEventDetail("event.results.tournamentRules.agree")}
           </TournamentRulesHeroBottomInfoText>
         </TournamentRulesHeroBottomInfo>
       </TournamentRulesHeroInfo>
       <Line />
       <TournamentRulesBottomButtons>
         <Link href={`/events/${event?.id}/`}>
-          <TournamentRulesBottomButton>Отмена</TournamentRulesBottomButton>
+          <TournamentRulesBottomButton>
+            {tEventDetail("event.results.tournamentRules.cancel")}
+          </TournamentRulesBottomButton>
         </Link>
         <Link href={`/events/${event?.id}/registration`} passHref>
           <TournamentRulesBottomButton
@@ -88,7 +95,7 @@ function TournamentRules({ event }) {
               checked && "linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)"
             }
           >
-            Далее
+            {tEventDetail("event.results.tournamentRules.further")}
           </TournamentRulesBottomButton>
         </Link>
       </TournamentRulesBottomButtons>
@@ -113,7 +120,7 @@ const TournamentRulesBottomButton = styled.button`
   border-radius: 16px;
   max-width: 256px;
   width: 100%;
-  height: 64px;\
+  height: 64px;
   font-style: normal;
   font-weight: 600;
   font-size: 18px;

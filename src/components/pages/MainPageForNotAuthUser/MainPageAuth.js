@@ -4,35 +4,39 @@ import { useRouter } from "next/router"
 import { localStorageSetItem } from "../../../helpers/helpers"
 import { useDispatch } from "react-redux"
 import { exitUser } from "../../../redux/components/user"
-
-const array = [
-  {
-    id: 1,
-    value: "organizer",
-    heading: "Для организаторов",
-    description: "профессиональных и клубных турниров",
-  },
-  {
-    id: 2,
-    value: "athlete",
-    heading: "Для атлетов",
-    description: "кому интересно покорять новые высоты",
-  },
-  {
-    id: 3,
-    value: "team",
-    heading: "Для команд",
-    description: "управление участниками просто и удобно",
-  },
-]
+import { useTranslation } from "next-i18next"
 
 function MainPageAuth() {
   const router = useRouter()
+  const { t: tMainPageFotNotAuthUser } = useTranslation(
+    "mainPageForNotAuthUser"
+  )
   const dispatch = useDispatch()
   const handleClick = (role) => {
     localStorageSetItem("role", role)
     router.push("/registration")
   }
+
+  const array = [
+    {
+      id: 1,
+      value: "organizer",
+      heading: tMainPageFotNotAuthUser("mainPage.auth.forOrganizers"),
+      description: tMainPageFotNotAuthUser("mainPage.auth.forOrganizersDesc"),
+    },
+    {
+      id: 2,
+      value: "athlete",
+      heading: tMainPageFotNotAuthUser("mainPage.auth.forAthletes"),
+      description: tMainPageFotNotAuthUser("mainPage.auth.forAthletesDesc"),
+    },
+    {
+      id: 3,
+      value: "team",
+      heading: tMainPageFotNotAuthUser("mainPage.auth.forTeams"),
+      description: tMainPageFotNotAuthUser("mainPage.auth.fotTeamsDesc"),
+    },
+  ]
 
   useEffect(() => {
     dispatch(exitUser())
@@ -59,7 +63,7 @@ function MainPageAuth() {
             <CardTextDesc>{item.description}</CardTextDesc>
           </div>
           <CardButton onClick={() => handleClick(item.value)}>
-            Зарегистрироваться
+            {tMainPageFotNotAuthUser("mainPage.auth.signUp")}
           </CardButton>
         </Card>
       ))}

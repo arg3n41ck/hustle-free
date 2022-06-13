@@ -7,6 +7,7 @@ import styled from "styled-components"
 import $api from "../../../../services/axios"
 import { useRouter } from "next/router"
 import { useSelector } from "react-redux"
+import { useTranslation } from "next-i18next"
 
 const changeParticipantPlace = async (eventId, data) => {
   await $api.patch(`/organizer/events/${eventId}/participant-place/`, data)
@@ -15,6 +16,7 @@ const changeParticipantPlace = async (eventId, data) => {
 function EventResultParticipant({ participant, updatePC }) {
   const user = useSelector((state) => state.user.user)
   const [place, setPlace] = useState(participant.place)
+  const { t: tEventDetail } = useTranslation("eventDetail")
   const {
     query: { id: eventId },
   } = useRouter()
@@ -42,12 +44,16 @@ function EventResultParticipant({ participant, updatePC }) {
       </Left>
       <Right>
         <InfoItem>
-          <InfoItemTitle>Команда</InfoItemTitle>
+          <InfoItemTitle>
+            {tEventDetail("event.results.eventResultsParticipant.team")}
+          </InfoItemTitle>
           <InfoItemDescription>{participant.team}</InfoItemDescription>
         </InfoItem>
         {participant.country && (
           <InfoItem>
-            <InfoItemTitle>Страна</InfoItemTitle>
+            <InfoItemTitle>
+              {tEventDetail("event.results.eventResultsParticipant.country")}
+            </InfoItemTitle>
             <InfoItemDescription>{participant.country}</InfoItemDescription>
           </InfoItem>
         )}

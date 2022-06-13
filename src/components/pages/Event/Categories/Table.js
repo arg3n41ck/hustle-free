@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
 import { getGender } from "../../LkOg/Tabs/Events/EventParticipantCategories"
 import { useTranslation } from "next-i18next"
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip"
 
 const createDataForTable = (pc = []) => {
   const {
@@ -29,33 +29,38 @@ const createDataForTable = (pc = []) => {
 
 function Table({ pc }) {
   const [rewrittenData, setRewrittenData] = useState([])
-  const { t: tCommon } = useTranslation("common")
+  const { t: tEventDetail } = useTranslation("eventDetail")
 
   const columns = useMemo(() => {
     return [
       {
-        column: "Уровни",
+        column: tEventDetail("event.categories.table.levels"),
         accessor: "name",
       },
       {
-        column: tCommon('form.fieldsNames.gender.label'),
+        column: tEventDetail("event.categories.table.gender"),
         accessor: "gender",
       },
       {
-        column: "Возраст",
+        column: tEventDetail("event.categories.table.age"),
         accessor: "age",
       },
       {
-        column: "Вес",
+        column: tEventDetail("event.categories.table.weight"),
         accessor: "weight",
       },
       {
         column: (
-          <Tooltip style={{cursor: "pointer"}} title="Цена за стандартный период регистрации">
-          <PriceHead>
-            <span>Цена</span>
-            <Info />
-          </PriceHead>
+          <Tooltip
+            style={{ cursor: "pointer" }}
+            title={tEventDetail(
+              "event.categories.table.priceForStandardRegistrationPeriod"
+            )}
+          >
+            <PriceHead>
+              <span>{tEventDetail("event.categories.table.price")}</span>
+              <Info />
+            </PriceHead>
           </Tooltip>
         ),
         accessor: "price",

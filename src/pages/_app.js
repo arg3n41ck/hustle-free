@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css"
 import RouterLoader from "../components/ui/RouterLoader"
 import EventRouteWrapper from "../components/pages/LkOg/Tabs/Events/EventRouteProvider"
 import { ToastContainer } from "react-toastify"
+import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -41,3 +42,9 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default appWithTranslation(MyApp)
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["footer"])),
+  },
+})

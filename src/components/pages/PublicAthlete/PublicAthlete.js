@@ -6,37 +6,40 @@ import { fetchCountries } from "../../../redux/components/countriesAndCities"
 import Teams from "./Teams"
 import Participations from "./Participations"
 import HorizontalTabsBorder from "../../ui/tabs/HorizontalTabsBorder"
-
-const tabs = [
-  {
-    id: 1,
-    name: "Все",
-    value: "all",
-  },
-  {
-    id: 2,
-    name: "Победы",
-    value: "wins",
-  },
-  {
-    id: 3,
-    name: "Ничьи",
-    value: "draws",
-  },
-  {
-    id: 4,
-    name: "Поражений",
-    value: "defeats",
-  },
-]
+import { useTranslation } from "next-i18next"
 
 function PublicAthlete({ athleteData }) {
   const { user, teams, participations } = athleteData
   const [view, setView] = React.useState("all") // all | wins | draws | defeats
   const dispatch = useDispatch()
+  const { t: tLkAh } = useTranslation("lkAh")
   useEffect(() => {
     dispatch(fetchCountries())
   }, [])
+
+  const tabs = [
+    {
+      id: 1,
+      name: tLkAh("myHistory.tabs.all"),
+      value: "all",
+    },
+    {
+      id: 2,
+      name: tLkAh("myHistory.tabs.wins"),
+      value: "wins",
+    },
+    {
+      id: 3,
+      name: tLkAh("myHistory.tabs.draws"),
+      value: "draws",
+    },
+    {
+      id: 4,
+      name: tLkAh("myHistory.tabs.defeats"),
+      value: "defeats",
+    },
+  ]
+
   return (
     <MainWrapper>
       {user && <AthleteUserData user={user} />}
@@ -81,7 +84,7 @@ function PublicAthlete({ athleteData }) {
       ) : (
         <Private>
           {lock}
-          <p>Это закрытый профиль</p>
+          <p>{tLkAh("closedProfile")}</p>
         </Private>
       )}
     </MainWrapper>

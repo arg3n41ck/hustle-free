@@ -2,17 +2,23 @@ import React from "react"
 import styled from "styled-components"
 import EventParticipantsItem from "./EventParticipantsItem"
 import { useSelector } from "react-redux"
+import { useTranslation } from "next-i18next"
 
 const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
   const { user } = useSelector((state) => state.user)
+  const { t: tEventDetail } = useTranslation("eventDetail")
 
   return (
     <>
       {user?.role !== "organizer" && (
         <Title>
           {isAthletes
-            ? "Категории на основе сведений в вашем профиле"
-            : "Остальные категории"}
+            ? tEventDetail(
+                "event.participants.eventParticipantsList.categoriesBasedProfile"
+              )
+            : tEventDetail(
+                "event.participants.eventParticipantsList.otherCategories"
+              )}
         </Title>
       )}
       {eventParticipants.map((eventParticipant) => (

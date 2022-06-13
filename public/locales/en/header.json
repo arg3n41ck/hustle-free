@@ -23,6 +23,13 @@
       "events": "My events",
       "settings": "Settings"
     },
+    "public": {
+      "team": {
+        "profile": "Profile",
+        "athletes": "Athletes",
+        "statistic": "Statistic"
+      }
+    },
     "exit": "Exit",
     "login": "Login"
   }

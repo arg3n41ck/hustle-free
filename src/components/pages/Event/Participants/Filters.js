@@ -11,10 +11,10 @@ import { useRouter } from "next/router"
 import { useTranslation } from "next-i18next"
 
 const Filters = ({ levels, onFilter }) => {
+  const { t: tEventDetail } = useTranslation("eventDetail")
   const [weights, setWeights] = useState([])
   const [countries] = useSelector(selectCountriesAndCities)
   const [teams, setTeams] = useState([])
-  const { t: tCommon } = useTranslation("common")
   const router = useRouter()
 
   useEffect(async () => {
@@ -40,7 +40,9 @@ const Filters = ({ levels, onFilter }) => {
       >
         <Fields>
           <Field>
-            <p className="auth-title__input">Команда</p>
+            <p className="auth-title__input">
+              {tEventDetail("event.participants.filters.team")}
+            </p>
             <Autocomplete
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -50,7 +52,9 @@ const Filters = ({ levels, onFilter }) => {
                   right: "20px !important",
                 },
               }}
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEventDetail(
+                "event.participants.filters.nothingFound"
+              )}
               onChange={(_, value) =>
                 onFilter({
                   target: {
@@ -63,13 +67,19 @@ const Filters = ({ levels, onFilter }) => {
               getOptionLabel={(option) => option.name}
               fullWidth
               renderInput={(params) => (
-                <TextField {...params} fullWidth placeholder="Команда" />
+                <TextField
+                  {...params}
+                  fullWidth
+                  placeholder={tEventDetail("event.participants.filters.team")}
+                />
               )}
             />
           </Field>
 
           <Field>
-            <p className="auth-title__input">Уровень</p>
+            <p className="auth-title__input">
+              {tEventDetail("event.participants.filters.level")}
+            </p>
             <Autocomplete
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -79,7 +89,9 @@ const Filters = ({ levels, onFilter }) => {
                   right: "20px !important",
                 },
               }}
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEventDetail(
+                "event.participants.filters.nothingFound"
+              )}
               onChange={(_, value) =>
                 onFilter({
                   target: {
@@ -91,13 +103,19 @@ const Filters = ({ levels, onFilter }) => {
               options={levels.map((option) => option.name)}
               fullWidth
               renderInput={(params) => (
-                <TextField {...params} fullWidth placeholder="Уровень" />
+                <TextField
+                  {...params}
+                  fullWidth
+                  placeholder={tEventDetail("event.participants.filters.level")}
+                />
               )}
             />
           </Field>
 
           <Field>
-            <p className="auth-title__input">{tCommon('form.fieldsNames.gender.label')}</p>
+            <p className="auth-title__input">
+              {tEventDetail("event.participants.filters.gender")}
+            </p>
             <Autocomplete
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -107,7 +125,9 @@ const Filters = ({ levels, onFilter }) => {
                   right: "20px !important",
                 },
               }}
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEventDetail(
+                "event.participants.filters.nothingFound"
+              )}
               onChange={(_, value) =>
                 onFilter({
                   target: {
@@ -116,16 +136,27 @@ const Filters = ({ levels, onFilter }) => {
                   },
                 })
               }
-              options={["Мужчина", "Женщина"].map((option) => option)}
+              options={[
+                tEventDetail("event.participants.eventParticipants.male"),
+                tEventDetail("event.participants.eventParticipants.female"),
+              ].map((option) => option)}
               fullWidth
               renderInput={(params) => (
-                <TextField {...params} fullWidth placeholder={tCommon('form.fieldsNames.gender.label')} />
+                <TextField
+                  {...params}
+                  fullWidth
+                  placeholder={tEventDetail(
+                    "event.participants.filters.gender"
+                  )}
+                />
               )}
             />
           </Field>
 
           <Field>
-            <p className="auth-title__input">Вес</p>
+            <p className="auth-title__input">
+              {tEventDetail("event.participants.filters.weight")}
+            </p>
             <Autocomplete
               sx={{
                 "& .MuiOutlinedInput-root": {
@@ -135,7 +166,9 @@ const Filters = ({ levels, onFilter }) => {
                   right: "20px !important",
                 },
               }}
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEventDetail(
+                "event.participants.filters.nothingFound"
+              )}
               onChange={(_, value) =>
                 onFilter({
                   target: {
@@ -150,15 +183,25 @@ const Filters = ({ levels, onFilter }) => {
               }
               fullWidth
               renderInput={(params) => (
-                <TextField {...params} fullWidth placeholder="Вес" />
+                <TextField
+                  {...params}
+                  fullWidth
+                  placeholder={tEventDetail(
+                    "event.participants.filters.weight"
+                  )}
+                />
               )}
             />
           </Field>
 
           <Field>
-            <p className="auth-title__input">Страна</p>
+            <p className="auth-title__input">
+              {tEventDetail("event.participants.filters.country")}
+            </p>
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEventDetail(
+                "event.participants.filters.nothingFound"
+              )}
               onChange={(_, value) =>
                 onFilter({
                   target: {
@@ -172,7 +215,13 @@ const Filters = ({ levels, onFilter }) => {
               options={countries.map((option) => option.name)}
               fullWidth
               renderInput={(params) => (
-                <TextField {...params} fullWidth placeholder="Страна" />
+                <TextField
+                  {...params}
+                  fullWidth
+                  placeholder={tEventDetail(
+                    "event.participants.filters.country"
+                  )}
+                />
               )}
             />
           </Field>

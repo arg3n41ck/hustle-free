@@ -20,6 +20,7 @@ import useDebounce from "../../../hooks/useDebounce"
 import ApplyToTeam from "../../../components/TeamProfile/ApplyToTeam"
 import { getIsUserInTeam } from "./index"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import { useTranslation } from "next-i18next"
 
 function Athletes({ onToggleSidebar }) {
   const {
@@ -34,6 +35,7 @@ function Athletes({ onToggleSidebar }) {
   const checkUserStatus = useCallback(() => {
     teamId && getIsUserInTeam(teamId).then(setUserStatusInTeam)
   }, [teamId])
+  const { t: tLkTm } = useTranslation("lkTm")
 
   const tabs = useMemo(() => {
     return teamProfileTabs(teamId)
@@ -60,7 +62,7 @@ function Athletes({ onToggleSidebar }) {
     <LkLayout tabs={tabs}>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
-          <TitleHeader>Профиль</TitleHeader>
+          <TitleHeader>{tLkTm("teamProfile.profile")}</TitleHeader>
           {user?.role === "athlete" && (
             <ApplyToTeam
               userStatusInTeam={userStatusInTeam}
@@ -80,11 +82,11 @@ function Athletes({ onToggleSidebar }) {
           onChange={(e) => setSearchValue(e.target.value)}
           fullWidth
           value={searchValue}
-          placeholder={"Поиск"}
+          placeholder={tLkTm("statistics.search")}
         />
         <SearchButton>
           <SearchIcon />
-          <span>Поиск</span>
+          <span>{tLkTm("statistics.search")}</span>
         </SearchButton>
       </Field>
 
@@ -102,7 +104,7 @@ export default Athletes
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "common"])),
+    ...(await serverSideTranslations(locale, ["header", "common", "lkTm"])),
   },
 })
 

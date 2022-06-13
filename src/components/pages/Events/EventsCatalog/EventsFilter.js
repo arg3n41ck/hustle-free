@@ -18,11 +18,13 @@ import { LocalizationProvider, MobileDatePicker } from "@mui/lab"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import { ru } from "date-fns/locale"
 import { format } from "date-fns"
+import { useTranslation } from "next-i18next"
 
 function EventsFilter() {
   const [isFiltersOpen, setFilter] = useState(false)
   const [countries] = useSelector(selectCountriesAndCities)
   const [sportTypes] = useSelector(selectSportTypes)
+  const { t: tEvents } = useTranslation("events")
   const dispatch = useDispatch()
   const query = useQuery()
   const { push: routerPush } = useRouter()
@@ -79,7 +81,7 @@ function EventsFilter() {
           className={!futureValue ? "active" : ""}
           onClick={() => handleFilter("events_type_time", futureValue)}
         >
-          Предстоящие
+          {tEvents("events.filter.upcoming")}
         </SoonBtn>
         <LiveBtn
           className={!liveValue ? "active" : ""}
@@ -91,11 +93,11 @@ function EventsFilter() {
           className={!pastValue ? "active" : ""}
           onClick={() => handleFilter("events_type_time", pastValue)}
         >
-          Прошедшие
+          {tEvents("events.filter.past")}
         </PastEventsBtn>
         <FilterBtn onClick={() => setFilter((s) => !s)}>
           <FilterIcon />
-          Фильтр
+          {tEvents("events.filter.filter")}
         </FilterBtn>
       </BtnsWrapper>
 
@@ -103,7 +105,7 @@ function EventsFilter() {
         <Filters>
           {!!sportTypes?.length && (
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEvents("events.filter.nothingFound")}
               onChange={(e, value) => handleFilter("type_sport", value)}
               options={sportTypes.map((option) => option)}
               getOptionLabel={(option) => option.name}
@@ -113,7 +115,7 @@ function EventsFilter() {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Вид спорта"
+                  placeholder={tEvents("events.filter.kindOfSport")}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <BoxIcon />,
@@ -124,7 +126,7 @@ function EventsFilter() {
           )}
           {!!countries?.length && (
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tEvents("events.filter.nothingFound")}
               onChange={(e, value) => handleFilter("country", value)}
               options={countries.map((option) => option)}
               getOptionLabel={(option) => option.name}
@@ -134,7 +136,7 @@ function EventsFilter() {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Страна"
+                  placeholder={tEvents("events.filter.country")}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <LocationIcon />,
@@ -145,8 +147,8 @@ function EventsFilter() {
           )}
           <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
             <MobileDatePicker
-              toolbarTitle={"Выбрать дату от"}
-              cancelText={"Отмена"}
+              toolbarTitle={tEvents("events.filter.selectDateFrom")}
+              cancelText={tEvents("events.filter.cancel")}
               value={fromDate}
               onChange={(value) => {
                 handleDateRange(
@@ -155,7 +157,7 @@ function EventsFilter() {
                 )
               }}
               clearable
-              clearText="Убрать"
+              clearText={tEvents("events.filter.putAway")}
               inputFormat="dd/MM/yyyy"
               renderInput={(params) => (
                 <TextField
@@ -163,14 +165,14 @@ function EventsFilter() {
                   fullWidth
                   inputProps={{
                     ...params.inputProps,
-                    placeholder: "Дата от",
+                    placeholder: tEvents("events.filter.dateFrom"),
                   }}
                 />
               )}
             />
             <MobileDatePicker
-              toolbarTitle={"Выбрать дату до"}
-              cancelText={"Отмена"}
+              toolbarTitle={tEvents("events.filter.selectDateBefore")}
+              cancelText={tEvents("events.filter.cancel")}
               value={toDate}
               onChange={(value) => {
                 handleDateRange(
@@ -179,7 +181,7 @@ function EventsFilter() {
                 )
               }}
               clearable
-              clearText="Убрать"
+              clearText={tEvents("events.filter.putAway")}
               inputFormat="dd/MM/yyyy"
               renderInput={(params) => (
                 <TextField
@@ -187,14 +189,14 @@ function EventsFilter() {
                   fullWidth
                   inputProps={{
                     ...params.inputProps,
-                    placeholder: "Дата до",
+                    placeholder: tEvents("events.filter.dateTo"),
                   }}
                 />
               )}
             />
           </LocalizationProvider>
           {/*<Autocomplete*/}
-          {/*  noOptionsText={"Ничего не найдено"}*/}
+          {/*  noOptionsText={tEvents("events.filter.nothingFound")}*/}
           {/*  onChange={(e, value) => sortHandler(e, value)}*/}
           {/*  options={countries.map((option) => option)}*/}
           {/*  getOptionLabel={(option) => option.name}*/}

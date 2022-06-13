@@ -5,6 +5,7 @@ import $api from "../../../../services/axios"
 import useDebounce from "../../../../hooks/useDebounce"
 import { useRouter } from "next/router"
 import { useSelector } from "react-redux"
+import { useTranslation } from "next-i18next"
 
 const getEventParticipants = async (url, query) => {
   const { data } = await $api.get(url, { params: query })
@@ -12,6 +13,7 @@ const getEventParticipants = async (url, query) => {
 }
 
 const EventParticipants = () => {
+  const { t: tEventDetail } = useTranslation("eventDetail")
   const {
     query: { id: eventId },
   } = useRouter()
@@ -45,8 +47,12 @@ const EventParticipants = () => {
       search: searchValue,
       level: levelValue,
       gender:
-        (genderValue === "Мужчина" && "male") ||
-        (genderValue === "Женщина" && "female") ||
+        (genderValue ===
+          tEventDetail("event.participants.eventParticipants.male") &&
+          "male") ||
+        (genderValue ===
+          tEventDetail("event.participants.eventParticipants.female") &&
+          "female") ||
         "",
       "category-tab": false,
       event_participants_category__from_weight: weightValue?.fromWeight || "",

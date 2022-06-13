@@ -6,12 +6,14 @@ import useDebounce from "../../../../hooks/useDebounce"
 import $api from "../../../../services/axios"
 import { useRouter } from "next/router"
 import TeamItem from "./TeamItem"
+import { useTranslation } from "next-i18next"
 
 const Teams = () => {
   const router = useRouter()
   const [teams, setTeams] = useState(null)
   const [search, setSearch] = useState("")
   const searchValue = useDebounce(search, 500)
+  const { t: tEventDetail } = useTranslation("eventDetail")
 
   useEffect(async () => {
     const { data } = await $api.get(`events/event_teams/`, {
@@ -28,7 +30,7 @@ const Teams = () => {
   return (
     <>
       <TitleBlock sx={{ margin: "32px 0 16px 0" }} component={"h4"}>
-        Поиск
+        {tEventDetail("event.results.teams.search")}
       </TitleBlock>
       <Field>
         <TextField
@@ -39,15 +41,15 @@ const Teams = () => {
           }}
           onChange={(e) => setSearch(e.target.value)}
           fullWidth
-          placeholder={"Поиск"}
+          placeholder={tEventDetail("event.results.teams.search")}
         />
         <SearchButton>
           <SearchIcon />
-          <span>Найти</span>
+          <span>{tEventDetail("event.results.teams.find")}</span>
         </SearchButton>
       </Field>
       <TitleBlock sx={{ margin: "32px 0" }} component={"h4"}>
-        Все команды
+        {tEventDetail("event.results.teams.allTeams")}
       </TitleBlock>
       <List>
         {teams.map((team, i) => (

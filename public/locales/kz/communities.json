@@ -1,0 +1,16 @@
+{
+    "communities": {
+        "search": "Поиск",
+        "find": "Найти",
+        "participants": "Участники",
+        "seeAll": "См.все",
+        "teams": "Команды",
+        "nothingFound": "Ничего не найдено",
+        "kindOfSport": "Вид спорта",
+        "country": "Страна",
+        "male": "Мужчина",
+        "female": "Женщина",
+        "notSpecified": "Не указано",
+        "team": "Команда"
+    }
+}

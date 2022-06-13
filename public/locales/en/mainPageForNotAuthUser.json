@@ -1,0 +1,24 @@
+{
+    "mainPage": {
+        "forWhom": "For whom",
+        "popular": "Popular",
+        "upcomingTournaments": "Upcoming tournaments",
+        "viewAll": "See all",
+        "hero": {
+            "simplify": "Simplify",
+            "tournamentManagement": "tournament management",
+            "bestParticipate": "The best way to participate, organize and follow competitions",
+            "viewEvents": "Watch tournaments",
+            "viewEvent": "Create a tournament"
+        },
+        "auth": {
+            "forOrganizers": "For organizers",
+            "forOrganizersDesc": "professional and club tournaments",
+            "forAthletes": "For athletes",
+            "forAthletesDesc": "who are interested in conquering new heights",
+            "forTeams": "For teams",
+            "forTeamsDesc": "member management is simple and convenient",
+            "signUp": "Register"
+        }
+    }
+}

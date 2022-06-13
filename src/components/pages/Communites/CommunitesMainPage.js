@@ -12,6 +12,7 @@ import {
 } from "../../../redux/components/athletes"
 import CommunitesAthletesList from "./CommunitiesAthleteList"
 import { fetchCountries } from "../../../redux/components/countriesAndCities"
+import { useTranslation } from "next-i18next"
 
 function CommunitesMainPage() {
   const dispatch = useDispatch()
@@ -21,6 +22,7 @@ function CommunitesMainPage() {
   const [search, setSearch] = useState(searchValue)
   const { push: routerPush } = useRouter()
   const [, athletes] = useSelector(selectAthletes)
+  const { t: tCommunities } = useTranslation("communities")
 
   React.useEffect(() => {
     dispatch(fetchTeams())
@@ -46,28 +48,36 @@ function CommunitesMainPage() {
             <CommunitesHeadingInput
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Поиск"
+              placeholder={tCommunities("communities.search")}
             />
             <CommunitesHeadingButton type="submit">
               <SearchIcon />
-              Найти
+              {tCommunities("communities.find")}
             </CommunitesHeadingButton>
           </CommunitesHeadingInputAndButton>
         </form>
 
         <CommunitesItem>
-          <CommunitesHeadingText>Участники</CommunitesHeadingText>
+          <CommunitesHeadingText>
+            {tCommunities("communities.participants")}
+          </CommunitesHeadingText>
           <Link href={`/communities/athletes`} passHref>
-            <CommunitesHeadingTextViewAll>См.все</CommunitesHeadingTextViewAll>
+            <CommunitesHeadingTextViewAll>
+              {tCommunities("communities.seeAll")}
+            </CommunitesHeadingTextViewAll>
           </Link>
         </CommunitesItem>
 
         <CommunitesAthletesList data={athletes.slice(0, 8)} />
 
         <CommunitesItem>
-          <CommunitesHeadingText>Команды</CommunitesHeadingText>
+          <CommunitesHeadingText>
+            {tCommunities("communities.teams")}
+          </CommunitesHeadingText>
           <Link href={`/communities/teams`} passHref>
-            <CommunitesHeadingTextViewAll>См.все</CommunitesHeadingTextViewAll>
+            <CommunitesHeadingTextViewAll>
+              {tCommunities("communities.seeAll")}
+            </CommunitesHeadingTextViewAll>
           </Link>
         </CommunitesItem>
         <CommunitesList data={teams?.results?.slice(0, 6)} />

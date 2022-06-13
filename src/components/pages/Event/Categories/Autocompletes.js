@@ -7,20 +7,11 @@ import { useRouter } from "next/router"
 import styled from "styled-components"
 import { useTranslation } from "next-i18next"
 
-const encDecACOptions = [
-  { name: "По убыванию", value: "increase" },
-  { name: "По возрастанию", value: "decrease" },
-]
-const genderACOptions = [
-  { name: "Мужской", value: "male" },
-  { name: "Женский", value: "female" },
-]
-
 function Autocompletes({ levelOptions }) {
+  const { t: tEventDetail } = useTranslation("eventDetail")
   const query = useQuery()
   const [countries] = useSelector(selectCountriesAndCities)
   const { push: routerPush } = useRouter()
-  const { t: tCommon } = useTranslation("common")
   const {
     query: {
       id: eventId,
@@ -30,6 +21,27 @@ function Autocompletes({ levelOptions }) {
       age: ageQValue,
     },
   } = useRouter()
+
+  const encDecACOptions = [
+    {
+      name: tEventDetail("event.categories.autocompletes.descending"),
+      value: "increase",
+    },
+    {
+      name: tEventDetail("event.categories.autocompletes.ascending"),
+      value: "decrease",
+    },
+  ]
+  const genderACOptions = [
+    {
+      name: tEventDetail("event.categories.autocompletes.male"),
+      value: "male",
+    },
+    {
+      name: tEventDetail("event.categories.autocompletes.female"),
+      value: "female",
+    },
+  ]
 
   const handleFilter = useCallback(
     (name, value) => {
@@ -60,7 +72,9 @@ function Autocompletes({ levelOptions }) {
     <ACWrapper>
       {!!countries?.length && (
         <Autocomplete
-          noOptionsText={"Ничего не найдено"}
+          noOptionsText={tEventDetail(
+            "event.categories.autocompletes.nothingFound"
+          )}
           onChange={(e, value) => handleFilter("level", value)}
           options={levelOptions}
           getOptionLabel={(option) => option}
@@ -70,7 +84,7 @@ function Autocompletes({ levelOptions }) {
             <TextField
               {...params}
               fullWidth
-              placeholder="Уровень"
+              placeholder={tEventDetail("event.categories.autocompletes.level")}
               InputProps={{
                 ...params.InputProps,
               }}
@@ -79,7 +93,9 @@ function Autocompletes({ levelOptions }) {
         />
       )}
       <Autocomplete
-        noOptionsText={"Ничего не найдено"}
+        noOptionsText={tEventDetail(
+          "event.categories.autocompletes.nothingFound"
+        )}
         onChange={(e, value) => handleFilter("gender", value?.value || null)}
         options={genderACOptions}
         getOptionLabel={(option) => option.name}
@@ -89,7 +105,7 @@ function Autocompletes({ levelOptions }) {
           <TextField
             {...params}
             fullWidth
-            placeholder={tCommon('form.fieldsNames.gender.label')}
+            placeholder={tEventDetail("event.categories.autocompletes.gender")}
             InputProps={{
               ...params.InputProps,
             }}
@@ -97,7 +113,9 @@ function Autocompletes({ levelOptions }) {
         )}
       />
       <Autocomplete
-        noOptionsText={"Ничего не найдено"}
+        noOptionsText={tEventDetail(
+          "event.categories.autocompletes.nothingFound"
+        )}
         onChange={(e, value) => handleFilter("weight", value?.value || null)}
         options={encDecACOptions}
         getOptionLabel={(option) => option.name}
@@ -107,7 +125,7 @@ function Autocompletes({ levelOptions }) {
           <TextField
             {...params}
             fullWidth
-            placeholder="Вес"
+            placeholder={tEventDetail("event.categories.autocompletes.weight")}
             InputProps={{
               ...params.InputProps,
             }}
@@ -115,7 +133,9 @@ function Autocompletes({ levelOptions }) {
         )}
       />
       <Autocomplete
-        noOptionsText={"Ничего не найдено"}
+        noOptionsText={tEventDetail(
+          "event.categories.autocompletes.nothingFound"
+        )}
         onChange={(e, value) => handleFilter("age", value?.value || null)}
         options={encDecACOptions}
         getOptionLabel={(option) => option.name}
@@ -125,7 +145,7 @@ function Autocompletes({ levelOptions }) {
           <TextField
             {...params}
             fullWidth
-            placeholder="Возраст"
+            placeholder={tEventDetail("event.categories.autocompletes.age")}
             InputProps={{
               ...params.InputProps,
             }}

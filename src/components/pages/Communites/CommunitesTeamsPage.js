@@ -14,6 +14,7 @@ import {
 } from "../../../redux/components/sportTypes"
 import useQuery from "../../../hooks/useQuery"
 import { useRouter } from "next/router"
+import { useTranslation } from "next-i18next"
 
 function CommunitesPage() {
   const dispatch = useDispatch()
@@ -24,6 +25,7 @@ function CommunitesPage() {
   const searchValue = query.get("search")
   const [search, setSearch] = useState(searchValue)
   const { push: routerPush } = useRouter()
+  const { t: tCommunities } = useTranslation("communities")
 
   const sportTypesValue =
     sportTypes.length &&
@@ -73,14 +75,14 @@ function CommunitesPage() {
             <CommunitesHeadingInput
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Поиск"
+              placeholder={tCommunities("communities.search")}
             />
             <CommunitesHeadingButton
               type="submit"
               // searchIcon={searchIcon}
             >
               <SearchIcon />
-              Найти
+              {tCommunities("communities.find")}
             </CommunitesHeadingButton>
           </CommunitesHeadingInputAndButton>
         </form>
@@ -88,7 +90,7 @@ function CommunitesPage() {
         <CommunitesAutoCompletes>
           {!!sportTypes?.length && (
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tCommunities("communities.nothingFound")}
               onChange={(e, value) => handleSportTypesFilter(e, value)}
               options={sportTypes.map((option) => option)}
               getOptionLabel={(option) => option.name}
@@ -98,7 +100,7 @@ function CommunitesPage() {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Вид спорта"
+                  placeholder={tCommunities("communities.kindOfSport")}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <UsersIcon />,
@@ -109,7 +111,7 @@ function CommunitesPage() {
           )}
           {!!countries?.length && (
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={tCommunities("communities.nothingFound")}
               onChange={(e, value) => handleCountriesFilter(e, value)}
               options={countries.map((option) => option)}
               getOptionLabel={(option) => option.name}
@@ -119,7 +121,7 @@ function CommunitesPage() {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Страна"
+                  placeholder={tCommunities("communities.country")}
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <LocationIcon />,
@@ -131,7 +133,9 @@ function CommunitesPage() {
         </CommunitesAutoCompletes>
 
         <CommunitesItem>
-          <CommunitesHeadingText>Команды</CommunitesHeadingText>
+          <CommunitesHeadingText>
+            {tCommunities("communities.teams")}
+          </CommunitesHeadingText>
         </CommunitesItem>
         <CommunitesList data={teams?.results} />
       </CommunitesItems>

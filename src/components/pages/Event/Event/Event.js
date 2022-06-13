@@ -1,19 +1,20 @@
 import React from "react"
 import EventMainInfo from "./EventMainInfo"
 import styled from "styled-components"
+import { useTranslation } from "next-i18next"
 
 function Event({ event }) {
+  const { t: tEventDetail } = useTranslation("eventDetail")
+
   return (
     <MainWrapper>
       <EventMainInfo event={event} />
-      <Title>Описание</Title>
+      <Title>{tEventDetail("event.eventDescription")}</Title>
       <Columns>
         <Column>{event.description}</Column>
         <Column>
-          <h4>
-          </h4>
-          <p>
-          </p>
+          <h4></h4>
+          <p></p>
         </Column>
       </Columns>
     </MainWrapper>

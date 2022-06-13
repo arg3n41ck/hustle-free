@@ -27,5 +27,9 @@
     },
     "myTeams": {
         "myTeams": "My team"
-    }
+    },
+    "closedProfile": "This is a private profile",
+    "place": "place",
+    "years": "years old",
+    "kg": "kg"
 }

@@ -26,34 +26,37 @@ import {
 } from "react-share"
 import { toast } from "react-toastify"
 import dynamic from "next/dynamic"
+import { useTranslation } from "next-i18next"
 const MapFiledLeafLet = dynamic(() => import("../../../ui/Map/FieldLeaflet"), {
   ssr: false,
 })
 
 const getContacts = (event) => {
   const { contacts } = event
+  const { t: tEventDetail } = useTranslation("eventDetail")
+
   return [
     {
       id: "orgName_1",
-      label: "Название организации",
+      label: tEventDetail("eventMainInfo.nameOfTheOrganization"),
       value: contacts?.nameOrganization || "",
       icon: <EventOrganisation />,
     },
     {
       id: "organizer_2",
-      label: "Организатор",
+      label: tEventDetail("eventMainInfo.organizer"),
       value: `${contacts?.firstName || ""} ${contacts?.lastName || ""}`,
       icon: <EventOrganizer />,
     },
     {
       id: "email_3",
-      label: "Электронный адрес",
+      label: tEventDetail("eventMainInfo.email"),
       value: contacts?.email || "",
       icon: <EventEmail />,
     },
     {
       id: "phone_4",
-      label: "Номер телефона",
+      label: tEventDetail("eventMainInfo.phoneNumber"),
       value: contacts?.phoneNumber1
         ? phoneFormatter(contacts?.phoneNumber1)
         : "",
@@ -64,23 +67,24 @@ const getContacts = (event) => {
 
 const getAddresses = (event) => {
   const { location } = event
+  const { t: tEventDetail } = useTranslation("eventDetail")
 
   return [
     {
       id: "getAddresses_1",
-      label: "Адрес проведения мероприятия",
+      label: tEventDetail("eventMainInfo.addressOfTheEvent"),
       value: location?.address || "",
       icon: <EventLocation />,
     },
     {
       id: "getAddresses_2",
-      label: "Адрес взвешивания",
+      label: tEventDetail("eventMainInfo.weighingAddress"),
       value: location?.weighingPlace || "",
       icon: <EventMass />,
     },
     {
       id: "getAddresses_3",
-      label: "Название арены",
+      label: tEventDetail("eventMainInfo.arenaName"),
       value: location?.placeName || "",
       icon: <EventFlag />,
     },
@@ -88,46 +92,45 @@ const getAddresses = (event) => {
 }
 
 const getParticipantCategories = () => {
+  const { t: tEventDetail } = useTranslation("eventDetail")
+
   return [
     {
       id: "getParticipantCategories_1",
-      label: "Категории:",
+      label: `${tEventDetail("eventMainInfo.categories")}:`,
       value: "",
     },
     {
       id: "getParticipantCategories_2",
-      label: "Уровни:",
+      label: `${tEventDetail("eventMainInfo.levels")}:`,
       value: "",
     },
     {
       id: "getParticipantCategories_3",
-      label: "Пол:",
+      label: `${tEventDetail("eventMainInfo.gender")}:`,
       value: "",
     },
     {
       id: "getParticipantCategories_4",
-      label: "Возраст:",
+      label: `${tEventDetail("eventMainInfo.age")}:`,
       value: "",
     },
     {
       id: "getParticipantCategories_5",
-      label: "Вес:",
+      label: `${tEventDetail("eventMainInfo.weight")}:`,
       value: "",
     },
     {
       id: "getParticipantCategories_6",
-      label: "Цены:",
+      label: `${tEventDetail("eventMainInfo.price")}:`,
       value: "",
     },
   ]
 }
 
-const copyUrl = (url) => {
-  navigator.clipboard?.writeText(url)
-  toast.success(`Ссылка скопирована`)
-}
-
 function EventMainInfo({ event }) {
+  const { t: tEventDetail } = useTranslation("eventDetail")
+
   const { contacts, addresses, categories } = useMemo(() => {
     return {
       contacts: getContacts(event),
@@ -136,6 +139,10 @@ function EventMainInfo({ event }) {
     }
   }, [event])
 
+  const copyUrl = (url) => {
+    navigator.clipboard?.writeText(url)
+    toast.success(`${tEventDetail("eventMainInfo.linkCopied")}`)
+  }
   const mapPoints =
     event?.location?.lat && event?.location?.long
       ? {
@@ -147,7 +154,7 @@ function EventMainInfo({ event }) {
   return (
     <MainWrapper>
       <Column>
-        <h3>Контакты</h3>
+        <h3>{tEventDetail("eventMainInfo.contacts")}</h3>
         <ul>
           {contacts.map(({ id, label, value, icon }) => (
             <li key={`EventMainInfoContacts_${id}`}>
@@ -159,7 +166,7 @@ function EventMainInfo({ event }) {
             </li>
           ))}
         </ul>
-        <h3>Социальные сети</h3>
+        <h3>{tEventDetail("eventMainInfo.socialNetworks")}</h3>
         <ContactsSocials>
           {event?.contacts?.facebook && (
             <a
@@ -192,7 +199,7 @@ function EventMainInfo({ event }) {
       </Column>
 
       <Column>
-        <h3>Локация</h3>
+        <h3>{tEventDetail("eventMainInfo.location")}</h3>
         <ul>
           {addresses.map(({ id, label, value, icon }) => (
             <li key={`EventMainInfoContacts_${id}`}>
@@ -211,7 +218,7 @@ function EventMainInfo({ event }) {
       </Column>
 
       <Column listWrapped>
-        <h3>Категории участников</h3>
+        <h3>{tEventDetail("eventMainInfo.participantsCategories")}</h3>
 
         <ul>
           {categories.map(({ id, label, value, icon }) => (
@@ -225,7 +232,7 @@ function EventMainInfo({ event }) {
           ))}
         </ul>
 
-        <CategoriesShareTitle>Поделиться</CategoriesShareTitle>
+        <CategoriesShareTitle>{tEventDetail("eventMainInfo.share")}</CategoriesShareTitle>
         <CategorySocials>
           <EmailShareButton
             subject={event.name}

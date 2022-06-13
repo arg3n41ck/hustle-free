@@ -22,7 +22,12 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data,
-      ...(await serverSideTranslations(locale, ["header", "common"])),
+      ...(await serverSideTranslations(locale, [
+        "header",
+        "common",
+        "eventDetail",
+        "lkTm",
+      ])),
     }, // will be passed to the page component as props
   }
 }

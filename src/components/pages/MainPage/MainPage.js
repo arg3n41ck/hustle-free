@@ -6,8 +6,12 @@ import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { fetchEvents } from "../../../redux/components/events"
 import EventsCatalog from "../Events/EventsCatalog/EventsCatalog"
+import { useTranslation } from "next-i18next"
 
 const MainPage = () => {
+  const { t: tMainPageFotNotAuthUser } = useTranslation(
+    "mainPageForNotAuthUser"
+  )
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -18,7 +22,9 @@ const MainPage = () => {
     <Container>
       <MainPageWrapper>
         <EventsGlobalSearch />
-        <MainPageTitle>Популярные</MainPageTitle>
+        <MainPageTitle>
+          {tMainPageFotNotAuthUser("mainPage.popular")}
+        </MainPageTitle>
         <EventsSlider />
         <EventsCatalog />
       </MainPageWrapper>

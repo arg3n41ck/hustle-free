@@ -10,10 +10,14 @@ import MainPageAuth from "./MainPageAuth"
 import { MainPageWrapper } from "../MainPage/MainPage"
 import { fetchUser, selectIsUserAuth } from "../../../redux/components/user"
 import { useRouter } from "next/router"
+import { useTranslation } from "next-i18next"
 
 const MainPageForNotAuthUser = () => {
   const [, events] = useSelector(selectEvents)
   const dispatch = useDispatch()
+  const { t: tMainPageFotNotAuthUser } = useTranslation(
+    "mainPageForNotAuthUser"
+  )
   const [userAuthenticated] = useSelector(selectIsUserAuth)
   const { push: routerPush } = useRouter()
   const user = useSelector((state) => state.user)
@@ -31,17 +35,23 @@ const MainPageForNotAuthUser = () => {
           <HeroMainPageForNotAuth />
           {!userAuthenticated && (
             <MainPageWrapper id="user-roles">
-              <MainPageTitle className="type-main">Для кого</MainPageTitle>
+              <MainPageTitle className="type-main">
+                {tMainPageFotNotAuthUser("mainPage.forWhom")}
+              </MainPageTitle>
               <MainPageAuth />
             </MainPageWrapper>
           )}
           <MainPageWrapper>
-            <MainPageTitle>Популярные</MainPageTitle>
+            <MainPageTitle>
+              {tMainPageFotNotAuthUser("mainPage.popular")}
+            </MainPageTitle>
             <EventsSlider events={events} />
             <MainPageContainerButtonAndTitle>
-              <MainPageTitle>Ближайшие турниры</MainPageTitle>
+              <MainPageTitle>
+                {tMainPageFotNotAuthUser("mainPage.upcomingTournaments")}
+              </MainPageTitle>
               <MainPageButton onClick={() => routerPush("/events")}>
-                Смотреть все
+                {tMainPageFotNotAuthUser("mainPage.viewAll")}
               </MainPageButton>
             </MainPageContainerButtonAndTitle>
             <Events data={array.slice(0, 3)} />

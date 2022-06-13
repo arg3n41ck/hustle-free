@@ -2,6 +2,7 @@ import * as React from "react"
 import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import styled from "styled-components"
+import { useTranslation } from "next-i18next"
 
 const style = {
   position: "absolute",
@@ -17,6 +18,8 @@ const style = {
 }
 
 export default function ApplicationSuccessfullySent({ open, setOpen }) {
+  const { t: tEventDetail } = useTranslation("eventDetail")
+
   return (
     <div>
       <Modal
@@ -26,12 +29,16 @@ export default function ApplicationSuccessfullySent({ open, setOpen }) {
       >
         <Box sx={style}>
           <ApplicationSuccessfullySentHeadingText>
-            Оставить заявку
+            {tEventDetail(
+              "event.eventModal.applicationSuccessfullySent.submitYourApplication"
+            )}
           </ApplicationSuccessfullySentHeadingText>
           <Line />
           <ApplicationSuccessfullySentHero>
             <ApplicationSuccessfullySentHeadingText>
-              Ваша заявка успешно отправлена
+              {tEventDetail(
+                "event.eventModal.applicationSuccessfullySent.yourApplicationHasBeenSuccessfullySent"
+              )}
             </ApplicationSuccessfullySentHeadingText>
           </ApplicationSuccessfullySentHero>
         </Box>

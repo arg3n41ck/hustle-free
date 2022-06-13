@@ -15,7 +15,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       athlete: data || null,
-      ...(await serverSideTranslations(locale, ["header", "common"])),
+      ...(await serverSideTranslations(locale, ["header", "common", "lkAh"])),
     },
   }
 }

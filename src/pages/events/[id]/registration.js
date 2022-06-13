@@ -24,7 +24,12 @@ export async function getServerSideProps(context) {
     props: {
       data,
       query,
-      ...(await serverSideTranslations(locale, ["header", "common"])),
+      ...(await serverSideTranslations(locale, [
+        "header",
+        "common",
+        "eventDetail",
+        "lkTm",
+      ])),
     }, // will be passed to the page component as props
   }
 }

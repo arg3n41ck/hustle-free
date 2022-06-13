@@ -1,0 +1,20 @@
+{
+    "events": {
+        "events": "Турниры",
+        "filter": {
+            "upcoming": "Предстоящие",
+            "past": "Прошедшие",
+            "filter": "Фильтр",
+            "nothingFound": "Ничего не найдено",
+            "kindOfSport": "Вид спорта",
+            "country": "Страна",
+            "selectDateFrom": "Выбрать дату от",
+            "cancel": "Отмена",
+            "putAway": "Убрать",
+            "dateFrom": "Дата от",
+            "selectDateBefore": "Выбрать дату до",
+            "dateTo": "Дата до"
+        },
+        "search": "Поиск"
+    }
+}

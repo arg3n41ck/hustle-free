@@ -24,7 +24,7 @@ export default StatisticsPage
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "common"])),
+    ...(await serverSideTranslations(locale, ["header", "common", "lkTm"])),
   },
 })
 
@@ -34,4 +34,3 @@ export const getStaticPaths = async () => {
     fallback: "blocking", //indicates the type of fallback
   }
 }
-

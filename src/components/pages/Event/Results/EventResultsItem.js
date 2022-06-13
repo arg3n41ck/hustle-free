@@ -3,11 +3,13 @@ import DropdownData from "../../../ui/DropdownData"
 import styled from "styled-components"
 import { Box } from "@mui/material"
 import EventResultParticipant from "./EventResultParticipant"
+import { useTranslation } from "next-i18next"
 
 const EventResultsItem = ({ participant, updatePC }) => {
   const [open, setOpen] = useState(false)
   if (!participant) return null
   const { eventParticipantsCategory } = participant
+  const { t: tEventDetail } = useTranslation("eventDetail")
 
   const participants = useMemo(() => {
     return participant.participants.sort((a, b) => a.place - b.place)
@@ -19,7 +21,15 @@ const EventResultsItem = ({ participant, updatePC }) => {
         active={open}
         setActive={setOpen}
         heightWrapper={"100px"}
-        title={`${eventParticipantsCategory.name} / ${participant.level} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
+        title={`${eventParticipantsCategory.name} / ${participant.level} / ${
+          eventParticipantsCategory.fromAge
+        } - ${eventParticipantsCategory.toAge} ${tEventDetail(
+          "event.results.eventResultsItem.years"
+        )} / ${eventParticipantsCategory.fromWeight} ${tEventDetail(
+          "event.results.eventResultsItem.kg"
+        )} - ${eventParticipantsCategory.toWeight} ${tEventDetail(
+          "event.results.eventResultsItem.kg"
+        )}`}
       >
         <List>
           {participants.map((participant) => (

@@ -8,32 +8,37 @@ import { useTranslation } from "next-i18next"
 function CommunitesAthletesList({ data }) {
   const [countries] = useSelector(selectCountriesAndCities)
   const { t: tCommon } = useTranslation("common")
+  const { t: tCommunities } = useTranslation("communities")
 
   return (
     <CommunitesAthletesListItems>
       {!!data?.length &&
         data.map(({ id, user }) => (
-          <Athlete key={`communities-${id}-${user?.id}`} userId={id} user={user}>
+          <Athlete
+            key={`communities-${id}-${user?.id}`}
+            userId={id}
+            user={user}
+          >
             <AthletesBottomInfo>
               <AthletesBottomItem>
                 <AthletesBottomItemTextHeading>
-                  Страна
+                  {tCommunities("communities.country")}
                 </AthletesBottomItemTextHeading>
                 <AthletesBottomItemText>
                   {countries.find(({ id }) => id === user.country)?.name ||
-                    "Не указано"}
+                    tCommunities("communities.notSpecified")}
                 </AthletesBottomItemText>
               </AthletesBottomItem>
               <AthletesBottomItem>
                 <AthletesBottomItemTextHeading>
-                  {tCommon('form.fieldsNames.gender.label')}
+                  {tCommon("form.fieldsNames.gender.label")}
                 </AthletesBottomItemTextHeading>
                 <AthletesBottomItemText>
                   {user?.gender === "male"
-                    ? "Мужчина"
+                    ? tCommunities("communities.male")
                     : user?.gender === "female"
-                    ? "Женщина"
-                    : "Не указано"}
+                    ? tCommunities("communities.female")
+                    : tCommunities("communities.notSpecified")}
                 </AthletesBottomItemText>
               </AthletesBottomItem>
             </AthletesBottomInfo>
