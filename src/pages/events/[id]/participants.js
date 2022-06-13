@@ -15,6 +15,7 @@ export async function getServerSideProps(context) {
         "common",
         "eventDetail",
         "lkTm",
+        "footer",
       ])),
     },
   }

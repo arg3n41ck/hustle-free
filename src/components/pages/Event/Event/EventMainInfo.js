@@ -33,30 +33,29 @@ const MapFiledLeafLet = dynamic(() => import("../../../ui/Map/FieldLeaflet"), {
 
 const getContacts = (event) => {
   const { contacts } = event
-  const { t: tEventDetail } = useTranslation("eventDetail")
 
   return [
     {
       id: "orgName_1",
-      label: tEventDetail("eventMainInfo.nameOfTheOrganization"),
+      label: `eventMainInfo.nameOfTheOrganization`,
       value: contacts?.nameOrganization || "",
       icon: <EventOrganisation />,
     },
     {
       id: "organizer_2",
-      label: tEventDetail("eventMainInfo.organizer"),
+      label: `eventMainInfo.organizer`,
       value: `${contacts?.firstName || ""} ${contacts?.lastName || ""}`,
       icon: <EventOrganizer />,
     },
     {
       id: "email_3",
-      label: tEventDetail("eventMainInfo.email"),
+      label: `eventMainInfo.email`,
       value: contacts?.email || "",
       icon: <EventEmail />,
     },
     {
       id: "phone_4",
-      label: tEventDetail("eventMainInfo.phoneNumber"),
+      label: `eventMainInfo.phoneNumber`,
       value: contacts?.phoneNumber1
         ? phoneFormatter(contacts?.phoneNumber1)
         : "",
@@ -67,24 +66,23 @@ const getContacts = (event) => {
 
 const getAddresses = (event) => {
   const { location } = event
-  const { t: tEventDetail } = useTranslation("eventDetail")
 
   return [
     {
       id: "getAddresses_1",
-      label: tEventDetail("eventMainInfo.addressOfTheEvent"),
+      label: "eventMainInfo.addressOfTheEvent",
       value: location?.address || "",
       icon: <EventLocation />,
     },
     {
       id: "getAddresses_2",
-      label: tEventDetail("eventMainInfo.weighingAddress"),
+      label: "eventMainInfo.weighingAddress",
       value: location?.weighingPlace || "",
       icon: <EventMass />,
     },
     {
       id: "getAddresses_3",
-      label: tEventDetail("eventMainInfo.arenaName"),
+      label: "eventMainInfo.arenaName",
       value: location?.placeName || "",
       icon: <EventFlag />,
     },
@@ -92,37 +90,35 @@ const getAddresses = (event) => {
 }
 
 const getParticipantCategories = () => {
-  const { t: tEventDetail } = useTranslation("eventDetail")
-
   return [
     {
       id: "getParticipantCategories_1",
-      label: `${tEventDetail("eventMainInfo.categories")}:`,
+      label: `eventMainInfo.categories:`,
       value: "",
     },
     {
       id: "getParticipantCategories_2",
-      label: `${tEventDetail("eventMainInfo.levels")}:`,
+      label: `eventMainInfo.levels:`,
       value: "",
     },
     {
       id: "getParticipantCategories_3",
-      label: `${tEventDetail("eventMainInfo.gender")}:`,
+      label: `eventMainInfo.gender:`,
       value: "",
     },
     {
       id: "getParticipantCategories_4",
-      label: `${tEventDetail("eventMainInfo.age")}:`,
+      label: `eventMainInfo.age:`,
       value: "",
     },
     {
       id: "getParticipantCategories_5",
-      label: `${tEventDetail("eventMainInfo.weight")}:`,
+      label: `eventMainInfo.weight:`,
       value: "",
     },
     {
       id: "getParticipantCategories_6",
-      label: `${tEventDetail("eventMainInfo.price")}:`,
+      label: `eventMainInfo.price:`,
       value: "",
     },
   ]
@@ -160,7 +156,7 @@ function EventMainInfo({ event }) {
             <li key={`EventMainInfoContacts_${id}`}>
               {icon}
               <div>
-                <span>{label}</span>
+                <span>{tEventDetail(label)}</span>
                 <p>{value}</p>
               </div>
             </li>
@@ -205,7 +201,7 @@ function EventMainInfo({ event }) {
             <li key={`EventMainInfoContacts_${id}`}>
               {icon}
               <div>
-                <span>{label}</span>
+                <span>{tEventDetail(label)}</span>
                 <p>{value}</p>
               </div>
             </li>
@@ -225,14 +221,16 @@ function EventMainInfo({ event }) {
             <li key={`EventMainInfoContacts_${id}`}>
               {icon}
               <div>
-                <span>{label}</span>
+                <span>{tEventDetail(label)}</span>
                 <p>{value}</p>
               </div>
             </li>
           ))}
         </ul>
 
-        <CategoriesShareTitle>{tEventDetail("eventMainInfo.share")}</CategoriesShareTitle>
+        <CategoriesShareTitle>
+          {tEventDetail("eventMainInfo.share")}
+        </CategoriesShareTitle>
         <CategorySocials>
           <EmailShareButton
             subject={event.name}

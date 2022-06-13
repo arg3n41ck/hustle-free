@@ -12,7 +12,12 @@ function Teams() {
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "common", "communities"])),
+    ...(await serverSideTranslations(locale, [
+      "header",
+      "common",
+      "communities",
+      "footer",
+    ])),
   },
 })
 
