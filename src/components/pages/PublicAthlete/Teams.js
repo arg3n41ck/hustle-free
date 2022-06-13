@@ -2,13 +2,15 @@ import React from "react"
 import { PubAthTitles } from "./PublicAthlete"
 import styled from "styled-components"
 import { Avatar } from "@mui/material"
+import { useTranslation } from "next-i18next"
 
 function Teams({ teams }) {
   if (!teams?.length) return null
+  const { t: tLkAh } = useTranslation("lkAh")
 
   return (
     <TeamsWrapper>
-      <PubAthTitles>Команды</PubAthTitles>
+      <PubAthTitles>{tLkAh("teams")}</PubAthTitles>
 
       <ul>
         {teams.map(({ user: { avatar, fullName } }, i) => (
