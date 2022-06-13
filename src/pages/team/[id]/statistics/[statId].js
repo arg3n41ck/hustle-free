@@ -29,7 +29,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       statistic: data || null,
-      ...(await serverSideTranslations(locale, ["header", "common", "lkTm"])),
+      ...(await serverSideTranslations(locale, ["header", "common", "lkTm", "footer"])),
     },
   }
 }

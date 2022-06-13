@@ -98,7 +98,12 @@ const Delete = () => {
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "common", "auth"])),
+    ...(await serverSideTranslations(locale, [
+      "header",
+      "common",
+      "auth",
+      "footer",
+    ])),
   },
 })
 

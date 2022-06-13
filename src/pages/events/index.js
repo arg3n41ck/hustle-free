@@ -14,6 +14,7 @@ export const getStaticProps = async ({ locale }) => ({
       "lkTm",
       "events",
       "mainPageForNotAuthUser",
+      "footer",
     ])),
   },
 })

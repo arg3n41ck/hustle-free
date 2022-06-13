@@ -16,6 +16,11 @@ export default OgProfile
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "common", "lkAh"])),
+    ...(await serverSideTranslations(locale, [
+      "header",
+      "common",
+      "lkAh",
+      "footer",
+    ])),
   },
 })

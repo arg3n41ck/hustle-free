@@ -35,7 +35,7 @@ export async function getServerSideProps({ query, locale }) {
   return {
     props: {
       query,
-      ...(await serverSideTranslations(locale, ["header", "common", "auth"])),
+      ...(await serverSideTranslations(locale, ["header", "common", "auth", "footer"])),
     }, // will be passed to the page component as props
   }
 }

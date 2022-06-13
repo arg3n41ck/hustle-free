@@ -34,30 +34,29 @@ const MapFiledLeafLet = dynamic(() => import("../../../ui/Map/FieldLeaflet"), {
 
 const getContacts = (event) => {
   const { contacts } = event
-  const { t: tEventDetail } = useTranslation("eventDetail")
 
   return [
     {
       id: "orgName_1",
-      label: tEventDetail("eventMainInfo.nameOfTheOrganization"),
+      label: `eventMainInfo.nameOfTheOrganization`,
       value: contacts?.nameOrganization || "",
       icon: <EventOrganisation />,
     },
     {
       id: "organizer_2",
-      label: tEventDetail("eventMainInfo.organizer"),
+      label: `eventMainInfo.organizer`,
       value: `${contacts?.firstName || ""} ${contacts?.lastName || ""}`,
       icon: <EventOrganizer />,
     },
     {
       id: "email_3",
-      label: tEventDetail("eventMainInfo.email"),
+      label: `eventMainInfo.email`,
       value: contacts?.email || "",
       icon: <EventEmail />,
     },
     {
       id: "phone_4",
-      label: tEventDetail("eventMainInfo.phoneNumber"),
+      label: `eventMainInfo.phoneNumber`,
       value: contacts?.phoneNumber1
         ? phoneFormatter(contacts?.phoneNumber1)
         : "",
@@ -68,24 +67,23 @@ const getContacts = (event) => {
 
 const getAddresses = (event) => {
   const { location } = event
-  const { t: tEventDetail } = useTranslation("eventDetail")
 
   return [
     {
       id: "getAddresses_1",
-      label: tEventDetail("eventMainInfo.addressOfTheEvent"),
+      label: "eventMainInfo.addressOfTheEvent",
       value: location?.address || "",
       icon: <EventLocation />,
     },
     {
       id: "getAddresses_2",
-      label: tEventDetail("eventMainInfo.weighingAddress"),
+      label: "eventMainInfo.weighingAddress",
       value: location?.weighingPlace || "",
       icon: <EventMass />,
     },
     {
       id: "getAddresses_3",
-      label: tEventDetail("eventMainInfo.arenaName"),
+      label: "eventMainInfo.arenaName",
       value: location?.placeName || "",
       icon: <EventFlag />,
     },
@@ -106,7 +104,6 @@ const catInitialValues = {
 }
 
 const getParticipantCategories = async (id) => {
-  const { t: tEventDetail } = useTranslation("eventDetail")
   const data = await getEventPC({ event_id: id })
 
   const result =
@@ -169,17 +166,17 @@ const getParticipantCategories = async (id) => {
   return [
     {
       id: "getParticipantCategories_1",
-      label: `${tEventDetail("eventMainInfo.categories")}:`,
+      label: `eventMainInfo.categories:`,
       value: result?.categories?.length || 0,
     },
     {
       id: "getParticipantCategories_2",
-      label: `${tEventDetail("eventMainInfo.levels")}:`,
+      label: `eventMainInfo.levels:`,
       value: result?.levels?.length || 0,
     },
     {
       id: "getParticipantCategories_3",
-      label: `${tEventDetail("eventMainInfo.gender")}:`,
+      label: `eventMainInfo.gender:`,
       value: result?.gender
         ? `${result?.gender?.male && "М"}${
             result?.gender?.female ? " / Ж" : ""
@@ -188,7 +185,7 @@ const getParticipantCategories = async (id) => {
     },
     {
       id: "getParticipantCategories_4",
-      label: `${tEventDetail("eventMainInfo.age")}:`,
+      label: `eventMainInfo.age:`,
       value: result?.ages
         ? `${result?.ages?.aFrom || 0}${
             result?.ages?.aTo ? " - " + result?.ages?.aTo : ""
@@ -197,7 +194,7 @@ const getParticipantCategories = async (id) => {
     },
     {
       id: "getParticipantCategories_5",
-      label: `${tEventDetail("eventMainInfo.weight")}:`,
+      label: `eventMainInfo.weight:`,
       value: result?.weights
         ? `${result?.weights?.wFrom || 0} кг${
             result?.weights?.wTo ? " - " + result?.weights?.wTo + " кг" : ""
@@ -206,7 +203,7 @@ const getParticipantCategories = async (id) => {
     },
     {
       id: "getParticipantCategories_6",
-      label: `${tEventDetail("eventMainInfo.price")}:`,
+      label: `eventMainInfo.price:`,
       value: result?.price
         ? `от ${result?.price} ${(result?.currency || "").toUpperCase()}`
         : "",
@@ -249,7 +246,7 @@ function EventMainInfo({ event }) {
             <li key={`EventMainInfoContacts_${id}`}>
               {icon}
               <div>
-                <span>{label}</span>
+                <span>{tEventDetail(label)}</span>
                 <p>{value}</p>
               </div>
             </li>
@@ -294,7 +291,7 @@ function EventMainInfo({ event }) {
             <li key={`EventMainInfoContacts_${id}`}>
               {icon}
               <div>
-                <span>{label}</span>
+                <span>{tEventDetail(label)}</span>
                 <p>{value}</p>
               </div>
             </li>
@@ -315,14 +312,16 @@ function EventMainInfo({ event }) {
               <li key={`EventMainInfoContacts_${id}`}>
                 {icon}
                 <div>
-                  <span>{label}</span>
+                  <span>{tEventDetail(label)}</span>
                   <p>{value}</p>
                 </div>
               </li>
             ))}
         </ul>
 
-        <CategoriesShareTitle>{tEventDetail("eventMainInfo.share")}</CategoriesShareTitle>
+        <CategoriesShareTitle>
+          {tEventDetail("eventMainInfo.share")}
+        </CategoriesShareTitle>
         <CategorySocials>
           <EmailShareButton
             subject={event.name}

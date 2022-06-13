@@ -11,6 +11,7 @@ export const getStaticProps = async ({ locale }) => ({
       "header",
       "common",
       "mainPageForNotAuthUser",
+      "footer",
     ])),
   },
 })
