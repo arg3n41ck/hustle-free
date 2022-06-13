@@ -61,6 +61,7 @@ export async function getServerSideProps(context) {
         "common",
         "eventDetail",
         "lkTm",
+        "lkOg",
         "footer",
       ])),
     }, // will be passed to the page component as props

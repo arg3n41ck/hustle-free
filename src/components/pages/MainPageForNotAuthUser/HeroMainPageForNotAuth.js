@@ -94,7 +94,6 @@ const HeroInfoButtonForViewEvents = styled.button`
   font-weight: 600;
   height: 64px;
   font-size: 20px;
-  line-height: 48px;
 `
 
 const HeroInfoButtonForCreateEvents = styled.button`
@@ -108,7 +107,6 @@ const HeroInfoButtonForCreateEvents = styled.button`
   height: 64px;
   font-weight: 600;
   font-size: 20px;
-  line-height: 48px;
   color: #6d4eea;
   padding: 0 24px;
 `
