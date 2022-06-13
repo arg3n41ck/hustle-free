@@ -169,7 +169,7 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
                 helperText={touched.dateStart && errors.dateStart}
                 inputProps={{
                   ...params.inputProps,
-                  placeholder: tLkOg("editEvent.registrationPeriods.ddMmYy"),
+                  placeholder: tLkOg("registrationPeriods.ddMmYy"),
                 }}
               />
             )}
@@ -198,7 +198,7 @@ function EventDefaults({ defaultValues = emptyInitialValues, eventId }) {
                 helperText={touched.dateEnd && errors.dateEnd}
                 inputProps={{
                   ...params.inputProps,
-                  placeholder: tLkOg("editEvent.registrationPeriods.ddMmYy"),
+                  placeholder: tLkOg("registrationPeriods.ddMmYy"),
                 }}
               />
             )}

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import {
   EventEmail,
   EventFacebook,
@@ -26,6 +26,7 @@ import {
 } from "react-share"
 import { toast } from "react-toastify"
 import dynamic from "next/dynamic"
+import { getEventPC } from "../Categories/EventCategories"
 import { useTranslation } from "next-i18next"
 const MapFiledLeafLet = dynamic(() => import("../../../ui/Map/FieldLeaflet"), {
   ssr: false,
@@ -91,52 +92,140 @@ const getAddresses = (event) => {
   ]
 }
 
-const getParticipantCategories = () => {
+const catInitialValues = {
+  categories: [],
+  gender: {
+    male: false,
+    female: false,
+  },
+  ages: { aFrom: 0, aTo: 0 },
+  weights: { wFrom: 0, wTo: 0 },
+  levels: [],
+  price: 0,
+  currency: null,
+}
+
+const getParticipantCategories = async (id) => {
   const { t: tEventDetail } = useTranslation("eventDetail")
+  const data = await getEventPC({ event_id: id })
+
+  const result =
+    data.length &&
+    data.reduce((prev, cur) => {
+      const { eventParticipantsCategory } = cur
+      const curPrice = Math.round(
+        +eventParticipantsCategory?.price?.standartPrice
+      )
+      const pcArray = (prev?.categories || []).includes(
+        eventParticipantsCategory?.id
+      )
+        ? prev?.categories
+        : [...(prev.categories || []), eventParticipantsCategory?.id]
+      const price =
+        curPrice < +prev.price || +prev.price === 0 ? curPrice : +prev.price
+      const gender = {
+        ...prev.gender,
+        [eventParticipantsCategory.gender]: true,
+      }
+
+      const curLevels =
+        eventParticipantsCategory?.levels?.length &&
+        eventParticipantsCategory?.levels.map((level) => level?.id)
+
+      const weights = {
+        wFrom:
+          eventParticipantsCategory?.fromWeight < prev?.weights?.wFrom ||
+          prev?.weights?.wFrom === 0
+            ? eventParticipantsCategory?.fromWeight
+            : prev?.weights?.wFrom,
+        wTo:
+          eventParticipantsCategory?.toWeight > prev?.weights?.wTo
+            ? eventParticipantsCategory?.toWeight
+            : prev?.weights?.wTo,
+      }
+      const ages = {
+        aFrom:
+          eventParticipantsCategory?.fromAge < prev?.ages?.aFrom ||
+          prev?.ages?.aFrom === 0
+            ? eventParticipantsCategory?.fromAge
+            : prev?.ages?.aFrom,
+        aTo:
+          eventParticipantsCategory?.toAge > prev?.ages?.aTo
+            ? eventParticipantsCategory?.toAge
+            : prev?.ages?.aTo,
+      }
+
+      return {
+        categories: pcArray,
+        price,
+        ages,
+        weights,
+        gender,
+        levels: [...new Set([...prev.levels, ...curLevels])],
+        currency: eventParticipantsCategory?.price?.currency || prev.currency,
+      }
+    }, catInitialValues)
 
   return [
     {
       id: "getParticipantCategories_1",
       label: `${tEventDetail("eventMainInfo.categories")}:`,
-      value: "",
+      value: result?.categories?.length || 0,
     },
     {
       id: "getParticipantCategories_2",
       label: `${tEventDetail("eventMainInfo.levels")}:`,
-      value: "",
+      value: result?.levels?.length || 0,
     },
     {
       id: "getParticipantCategories_3",
       label: `${tEventDetail("eventMainInfo.gender")}:`,
-      value: "",
+      value: result?.gender
+        ? `${result?.gender?.male && "М"}${
+            result?.gender?.female ? " / Ж" : ""
+          }`
+        : "",
     },
     {
       id: "getParticipantCategories_4",
       label: `${tEventDetail("eventMainInfo.age")}:`,
-      value: "",
+      value: result?.ages
+        ? `${result?.ages?.aFrom || 0}${
+            result?.ages?.aTo ? " - " + result?.ages?.aTo : ""
+          }`
+        : "",
     },
     {
       id: "getParticipantCategories_5",
       label: `${tEventDetail("eventMainInfo.weight")}:`,
-      value: "",
+      value: result?.weights
+        ? `${result?.weights?.wFrom || 0} кг${
+            result?.weights?.wTo ? " - " + result?.weights?.wTo + " кг" : ""
+          }`
+        : "",
     },
     {
       id: "getParticipantCategories_6",
       label: `${tEventDetail("eventMainInfo.price")}:`,
-      value: "",
+      value: result?.price
+        ? `от ${result?.price} ${(result?.currency || "").toUpperCase()}`
+        : "",
     },
   ]
 }
 
 function EventMainInfo({ event }) {
   const { t: tEventDetail } = useTranslation("eventDetail")
-
-  const { contacts, addresses, categories } = useMemo(() => {
+  const [categories, setCategories] = useState([])
+  const { contacts, addresses } = useMemo(() => {
     return {
       contacts: getContacts(event),
       addresses: getAddresses(event),
-      categories: getParticipantCategories(event),
     }
+  }, [event])
+
+  useEffect(() => {
+    event?.id && getParticipantCategories(event.id).then(setCategories)
   }, [event])
 
   const copyUrl = (url) => {
@@ -221,15 +310,16 @@ function EventMainInfo({ event }) {
         <h3>{tEventDetail("eventMainInfo.participantsCategories")}</h3>
 
         <ul>
-          {categories.map(({ id, label, value, icon }) => (
-            <li key={`EventMainInfoContacts_${id}`}>
-              {icon}
-              <div>
-                <span>{label}</span>
-                <p>{value}</p>
-              </div>
-            </li>
-          ))}
+          {!!categories?.length &&
+            categories.map(({ id, label, value, icon }) => (
+              <li key={`EventMainInfoContacts_${id}`}>
+                {icon}
+                <div>
+                  <span>{label}</span>
+                  <p>{value}</p>
+                </div>
+              </li>
+            ))}
         </ul>
 
         <CategoriesShareTitle>{tEventDetail("eventMainInfo.share")}</CategoriesShareTitle>
@@ -268,12 +358,67 @@ function EventMainInfo({ event }) {
             <EventLinkHover />
           </div>
         </CategorySocials>
+
+        {!!event?.qrCode && (
+          <>
+            <QRTitle>Ваш QR-Код:</QRTitle>
+            <QrImageWrapper>
+              <Qr
+                target="_blank"
+                rel="noreferrer noopener"
+                bg={event?.qrCode}
+                href={event?.qrCode}
+                role="link"
+                aria-disabled="false"
+              />
+              <QrDownloadLink
+                rel="nofollow"
+                download=""
+                target="_blank"
+                href={event?.qrCode}
+              >
+                {qrIcon} Скачать QR код
+              </QrDownloadLink>
+            </QrImageWrapper>
+          </>
+        )}
       </Column>
     </MainWrapper>
   )
 }
 
 export default EventMainInfo
+
+const QRTitle = styled.h3`
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  color: #f2f2f2;
+`
+
+const QrImageWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  grid-column-gap: 16px;
+`
+
+const QrDownloadLink = styled.a`
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: #6d4eea;
+
+  display: flex;
+  align-items: center;
+  grid-gap: 8px;
+`
+
+const Qr = styled.a`
+  width: 104px;
+  height: 104px;
+  background: no-repeat url("${({ bg }) => bg}") center / cover;
+  border-radius: 8px;
+`
 
 const MainWrapper = styled.div`
   display: grid;
@@ -354,3 +499,22 @@ const CategoriesShareTitle = styled.h3`
   display: flex;
   align-items: flex-end;
 `
+
+const qrIcon = (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 5L11.2929 4.29289L12 3.58579L12.7071 4.29289L12 5ZM13 14C13 14.5523 12.5523 15 12 15C11.4477 15 11 14.5523 11 14L13 14ZM6.29289 9.29289L11.2929 4.29289L12.7071 5.70711L7.70711 10.7071L6.29289 9.29289ZM12.7071 4.29289L17.7071 9.29289L16.2929 10.7071L11.2929 5.70711L12.7071 4.29289ZM13 5L13 14L11 14L11 5L13 5Z"
+      fill="#6D4EEA"
+    />
+    <path
+      d="M7 19L7 18H7V19ZM17 19V20V19ZM7 20L17 20V18L7 18L7 20ZM6 17V16H4V17H6ZM20 17V16H18V17H20ZM17 20C18.6569 20 20 18.6569 20 17H18C18 17.5523 17.5523 18 17 18V20ZM7 18C6.44772 18 6 17.5523 6 17H4C4 18.6569 5.34315 20 7 20V18Z"
+      fill="#6D4EEA"
+    />
+  </svg>
+)

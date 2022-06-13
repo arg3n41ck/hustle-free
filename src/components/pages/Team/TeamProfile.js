@@ -64,12 +64,10 @@ function TeamInfo({
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
           <TitleHeader>{tLkTm("teamProfile.profile")}</TitleHeader>
-          {user?.role === "athlete" && (
-            <ApplyToTeam
-              userStatusInTeam={userStatusInTeam}
-              checkUserStatus={checkUserStatus}
-            />
-          )}
+          <ApplyToTeam
+            userStatusInTeam={userStatusInTeam}
+            checkUserStatus={checkUserStatus}
+          />
         </HeaderWrapper>
       </LkDefaultHeader>
       {team && (

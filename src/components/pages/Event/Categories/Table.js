@@ -20,7 +20,7 @@ const createDataForTable = (pc = []) => {
       id: `${id}-${lId}-${i}`,
       gender: getGender(gender, true),
       age: `${fromAge} - ${toAge} лет`,
-      price: `${standartPrice} ${currency.toLowerCase()}`,
+      price: `${Math.round(standartPrice)} ${currency.toLowerCase()}`,
       weight: `${fromWeight} - ${toWeight} кг`,
       name: lName,
     }))

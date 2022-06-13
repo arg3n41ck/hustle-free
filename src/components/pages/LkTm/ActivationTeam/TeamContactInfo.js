@@ -9,7 +9,7 @@ import {
   InputAdornment,
   OutlinedInput,
   TextField,
-  MenuItem,
+  Autocomplete,
 } from "@mui/material"
 import InputMask from "react-input-mask"
 import { motion } from "framer-motion"
@@ -17,6 +17,7 @@ import { AuthButton } from "../../Authorization/Authorization"
 import { useSelector } from "react-redux"
 import { getCookie } from "../../../../services/JWTService"
 import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
+import { LocationIcon } from "../../Events/EventsCatalog/EventsFilter"
 
 const regMatch =
   /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
@@ -93,8 +94,7 @@ const validationSchema = yup.object({
 })
 
 const TeamContactInfo = ({ data, setData, setView }) => {
-  const [countries] = useSelector(selectCountriesAndCities)
-  const [cities, setCities] = useState(null)
+  const [countries,cities] = useSelector(selectCountriesAndCities)
   const [showPassword, setShowPassword] = useState(false)
   const formik = useFormik({
     initialValues: {
@@ -132,9 +132,6 @@ const TeamContactInfo = ({ data, setData, setView }) => {
     },
   })
 
-  const handleClickCities = (item) => {
-    setCities(item)
-  }
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
@@ -164,60 +161,59 @@ const TeamContactInfo = ({ data, setData, setView }) => {
         }}
       >
         <div className="auth-wrapper__input">
-          <p className="auth-title__input">Страна</p>
-          <TextField
-            select
-            sx={{ width: "100%", color: "white" }}
-            name="country"
-            value={formik.values.country}
-            onChange={formik.handleChange}
-            error={formik.touched.country && Boolean(formik.errors.country)}
-            helperText={formik.touched.country && formik.errors.country}
-          >
-            {!!countries &&
-              countries.map((item) => (
-                <MenuItem
-                  onClick={() => handleClickCities(item)}
-                  key={item.id}
-                  value={item.id}
-                >
-                  {item.name}
-                </MenuItem>
-              ))}
-          </TextField>
-        </div>
+        <p className="auth-title__input">Страна</p>
+        <Autocomplete
+          noOptionsText={"Ничего не найдено"}
+          onChange={(_, value) => [
+            formik.setFieldValue("country", value?.id || null),
+            formik.setFieldValue("city", ""),
+          ]}
+          options={countries.map((option) => option) || []}
+          getOptionLabel={(option) => option.name}
+          value={
+            countries.find(({ id }) => id === formik.values?.country) || null
+          }
+          fullWidth
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              placeholder="Страна"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: <LocationIcon />,
+              }}
+            />
+          )}
+        />
+      </div>
 
         <div className="auth-wrapper__input">
           <p className="auth-title__input">Город/Область</p>
-          <TextField
-            select
-            sx={{
-              width: "100%",
-              color: "white",
-            }}
-            name="city"
-            value={formik.values.city}
-            onChange={formik.handleChange}
-            error={formik.touched.city && Boolean(formik.errors.city)}
-            helperText={formik.touched.city && formik.errors.city}
-          >
-            {!!cities
-              ? cities.cityCountry.map((item) => (
-                  <MenuItem key={item.id} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))
-              : !!countries &&
-                countries.map(
-                  ({ cityCountry }) =>
-                    !!cityCountry &&
-                    cityCountry.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    ))
-                )}
-          </TextField>
+          <Autocomplete
+          noOptionsText={"Ничего не найдено"}
+          onChange={(_, value) =>
+            formik.setFieldValue("city", value?.id || null)
+          }
+          options={
+            countries.find(({ id }) => id === formik.values?.country)
+              ?.cityCountry || []
+          }
+          getOptionLabel={(option) => option?.name}
+          value={cities.find(({ id }) => id === formik.values.city) || null}
+          fullWidth
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              fullWidth
+              placeholder="Город"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: <LocationIcon />,
+              }}
+            />
+          )}
+        />
         </div>
       </Box>
       <div className="auth-wrapper__input">
@@ -307,6 +303,7 @@ const TeamContactInfo = ({ data, setData, setView }) => {
             value={formik.values.email_coach}
             name="email_coach"
             onChange={formik.handleChange}
+            disabled
             placeholder="Электронная почта"
             variant="outlined"
             InputProps={{

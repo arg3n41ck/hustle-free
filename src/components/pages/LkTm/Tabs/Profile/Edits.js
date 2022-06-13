@@ -112,6 +112,8 @@ const Edits = ({ onView }) => {
     if (findObj) setCurrentCities(findObj.cityCountry)
   }
 
+  console.log(user)
+
   useEffect(() => {
     if (typeof formik.values.country === "number") {
       const currentCountry = countries.find(
@@ -430,10 +432,10 @@ const Edits = ({ onView }) => {
           </Link>
         </div>
         <div className="auth-wrapper__independent border-top">
-          {tCommon("form.fieldsNames.deleteProfile.label")}{" "}
-          <Link href={`/auth/delete/${user.id}`}>
+          {tCommon("form.fieldsNames.deleteProfile.extra")}{" "}
+          <Link href={`/auth/delete/${user?.user?.id}`}>
             <a>
-              <span className="auth-link">{tCommon("form.fieldsNames.deleteProfile.extra")}</span>
+              <span className="auth-link">{tCommon("form.fieldsNames.deleteProfile.label")}</span>
             </a>
           </Link>
         </div>

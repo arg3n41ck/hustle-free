@@ -40,6 +40,8 @@
         "label": "delete profile",
         "extra": "You can"
       },
+      "enterOldPassword": "Enter old password",
+      "enterNewPassword": "Enter new password",
       "edit": "Edit",
       "contacts": "Contacts",
       "profileType": "Type of profile",

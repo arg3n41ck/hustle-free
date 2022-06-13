@@ -8,7 +8,7 @@ import Autocompletes from "./Autocompletes"
 import { useSelector } from "react-redux"
 import { useTranslation } from "next-i18next"
 
-const getEventPC = async (query) => {
+export const getEventPC = async (query) => {
   const { data } = await $api.get(`/events/participant_category/`, {
     params: query,
   })

@@ -55,7 +55,13 @@ function Confirm() {
             toast.error("Перейдите повторно по ссылке для активации!")
           }
         } catch (e) {
-          toast.error("Что-то пошло не так")
+          if(!!e.response.data?.new_password){
+            toast.warning("Этот пароль слишком распространен") 
+          }else if(!!e.response.data.token){
+            toast.error("Перейдите повторно по ссылке для активации!")
+          }else{
+            toast.error("Что-то пошло не так")
+          }
         }
       },
     })
