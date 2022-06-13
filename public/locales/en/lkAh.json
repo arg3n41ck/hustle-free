@@ -31,5 +31,13 @@
     "closedProfile": "This is a private profile",
     "place": "place",
     "years": "years old",
-    "kg": "kg"
+    "kg": "kg",
+    "won": "Won",
+    "wonOnPoints": "Won on points",
+    "lost": "Lost",
+    "outcome": "Outcome",
+    "gold": "Gold",
+    "silver": "Silver",
+    "bronze": "Bronze",
+    "teams": "Teams"
 }

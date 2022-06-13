@@ -1,13 +1,16 @@
+import { useTranslation } from "next-i18next"
 import React from "react"
 import styled from "styled-components"
 
 function StoryCollapse() {
+  const { t: tLkAh } = useTranslation("lkAh")
+
   return (
     <ParticipantInfoSummary>
       <ParticipantInfoSummaryField>
         <ParticipantInfoSummaryFieldCol1>
           <ParticipantInfoSummaryFieldCol1Text color={"#27ae60"}>
-            Выйграл
+            {tLkAh("won")}
           </ParticipantInfoSummaryFieldCol1Text>
         </ParticipantInfoSummaryFieldCol1>
         <ParticipantInfoSummaryFieldCol2 background={"rgba(39, 174, 96, 0.15)"}>
@@ -15,7 +18,7 @@ function StoryCollapse() {
             ARTUR ELZHANOV
           </ParticipantInfoSummaryFieldCol2Text>
           <ParticipantInfoSummaryFieldCol2Text2>
-            Выиграл по очкам 9–2
+            {tLkAh("wonOnPoints")} 9–2
           </ParticipantInfoSummaryFieldCol2Text2>
         </ParticipantInfoSummaryFieldCol2>
       </ParticipantInfoSummaryField>
@@ -23,7 +26,7 @@ function StoryCollapse() {
       <ParticipantInfoSummaryField>
         <ParticipantInfoSummaryFieldCol1>
           <ParticipantInfoSummaryFieldCol1Text color={"#EB5757"}>
-            Проиграл
+            {tLkAh("lost")}
           </ParticipantInfoSummaryFieldCol1Text>
         </ParticipantInfoSummaryFieldCol1>
 
@@ -32,7 +35,7 @@ function StoryCollapse() {
             ARTUR ELZHANOV
           </ParticipantInfoSummaryFieldCol2Text>
           <ParticipantInfoSummaryFieldCol2Text2>
-            Выиграл по очкам 9–2
+            {tLkAh("wonOnPoints")} 9–2
           </ParticipantInfoSummaryFieldCol2Text2>
         </ParticipantInfoSummaryFieldCol2>
       </ParticipantInfoSummaryField>
@@ -40,14 +43,14 @@ function StoryCollapse() {
       <ParticipantInfoSummaryField>
         <ParticipantInfoSummaryFieldCol1>
           <ParticipantInfoSummaryFieldCol1Text color={"#9B5711"}>
-            Итог
+            {tLkAh("outcome")}
           </ParticipantInfoSummaryFieldCol1Text>
         </ParticipantInfoSummaryFieldCol1>
         <ParticipantInfoSummaryFieldCol2
           background={"rgba(255, 255, 255, 0.1)"}
         >
           <ParticipantInfoSummaryFieldCol2Text color={"#9B5711"}>
-            Бронза
+            {tLkAh("bronze")}
           </ParticipantInfoSummaryFieldCol2Text>
         </ParticipantInfoSummaryFieldCol2>
       </ParticipantInfoSummaryField>

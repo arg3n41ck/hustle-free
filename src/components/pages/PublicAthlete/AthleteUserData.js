@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
 import { getRuDetailDate } from "../../../helpers/helpers"
 import phoneFormatter from "../../../helpers/phoneFormatter"
+import { useTranslation } from "next-i18next"
 
 const getContacts = ({
   email: userEmail,
@@ -14,28 +15,36 @@ const getContacts = ({
   country,
   dateBirthday,
   phoneNumber,
-}) => [
-  {
-    icon: email,
-    content: userEmail || "",
-  },
-  {
-    icon: calendar,
-    content: dateBirthday ? getRuDetailDate(dateBirthday) : "",
-  },
-  {
-    icon: gender,
-    content: userGender ? (userGender === "male" ? "Мужской" : "Женский") : "",
-  },
-  {
-    icon: location,
-    content: (country ? `${country},` : "") + (city ? ` г. ${city}` : ""),
-  },
-  {
-    icon: phone,
-    content: phoneNumber ? phoneFormatter(phoneNumber) : "",
-  },
-]
+}) => {
+  const { t: tLkAh } = useTranslation("lkAh")
+
+  return [
+    {
+      icon: email,
+      content: userEmail || "",
+    },
+    {
+      icon: calendar,
+      content: dateBirthday ? getRuDetailDate(dateBirthday) : "",
+    },
+    {
+      icon: gender,
+      content: userGender
+        ? userGender === "male"
+          ? tLkAh("userProfile.male")
+          : tLkAh("userProfile.female")
+        : "",
+    },
+    {
+      icon: location,
+      content: (country ? `${country},` : "") + (city ? ` г. ${city}` : ""),
+    },
+    {
+      icon: phone,
+      content: phoneNumber ? phoneFormatter(phoneNumber) : "",
+    },
+  ]
+}
 
 function AthleteUserData({ user }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
