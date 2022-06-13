@@ -13,8 +13,8 @@ function Event({ event }) {
       <Columns>
         <Column>{event.description}</Column>
         <Column>
-          <h4></h4>
-          <p></p>
+          <h4/>
+          <p/>
         </Column>
       </Columns>
     </MainWrapper>

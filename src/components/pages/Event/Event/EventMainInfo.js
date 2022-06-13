@@ -166,17 +166,17 @@ const getParticipantCategories = async (id) => {
   return [
     {
       id: "getParticipantCategories_1",
-      label: `eventMainInfo.categories:`,
+      label: `eventMainInfo.categories`,
       value: result?.categories?.length || 0,
     },
     {
       id: "getParticipantCategories_2",
-      label: `eventMainInfo.levels:`,
+      label: `eventMainInfo.levels`,
       value: result?.levels?.length || 0,
     },
     {
       id: "getParticipantCategories_3",
-      label: `eventMainInfo.gender:`,
+      label: `eventMainInfo.gender`,
       value: result?.gender
         ? `${result?.gender?.male && "М"}${
             result?.gender?.female ? " / Ж" : ""
@@ -185,7 +185,7 @@ const getParticipantCategories = async (id) => {
     },
     {
       id: "getParticipantCategories_4",
-      label: `eventMainInfo.age:`,
+      label: `eventMainInfo.age`,
       value: result?.ages
         ? `${result?.ages?.aFrom || 0}${
             result?.ages?.aTo ? " - " + result?.ages?.aTo : ""
@@ -194,7 +194,7 @@ const getParticipantCategories = async (id) => {
     },
     {
       id: "getParticipantCategories_5",
-      label: `eventMainInfo.weight:`,
+      label: `eventMainInfo.weight`,
       value: result?.weights
         ? `${result?.weights?.wFrom || 0} кг${
             result?.weights?.wTo ? " - " + result?.weights?.wTo + " кг" : ""
@@ -203,7 +203,7 @@ const getParticipantCategories = async (id) => {
     },
     {
       id: "getParticipantCategories_6",
-      label: `eventMainInfo.price:`,
+      label: `eventMainInfo.price`,
       value: result?.price
         ? `от ${result?.price} ${(result?.currency || "").toUpperCase()}`
         : "",

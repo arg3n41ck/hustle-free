@@ -11,7 +11,7 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
   } = useRouter()
   const [athHasBeenReq, setAthHasBeenReq] = useState(false)
   const { push } = useRouter()
-  const user = useSelector((state) => state.user.user)
+  const user = useSelector((state) => state.user)
   const sendReq = useCallback(async () => {
     if (userStatusInTeam?.message === "not found") {
       try {
@@ -27,7 +27,7 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
     }
   }, [userStatusInTeam])
   return (
-    user?.role === "athlete" && (
+    (user.user?.role === "athlete" || !user?.userAuthenticated) && (
       <CreateEventBTN
         disabled={
           athHasBeenReq ||
