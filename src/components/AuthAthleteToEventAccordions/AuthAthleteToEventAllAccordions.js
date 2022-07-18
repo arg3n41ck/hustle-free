@@ -1,8 +1,8 @@
-import React from "react"
-import ContactAccordion from "./ContactAccordion"
-import LocationAccordion from "./LocationAccordion"
-import RegistrationAccordion from "./RegistrationAccordion"
-import styled from "styled-components"
+import React from 'react'
+import ContactAccordion from './ContactAccordion'
+import LocationAccordion from './LocationAccordion'
+import RegistrationAccordion from './RegistrationAccordion'
+import styled from 'styled-components'
 
 function AuthAthleteToEventAllAccordions({ event }) {
   return (

@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from "react"
-import styled from "styled-components"
-import { Avatar } from "@mui/material"
-import { useSelector } from "react-redux"
-import { EditIcon, LocationIcon } from "../../../../../assets/svg/icons"
-import { CalendarIcon } from "../../../../../assets/svg/icons"
-import { GenderIcon } from "../../../../../assets/svg/icons"
-import { DefaultEmailIcon } from "../../../../../assets/svg/icons"
-import { DefaultPhoneIcon } from "../../../../../assets/svg/icons"
-import { theme } from "../../../../../styles/theme"
-import phoneFormatter from "../../../../../helpers/phoneFormatter"
-import { format, parseISO } from "date-fns"
-import { ru } from "date-fns/locale"
-import LkDefaultHeader from "../../../../ui/LKui/LKDefaultHeader"
-import { TitleHeader } from "../../../../ui/LKui/HeaderContent"
-import { useRouter } from "next/router"
-import { useDispatch } from "react-redux"
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { Avatar } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { EditIcon, LocationIcon } from '../../../../../assets/svg/icons'
+import { CalendarIcon } from '../../../../../assets/svg/icons'
+import { GenderIcon } from '../../../../../assets/svg/icons'
+import { DefaultEmailIcon } from '../../../../../assets/svg/icons'
+import { DefaultPhoneIcon } from '../../../../../assets/svg/icons'
+import { theme } from '../../../../../styles/theme'
+import { phoneFormatter } from '../../../../../helpers/phoneFormatter'
+import { format, parseISO } from 'date-fns'
+import { ru } from 'date-fns/locale'
+import LkDefaultHeader from '../../../../ui/LKui/LKDefaultHeader'
+import { TitleHeader } from '../../../../ui/LKui/HeaderContent'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
 
-import {
-  fetchCountries,
-} from "../../../../../redux/components/countriesAndCities"
-import { useTranslation } from "next-i18next"
+import { fetchCountries } from '../../../../../redux/components/countriesAndCities'
+import { useTranslation } from 'next-i18next'
 
 const Info = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
@@ -28,21 +26,17 @@ const Info = ({ onToggleSidebar }) => {
   const {
     countries: { data: countries },
   } = useSelector((state) => state.countries)
-  const { t: tHeader } = useTranslation("header")
-  const { t: tLkAh } = useTranslation("lkAh")
+  const { t: tHeader } = useTranslation('header')
+  const { t: tLkAh } = useTranslation('lkAh')
   const [currentLocations, setCurrentLocations] = useState({
-    country: "",
-    city: "",
+    country: '',
+    city: '',
   })
 
   useEffect(() => {
     if (user?.country && countries.length) {
-      const currentCountry = countries.find(
-          (country) => country.id === user?.country
-        ),
-        currentCity = currentCountry.cityCountry.find(
-          (country) => country.id === user?.city
-        )
+      const currentCountry = countries.find((country) => country.id === user?.country),
+        currentCity = currentCountry.cityCountry.find((country) => country.id === user?.city)
       setCurrentLocations({
         country: currentCountry.name,
         city: currentCity.name,
@@ -57,7 +51,7 @@ const Info = ({ onToggleSidebar }) => {
   return (
     <>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
-        <TitleHeader>{tHeader("userTabs.athlete.profile")}</TitleHeader>
+        <TitleHeader>{tHeader('userTabs.athlete.profile')}</TitleHeader>
       </LkDefaultHeader>
       <Content>
         <Center>
@@ -70,11 +64,11 @@ const Info = ({ onToggleSidebar }) => {
             <FullName>
               {user?.firstName} {user?.lastName}
             </FullName>
-            <Button onClick={() => routerPush("/lk-ah/profile/edit")}>
+            <Button onClick={() => routerPush('/lk-ah/profile/edit')}>
               <IconWrapper>
                 <EditIcon />
               </IconWrapper>
-              {tLkAh("userProfile.edit")}
+              {tLkAh('userProfile.edit')}
             </Button>
           </CenterRight>
         </Center>
@@ -83,11 +77,11 @@ const Info = ({ onToggleSidebar }) => {
             <WrapperIcon>
               <CalendarIcon />
             </WrapperIcon>
-            {tLkAh("userProfile.birthDay")}:
+            {tLkAh('userProfile.birthDay')}:
           </Item>
           <Item>
             {!!user?.dateBirthday &&
-              format(parseISO(user?.dateBirthday), "dd MMMM yyyy г.", {
+              format(parseISO(user?.dateBirthday), 'dd MMMM yyyy г.', {
                 locale: ru,
               })}
           </Item>
@@ -95,16 +89,16 @@ const Info = ({ onToggleSidebar }) => {
             <WrapperIcon>
               <GenderIcon />
             </WrapperIcon>
-            {tLkAh("userProfile.gender")}
+            {tLkAh('userProfile.gender')}
           </Item>
-          <Item>{user?.gender === "male" ? "Мужской" : "Женский"}</Item>
+          <Item>{user?.gender === 'male' ? 'Мужской' : 'Женский'}</Item>
           {(!!currentLocations?.country || !!currentLocations?.city) && (
             <>
               <Item>
                 <WrapperIcon>
                   <LocationIcon />
                 </WrapperIcon>
-                {tLkAh("userProfile.countryAndCity")}
+                {tLkAh('userProfile.countryAndCity')}
               </Item>
               <Item>
                 {!!currentLocations?.country && `${currentLocations.country},`}
@@ -116,15 +110,15 @@ const Info = ({ onToggleSidebar }) => {
             <WrapperIcon>
               <DefaultPhoneIcon />
             </WrapperIcon>
-            {tLkAh("userProfile.contacts")}
+            {tLkAh('userProfile.contacts')}
           </Item>
           {/* <Item>{phoneFormatter(user?.phoneNumber)}</Item> */}
-          <Item>{user?.phoneNumber ? phoneFormatter(user?.phoneNumber) : ""}</Item>
+          <Item>{user?.phoneNumber ? phoneFormatter(user?.phoneNumber) : ''}</Item>
           <Item>
             <WrapperIcon>
               <DefaultEmailIcon />
             </WrapperIcon>
-            {tLkAh("userProfile.email")}
+            {tLkAh('userProfile.email')}
           </Item>
           <Item>{user?.email}</Item>
         </List>
@@ -180,7 +174,7 @@ const List = styled.ul`
   margin-top: 32px;
   display: grid;
   grid-template: repeat(6, 96px) / 1fr 1fr;
-  ${theme.mqMax("md")} {
+  ${theme.mqMax('md')} {
     grid-template: repeat(11, 66px) / 1fr;
   }
 `
@@ -202,7 +196,7 @@ const Item = styled.li`
     line-height: 24px;
     color: #bdbdbd;
   }
-  ${theme.mqMax("md")} {
+  ${theme.mqMax('md')} {
     &:last-child {
       border-top: 0 solid #333333;
     }

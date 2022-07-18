@@ -1,0 +1,80 @@
+.auth-container {
+  margin: 88px auto 0;
+  width: 100%;
+  max-width: 688px;
+}
+
+.auth-wrapper {
+  padding: 64px 48px;
+  background-color: #1b1c22;
+  box-sizing: border-box;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
+  border-radius: 32px;
+}
+
+.auth-wrapper__independent {
+  padding: 32px 0 0;
+}
+
+.auth-title {
+  font-family: Inter, sans-serif;
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 40px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.auth-description {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #828282;
+  margin-bottom: 24px;
+}
+
+.auth-wrapper__input {
+  margin-bottom: 32px;
+  flex-grow: 1;
+}
+
+.auth-wrapper__input .MuiOutlinedInput-root {
+  background-color: #1b1c22 !important;
+  color: #fff;
+}
+
+.auth-title__input {
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+  line-height: 24px;
+  color: #f2f2f2;
+  margin-bottom: 12px;
+}
+
+.auth-title__input span {
+  color: #828282;
+}
+
+.auth-additionally {
+  margin-top: 32px;
+}
+
+.auth-additionally__text {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+}
+
+.auth-link {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #6d4eea;
+  cursor: pointer;
+}
+
+.border-top {
+  border-top: 1px solid #333;
+}
+/*# sourceMappingURL=auth.css.map */

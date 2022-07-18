@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Header from "../Header/Header"
 import { useMediaQuery } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
@@ -17,6 +17,7 @@ const Layout = ({ children }) => {
   const dispatch = useDispatch()
   const [cookies] = useCookies(["token", "refresh"])
   const [userAuthenticated] = useSelector(selectIsUserAuth)
+  const ref = useRef(null)
 
   useEffect(() => {
     if (getCookie("token")) {
@@ -25,6 +26,18 @@ const Layout = ({ children }) => {
       dispatch(fetchSportTypes())
     }
   }, [cookies?.token, userAuthenticated])
+
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    setLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    if (loaded) {
+      ref.current = document.querySelectorAll(".ytp-play-button")
+    }
+  }, [loaded])
 
   return (
     <>
@@ -41,6 +54,11 @@ const Layout = ({ children }) => {
       </Head>
       <Header />
       <ChildrenWrapper lg={lg}>
+        {/* <iframe
+          width="0"
+          height="0"
+          src="https://www.youtube.com/watch?v=5H4ekRWiW6U&list=RD5H4ekRWiW6U&start_radio=1&autoplay=1&mute=1"
+        /> */}
         <div style={{ height: "100%" }}>{children}</div>
 
         <Footer />

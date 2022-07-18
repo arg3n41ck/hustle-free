@@ -1,35 +1,31 @@
-import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import HeaderContent, { TitleHeader } from "../../../../ui/LKui/HeaderContent"
-import styled from "styled-components"
-import { Avatar, Box } from "@mui/material"
-import { EditIcon } from "../../../../../assets/svg/icons"
-import { DefaultEmailIcon } from "../../../../../assets/svg/icons"
-import { WebsiteIcon } from "../../../../../assets/svg/icons"
-import { LinkIcon } from "../../../../../assets/svg/icons"
-import { UserIcon } from "../../../../../assets/svg/icons"
-import { DefaultPhoneIcon } from "../../../../../assets/svg/icons"
-import phoneFormatter from "../../../../../helpers/phoneFormatter"
-import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
-import { useTranslation } from "next-i18next"
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import HeaderContent, { TitleHeader } from '../../../../ui/LKui/HeaderContent'
+import styled from 'styled-components'
+import { Avatar, Box } from '@mui/material'
+import { EditIcon } from '../../../../../assets/svg/icons'
+import { DefaultEmailIcon } from '../../../../../assets/svg/icons'
+import { WebsiteIcon } from '../../../../../assets/svg/icons'
+import { LinkIcon } from '../../../../../assets/svg/icons'
+import { UserIcon } from '../../../../../assets/svg/icons'
+import { DefaultPhoneIcon } from '../../../../../assets/svg/icons'
+import { phoneFormatter } from '../../../../../helpers/phoneFormatter'
+import { selectCountriesAndCities } from '../../../../../redux/components/countriesAndCities'
+import { useTranslation } from 'next-i18next'
 
 const Info = ({ onToggleSidebar, onView }) => {
   const { user } = useSelector((state) => state.user)
   const [countries] = useSelector(selectCountriesAndCities)
-  const { t: tLkTm } = useTranslation("lkTm")
+  const { t: tLkTm } = useTranslation('lkTm')
   const [currentLocations, setCurrentLocations] = useState({
-    country: "",
-    city: "",
+    country: '',
+    city: '',
   })
 
   useEffect(() => {
     if (user?.country && countries.length) {
-      const currentCountry = countries.find(
-          (country) => country.id === user?.country
-        ),
-        currentCity = currentCountry.cityCountry.find(
-          (country) => country.id === user?.city
-        )
+      const currentCountry = countries.find((country) => country.id === user?.country),
+        currentCity = currentCountry.cityCountry.find((country) => country.id === user?.city)
       setCurrentLocations({
         country: currentCountry.name,
         city: currentCity.name,
@@ -41,7 +37,7 @@ const Info = ({ onToggleSidebar, onView }) => {
     <>
       <HeaderWrapper>
         <HeaderContent onToggle={onToggleSidebar}>
-          <TitleHeader>{tLkTm("teamProfile.profile")}</TitleHeader>
+          <TitleHeader>{tLkTm('teamProfile.profile')}</TitleHeader>
         </HeaderContent>
       </HeaderWrapper>
       <Content>
@@ -55,11 +51,11 @@ const Info = ({ onToggleSidebar, onView }) => {
             <CenterTitle>{user?.fullName}</CenterTitle>
             <CenterDescription>{user?.description}</CenterDescription>
           </CenterText>
-          <Button onClick={() => onView("edit")}>
+          <Button onClick={() => onView('edit')}>
             <IconWrapper>
               <EditIcon />
             </IconWrapper>
-            {tLkTm("teamProfile.edit")}
+            {tLkTm('teamProfile.edit')}
           </Button>
         </Center>
         <Footer>
@@ -69,7 +65,9 @@ const Info = ({ onToggleSidebar, onView }) => {
                 <WrapperIcon>
                   <WebsiteIcon />
                 </WrapperIcon>
-                <p>{tLkTm("teamProfile.country")}, {tLkTm("teamProfile.city")}</p>
+                <p>
+                  {tLkTm('teamProfile.country')}, {tLkTm('teamProfile.city')}
+                </p>
               </ItemTitle>
               <ItemDescription>
                 {currentLocations.country}, г. {currentLocations.city}
@@ -80,7 +78,7 @@ const Info = ({ onToggleSidebar, onView }) => {
                 <WrapperIcon>
                   <DefaultEmailIcon />
                 </WrapperIcon>
-                <p>{tLkTm("teamProfile.email")}</p>
+                <p>{tLkTm('teamProfile.email')}</p>
               </ItemTitle>
               <ItemDescription>{user?.email}</ItemDescription>
             </Item>
@@ -89,17 +87,17 @@ const Info = ({ onToggleSidebar, onView }) => {
                 <WrapperIcon>
                   <WebsiteIcon />
                 </WrapperIcon>
-                <p>{tLkTm("teamProfile.website")}</p>
+                <p>{tLkTm('teamProfile.website')}</p>
               </ItemTitle>
               <ItemDescription>
                 {
                   <a
-                    target={"_blank"}
-                    style={{ color: "#2E79DD", textDecoration: "underline" }}
+                    target={'_blank'}
+                    style={{ color: '#2E79DD', textDecoration: 'underline' }}
                     href={user?.webSite}
                   >
                     {user?.webSite}
-                    <Box component={"span"} sx={{ marginLeft: 1 }}>
+                    <Box component={'span'} sx={{ marginLeft: 1 }}>
                       <LinkIcon />
                     </Box>
                   </a>
@@ -112,7 +110,7 @@ const Info = ({ onToggleSidebar, onView }) => {
                   <WrapperIcon>
                     <UserIcon />
                   </WrapperIcon>
-                  <p>{tLkTm("teamProfile.mainCoach")}</p>
+                  <p>{tLkTm('teamProfile.mainCoach')}</p>
                 </ItemTitle>
                 <ItemDescription>{user?.fullNameCoach}</ItemDescription>
               </CoachItem>
@@ -122,7 +120,7 @@ const Info = ({ onToggleSidebar, onView }) => {
                   <WrapperIcon>
                     <DefaultPhoneIcon />
                   </WrapperIcon>
-                  <p>{tLkTm("teamProfile.contacts")}</p>
+                  <p>{tLkTm('teamProfile.contacts')}</p>
                 </ItemTitle>
                 <ItemDescription>
                   {!!user?.phoneCoach && phoneFormatter(user?.phoneCoach)}

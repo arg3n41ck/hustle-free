@@ -1,12 +1,12 @@
-import React, { useMemo } from "react"
-import { Avatar } from "@mui/material"
-import styled from "styled-components"
-import { calendar, email, gender, location, phone } from "./Icons"
-import { useSelector } from "react-redux"
-import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
-import { getRuDetailDate } from "../../../helpers/helpers"
-import phoneFormatter from "../../../helpers/phoneFormatter"
-import { useTranslation } from "next-i18next"
+import React, { useMemo } from 'react'
+import { Avatar } from '@mui/material'
+import styled from 'styled-components'
+import { calendar, email, gender, location, phone } from './Icons'
+import { useSelector } from 'react-redux'
+import { selectCountriesAndCities } from '../../../redux/components/countriesAndCities'
+import { getRuDetailDate } from '../../../helpers/helpers'
+import { phoneFormatter } from '../../../helpers/phoneFormatter'
+import { useTranslation } from 'next-i18next'
 
 const getContacts = ({
   email: userEmail,
@@ -16,32 +16,32 @@ const getContacts = ({
   dateBirthday,
   phoneNumber,
 }) => {
-  const { t: tLkAh } = useTranslation("lkAh")
+  const { t: tLkAh } = useTranslation('lkAh')
 
   return [
     {
       icon: email,
-      content: userEmail || "",
+      content: userEmail || '',
     },
     {
       icon: calendar,
-      content: dateBirthday ? getRuDetailDate(dateBirthday) : "",
+      content: dateBirthday ? getRuDetailDate(dateBirthday) : '',
     },
     {
       icon: gender,
       content: userGender
-        ? userGender === "male"
-          ? tLkAh("userProfile.male")
-          : tLkAh("userProfile.female")
-        : "",
+        ? userGender === 'male'
+          ? tLkAh('userProfile.male')
+          : tLkAh('userProfile.female')
+        : '',
     },
     {
       icon: location,
-      content: (country ? `${country},` : "") + (city ? ` г. ${city}` : ""),
+      content: (country ? `${country},` : '') + (city ? ` г. ${city}` : ''),
     },
     {
       icon: phone,
-      content: phoneNumber ? phoneFormatter(phoneNumber) : "",
+      content: phoneNumber ? phoneFormatter(phoneNumber) : '',
     },
   ]
 }
@@ -49,13 +49,12 @@ const getContacts = ({
 function AthleteUserData({ user }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
 
-  const userCity = cities.find(({ id }) => id === user.city)?.name || ""
-  const userCountry =
-    countries.find(({ id }) => id === user.country)?.name || ""
+  const userCity = cities.find(({ id }) => id === user.city)?.name || ''
+  const userCountry = countries.find(({ id }) => id === user.country)?.name || ''
 
   const contacts = useMemo(
     () => getContacts({ ...user, city: userCity, country: userCountry }),
-    [user]
+    [user],
   )
 
   return (
@@ -67,7 +66,7 @@ function AthleteUserData({ user }) {
           sx={{ width: 264, height: 264 }}
         />
         {!user?.fullName ? (
-          <h3>{`${user.firstName || ""} ${user.lastName || ""}`}</h3>
+          <h3>{`${user.firstName || ''} ${user.lastName || ''}`}</h3>
         ) : (
           <h3>{user.fullName}</h3>
         )}

@@ -52,13 +52,17 @@
       "newPassword": "New password",
       "cancel": "Cancel",
       "save": "Save"
+    },
+    "status": {
+      "waitForServer": "Wait for a response from the server"
     }
   },
   "validation": {
     "required": "Required field!",
     "emailValid": "Enter the email field correctly",
     "emailRequired": "Fill in the mail field",
-    "imageSizeValid": "The file size must be no more than 4 MB."
+    "imageSizeValid": "The file size must be no more than 4 MB.",
+    "phoneNumberMin": "Phone number must be at least 12 characters"
   },
   "more": "More",
   "currency": {

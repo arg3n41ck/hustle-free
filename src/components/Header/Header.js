@@ -1,36 +1,36 @@
-import React, { useEffect, useState } from "react"
-import styled from "styled-components"
-import { Avatar, Box, Popover } from "@mui/material"
-import Notifications from "./components/Notifications/Notifications"
-import { useDispatch, useSelector } from "react-redux"
-import { useRouter } from "next/router"
-import Link from "next/link"
-import { theme } from "../../styles/theme"
-import clearCookies from "../../helpers/clearCookies"
-import { LogoIcon } from "../../assets/svg/icons"
-import { lkOgTabs } from "../pages/LkOg/Tabs/tabConstants"
-import { lkTmTabs } from "../pages/LkTm/Tabs/tabConstants"
-import { lkAhTabs } from "../pages/LkAh/Tabs/tabConstants"
-import { ExitIcon } from "../../assets/svg/icons"
-import { exitUser, selectIsUserAuth } from "../../redux/components/user"
-import HeaderLocalizationPopover from "./components/HeaderLocalizationPopover"
-import { truncateString } from "../../helpers/helpers"
-import { useTranslation } from "next-i18next"
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { Avatar, Box, Popover } from '@mui/material'
+import Notifications from './components/Notifications/Notifications'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { theme } from '../../styles/theme'
+import clearCookies from '../../helpers/clearCookies'
+import { LogoIcon } from '../../assets/svg/icons'
+import { lkOgTabs } from '../pages/LkOg/Tabs/tabConstants'
+import { lkTmTabs } from '../pages/LkTm/Tabs/tabConstants'
+import { lkAhTabs } from '../pages/LkAh/Tabs/tabConstants'
+import { ExitIcon } from '../../assets/svg/icons'
+import { exitUser, selectIsUserAuth } from '../../redux/components/user'
+import HeaderLocalizationPopover from './components/HeaderLocalizationPopover'
+import { truncateString } from '../../helpers/helpers'
+import { useTranslation } from 'next-i18next'
 
 const Header = () => {
   const { push: routerPush } = useRouter()
   const [anchorUserMenu, setAnchorUserMenu] = useState(null)
   const [openUserMenu, setUserMenu] = useState(false)
-  const idUserMenu = "userRouteModal"
+  const idUserMenu = 'userRouteModal'
   const user = useSelector((state) => state.user.user)
   const [userAuthenticated] = useSelector(selectIsUserAuth)
   const dispatch = useDispatch()
-  const { t: tHeader } = useTranslation("header")
-  const { t: tCommon } = useTranslation("common")
+  const { t: tHeader } = useTranslation('header')
+  const { t: tCommon } = useTranslation('common')
   const activeTabs = userAuthenticated
-    ? (user?.role === "organizer" && lkOgTabs) ||
-      (user?.role === "team" && lkTmTabs) ||
-      (user?.role === "athlete" && lkAhTabs)
+    ? (user?.role === 'organizer' && lkOgTabs) ||
+      (user?.role === 'team' && lkTmTabs) ||
+      (user?.role === 'athlete' && lkAhTabs)
     : null
 
   useEffect(() => {
@@ -39,14 +39,13 @@ const Header = () => {
 
   const outHandler = async () => {
     dispatch(exitUser())
-    console.log("clearing token WHEN LOGOUT")
     clearCookies()
-    await routerPush("/login")
+    await routerPush('/login')
   }
 
   const changeMenu = async (value) => {
     setAnchorUserMenu(null)
-    if (value === "exit") {
+    if (value === 'exit') {
       await outHandler()
       return
     }
@@ -58,7 +57,7 @@ const Header = () => {
       <WrapperItems>
         <Left>
           <Box sx={{ minWidth: 50 }}>
-            <Link href={"/"} passHref>
+            <Link href={'/'} passHref>
               <a>
                 <LogoIcon />
               </a>
@@ -67,19 +66,19 @@ const Header = () => {
         </Left>
         <WrapperCenter>
           <NavbarTextList>
-            <Link href={"/events"} passHref>
+            <Link href={'/events'} passHref>
               <a>
-                <NavbarText>{tHeader("navLinks.events")}</NavbarText>
+                <NavbarText>{tHeader('navLinks.events')}</NavbarText>
               </a>
             </Link>
-            <Link href={"/"} passHref>
+            <Link href={'/'} passHref>
               <a>
-                <NavbarText>{tHeader("navLinks.more")}</NavbarText>
+                <NavbarText>{tHeader('navLinks.more')}</NavbarText>
               </a>
             </Link>
-            <Link href={"/communities"} passHref>
+            <Link href={'/communities'} passHref>
               <a>
-                <NavbarText>{tHeader("navLinks.community")}</NavbarText>
+                <NavbarText>{tHeader('navLinks.community')}</NavbarText>
               </a>
             </Link>
           </NavbarTextList>
@@ -97,42 +96,40 @@ const Header = () => {
             >
               <Avatar
                 src={user?.avatar}
-                sx={{ marginRight: 1.2, objectFit: "cover" }}
-                alt="userAva"
+                sx={{ marginRight: 1.2, objectFit: 'cover' }}
+                alt='userAva'
               />
               <UserInfo>
                 <UserName>
-                  {user?.role !== "team"
-                    ? `${truncateString(user?.lastName || "", 1, false)}. ${
-                        user?.firstName || ""
-                      }`
-                    : truncateString(user?.fullNameCoach || "", 15)}
+                  {user?.role !== 'team'
+                    ? `${truncateString(user?.lastName || '', 1, false)}. ${user?.firstName || ''}`
+                    : truncateString(user?.fullNameCoach || '', 15)}
                 </UserName>
                 <UserRole>{tCommon(`userRoles.${user?.role}`)}</UserRole>
               </UserInfo>
               <svg
-                width="18"
-                height="11"
-                viewBox="0 0 18 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                width='18'
+                height='11'
+                viewBox='0 0 18 11'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
               >
                 <path
-                  d="M9 9L9.70711 9.70711L9 10.4142L8.29289 9.70711L9 9ZM17.7071 1.70711L9.70711 9.70711L8.29289 8.29289L16.2929 0.292892L17.7071 1.70711ZM8.29289 9.70711L0.292892 1.70711L1.70711 0.292893L9.70711 8.29289L8.29289 9.70711Z"
-                  fill="#828282"
+                  d='M9 9L9.70711 9.70711L9 10.4142L8.29289 9.70711L9 9ZM17.7071 1.70711L9.70711 9.70711L8.29289 8.29289L16.2929 0.292892L17.7071 1.70711ZM8.29289 9.70711L0.292892 1.70711L1.70711 0.292893L9.70711 8.29289L8.29289 9.70711Z'
+                  fill='#828282'
                 />
               </svg>
             </UserMenu>
           ) : (
-            <LoginButton onClick={() => routerPush("/login")}>
-              {tHeader("userTabs.login")}
+            <LoginButton onClick={() => outHandler()}>
+              {tHeader('userTabs.login')}
             </LoginButton>
           )}
           <Popover
             sx={{
-              "& .MuiPaper-root": {
-                borderRadius: "0 0 18px 18px",
-                background: "none",
+              '& .MuiPaper-root': {
+                borderRadius: '0 0 18px 18px',
+                background: 'none',
               },
             }}
             id={idUserMenu}
@@ -144,30 +141,27 @@ const Header = () => {
             }}
             anchorOrigin={{
               vertical: 62,
-              horizontal: "left",
+              horizontal: 'left',
             }}
           >
             <WrapperUserMenu>
               {!!activeTabs &&
                 activeTabs
-                  .filter((tab) => tab.value !== "exit")
+                  .filter((tab) => tab.value !== 'exit')
                   .map((tab) => (
-                    <UserMenuItem
-                      key={tab.href}
-                      onClick={() => changeMenu(tab.href)}
-                    >
+                    <UserMenuItem key={tab.href} onClick={() => changeMenu(tab.href)}>
                       <UserMenuItemContent>
                         <IconWrapper>{tab.icon}</IconWrapper>
                         <p>{tHeader(`userTabs.${user?.role}.${tab.name}`)}</p>
                       </UserMenuItemContent>
                     </UserMenuItem>
                   ))}
-              <UserMenuItem onClick={() => changeMenu("exit")}>
+              <UserMenuItem onClick={() => changeMenu('exit')}>
                 <UserMenuItemContent>
                   <IconWrapper>
                     <ExitIcon />
                   </IconWrapper>
-                  <p>{tHeader("userTabs.exit")}</p>
+                  <p>{tHeader('userTabs.exit')}</p>
                 </UserMenuItemContent>
               </UserMenuItem>
             </WrapperUserMenu>
@@ -211,7 +205,7 @@ const UserInfo = styled.div`
 `
 
 const UserName = styled.p`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -219,7 +213,7 @@ const UserName = styled.p`
 `
 
 const UserRole = styled.p`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -233,7 +227,7 @@ const NavbarTextList = styled.div`
 `
 
 const NavbarText = styled.div`
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -245,14 +239,14 @@ const NavbarText = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
-  ${theme.mqMax("lg")} {
+  ${theme.mqMax('lg')} {
     margin-right: 10px;
   }
 `
 const WrapperCenter = styled.div`
   width: 100%;
   max-width: 690px;
-  ${theme.mqMax("xl")} {
+  ${theme.mqMax('xl')} {
     margin: 0 10px;
   }
 `

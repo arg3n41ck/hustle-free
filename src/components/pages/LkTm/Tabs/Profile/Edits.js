@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react"
-import { useFormik } from "formik"
-import * as yup from "yup"
-import InputMask from "react-input-mask"
-import { useDispatch, useSelector } from "react-redux"
-import { formDataHttp } from "../../../../../helpers/formDataHttp"
-import { fetchUser, saveUser } from "../../../../../redux/components/user"
-import styled from "styled-components"
-import { Box, Checkbox, MenuItem, TextField } from "@mui/material"
-import SelectUI from "../../../../ui/Selects/Select"
-import CustomButton from "../../../../ui/CustomButton"
-import Image from "next/image"
-import { decamelizeKeys } from "humps"
+import React, { useEffect, useState } from 'react'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import InputMask from 'react-input-mask'
+import { useDispatch, useSelector } from 'react-redux'
+import { formDataHttp } from '../../../../../helpers/formDataHttp'
+import { fetchUser, saveUser } from '../../../../../redux/components/user'
+import styled from 'styled-components'
+import { Box, Checkbox, MenuItem, TextField } from '@mui/material'
+import SelectUI from '../../../../ui/Selects/Select'
+import CustomButton from '../../../../ui/CustomButton'
+import Image from 'next/image'
+import { decamelizeKeys } from 'humps'
+import { normalizePhone } from '../../../../../helpers/phoneFormatter'
 
-import { DefaultPhoneIcon } from "../../../../../assets/svg/icons"
-import { DefaultEmailIcon } from "../../../../../assets/svg/icons"
-import { UploadIcon } from "../../../../../assets/svg/icons"
-import { selectCountriesAndCities } from "../../../../../redux/components/countriesAndCities"
-import $api from "../../../../../services/axios"
-import Link from "next/link"
-import { useTranslation } from "next-i18next"
+import { DefaultPhoneIcon } from '../../../../../assets/svg/icons'
+import { DefaultEmailIcon } from '../../../../../assets/svg/icons'
+import { UploadIcon } from '../../../../../assets/svg/icons'
+import { selectCountriesAndCities } from '../../../../../redux/components/countriesAndCities'
+import $api from '../../../../../services/axios'
+import Link from 'next/link'
+import { useTranslation } from 'next-i18next'
 
 const Edits = ({ onView }) => {
   const {
@@ -30,35 +31,35 @@ const Edits = ({ onView }) => {
   const [countries] = useSelector(selectCountriesAndCities)
   const dispatch = useDispatch()
   const [currentSportTypes, setCurrentSportTypes] = useState([])
-  const { t: tCommon } = useTranslation("common")
+  const { t: tCommon } = useTranslation('common')
   const validationSchema = yup.object({
-    fullName: yup.string().nullable().required(tCommon("validation.required")),
-    country: yup.mixed().required(tCommon("validation.required")),
-    city: yup.mixed().required(tCommon("validation.required")),
-    webSite: yup.string().required(tCommon("validation.required")),
-    fullNameCoach: yup.string().required(tCommon("validation.required")),
-    phoneCoach: yup.string().min(12).required(tCommon("validation.required")),
+    fullName: yup.string().nullable().required(tCommon('validation.required')),
+    country: yup.mixed().required(tCommon('validation.required')),
+    city: yup.mixed().required(tCommon('validation.required')),
+    webSite: yup.string().required(tCommon('validation.required')),
+    fullNameCoach: yup.string().required(tCommon('validation.required')),
+    phoneCoach: yup
+      .string()
+      .nullable()
+      .test({
+        test: (value) => (value ? value.length === 12 : true),
+        message: tCommon('validation.phoneNumberMin'),
+      }),
     emailCoach: yup
       .string()
-      .email(tCommon("validation.emailValid"))
-      .required(tCommon("validation.required")),
+      .email(tCommon('validation.emailValid'))
+      .required(tCommon('validation.required')),
     sports: yup.array().test({
-      message: tCommon("validation.required"),
+      message: tCommon('validation.required'),
       test: () => !!currentSportTypes.length,
     }),
-    avatar: yup
-      .mixed()
-      .test(
-        "FILE_SIZE",
-        tCommon("validation.imageSizeValid"),
-        (value) => {
-          if (!value) return true
-          if (typeof value !== "string") {
-            return !!value && (value.size / 1024 / 1024).toFixed(2) <= 4
-          }
-          return true
-        }
-      ),
+    avatar: yup.mixed().test('FILE_SIZE', tCommon('validation.imageSizeValid'), (value) => {
+      if (!value) return true
+      if (typeof value !== 'string') {
+        return !!value && (value.size / 1024 / 1024).toFixed(2) <= 4
+      }
+      return true
+    }),
   })
   const formik = useFormik({
     initialValues: user.user,
@@ -66,12 +67,8 @@ const Edits = ({ onView }) => {
     onSubmit: async (values) => {
       try {
         const { country, avatar, city, ...rstValues } = values,
-          currentCountry = countries.find(
-            (countryItem) => countryItem.name === country
-          ),
-          currentCity = currentCountry?.cityCountry.find(
-            (cityItem) => cityItem.name === city
-          )
+          currentCountry = countries.find((countryItem) => countryItem.name === country),
+          currentCity = currentCountry?.cityCountry.find((cityItem) => cityItem.name === city)
         const newValues = {
           ...decamelizeKeys({
             ...rstValues,
@@ -81,25 +78,21 @@ const Edits = ({ onView }) => {
           }),
           avatar,
         }
-        if (typeof newValues.avatar === "string") delete newValues.avatar
+        if (typeof newValues.avatar === 'string') delete newValues.avatar
         const avaRes =
           newValues.avatar &&
-          (await formDataHttp(
-            { avatar: newValues.avatar },
-            "teams/profile/edit/",
-            "patch"
-          ))
+          (await formDataHttp({ avatar: newValues.avatar }, 'teams/profile/edit/', 'patch'))
         const { avatar: waste, ...rest } = newValues
-        const { data } = await $api.patch("teams/profile/edit/", rest)
+        const { data } = await $api.patch('teams/profile/edit/', rest)
         dispatch(
           saveUser({
             ...values,
             ...data,
             avatar: avaRes?.data?.avatar || data.avatar,
-          })
+          }),
         )
         dispatch(fetchUser())
-        onView("general")
+        onView('general')
       } catch (e) {
         throw e
       }
@@ -112,19 +105,13 @@ const Edits = ({ onView }) => {
     if (findObj) setCurrentCities(findObj.cityCountry)
   }
 
-  console.log(user)
-
   useEffect(() => {
-    if (typeof formik.values.country === "number") {
-      const currentCountry = countries.find(
-        (country) => country.id === formik.values.country
-      )
-      const currentCity = currentCountry?.cityCountry.find(
-        (city) => city.id === formik.values.city
-      )
+    if (typeof formik.values.country === 'number') {
+      const currentCountry = countries.find((country) => country.id === formik.values.country)
+      const currentCity = currentCountry?.cityCountry.find((city) => city.id === formik.values.city)
       setCurrentCities(currentCountry.cityCountry)
-      formik.setFieldValue("country", currentCountry.name)
-      formik.setFieldValue("city", currentCity.name)
+      formik.setFieldValue('country', currentCountry.name)
+      formik.setFieldValue('city', currentCity.name)
     }
 
     const newSportTypes = []
@@ -136,54 +123,51 @@ const Edits = ({ onView }) => {
   }, [])
 
   const deleteSport = (value) => {
-    const index = currentSportTypes.findIndex(
-      (CSportItem) => CSportItem.id === value.id
-    )
-    setCurrentSportTypes((prev) => [
-      ...prev.slice(0, index),
-      ...prev.slice(index + 1),
-    ])
+    const index = currentSportTypes.findIndex((CSportItem) => CSportItem.id === value.id)
+    setCurrentSportTypes((prev) => [...prev.slice(0, index), ...prev.slice(index + 1)])
   }
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <Header>
-        <Title>{tCommon("form.titles.profileEdit")}</Title>
+        <Title>{tCommon('form.titles.profileEdit')}</Title>
       </Header>
       <Content>
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">{tCommon("form.fieldsNames.organizationName")}</p>
+        <div className='auth-wrapper__input'>
+          <p className='auth-title__input'>{tCommon('form.fieldsNames.organizationName')}</p>
           <TextField
-            sx={{ width: "100%" }}
-            name="fullName"
+            sx={{ width: '100%' }}
+            name='fullName'
             onChange={formik.handleChange}
             value={formik.values.fullName}
-            placeholder={tCommon("form.fieldsNames.organizationName")}
-            variant="outlined"
+            placeholder={tCommon('form.fieldsNames.organizationName')}
+            variant='outlined'
             error={formik.touched.fullName && Boolean(formik.errors.fullName)}
             helperText={formik.touched.fullName && formik.errors.fullName}
           />
         </div>
 
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">{tCommon("form.fieldsNames.country")}</p>
+        <div className='auth-wrapper__input'>
+          <p className='auth-title__input'>{tCommon('form.fieldsNames.country')}</p>
           <SelectUI
             error={!!(formik.touched.country && formik.errors.country)}
             onChange={(e) => {
-              formik.setFieldValue("city", "")
+              formik.setFieldValue('city', '')
               changeCurrentCities(e.target.value)
-              formik.setFieldValue("country", e.target.value)
+              formik.setFieldValue('country', e.target.value)
             }}
             value={formik.values.country}
-            name={"country"}
+            name={'country'}
           >
             <option
-              style={{ color: "#BDBDBD" }}
+              style={{ color: '#BDBDBD' }}
               disabled
               selected
-              value={formik.values.country ?? ""}
+              value={formik.values.country ?? ''}
             >
-              {!!formik.values.country ? formik.values.country : tCommon("form.fieldsNames.country")}
+              {!!formik.values.country
+                ? formik.values.country
+                : tCommon('form.fieldsNames.country')}
             </option>
             {countries
               .filter((country) => country.name !== formik.values.country)
@@ -195,21 +179,20 @@ const Edits = ({ onView }) => {
           </SelectUI>
         </div>
 
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">{tCommon("form.fieldsNames.city")}/{tCommon("form.fieldsNames.region")}</p>
+        <div className='auth-wrapper__input'>
+          <p className='auth-title__input'>
+            {tCommon('form.fieldsNames.city')}/{tCommon('form.fieldsNames.region')}
+          </p>
           <SelectUI
             error={!!(formik.touched.city && formik.errors.city)}
             onChange={formik.handleChange}
             value={formik.values.city}
-            name={"city"}
+            name={'city'}
           >
-            <option
-              style={{ color: "#BDBDBD" }}
-              disabled
-              selected
-              value={formik.values.city ?? ""}
-            >
-              {!!formik.values.city ? formik.values.city : `${tCommon("form.fieldsNames.city")}/${tCommon("form.fieldsNames.region")}`}
+            <option style={{ color: '#BDBDBD' }} disabled selected value={formik.values.city ?? ''}>
+              {!!formik.values.city
+                ? formik.values.city
+                : `${tCommon('form.fieldsNames.city')}/${tCommon('form.fieldsNames.region')}`}
             </option>
             {currentCities
               .filter((city) => city.name !== formik.values.city)
@@ -221,68 +204,60 @@ const Edits = ({ onView }) => {
           </SelectUI>
         </div>
 
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">{tCommon("form.fieldsNames.website")}</p>
+        <div className='auth-wrapper__input'>
+          <p className='auth-title__input'>{tCommon('form.fieldsNames.website')}</p>
           <TextField
-            sx={{ width: "100%" }}
-            name="webSite"
+            sx={{ width: '100%' }}
+            name='webSite'
             onChange={formik.handleChange}
             value={formik.values.webSite}
-            placeholder={tCommon("form.fieldsNames.website")}
-            variant="outlined"
+            placeholder={tCommon('form.fieldsNames.website')}
+            variant='outlined'
             error={formik.touched.webSite && Boolean(formik.errors.webSite)}
             helperText={formik.touched.webSite && formik.errors.webSite}
           />
         </div>
 
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">{tCommon("form.fieldsNames.fullNameMainCoach")}</p>
+        <div className='auth-wrapper__input'>
+          <p className='auth-title__input'>{tCommon('form.fieldsNames.fullNameMainCoach')}</p>
           <TextField
-            sx={{ width: "100%" }}
-            name="fullNameCoach"
+            sx={{ width: '100%' }}
+            name='fullNameCoach'
             onChange={formik.handleChange}
             value={formik.values.fullNameCoach}
-            placeholder={tCommon("form.fieldsNames.fullNameMainCoach")}
-            variant="outlined"
-            error={
-              formik.touched.fullNameCoach &&
-              Boolean(formik.errors.fullNameCoach)
-            }
-            helperText={
-              formik.touched.fullNameCoach && formik.errors.fullNameCoach
-            }
+            placeholder={tCommon('form.fieldsNames.fullNameMainCoach')}
+            variant='outlined'
+            error={formik.touched.fullNameCoach && Boolean(formik.errors.fullNameCoach)}
+            helperText={formik.touched.fullNameCoach && formik.errors.fullNameCoach}
           />
         </div>
 
         <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
             gridColumnGap: 24,
           }}
         >
-          <div className="auth-wrapper__input">
-            <p className="auth-title__input">{tCommon("form.fieldsNames.phoneNumber")}</p>
+          <div className='auth-wrapper__input'>
+            <p className='auth-title__input'>{tCommon('form.fieldsNames.phoneNumber')}</p>
             <InputMask
-              name={"phoneCoach"}
-              onChange={(e) =>
-                formik.setFieldValue(
-                  "phoneCoach",
-                  `+${e.target.value.replace(/\D/gi, "")}`
-                )
-              }
-              error={
-                Boolean(formik.touched.phoneCoach) && formik.errors.phoneCoach
-              }
-              value={`${formik.values.phoneCoach}`.replace(/\D/gi, "")}
-              mask="+7(999) 999 99 99"
+              name={'phoneCoach'}
+              onChange={(e) => {
+                if (normalizePhone(e.target.value || '') === '7') {
+                  formik.setFieldValue('phoneCoach', '')
+                } else formik.setFieldValue('phoneCoach', `+${e.target.value.replace(/\D/gi, '')}`)
+              }}
+              error={Boolean(formik.touched.phoneCoach) && formik.errors.phoneCoach}
+              value={`${formik.values.phoneCoach}`.replace(/\D/gi, '')}
+              mask='+7(999) 999 99 99'
             >
               {(inputProps) => (
                 <TextField
                   {...inputProps}
-                  sx={{ width: "100%" }}
-                  variant="outlined"
-                  placeholder={tCommon("form.fieldsNames.contacts")}
+                  sx={{ width: '100%' }}
+                  variant='outlined'
+                  placeholder={tCommon('form.fieldsNames.contacts')}
                   InputProps={{
                     endAdornment: <DefaultPhoneIcon />,
                   }}
@@ -291,19 +266,17 @@ const Edits = ({ onView }) => {
             </InputMask>
           </div>
 
-          <div className="auth-wrapper__input">
-            <p className="auth-title__input">{tCommon("form.fieldsNames.emailCoach")}</p>
+          <div className='auth-wrapper__input'>
+            <p className='auth-title__input'>{tCommon('form.fieldsNames.emailCoach')}</p>
             <TextField
-              sx={{ width: "100%" }}
-              name="emailCoach"
+              sx={{ width: '100%' }}
+              name='emailCoach'
               value={formik.values.emailCoach}
               onChange={formik.handleChange}
               disabled
-              placeholder={tCommon("form.fieldsNames.emailCoach")}
-              variant="outlined"
-              error={
-                formik.touched.emailCoach && Boolean(formik.errors.emailCoach)
-              }
+              placeholder={tCommon('form.fieldsNames.emailCoach')}
+              variant='outlined'
+              error={formik.touched.emailCoach && Boolean(formik.errors.emailCoach)}
               helperText={formik.touched.emailCoach && formik.errors.emailCoach}
               InputProps={{
                 endAdornment: <DefaultEmailIcon />,
@@ -312,34 +285,30 @@ const Edits = ({ onView }) => {
           </div>
         </Box>
 
-        <div style={{ marginBottom: 16 }} className="auth-wrapper__input">
-          <p className="auth-title__input">{tCommon("form.fieldsNames.typeSport")}</p>
+        <div style={{ marginBottom: 16 }} className='auth-wrapper__input'>
+          <p className='auth-title__input'>{tCommon('form.fieldsNames.typeSport')}</p>
           <TextField
             select
-            sx={{ width: "100%", color: "white" }}
-            name="sports"
-            value={"none"}
+            sx={{ width: '100%', color: 'white' }}
+            name='sports'
+            value={'none'}
             onChange={(e) => {
               if (e.target.value) {
                 console.log(e.target.value)
-                const obj = sportTypes.find(
-                  (sportType) => sportType.name === e.target.value
-                )
+                const obj = sportTypes.find((sportType) => sportType.name === e.target.value)
                 setCurrentSportTypes((prev) => [...prev, obj])
               }
             }}
             error={formik.touched.sports && Boolean(formik.errors.sports)}
             helperText={formik.touched.sports && formik.errors.sports}
           >
-            <MenuItem value="none" sx={{ display: "none" }}>
-            {tCommon("form.fieldsNames.typeSport")}
+            <MenuItem value='none' sx={{ display: 'none' }}>
+              {tCommon('form.fieldsNames.typeSport')}
             </MenuItem>
             {sportTypes
               .filter(
                 (sportType) =>
-                  !currentSportTypes.some(
-                    (CSportType) => CSportType.id === sportType.id
-                  )
+                  !currentSportTypes.some((CSportType) => CSportType.id === sportType.id),
               )
               .map((item) => (
                 <MenuItem key={item.id} value={item.name}>
@@ -356,8 +325,8 @@ const Edits = ({ onView }) => {
               onChange={() => deleteSport(CSportType)}
               sx={{
                 padding: 0,
-                "& .MuiSvgIcon-root": {
-                  color: "#6D4EEA",
+                '& .MuiSvgIcon-root': {
+                  color: '#6D4EEA',
                 },
               }}
             />
@@ -365,40 +334,36 @@ const Edits = ({ onView }) => {
           </SportItem>
         ))}
 
-        <div className="auth-wrapper__input" style={{ marginTop: 32 }}>
-          <p className="auth-title__input">{tCommon("form.fieldsNames.description")}</p>
+        <div className='auth-wrapper__input' style={{ marginTop: 32 }}>
+          <p className='auth-title__input'>{tCommon('form.fieldsNames.description')}</p>
           <Textarea
-            name="description"
+            name='description'
             value={formik.values.description}
             onChange={formik.handleChange}
             rows={4}
-            placeholder={tCommon("form.fieldsNames.description")}
-            error={
-              formik.touched.description && Boolean(formik.errors.description)
-            }
+            placeholder={tCommon('form.fieldsNames.description')}
+            error={formik.touched.description && Boolean(formik.errors.description)}
           />
         </div>
 
         <Gallery>
-          <Title>{tCommon("form.fieldsNames.profileAvatar.label")}</Title>
+          <Title>{tCommon('form.fieldsNames.profileAvatar.label')}</Title>
           <GrayText style={{ marginTop: 4 }}>
-            {tCommon("form.fieldsNames.profileAvatar.description")}
+            {tCommon('form.fieldsNames.profileAvatar.description')}
           </GrayText>
           <GalleryBlock>
-            <GalleryLabel
-              error={formik.touched.avatar && Boolean(formik.errors.avatar)}
-            >
+            <GalleryLabel error={formik.touched.avatar && Boolean(formik.errors.avatar)}>
               {!!formik.values.avatar ? (
                 <ImageWrapper>
                   <Image
                     src={
-                      typeof formik.values.avatar === "string"
+                      typeof formik.values.avatar === 'string'
                         ? formik.values.avatar
                         : URL.createObjectURL(formik.values.avatar)
                     }
                     width={128}
                     height={128}
-                    objectFit={"cover"}
+                    objectFit={'cover'}
                   />
                 </ImageWrapper>
               ) : (
@@ -408,47 +373,40 @@ const Edits = ({ onView }) => {
               )}
 
               <GalleryInput
-                name="avatar"
-                type={"file"}
-                accept="image/*"
-                onChange={(e) =>
-                  formik.setFieldValue("avatar", e.target.files[0])
-                }
+                name='avatar'
+                type={'file'}
+                accept='image/*'
+                onChange={(e) => formik.setFieldValue('avatar', e.target.files[0])}
               />
             </GalleryLabel>
-            <GrayText>
-              {tCommon("form.fieldsNames.profileAvatar.rules4mb")}
-            </GrayText>
+            <GrayText>{tCommon('form.fieldsNames.profileAvatar.rules4mb')}</GrayText>
           </GalleryBlock>
         </Gallery>
-        <div
-          className="auth-wrapper__independent"
-          style={{ margin: "0 0 32px" }}
-        >
-          <Link href={"/auth/auth-reset-password"}>
+        <div className='auth-wrapper__independent' style={{ margin: '0 0 32px' }}>
+          <Link href={'/auth/auth-reset-password'}>
             <a>
-              <p className="auth-link">{tCommon("form.fieldsNames.changePassword")}</p>
+              <p className='auth-link'>{tCommon('form.fieldsNames.changePassword')}</p>
             </a>
           </Link>
         </div>
-        <div className="auth-wrapper__independent border-top">
-          {tCommon("form.fieldsNames.deleteProfile.extra")}{" "}
+        <div className='auth-wrapper__independent border-top'>
+          {tCommon('form.fieldsNames.deleteProfile.extra')}{' '}
           <Link href={`/auth/delete/${user?.user?.id}`}>
             <a>
-              <span className="auth-link">{tCommon("form.fieldsNames.deleteProfile.label")}</span>
+              <span className='auth-link'>{tCommon('form.fieldsNames.deleteProfile.label')}</span>
             </a>
           </Link>
         </div>
       </Content>
       <Footer>
-        <ButtonWrapper onClick={() => onView("general")}>
-          <CustomButton type={"button"} typeButton={"secondary"}>
-            {tCommon("form.fieldsNames.cancel")}
+        <ButtonWrapper onClick={() => onView('general')}>
+          <CustomButton type={'button'} typeButton={'secondary'}>
+            {tCommon('form.fieldsNames.cancel')}
           </CustomButton>
         </ButtonWrapper>
         <ButtonWrapper>
-          <CustomButton type={"submit"} typeButton={"primary"}>
-            {tCommon("form.fieldsNames.save")}
+          <CustomButton type={'submit'} typeButton={'primary'}>
+            {tCommon('form.fieldsNames.save')}
           </CustomButton>
         </ButtonWrapper>
       </Footer>
@@ -531,7 +489,7 @@ export const GalleryLabel = styled.div`
   margin-right: 24px;
   height: 128px;
   background: #1b1c22;
-  border: 2px dashed ${(p) => (p.error ? "##EB5757" : "#6d4eea")};
+  border: 2px dashed ${(p) => (p.error ? '##EB5757' : '#6d4eea')};
   border-radius: 8px;
   position: relative;
   overflow: hidden;

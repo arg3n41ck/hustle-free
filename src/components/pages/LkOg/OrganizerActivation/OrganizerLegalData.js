@@ -1,56 +1,63 @@
-import React, { useState } from "react"
-import { useFormik } from "formik"
-import * as yup from "yup"
-import styled from "styled-components"
-import { TextField, MenuItem, Autocomplete } from "@mui/material"
-import { motion } from "framer-motion"
-import { AuthButton } from "../../Authorization/Authorization"
-import { useSelector } from "react-redux"
-import { toast } from "react-toastify"
-import { selectCountriesAndCities } from "../../../../redux/components/countriesAndCities"
-import { LocationIcon } from "../../Events/EventsCatalog/EventsFilter"
-
-const validationSchema = yup.object({
-  nameOrganizer: yup
-    .string()
-    .test(
-      "nameOrganizer",
-      "Заполните поле",
-      (value) => !!(value || "").replace(/\s/g, "")
-    )
-    .required("Заполните поле"),
-  country: yup
-    .string()
-    .test(
-      "country",
-      "Заполните поле",
-      (value) => value !== "default" && !!(value || "").replace(/\s/g, "")
-    )
-    .required("Заполните поле"),
-  city: yup
-    .string()
-    .test(
-      "city",
-      "Заполните поле",
-      (value) => value !== "default" && !!(value || "").replace(/\s/g, "")
-    )
-    .required("Заполните поле"),
-})
+import React, { useRef } from 'react'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import styled from 'styled-components'
+import { TextField, MenuItem, Autocomplete } from '@mui/material'
+import { motion } from 'framer-motion'
+import { AuthButton } from '../../Authorization/Authorization'
+import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { selectCountriesAndCities } from '../../../../redux/components/countriesAndCities'
+import { LocationIcon } from '../../Events/EventsCatalog/EventsFilter'
+import { useTranslation } from 'next-i18next'
 
 const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
+  const { t: tCommon } = useTranslation('common')
   const [countries, cities] = useSelector(selectCountriesAndCities)
+
+  const { current: validationSchema } = useRef(
+    yup.object({
+      nameOrganizer: yup
+        .string()
+        .test(
+          'nameOrganizer',
+          tCommon('validation.required'),
+          (value) => !!(value || '').replace(/\s/g, ''),
+        )
+        .required(tCommon('validation.required')),
+      country: yup
+        .string()
+        .nullable()
+        .test(
+          'country',
+          tCommon('validation.required'),
+          (value) => value !== 'default' && !!(value || '').replace(/\s/g, ''),
+        )
+        .required(tCommon('validation.required')),
+      city: yup
+        .string()
+        .nullable()
+        .test(
+          'city',
+          tCommon('validation.required'),
+          (value) => value !== 'default' && !!(value || '').replace(/\s/g, ''),
+        )
+        .required(tCommon('validation.required')),
+    }),
+  )
+
   const formik = useFormik({
     initialValues: {
-      nameOrganizer: !!data?.name_organization ? data.name_organization : "",
+      nameOrganizer: !!data?.name_organization ? data.name_organization : '',
       country: !!data?.country ? data.country : null,
       city: !!data?.city ? data.city : null,
-      actualAddress: !!data?.actual_address ? data.actual_address : "",
-      legalName: !!data?.legal_name ? data.legal_name : "",
-      legalAddress: !!data?.legal_address ? data.legal_address : "",
-      bin: !!data?.bin ? data.bin : "",
-      number: !!data?.number ? data.number : "",
-      swift: !!data?.swift ? data.swift : "",
-      bankName: !!data?.bank_name ? data.bank_name : "",
+      actualAddress: !!data?.actual_address ? data.actual_address : '',
+      legalName: !!data?.legal_name ? data.legal_name : '',
+      legalAddress: !!data?.legal_address ? data.legal_address : '',
+      bin: !!data?.bin ? data.bin : '',
+      number: !!data?.number ? data.number : '',
+      swift: !!data?.swift ? data.swift : '',
+      bankName: !!data?.bank_name ? data.bank_name : '',
     },
     onSubmit: async (values) => {
       if (
@@ -61,7 +68,7 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
         formik.values.city &&
         !Boolean(formik.errors.city)
       ) {
-        toast.info("Ожидайте ответа от сервера")
+        toast.info(tCommon('form.status.waitForServer'))
         const data = {
           ...dataPersonal,
           name_organization: values.nameOrganizer,
@@ -75,7 +82,7 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           swift: values.swift,
           bank_name: values.bankName,
         }
-        if (data.phone_number === "+") delete data.phone_number
+        if (data.phone_number === '+') delete data.phone_number
 
         for (let key in data) {
           if (!data[key]) delete data[key]
@@ -87,66 +94,56 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
     validationSchema,
   })
 
-
   return (
     <Form onSubmit={formik.handleSubmit}>
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">Название организации</p>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>Название организации</p>
         <TextField
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
           value={formik.values.nameOrganizer}
-          name="nameOrganizer"
+          name='nameOrganizer'
           onChange={formik.handleChange}
-          placeholder="Название организации"
-          variant="outlined"
-          error={
-            formik.touched.nameOrganizer && Boolean(formik.errors.nameOrganizer)
-          }
-          helperText={
-            formik.touched.nameOrganizer && formik.errors.nameOrganizer
-          }
+          placeholder='Название организации'
+          variant='outlined'
+          error={formik.touched.nameOrganizer && Boolean(formik.errors.nameOrganizer)}
+          helperText={formik.touched.nameOrganizer && formik.errors.nameOrganizer}
         />
       </div>
 
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">Страна</p>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>Страна</p>
         <Autocomplete
-          noOptionsText={"Ничего не найдено"}
+          noOptionsText={'Ничего не найдено'}
           onChange={(_, value) => [
-            formik.setFieldValue("country", value?.id || null),
-            formik.setFieldValue("city", ""),
+            formik.setFieldValue('country', value?.id || null),
+            formik.setFieldValue('city', ''),
           ]}
           options={countries.map((option) => option) || []}
           getOptionLabel={(option) => option.name}
-          value={
-            countries.find(({ id }) => id === formik.values?.country) || null
-          }
+          value={countries.find(({ id }) => id === formik.values?.country) || null}
           fullWidth
           renderInput={(params) => (
             <TextField
               {...params}
               fullWidth
-              placeholder="Страна"
+              placeholder='Страна'
               InputProps={{
                 ...params.InputProps,
                 startAdornment: <LocationIcon />,
               }}
+              error={formik.touched.country && Boolean(formik.errors.country)}
+              helperText={formik.touched.country && formik.errors.country}
             />
           )}
         />
       </div>
 
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">Город</p>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>Город</p>
         <Autocomplete
-          noOptionsText={"Ничего не найдено"}
-          onChange={(_, value) =>
-            formik.setFieldValue("city", value?.id || null)
-          }
-          options={
-            countries.find(({ id }) => id === formik.values?.country)
-              ?.cityCountry || []
-          }
+          noOptionsText={'Ничего не найдено'}
+          onChange={(_, value) => formik.setFieldValue('city', value?.id || null)}
+          options={countries.find(({ id }) => id === formik.values?.country)?.cityCountry || []}
           getOptionLabel={(option) => option?.name}
           value={cities.find(({ id }) => id === formik.values.city) || null}
           fullWidth
@@ -154,118 +151,115 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
             <TextField
               {...params}
               fullWidth
-              placeholder="Город"
+              placeholder='Город'
               InputProps={{
                 ...params.InputProps,
                 startAdornment: <LocationIcon />,
               }}
+              error={formik.touched.city && Boolean(formik.errors.city)}
+              helperText={formik.touched.city && formik.errors.city}
             />
           )}
         />
       </div>
 
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">
-          Фактический адрес{" "}
-          <span style={{ color: "#828282" }}>(не обязательно)</span>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>
+          Фактический адрес <span style={{ color: '#828282' }}>(не обязательно)</span>
         </p>
         <TextField
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
           value={formik.values.actualAddress}
-          name="actualAddress"
+          name='actualAddress'
           onChange={formik.handleChange}
-          placeholder="Фактические адрес"
-          variant="outlined"
+          placeholder='Фактические адрес'
+          variant='outlined'
         />
       </div>
 
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">
-          Юридическое название{" "}
-          <span style={{ color: "#828282" }}>(не обязательно)</span>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>
+          Юридическое название <span style={{ color: '#828282' }}>(не обязательно)</span>
         </p>
         <TextField
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
           value={formik.values.legalName}
-          name="legalName"
+          name='legalName'
           onChange={formik.handleChange}
-          placeholder="Юридическое название"
-          variant="outlined"
+          placeholder='Юридическое название'
+          variant='outlined'
         />
       </div>
 
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">
-          Юридический адрес{" "}
-          <span style={{ color: "#828282" }}>(не обязательно)</span>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>
+          Юридический адрес <span style={{ color: '#828282' }}>(не обязательно)</span>
         </p>
         <TextField
-          sx={{ width: "100%", marginBottom: 3 }}
+          sx={{ width: '100%', marginBottom: 3 }}
           value={formik.values.legalAddress}
-          name="legalAddress"
+          name='legalAddress'
           onChange={formik.handleChange}
-          placeholder="Юридический адрес"
-          variant="outlined"
+          placeholder='Юридический адрес'
+          variant='outlined'
         />
       </div>
 
-      <h3 className="auth-title">Реквизиты</h3>
+      <h3 className='auth-title'>Реквизиты</h3>
 
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">
-          БИН <span style={{ color: "#828282" }}>(не обязательно)</span>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>
+          БИН <span style={{ color: '#828282' }}>(не обязательно)</span>
         </p>
         <TextField
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
           value={formik.values.bin}
-          name="bin"
+          name='bin'
           onChange={formik.handleChange}
-          placeholder="БИН"
-          variant="outlined"
+          placeholder='БИН'
+          variant='outlined'
         />
       </div>
 
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">
-          Номер счета (IBAN){" "}
-          <span style={{ color: "#828282" }}>(не обязательно)</span>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>
+          Номер счета (IBAN) <span style={{ color: '#828282' }}>(не обязательно)</span>
         </p>
         <TextField
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
           value={formik.values.number}
-          name="number"
+          name='number'
           onChange={formik.handleChange}
-          placeholder="Номер счета"
-          variant="outlined"
+          placeholder='Номер счета'
+          variant='outlined'
         />
       </div>
 
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">
-          SWIFT <span style={{ color: "#828282" }}>(не обязательно)</span>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>
+          SWIFT <span style={{ color: '#828282' }}>(не обязательно)</span>
         </p>
         <TextField
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
           value={formik.values.swift}
-          name="swift"
+          name='swift'
           onChange={formik.handleChange}
-          placeholder="SWIFT"
-          variant="outlined"
+          placeholder='SWIFT'
+          variant='outlined'
         />
       </div>
 
-      <div className="auth-wrapper__input">
-        <p className="auth-title__input">
-          Название банка{" "}
-          <span style={{ color: "#828282" }}>(не обязательно)</span>
+      <div className='auth-wrapper__input'>
+        <p className='auth-title__input'>
+          Название банка <span style={{ color: '#828282' }}>(не обязательно)</span>
         </p>
         <TextField
-          sx={{ width: "100%", marginBottom: 5 }}
+          sx={{ width: '100%', marginBottom: 5 }}
           value={formik.values.bankName}
-          name="bankName"
+          name='bankName'
           onChange={formik.handleChange}
-          placeholder="Название банка"
-          variant="outlined"
+          placeholder='Название банка'
+          variant='outlined'
         />
       </div>
 
@@ -278,7 +272,7 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           formik.values.city &&
           !Boolean(formik.errors.city)
         }
-        type="submit"
+        type='submit'
       >
         Дальше
       </AuthButton>
