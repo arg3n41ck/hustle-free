@@ -49,6 +49,8 @@ function MyFormControlLabel(props) {
 
 const OrganizerPersonalData = ({ data, setData, setView }) => {
   const [showPassword, setShowPassword] = useState(false)
+
+  const { t: tAuth } = useTranslation('auth')
   const { t: tCommon } = useTranslation('common')
 
   const { current: validationSchema } = useRef(
@@ -71,14 +73,11 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         .required(tCommon('validation.required')),
       password: yup
         .string()
-        .matches(
-          /(?=.*[0-9])(?=.*[A-Z]){8,}/gi,
-          'Пароль должен состоять из [A-z] [0-9] и не быть слишком простым...',
-        )
+        .matches(/(?=.*[0-9])(?=.*[A-Z]){8,}/gi, tAuth('validation.passwordRules'))
         .required(tCommon('validation.required')),
       phone: yup
         .string()
-        .test('phone', 'phone min.', (value) => {
+        .test('phone', tCommon('validation.phoneNumberMin'), (value) => {
           if (typeof value === 'undefined') return true
           return value?.replace(/[^0-9]/g, '')?.length >= 11
         })
@@ -145,7 +144,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         }}
       >
         <div className='auth-wrapper__input'>
-          <p className='auth-title__input'>Фамилия</p>
+          <p className='auth-title__input'>{tCommon('form.fieldsNames.lastName')}</p>
           <TextField
             sx={{ width: '100%' }}
             name='lastName'
@@ -153,14 +152,14 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
             onChange={(e) =>
               formik.setFieldValue('lastName', e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, ''))
             }
-            placeholder='Фамилия'
+            placeholder={tCommon('form.fieldsNames.lastName')}
             variant='outlined'
             error={formik.touched.lastName && Boolean(formik.errors.lastName)}
             helperText={formik.touched.lastName && formik.errors.lastName}
           />
         </div>
         <div className='auth-wrapper__input'>
-          <p className='auth-title__input'>Имя</p>
+          <p className='auth-title__input'>{tCommon('form.fieldsNames.firstName')}</p>
           <TextField
             sx={{ width: '100%' }}
             name='firstName'
@@ -168,7 +167,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
             onChange={(e) =>
               formik.setFieldValue('firstName', e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, ''))
             }
-            placeholder='Имя'
+            placeholder={tCommon('form.fieldsNames.firstName')}
             variant='outlined'
             error={formik.touched.firstName && Boolean(formik.errors.firstName)}
             helperText={formik.touched.firstName && formik.errors.firstName}
@@ -184,12 +183,13 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         className='auth-wrapper__input'
       >
         <p className='auth-title__input'>
-          День рождения <span style={{ color: '#828282' }}>(не обязательно)</span>
+          {tCommon('form.fieldsNames.birthDate')}{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
           <MobileDatePicker
-            toolbarTitle={'Выбрать дату'}
-            cancelText={'Отмена'}
+            toolbarTitle={tCommon('form.fieldsNames.selectDate')}
+            cancelText={tCommon('form.fieldsNames.cancel')}
             value={formik.values.birthDate}
             onChange={(value) => formik.setFieldValue('birthDate', value)}
             inputFormat='dd/MM/yyyy'
@@ -198,7 +198,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
                 {...params}
                 inputProps={{
                   ...params.inputProps,
-                  placeholder: 'ДД/ММ/ГГГГ',
+                  placeholder: tCommon('form.fieldsNames.dateFormat'),
                 }}
               />
             )}
@@ -207,13 +207,18 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
       </Box>
       <Box sx={{ marginBottom: 4, marginTop: 4 }}>
         <p className='auth-title__input'>
-          Пол <span style={{ color: '#828282' }}>(не обязательно)</span>{' '}
+          {tCommon('form.fieldsNames.gender.label')}{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>{' '}
         </p>
         <RadioGroup value={formik.values.gender} name='gender' onChange={formik.handleChange}>
           <div>
             <MyFormControlLabel
               value='female'
-              label={<Typography sx={{ color: '#F2F2F2' }}>Женский</Typography>}
+              label={
+                <Typography sx={{ color: '#F2F2F2' }}>
+                  {tCommon('form.fieldsNames.gender.female')}
+                </Typography>
+              }
               control={
                 <Radio
                   sx={{
@@ -226,7 +231,11 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
             />
             <MyFormControlLabel
               value='male'
-              label={<Typography sx={{ color: '#F2F2F2' }}>Мужской</Typography>}
+              label={
+                <Typography sx={{ color: '#F2F2F2' }}>
+                  {tCommon('form.fieldsNames.gender.male')}
+                </Typography>
+              }
               control={
                 <Radio
                   sx={{
@@ -241,7 +250,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         </RadioGroup>
       </Box>
       <div className='auth-wrapper__input'>
-        <p className='auth-title__input'>Контакты</p>
+        <p className='auth-title__input'>{tCommon('form.fieldsNames.contacts')}</p>
         <InputMask
           mask='+7 (999) 999 99 99'
           name={'phone'}
@@ -278,14 +287,14 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         </InputMask>
       </div>
       <div className='auth-wrapper__input'>
-        <p className='auth-title__input'>Электронный адрес</p>
+        <p className='auth-title__input'>{tCommon('form.fieldsNames.email')}</p>
         <TextField
           sx={{ width: '100%' }}
           value={formik.values.email}
           name='email'
           onChange={formik.handleChange}
           disabled
-          placeholder='Электронный адрес'
+          placeholder={tCommon('form.fieldsNames.email')}
           variant='outlined'
           InputProps={{
             endAdornment: (
@@ -317,14 +326,15 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
       </div>
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>
-          Позиция/ должность <span style={{ color: '#828282' }}>(не обязательно)</span>
+          {tCommon('form.fieldsNames.position')}{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
           sx={{ width: '100%' }}
           value={formik.values.position}
           name='position'
           onChange={formik.handleChange}
-          placeholder='Позиция/ должность'
+          placeholder={tCommon('form.fieldsNames.position')}
           variant='outlined'
           InputProps={{
             endAdornment: (
@@ -355,10 +365,10 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         />
       </div>
       <div className='auth-wrapper__input'>
-        <p className='auth-title__input'>Пароль</p>
+        <p className='auth-title__input'>{tCommon('form.fieldsNames.password')}</p>
         <FormControl sx={{ width: '100%', marginBottom: 7 }} variant='outlined'>
           <OutlinedInput
-            placeholder='Пароль'
+            placeholder={tCommon('form.fieldsNames.password')}
             name='password'
             value={formik.values.password}
             onChange={formik.handleChange}
@@ -394,7 +404,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         }
         type='submit'
       >
-        Дальше
+        {tAuth('common.next')}
       </AuthButton>
     </Form>
   )

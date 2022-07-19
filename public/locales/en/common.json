@@ -30,6 +30,8 @@
       "country": "Country",
       "city": "City",
       "actualAddress": "The actual address",
+      "legalAddress": "Legal address",
+      "legalName": "Legal name",
       "profileAvatar": {
         "label": "Profile photo",
         "description": "The photo is displayed, for example, next to your profile",
@@ -47,11 +49,19 @@
       "profileType": "Type of profile",
       "open": "Open",
       "close": "Close",
-      "password": "password",
+      "password": "Password",
       "oldPassword": "Old password",
       "newPassword": "New password",
       "cancel": "Cancel",
-      "save": "Save"
+      "save": "Save",
+      "send": "Send",
+      "selectDate": "Select date",
+      "dateFormat": "dd/MM/yyyy",
+      "position": "Postion",
+      "requisites": "Requisites",
+      "bin": "BIN",
+      "iban": "Account number (IBAN)",
+      "bankName": "Name of the Bank"
     },
     "status": {
       "waitForServer": "Wait for a response from the server"

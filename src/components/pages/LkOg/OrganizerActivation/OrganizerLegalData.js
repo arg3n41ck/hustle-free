@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import styled from 'styled-components'
-import { TextField, MenuItem, Autocomplete } from '@mui/material'
+import { TextField, Autocomplete } from '@mui/material'
 import { motion } from 'framer-motion'
 import { AuthButton } from '../../Authorization/Authorization'
 import { useSelector } from 'react-redux'
@@ -12,6 +12,7 @@ import { LocationIcon } from '../../Events/EventsCatalog/EventsFilter'
 import { useTranslation } from 'next-i18next'
 
 const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
+  const { t: tAuth } = useTranslation('auth')
   const { t: tCommon } = useTranslation('common')
   const [countries, cities] = useSelector(selectCountriesAndCities)
 
@@ -97,13 +98,13 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
   return (
     <Form onSubmit={formik.handleSubmit}>
       <div className='auth-wrapper__input'>
-        <p className='auth-title__input'>Название организации</p>
+        <p className='auth-title__input'>{tCommon('form.fieldsNames.organizationName')}</p>
         <TextField
           sx={{ width: '100%' }}
           value={formik.values.nameOrganizer}
           name='nameOrganizer'
           onChange={formik.handleChange}
-          placeholder='Название организации'
+          placeholder={tCommon('form.fieldsNames.organizationName')}
           variant='outlined'
           error={formik.touched.nameOrganizer && Boolean(formik.errors.nameOrganizer)}
           helperText={formik.touched.nameOrganizer && formik.errors.nameOrganizer}
@@ -111,9 +112,9 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
       </div>
 
       <div className='auth-wrapper__input'>
-        <p className='auth-title__input'>Страна</p>
+        <p className='auth-title__input'>{tCommon('form.fieldsNames.country')}</p>
         <Autocomplete
-          noOptionsText={'Ничего не найдено'}
+          noOptionsText={tAuth('common.noOptionsText')}
           onChange={(_, value) => [
             formik.setFieldValue('country', value?.id || null),
             formik.setFieldValue('city', ''),
@@ -126,7 +127,7 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
             <TextField
               {...params}
               fullWidth
-              placeholder='Страна'
+              placeholder={tCommon('form.fieldsNames.country')}
               InputProps={{
                 ...params.InputProps,
                 startAdornment: <LocationIcon />,
@@ -139,9 +140,9 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
       </div>
 
       <div className='auth-wrapper__input'>
-        <p className='auth-title__input'>Город</p>
+        <p className='auth-title__input'>{tCommon('form.fieldsNames.city')}</p>
         <Autocomplete
-          noOptionsText={'Ничего не найдено'}
+          noOptionsText={tAuth('common.noOptionsText')}
           onChange={(_, value) => formik.setFieldValue('city', value?.id || null)}
           options={countries.find(({ id }) => id === formik.values?.country)?.cityCountry || []}
           getOptionLabel={(option) => option?.name}
@@ -151,7 +152,7 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
             <TextField
               {...params}
               fullWidth
-              placeholder='Город'
+              placeholder={tCommon('form.fieldsNames.city')}
               InputProps={{
                 ...params.InputProps,
                 startAdornment: <LocationIcon />,
@@ -165,79 +166,85 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
 
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>
-          Фактический адрес <span style={{ color: '#828282' }}>(не обязательно)</span>
+          {tCommon('form.fieldsNames.actualAddress')}{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
           sx={{ width: '100%' }}
           value={formik.values.actualAddress}
           name='actualAddress'
           onChange={formik.handleChange}
-          placeholder='Фактические адрес'
+          placeholder={tCommon('form.fieldsNames.actualAddress')}
           variant='outlined'
         />
       </div>
 
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>
-          Юридическое название <span style={{ color: '#828282' }}>(не обязательно)</span>
+          {tCommon('form.fieldsNames.legalName')}{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
           sx={{ width: '100%' }}
           value={formik.values.legalName}
           name='legalName'
           onChange={formik.handleChange}
-          placeholder='Юридическое название'
+          placeholder={tCommon('form.fieldsNames.legalName')}
           variant='outlined'
         />
       </div>
 
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>
-          Юридический адрес <span style={{ color: '#828282' }}>(не обязательно)</span>
+          {tCommon('form.fieldsNames.legalAddress')}{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
           sx={{ width: '100%', marginBottom: 3 }}
           value={formik.values.legalAddress}
           name='legalAddress'
           onChange={formik.handleChange}
-          placeholder='Юридический адрес'
+          placeholder={tCommon('form.fieldsNames.legalAddress')}
           variant='outlined'
         />
       </div>
 
-      <h3 className='auth-title'>Реквизиты</h3>
+      <h3 className='auth-title'>{tCommon('form.fieldsNames.requisites')}</h3>
 
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>
-          БИН <span style={{ color: '#828282' }}>(не обязательно)</span>
+          {tCommon('form.fieldsNames.bin')}{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
           sx={{ width: '100%' }}
           value={formik.values.bin}
           name='bin'
           onChange={formik.handleChange}
-          placeholder='БИН'
+          placeholder={tCommon('form.fieldsNames.bin')}
           variant='outlined'
         />
       </div>
 
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>
-          Номер счета (IBAN) <span style={{ color: '#828282' }}>(не обязательно)</span>
+          {tCommon('form.fieldsNames.iban')}{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
           sx={{ width: '100%' }}
           value={formik.values.number}
           name='number'
           onChange={formik.handleChange}
-          placeholder='Номер счета'
+          placeholder={tCommon('form.fieldsNames.iban')}
           variant='outlined'
         />
       </div>
 
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>
-          SWIFT <span style={{ color: '#828282' }}>(не обязательно)</span>
+          SWIFT{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
           sx={{ width: '100%' }}
@@ -251,14 +258,15 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
 
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>
-          Название банка <span style={{ color: '#828282' }}>(не обязательно)</span>
+          {tCommon('form.fieldsNames.bankName')}{' '}
+          <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
           sx={{ width: '100%', marginBottom: 5 }}
           value={formik.values.bankName}
           name='bankName'
           onChange={formik.handleChange}
-          placeholder='Название банка'
+          placeholder={tCommon('form.fieldsNames.bankName')}
           variant='outlined'
         />
       </div>
@@ -274,7 +282,7 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
         }
         type='submit'
       >
-        Дальше
+        {tAuth('common.next')}
       </AuthButton>
     </Form>
   )
