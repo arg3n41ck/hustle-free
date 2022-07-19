@@ -1,24 +1,17 @@
-import React from "react"
-import { Modal } from "@mui/material"
-import styled from "styled-components"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import { Modal } from '@mui/material'
+import styled from 'styled-components'
+import { useTranslation } from 'next-i18next'
 
-function ParticipantCategoriesModal({
-  open,
-  onClose,
-  onSubmit,
-  title,
-  edit,
-  children,
-}) {
-  const { t: tLkOg } = useTranslation("lkOg")
+function ParticipantCategoriesModal({ open, onClose, onBack, onSubmit, title, edit, children }) {
+  const { t: tLkOg } = useTranslation('lkOg')
 
   return (
     <Modal
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
       open={open}
       onClose={onClose}
@@ -27,11 +20,9 @@ function ParticipantCategoriesModal({
         <Title>{title}</Title>
         <Content>{children}</Content>
         <Footer>
-          <Button onClick={onClose}>{tLkOg("editEvent.cancel")}</Button>
-          <Button type="submit" onClick={onSubmit} className="primary">
-            {edit
-              ? tLkOg("categoriesOfParticipants.apply")
-              : tLkOg("editEvent.further")}
+          <Button onClick={onBack}>{tLkOg('editEvent.back')}</Button>
+          <Button type='submit' onClick={onSubmit} className='primary'>
+            {edit ? tLkOg('categoriesOfParticipants.apply') : tLkOg('editEvent.further')}
           </Button>
         </Footer>
       </Wrapper>

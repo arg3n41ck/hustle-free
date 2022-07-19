@@ -1,6 +1,6 @@
-import React, { useEffect } from "react"
-import { useFormik } from "formik"
-import * as yup from "yup"
+import React, { useEffect, useRef } from 'react'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
 import {
   Checkbox,
   Collapse,
@@ -8,22 +8,22 @@ import {
   FormControlLabel,
   FormHelperText,
   TextField,
-} from "@mui/material"
-import styled from "styled-components"
-import { useDispatch } from "react-redux"
-import { fetchSportTypes } from "../../../../../redux/components/sportTypes"
-import LocalizationProvider from "@mui/lab/LocalizationProvider"
-import { ru } from "date-fns/locale"
-import AdapterDateFns from "@mui/lab/AdapterDateFns"
-import { MobileDatePicker } from "@mui/lab"
-import { useRouter } from "next/router"
-import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
-import { formDataHttp } from "../../../../../helpers/formDataHttp"
-import { format } from "date-fns"
-import { useTranslation } from "next-i18next"
+} from '@mui/material'
+import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+import { fetchSportTypes } from '../../../../../redux/components/sportTypes'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import { ru } from 'date-fns/locale'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import { MobileDatePicker } from '@mui/lab'
+import { useRouter } from 'next/router'
+import { Cancel, EventFormFooter, Field, Form, Submit } from './EventDefaults'
+import { formDataHttp } from '../../../../../helpers/formDataHttp'
+import { format } from 'date-fns'
+import { useTranslation } from 'next-i18next'
 
 const emptyInitialValues = {
-  maxParticipantCount: "",
+  maxParticipantCount: '',
   earlyRegStart: null,
   earlyRegEnd: null,
   standartRegStart: null,
@@ -35,45 +35,135 @@ const emptyInitialValues = {
 }
 
 function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
-  const { t: tLkOg } = useTranslation("lkOg")
-  const { touched, errors, values, handleChange, setFieldValue, handleSubmit } =
-    useFormik({
-      initialValues: defaultValues,
-      validationSchema,
-      onSubmit: async (values) => {
-        await formDataHttp(
-          {
-            ...values,
-            earlyRegStart:
-              values.earlyRegStart &&
-              format(new Date(values.earlyRegStart), "yyyy-MM-dd"),
-            earlyRegEnd:
-              values.earlyRegEnd &&
-              format(new Date(values.earlyRegEnd), "yyyy-MM-dd"),
-            standartRegStart:
-              values.standartRegStart &&
-              format(new Date(values.standartRegStart), "yyyy-MM-dd"),
-            standartRegEnd:
-              values.standartRegEnd &&
-              format(new Date(values.standartRegEnd), "yyyy-MM-dd"),
-            lateRegStart:
-              values.lateRegStart &&
-              format(new Date(values.lateRegStart), "yyyy-MM-dd"),
-            lateRegEnd:
-              values.lateRegEnd &&
-              format(new Date(values.lateRegEnd), "yyyy-MM-dd"),
-            allFieldsFilled: true,
+  const { t: tLkOg } = useTranslation('lkOg')
+
+  const { current: validationSchema } = useRef(
+    yup.object({
+      maxParticipantCount: yup.number().required(tLkOg('validation.required')).nullable(),
+      earlyRegActive: yup.boolean(),
+      lateRegActive: yup.boolean(),
+      earlyRegStart: yup
+        .date()
+        .nullable()
+        .test({
+          message: tLkOg('validation.regPeriods.earlyStartEarlyEnd'),
+          test: function (value) {
+            return this.parent.earlyRegActive
+              ? this.parent.earlyRegEnd &&
+                  new Date(this.parent.earlyRegEnd).getTime() > new Date(value).getTime()
+              : true
           },
-          `organizer/events/${eventId}/registration/`,
-          "put"
-        )
-        routerPush(`/lk-og/profile/events/edit/${eventId}/description`)
-      },
-    })
+        })
+        .test({
+          message: tLkOg('validation.regPeriods.earlyStartStandartStart'),
+          test: function (value) {
+            return this.parent.earlyRegActive
+              ? this.parent.standartRegStart &&
+                  new Date(this.parent.standartRegStart).getTime() > new Date(value).getTime()
+              : true
+          },
+        }),
+      earlyRegEnd: yup
+        .date()
+        .nullable()
+        .test({
+          message: tLkOg('validation.required'),
+          test: function (value) {
+            return this.parent.earlyRegActive ? value : true
+          },
+        })
+        .test({
+          message: tLkOg('validation.regPeriods.earlyStartStandartStart'),
+          test: function (value) {
+            return this.parent.earlyRegActive
+              ? this.parent.standartRegStart &&
+                  new Date(this.parent.standartRegStart).getTime() > new Date(value).getTime()
+              : true
+          },
+        }),
+      standartRegStart: yup
+        .date()
+        .nullable()
+        .required(tLkOg('validation.required'))
+        .test({
+          message: tLkOg('validation.regPeriods.standartStartStandartEnd'),
+          test: function (value) {
+            return (
+              this.parent.standartRegEnd &&
+              new Date(this.parent.standartRegEnd).getTime() > new Date(value).getTime()
+            )
+          },
+        })
+        .test({
+          message: tLkOg('validation.validDate'),
+          test: function (value) {
+            return new Date().getTime() < new Date(value).getTime()
+          },
+        }),
+      standartRegEnd: yup.date().nullable().required(tLkOg('validation.required')),
+
+      lateRegStart: yup
+        .date()
+        .nullable()
+        .test({
+          message: tLkOg('validation.regPeriods.lateStartStandartEnd'),
+          test: function (value) {
+            return this.parent.lateRegActive
+              ? this.parent.standartRegEnd &&
+                  new Date(this.parent.standartRegEnd).getTime() < new Date(value).getTime()
+              : true
+          },
+        })
+        .test({
+          message: tLkOg('validation.regPeriods.lateStartLateEnd'),
+          test: function (value) {
+            return this.parent.lateRegActive
+              ? this.parent.lateRegEnd &&
+                  new Date(this.parent.lateRegEnd).getTime() > new Date(value).getTime()
+              : true
+          },
+        }),
+      lateRegEnd: yup
+        .date()
+        .nullable()
+        .test({
+          message: tLkOg('validation.required'),
+          test: function (value) {
+            return this.parent.lateRegActive ? value : true
+          },
+        }),
+    }),
+  )
+
+  const { touched, errors, values, handleChange, setFieldValue, handleSubmit } = useFormik({
+    initialValues: defaultValues,
+    validationSchema,
+    onSubmit: async (values) => {
+      await formDataHttp(
+        {
+          ...values,
+          earlyRegStart:
+            values.earlyRegStart && format(new Date(values.earlyRegStart), 'yyyy-MM-dd'),
+          earlyRegEnd: values.earlyRegEnd && format(new Date(values.earlyRegEnd), 'yyyy-MM-dd'),
+          standartRegStart:
+            values.standartRegStart && format(new Date(values.standartRegStart), 'yyyy-MM-dd'),
+          standartRegEnd:
+            values.standartRegEnd && format(new Date(values.standartRegEnd), 'yyyy-MM-dd'),
+          lateRegStart: values.lateRegStart && format(new Date(values.lateRegStart), 'yyyy-MM-dd'),
+          lateRegEnd: values.lateRegEnd && format(new Date(values.lateRegEnd), 'yyyy-MM-dd'),
+          allFieldsFilled: true,
+        },
+        `organizer/events/${eventId}/registration/`,
+        'put',
+      )
+      routerPush(`/lk-og/profile/events/edit/${eventId}/description`)
+    },
+  })
 
   const { push: routerPush } = useRouter()
 
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(fetchSportTypes())
   }, [])
@@ -81,72 +171,60 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
   return (
     <Form onSubmit={handleSubmit}>
       <Field>
-        <p className="auth-title__input">
-          {tLkOg("registrationPeriods.maximumNumberOfRegistrations")}
+        <p className='auth-title__input'>
+          {tLkOg('registrationPeriods.maximumNumberOfRegistrations')}
         </p>
         <TextField
-          name="maxParticipantCount"
-          placeholder={tLkOg(
-            "registrationPeriods.maximumNumberOfRegistrations"
-          )}
-          variant="outlined"
+          name='maxParticipantCount'
+          placeholder={tLkOg('registrationPeriods.maximumNumberOfRegistrations')}
+          variant='outlined'
           fullWidth
-          type="number"
-          error={
-            touched.maxParticipantCount && Boolean(errors.maxParticipantCount)
-          }
+          type='number'
+          error={touched.maxParticipantCount && Boolean(errors.maxParticipantCount)}
           helperText={touched.maxParticipantCount && errors.maxParticipantCount}
           onChange={handleChange}
           value={values.maxParticipantCount}
         />
       </Field>
       <FormHR />
-      <FormSubTitle>
-        {tLkOg("registrationPeriods.earlyRegistration")}
-      </FormSubTitle>
+      <FormSubTitle>{tLkOg('registrationPeriods.earlyRegistration')}</FormSubTitle>
       <div>
         <Field>
           <FormControl
             error={touched.earlyRegActive && Boolean(errors.earlyRegActive)}
-            variant="standard"
+            variant='standard'
           >
             <FormControlLabel
-              name="earlyRegActive"
+              name='earlyRegActive'
               onChange={handleChange}
               checked={values.earlyRegActive}
               control={<Checkbox />}
-              label={tLkOg("registrationPeriods.yes")}
+              label={tLkOg('registrationPeriods.yes')}
             />
-            <FormHelperText>
-              {touched.earlyRegActive && errors.earlyRegActive}
-            </FormHelperText>
+            <FormHelperText>{touched.earlyRegActive && errors.earlyRegActive}</FormHelperText>
           </FormControl>
         </Field>
 
         <Collapse in={values.earlyRegActive}>
           <FieldsColumn>
             <Field style={{ marginTop: 24 }}>
-              <p className="auth-title__input">
-                {tLkOg("registrationPeriods.sunriseStartDate")}
-              </p>
+              <p className='auth-title__input'>{tLkOg('registrationPeriods.sunriseStartDate')}</p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
                 <MobileDatePicker
-                  toolbarTitle={tLkOg("registrationPeriods.sunriseStartDate")}
-                  cancelText={tLkOg("editEvent.cancel")}
+                  toolbarTitle={tLkOg('registrationPeriods.sunriseStartDate')}
+                  cancelText={tLkOg('editEvent.cancel')}
                   value={values.earlyRegStart}
-                  onChange={(value) => setFieldValue("earlyRegStart", value)}
-                  inputFormat="dd/MM/yyyy"
+                  onChange={(value) => setFieldValue('earlyRegStart', value)}
+                  inputFormat='dd/MM/yyyy'
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       fullWidth
-                      error={
-                        touched.earlyRegStart && Boolean(errors.earlyRegStart)
-                      }
+                      error={touched.earlyRegStart && Boolean(errors.earlyRegStart)}
                       helperText={touched.earlyRegStart && errors.earlyRegStart}
                       inputProps={{
                         ...params.inputProps,
-                        placeholder: tLkOg("registrationPeriods.ddMmYy"),
+                        placeholder: tLkOg('registrationPeriods.ddMmYy'),
                       }}
                     />
                   )}
@@ -154,18 +232,16 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
               </LocalizationProvider>
             </Field>
             <Field>
-              <p className="auth-title__input">
-                {tLkOg("registrationPeriods.endDateForEarlyRegistration")}
+              <p className='auth-title__input'>
+                {tLkOg('registrationPeriods.endDateForEarlyRegistration')}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
                 <MobileDatePicker
-                  toolbarTitle={tLkOg(
-                    "registrationPeriods.endDateForEarlyRegistration"
-                  )}
-                  cancelText={tLkOg("editEvent.cancel")}
+                  toolbarTitle={tLkOg('registrationPeriods.endDateForEarlyRegistration')}
+                  cancelText={tLkOg('editEvent.cancel')}
                   value={values.earlyRegEnd}
-                  onChange={(value) => setFieldValue("earlyRegEnd", value)}
-                  inputFormat="dd/MM/yyyy"
+                  onChange={(value) => setFieldValue('earlyRegEnd', value)}
+                  inputFormat='dd/MM/yyyy'
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -174,15 +250,12 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                       helperText={touched.earlyRegEnd && errors.earlyRegEnd}
                       inputProps={{
                         ...params.inputProps,
-                        placeholder: tLkOg("registrationPeriods.ddMmYy"),
+                        placeholder: tLkOg('registrationPeriods.ddMmYy'),
                       }}
                     />
                   )}
                 />
               </LocalizationProvider>
-              <ExtraInfo>
-                {tLkOg("registrationPeriods.descriptionEarly")}
-              </ExtraInfo>
             </Field>
           </FieldsColumn>
         </Collapse>
@@ -190,34 +263,28 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
 
       <FormHR />
 
-      <FormSubTitle>
-        {tLkOg("registrationPeriods.standartRegistrations")}
-      </FormSubTitle>
+      <FormSubTitle>{tLkOg('registrationPeriods.standartRegistrations')}</FormSubTitle>
 
       <Field>
-        <p className="auth-title__input">
-          {tLkOg("registrationPeriods.standardEnrollmentStartDate")}
+        <p className='auth-title__input'>
+          {tLkOg('registrationPeriods.standardEnrollmentStartDate')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
           <MobileDatePicker
-            toolbarTitle={tLkOg(
-              "registrationPeriods.standardEnrollmentStartDate"
-            )}
-            cancelText={tLkOg("editEvent.cancel")}
+            toolbarTitle={tLkOg('registrationPeriods.standardEnrollmentStartDate')}
+            cancelText={tLkOg('editEvent.cancel')}
             value={values.standartRegStart}
-            onChange={(value) => setFieldValue("standartRegStart", value)}
-            inputFormat="dd/MM/yyyy"
+            onChange={(value) => setFieldValue('standartRegStart', value)}
+            inputFormat='dd/MM/yyyy'
             renderInput={(params) => (
               <TextField
                 {...params}
                 fullWidth
-                error={
-                  touched.standartRegStart && Boolean(errors.standartRegStart)
-                }
+                error={touched.standartRegStart && Boolean(errors.standartRegStart)}
                 helperText={touched.standartRegStart && errors.standartRegStart}
                 inputProps={{
                   ...params.inputProps,
-                  placeholder: tLkOg("registrationPeriods.ddMmYy"),
+                  placeholder: tLkOg('registrationPeriods.ddMmYy'),
                 }}
               />
             )}
@@ -226,18 +293,16 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
       </Field>
 
       <Field>
-        <p className="auth-title__input">
-          {tLkOg("registrationPeriods.endDateOfStandardRegistration")}
+        <p className='auth-title__input'>
+          {tLkOg('registrationPeriods.endDateOfStandardRegistration')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
           <MobileDatePicker
-            toolbarTitle={tLkOg(
-              "registrationPeriods.endDateOfStandardRegistration"
-            )}
-            cancelText={tLkOg("editEvent.cancel")}
+            toolbarTitle={tLkOg('registrationPeriods.endDateOfStandardRegistration')}
+            cancelText={tLkOg('editEvent.cancel')}
             value={values.standartRegEnd}
-            onChange={(value) => setFieldValue("standartRegEnd", value)}
-            inputFormat="dd/MM/yyyy"
+            onChange={(value) => setFieldValue('standartRegEnd', value)}
+            inputFormat='dd/MM/yyyy'
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -246,7 +311,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                 helperText={touched.standartRegEnd && errors.standartRegEnd}
                 inputProps={{
                   ...params.inputProps,
-                  placeholder: tLkOg("registrationPeriods.ddMmYy"),
+                  placeholder: tLkOg('registrationPeriods.ddMmYy'),
                 }}
               />
             )}
@@ -256,52 +321,46 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
 
       <FormHR />
 
-      <FormSubTitle>{tLkOg("registrationPeriods.tateCheckIn")}</FormSubTitle>
+      <FormSubTitle>{tLkOg('registrationPeriods.tateCheckIn')}</FormSubTitle>
       <div>
         <Field>
           <FormControl
             error={touched.lateRegActive && Boolean(errors.lateRegActive)}
-            variant="standard"
+            variant='standard'
           >
             <FormControlLabel
-              name="lateRegActive"
+              name='lateRegActive'
               checked={values.lateRegActive}
               onChange={handleChange}
               control={<Checkbox />}
-              label={tLkOg("registrationPeriods.yes")}
+              label={tLkOg('registrationPeriods.yes')}
             />
-            <FormHelperText>
-              {touched.lateRegActive && errors.lateRegActive}
-            </FormHelperText>
+            <FormHelperText>{touched.lateRegActive && errors.lateRegActive}</FormHelperText>
           </FormControl>
         </Field>
 
         <Collapse in={values.lateRegActive}>
           <FieldsColumn>
             <Field style={{ marginTop: 24 }}>
-              <p className="auth-title__input">
-                {tLkOg("registrationPeriods.lateRegistrationStartDate")}
+              <p className='auth-title__input'>
+                {tLkOg('registrationPeriods.lateRegistrationStartDate')}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
                 <MobileDatePicker
-                  toolbarTitle={tLkOg(
-                    "registrationPeriods.lateRegistrationStartDate"
-                  )}
-                  cancelText={tLkOg("editEvent.cancel")}
+                  toolbarTitle={tLkOg('registrationPeriods.lateRegistrationStartDate')}
+                  cancelText={tLkOg('editEvent.cancel')}
                   value={values.lateRegStart}
-                  onChange={(value) => setFieldValue("lateRegStart", value)}
-                  inputFormat="dd/MM/yyyy"
+                  onChange={(value) => setFieldValue('lateRegStart', value)}
+                  inputFormat='dd/MM/yyyy'
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       fullWidth
-                      error={
-                        touched.lateRegStart && Boolean(errors.lateRegStart)
-                      }
+                      error={touched.lateRegStart && Boolean(errors.lateRegStart)}
                       helperText={touched.lateRegStart && errors.lateRegStart}
                       inputProps={{
                         ...params.inputProps,
-                        placeholder: tLkOg("registrationPeriods.ddMmYy"),
+                        placeholder: tLkOg('registrationPeriods.ddMmYy'),
                       }}
                     />
                   )}
@@ -309,18 +368,16 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
               </LocalizationProvider>
             </Field>
             <Field>
-              <p className="auth-title__input">
-                {tLkOg("registrationPeriods.lateRegistrationEndDate")}
+              <p className='auth-title__input'>
+                {tLkOg('registrationPeriods.lateRegistrationEndDate')}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
                 <MobileDatePicker
-                  toolbarTitle={tLkOg(
-                    "registrationPeriods.lateRegistrationEndDate"
-                  )}
-                  cancelText={tLkOg("editEvent.cancel")}
+                  toolbarTitle={tLkOg('registrationPeriods.lateRegistrationEndDate')}
+                  cancelText={tLkOg('editEvent.cancel')}
                   value={values.lateRegEnd}
-                  onChange={(value) => setFieldValue("lateRegEnd", value)}
-                  inputFormat="dd/MM/yyyy"
+                  onChange={(value) => setFieldValue('lateRegEnd', value)}
+                  inputFormat='dd/MM/yyyy'
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -329,15 +386,12 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                       helperText={touched.lateRegEnd && errors.lateRegEnd}
                       inputProps={{
                         ...params.inputProps,
-                        placeholder: tLkOg("registrationPeriods.ddMmYy"),
+                        placeholder: tLkOg('registrationPeriods.ddMmYy'),
                       }}
                     />
                   )}
                 />
               </LocalizationProvider>
-              <ExtraInfo>
-                {tLkOg("registrationPeriods.descriptionLate")}
-              </ExtraInfo>
             </Field>
           </FieldsColumn>
         </Collapse>
@@ -346,124 +400,16 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
       <FormHR />
 
       <EventFormFooter>
-        <Cancel onClick={() => routerPush("/lk-og/profile/events")}>
-          {tLkOg("editEvent.cancel")}
+        <Cancel onClick={() => routerPush('/lk-og/profile/events')}>
+          {tLkOg('editEvent.cancel')}
         </Cancel>
-        <Submit type="submit">{tLkOg("editEvent.further")}</Submit>
+        <Submit type='submit'>{tLkOg('editEvent.further')}</Submit>
       </EventFormFooter>
     </Form>
   )
 }
 
 export default EventPeriods
-
-const validationSchema = yup.object({
-  maxParticipantCount: yup.number().required("Обязательное поле").nullable(),
-  earlyRegActive: yup.boolean(),
-  lateRegActive: yup.boolean(),
-  earlyRegStart: yup
-    .date()
-    .nullable()
-    .test({
-      message:
-        "Дата начала ранней регистрации не должна быть позднее даты окончания ранней рег.",
-      test: function (value) {
-        return this.parent.earlyRegActive
-          ? this.parent.earlyRegEnd &&
-              new Date(this.parent.earlyRegEnd).getTime() >
-                new Date(value).getTime()
-          : true
-      },
-    })
-    .test({
-      message:
-        "Дата начала ранней регистрации не должна быть позднее даты стандартной рег.",
-      test: function (value) {
-        return this.parent.earlyRegActive
-          ? this.parent.standartRegStart &&
-              new Date(this.parent.standartRegStart).getTime() >
-                new Date(value).getTime()
-          : true
-      },
-    }),
-  earlyRegEnd: yup
-    .date()
-    .nullable()
-    .test({
-      message: "Заполните поле",
-      test: function (value) {
-        return this.parent.earlyRegActive ? value : true
-      },
-    })
-    .test({
-      message:
-        "Дата окончания ранней регистрации не должна быть позднее даты стандартной рег.",
-      test: function (value) {
-        return this.parent.earlyRegActive
-          ? this.parent.standartRegStart &&
-              new Date(this.parent.standartRegStart).getTime() >
-                new Date(value).getTime()
-          : true
-      },
-    }),
-  standartRegStart: yup
-    .date()
-    .nullable()
-    .required("Заполните поле")
-    .test({
-      message:
-        "Дата начала стандартной регистрации не должна быть позднее даты окончания стандартной рег.",
-      test: function (value) {
-        return (
-          this.parent.standartRegEnd &&
-          new Date(this.parent.standartRegEnd).getTime() >
-            new Date(value).getTime()
-        )
-      },
-    })
-    .test({
-      message: "Укажите действительную дату",
-      test: function (value) {
-        return new Date().getTime() < new Date(value).getTime()
-      },
-    }),
-  standartRegEnd: yup.date().nullable().required("Заполните поле"),
-
-  lateRegStart: yup
-    .date()
-    .nullable()
-    .test({
-      message:
-        "Дата начала поздней регистрации не должна быть раньше даты стандартной рег.",
-      test: function (value) {
-        return this.parent.lateRegActive
-          ? this.parent.standartRegEnd &&
-              new Date(this.parent.standartRegEnd).getTime() <
-                new Date(value).getTime()
-          : true
-      },
-    })
-    .test({
-      message:
-        "Дата начала поздней регистрации не должна быть позднее даты окончания поздней рег.",
-      test: function (value) {
-        return this.parent.lateRegActive
-          ? this.parent.lateRegEnd &&
-              new Date(this.parent.lateRegEnd).getTime() >
-                new Date(value).getTime()
-          : true
-      },
-    }),
-  lateRegEnd: yup
-    .date()
-    .nullable()
-    .test({
-      message: "Заполните поле",
-      test: function (value) {
-        return this.parent.lateRegActive ? value : true
-      },
-    }),
-})
 
 export const FormSubTitle = styled.h3`
   font-weight: 600;

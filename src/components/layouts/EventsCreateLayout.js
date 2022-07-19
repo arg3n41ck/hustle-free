@@ -1,15 +1,15 @@
-import React from "react"
-import { BetweenIcon, StartIcon } from "../pages/LkOg/Tabs/Events/FormIcons"
-import { useRouter } from "next/router"
-import styled from "styled-components"
-import ActiveLink from "../ActiveLink"
-import LkDefaultHeader from "../ui/LKui/LKDefaultHeader"
-import { HeaderWrapper } from "../pages/LkOg/Tabs/Events/Events/Events"
-import { TitleHeader } from "../ui/LKui/HeaderContent"
-import { useEventRouteContext } from "../pages/LkOg/Tabs/Events/EventRouteProvider"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import { BetweenIcon, StartIcon } from '../pages/LkOg/Tabs/Events/FormIcons'
+import { useRouter } from 'next/router'
+import styled from 'styled-components'
+import ActiveLink from '../ActiveLink'
+import LkDefaultHeader from '../ui/LKui/LKDefaultHeader'
+import { HeaderWrapper } from '../pages/LkOg/Tabs/Events/Events/Events'
+import { TitleHeader } from '../ui/LKui/HeaderContent'
+import { useEventRouteContext } from '../pages/LkOg/Tabs/Events/EventRouteProvider'
+import { useTranslation } from 'next-i18next'
 
-function EventsCreateLayout({ onToggleSidebar, children }) {
+function EventsCreateLayout({ onToggleSidebar, children, onDraft }) {
   const {
     push: routerPush,
     pathname,
@@ -17,56 +17,50 @@ function EventsCreateLayout({ onToggleSidebar, children }) {
     query: { id: eventId },
   } = useRouter()
   const { ctxStep } = useEventRouteContext()
-  const { t: tLkOg } = useTranslation("lkOg")
+  const { t: tLkOg } = useTranslation('lkOg')
 
   const steps = (eventId) => {
     return [
       {
-        title: tLkOg("editEvent.generalInformation.generalInformation"),
-        href: !eventId
-          ? "/lk-og/profile/events/edit"
-          : "/lk-og/profile/events/edit/[id]",
-        ctxKey: "general",
+        title: tLkOg('editEvent.generalInformation.generalInformation'),
+        href: !eventId ? '/lk-og/profile/events/edit' : '/lk-og/profile/events/edit/[id]',
+        ctxKey: 'general',
         path: eventId ? `/lk-og/profile/events/edit/${eventId}` : null,
       },
       {
-        title: tLkOg("location.location"),
+        title: tLkOg('location.location'),
         href: `/lk-og/profile/events/edit/[id]/location`,
-        ctxKey: "location",
+        ctxKey: 'location',
         path: eventId ? `/lk-og/profile/events/edit/${eventId}/location` : null,
       },
       {
-        title: tLkOg("registrationPeriods.registrationPeriods"),
+        title: tLkOg('registrationPeriods.registrationPeriods'),
         href: `/lk-og/profile/events/edit/[id]/periods`,
-        ctxKey: "periods",
+        ctxKey: 'periods',
         path: eventId ? `/lk-og/profile/events/edit/${eventId}/periods` : null,
       },
       {
-        title: tLkOg("coverAndDescription.coverAndDescription"),
+        title: tLkOg('coverAndDescription.coverAndDescription'),
         href: `/lk-og/profile/events/edit/[id]/description`,
-        ctxKey: "description",
-        path: eventId
-          ? `/lk-og/profile/events/edit/${eventId}/description`
-          : null,
+        ctxKey: 'description',
+        path: eventId ? `/lk-og/profile/events/edit/${eventId}/description` : null,
       },
       {
-        title: tLkOg("tournamentRules.tournamentRules"),
+        title: tLkOg('tournamentRules.tournamentRules'),
         href: `/lk-og/profile/events/edit/[id]/rules`,
-        ctxKey: "rules",
+        ctxKey: 'rules',
         path: eventId ? `/lk-og/profile/events/edit/${eventId}/rules` : null,
       },
       {
-        title: tLkOg("categoriesOfParticipants.categoriesOfParticipants"),
+        title: tLkOg('categoriesOfParticipants.categoriesOfParticipants'),
         href: `/lk-og/profile/events/edit/[id]/participant-categories`,
-        ctxKey: "participantCategories",
-        path: eventId
-          ? `/lk-og/profile/events/edit/${eventId}/participant-categories`
-          : null,
+        ctxKey: 'participantCategories',
+        path: eventId ? `/lk-og/profile/events/edit/${eventId}/participant-categories` : null,
       },
       {
-        title: tLkOg("contacts.contacts"),
+        title: tLkOg('contacts.contacts'),
         href: `/lk-og/profile/events/edit/[id]/contacts`,
-        ctxKey: "contacts",
+        ctxKey: 'contacts',
         path: eventId ? `/lk-og/profile/events/edit/${eventId}/contacts` : null,
       },
       // {
@@ -78,15 +72,18 @@ function EventsCreateLayout({ onToggleSidebar, children }) {
   }
   const readySteps = steps(eventId)
 
-  
-
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
-          <TitleHeader>{tLkOg("myEvents.createEvent")}</TitleHeader>
-          <SaveAsDraft onClick={() => routerPush("/lk-og/profile/events/")}>
-           {tLkOg("myEvents.saveToArchive")}
+          <TitleHeader>{tLkOg('myEvents.createEvent')}</TitleHeader>
+          <SaveAsDraft
+            type='submit'
+            onClick={() => {
+              onDraft ? onDraft() : routerPush('/lk-og/profile/events')
+            }}
+          >
+            {tLkOg('myEvents.saveToArchive')}
           </SaveAsDraft>
         </HeaderWrapper>
       </LkDefaultHeader>
@@ -118,9 +115,7 @@ function EventsCreateLayout({ onToggleSidebar, children }) {
                 <ActiveLink
                   disabled
                   href={ctxStep[ctxKey]?.access && path ? path : asPath}
-                  activeClassName={
-                    ctxStep[ctxKey]?.access && path ? "activeECLink" : ""
-                  }
+                  activeClassName={ctxStep[ctxKey]?.access && path ? 'activeECLink' : ''}
                 >
                   <a>
                     {icon}
@@ -205,4 +200,3 @@ const Step = styled.div`
     }
   }
 `
-
