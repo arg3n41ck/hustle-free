@@ -71,11 +71,11 @@ function Index() {
           'post',
         )
         routerPush(
-          isDraft
-            ? routerPush('/lk-og/profile/events')
-            : `/lk-og/profile/events/edit/${data.id}/location`,
+          isDraft ? '/lk-og/profile/events' : `/lk-og/profile/events/edit/${data.id}/location`,
         )
+        setIsDraft(false)
       } catch ({ response: { data } }) {
+        setIsDraft(false)
         if (data['Wrong date']) {
           toast.error('Указаны неправильные даты!')
         }

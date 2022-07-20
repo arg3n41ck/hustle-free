@@ -5,5 +5,5 @@ export function phoneFormatter(phone) {
 }
 
 export function normalizePhone(phone) {
-  return parseInt(phone.replace(/[^0-9]/g, ''))
+  return parseInt((phone || '').replace(/[^0-9]/g, ''))
 }

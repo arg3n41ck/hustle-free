@@ -38,13 +38,12 @@ function TeamTabs() {
 
   const onSubmit = useCallback(async (submitData) => {
     try {
-      const { data } = await formDataHttp(submitData, 'accounts/team/', 'post').then(async () => {
-        console.log('Completed')
+      await formDataHttp(submitData, 'accounts/team/', 'post').then(async ({ data }) => {
         setCookie('token', data.access, 999)
         setCookie('refresh', data.refresh, 999999)
-        toast.success(tAuth('toast.successActivation'))
-        await router.push('/')
       })
+      toast.success(tAuth('toast.successActivation'))
+      await router.push('/')
     } catch (e) {
       toast.error(tAuth('toast.someWrong'))
     }

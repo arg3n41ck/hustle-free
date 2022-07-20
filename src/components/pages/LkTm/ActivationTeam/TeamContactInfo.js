@@ -20,6 +20,7 @@ import { selectCountriesAndCities } from '../../../../redux/components/countries
 import { LocationIcon } from '../../Events/EventsCatalog/EventsFilter'
 import { useTranslation } from 'next-i18next'
 import { useRef } from 'react'
+import { normalizePhone } from '../../../../helpers/phoneFormatter'
 
 const regMatch =
   /^((http|https):\/\/)?(www.)?(?!.*(http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+(\/)?.([\w\?[a-zA-Z-_%\/@?]+)*([^\/\w\?[a-zA-Z0-9_-]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/
@@ -87,11 +88,11 @@ const TeamContactInfo = ({ data, setData, setView }) => {
         .nullable(),
       phone_coach: yup
         .string()
-        .test('phone_coach', tCommon('validation.phoneNumberMin'), (value) => {
-          if (typeof value === 'undefined') return true
-          return value?.replace(/[^0-9]/g, '')?.length >= 11
-        })
-        .nullable(),
+        .nullable()
+        .test({
+          test: (value) => (normalizePhone(value || '') ? value.length === 12 : true),
+          message: tCommon('validation.phoneNumberMin'),
+        }),
     }),
   )
 
@@ -134,7 +135,9 @@ const TeamContactInfo = ({ data, setData, setView }) => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
-  console.log({ errors: formik.errors, touched: formik.touched })
+
+  console.log(formik.errors, formik.values)
+
   return (
     <Form onSubmit={formik.handleSubmit}>
       <div className='auth-wrapper__input'>
@@ -178,6 +181,8 @@ const TeamContactInfo = ({ data, setData, setView }) => {
                   ...params.InputProps,
                   startAdornment: <LocationIcon />,
                 }}
+                error={formik.touched.country && Boolean(formik.errors.country)}
+                helperText={formik.touched.country && formik.errors.country}
               />
             )}
           />
@@ -201,6 +206,8 @@ const TeamContactInfo = ({ data, setData, setView }) => {
                   ...params.InputProps,
                   startAdornment: <LocationIcon />,
                 }}
+                error={formik.touched.city && Boolean(formik.errors.city)}
+                helperText={formik.touched.city && formik.errors.city}
               />
             )}
           />
@@ -242,10 +249,14 @@ const TeamContactInfo = ({ data, setData, setView }) => {
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>{tAuth('team.coachPhone')}</p>
           <InputMask
-            mask='+7 (999) 999 99 99'
+            mask='+7(999) 999 99 99'
             name={'phone_coach'}
             value={formik.values.phone_coach}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              if (normalizePhone(e.target.value || '') == 7) {
+                formik.setFieldValue('phone_coach', '')
+              } else formik.setFieldValue('phone_coach', `+${e.target.value.replace(/\D/gi, '')}`)
+            }}
           >
             {(inputProps) => (
               <TextField
@@ -396,7 +407,7 @@ const TeamContactInfo = ({ data, setData, setView }) => {
         </FormControl>
       </div>
 
-      <AuthButton disabled={!formik.isValid} active={formik.isValid} type='submit'>
+      <AuthButton disabled={!formik.dirty} active={formik.dirty} type='submit'>
         {tAuth('common.next')}
       </AuthButton>
     </Form>

@@ -57,7 +57,7 @@ const Index = () => {
             .post('/accounts/auth/users/', { ...values })
             .then(() => setToggleInfoModal(true))
         } catch (e) {
-          setErrorMessage(tAuth('toas.emailExists'))
+          setErrorMessage(tAuth('toast.emailExists'))
         }
         setLoading(false)
       }
