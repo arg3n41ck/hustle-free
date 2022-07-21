@@ -1,44 +1,40 @@
-import React from "react"
-import styled from "styled-components"
-import Athlete from "../../ui/Ahtletes/Athlete"
-import { useSelector } from "react-redux"
-import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import styled from 'styled-components'
+import Athlete from '../../ui/Ahtletes/Athlete'
+import { useSelector } from 'react-redux'
+import { selectCountriesAndCities } from '../../../redux/components/countriesAndCities'
+import { useTranslation } from 'next-i18next'
 
 function CommunitesAthletesList({ data }) {
   const [countries] = useSelector(selectCountriesAndCities)
-  const { t: tCommon } = useTranslation("common")
-  const { t: tCommunities } = useTranslation("communities")
+  const { t: tCommon } = useTranslation('common')
+  const { t: tCommunities } = useTranslation('communities')
 
   return (
     <CommunitesAthletesListItems>
       {!!data?.length &&
         data.map(({ id, user }) => (
-          <Athlete
-            key={`communities-${id}-${user?.id}`}
-            userId={id}
-            user={user}
-          >
+          <Athlete key={`communities-${id}-${user?.id}`} athleteId={id} user={user}>
             <AthletesBottomInfo>
               <AthletesBottomItem>
                 <AthletesBottomItemTextHeading>
-                  {tCommunities("communities.country")}
+                  {tCommunities('communities.country')}
                 </AthletesBottomItemTextHeading>
                 <AthletesBottomItemText>
                   {countries.find(({ id }) => id === user.country)?.name ||
-                    tCommunities("communities.notSpecified")}
+                    tCommunities('communities.notSpecified')}
                 </AthletesBottomItemText>
               </AthletesBottomItem>
               <AthletesBottomItem>
                 <AthletesBottomItemTextHeading>
-                  {tCommon("form.fieldsNames.gender.label")}
+                  {tCommon('form.fieldsNames.gender.label')}
                 </AthletesBottomItemTextHeading>
                 <AthletesBottomItemText>
-                  {user?.gender === "male"
-                    ? tCommunities("communities.male")
-                    : user?.gender === "female"
-                    ? tCommunities("communities.female")
-                    : tCommunities("communities.notSpecified")}
+                  {user?.gender === 'male'
+                    ? tCommunities('communities.male')
+                    : user?.gender === 'female'
+                    ? tCommunities('communities.female')
+                    : tCommunities('communities.notSpecified')}
                 </AthletesBottomItemText>
               </AthletesBottomItem>
             </AthletesBottomInfo>
@@ -62,7 +58,7 @@ const AthletesBottomItem = styled.div`
 `
 
 const AthletesBottomItemTextHeading = styled.p`
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -71,7 +67,7 @@ const AthletesBottomItemTextHeading = styled.p`
 `
 
 const AthletesBottomItemText = styled.p`
-  font-family: "Inter";
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

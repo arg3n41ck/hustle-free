@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useRef } from 'react'
 import { Avatar } from '@mui/material'
 import styled from 'styled-components'
 import { calendar, email, gender, location, phone } from './Icons'
@@ -52,9 +52,8 @@ function AthleteUserData({ user }) {
   const userCity = cities.find(({ id }) => id === user.city)?.name || ''
   const userCountry = countries.find(({ id }) => id === user.country)?.name || ''
 
-  const contacts = useMemo(
-    () => getContacts({ ...user, city: userCity, country: userCountry }),
-    [user],
+  const { current: contacts } = useRef(
+    getContacts({ ...user, city: userCity, country: userCountry }),
   )
 
   return (

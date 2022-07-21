@@ -1,21 +1,19 @@
-import React, { useMemo } from "react"
-import { Avatar } from "@mui/material"
-import styled from "styled-components"
-import { useSelector } from "react-redux"
-import { selectCountriesAndCities } from "../../../redux/components/countriesAndCities"
-import { useRouter } from "next/router"
+import React, { useMemo } from 'react'
+import { Avatar } from '@mui/material'
+import styled from 'styled-components'
+import { useSelector } from 'react-redux'
+import { selectCountriesAndCities } from '../../../redux/components/countriesAndCities'
+import { useRouter } from 'next/router'
 
 function Athlete({ children, user, athleteId }) {
   const [countries, cities] = useSelector(selectCountriesAndCities)
   const { push: routerPush, pathname } = useRouter()
   const { countryName, cityName } = useMemo(() => {
-    const city = cities?.length
-      ? cities.find(({ id }) => id === user?.city)
-      : { name: "" }
+    const city = cities?.length ? cities.find(({ id }) => id === user?.city) : { name: '' }
     const country = countries?.length
       ? countries.find(({ id }) => id === user?.country)
-      : { name: "" }
-    return { countryName: country?.name || "", cityName: city?.name || "" }
+      : { name: '' }
+    return { countryName: country?.name || '', cityName: city?.name || '' }
   }, [user, children])
 
   return (
@@ -24,17 +22,17 @@ function Athlete({ children, user, athleteId }) {
         <ItemWrapper>
           <Item>
             <Avatar
-              alt={`${user?.avatar || ""}`}
-              src={user?.avatar || ""}
-              sx={{ width: "100%", height: "100%" }}
+              alt={`${user?.avatar || ''}`}
+              src={user?.avatar || ''}
+              sx={{ width: '100%', height: '100%' }}
             />
             <div>
               <ItemTitle
-                onClick={() =>
+                onClick={() => {
                   routerPush(athleteId ? `/athlete/${athleteId}` : pathname)
-                }
+                }}
               >
-                {user?.firstName || ""} {user?.lastName || ""}
+                {user?.firstName || ''} {user?.lastName || ''}
               </ItemTitle>
               {countryName && cityName && (
                 <ItemDescription>{`${countryName}, г. ${cityName}`}</ItemDescription>
