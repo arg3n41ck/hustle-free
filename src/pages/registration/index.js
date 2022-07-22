@@ -170,7 +170,6 @@ const Index = () => {
                 <a
                   href='/docs/privacy_policy.pdf'
                   className='auth-link'
-                  download
                   target='_blank'
                   rel='noreferrer'
                 >
@@ -180,7 +179,6 @@ const Index = () => {
                 <a
                   href='/docs/privacy_policy.pdf'
                   className='auth-link'
-                  download
                   target='_blank'
                   rel='noreferrer'
                 >
