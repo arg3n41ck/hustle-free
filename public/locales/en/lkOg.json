@@ -117,6 +117,8 @@
     "standartPeriodRegistrationStart": "The start date of a standard tournament must not be later than the standard end date of the tournament",
     "validDate": "Enter a valid date",
     "coverValid": "The cover of the tournament is a required field!",
+    "ageFromValidate": "Возраст 'от' должен быть меньше возраста 'до'!",
+    "weightFromValidate": "Вес 'от' должен быть меньше веса 'до'!",
     "chooseAtLeastOneCategory": "Choose at least one category of participants!",
     "regPeriods": {
       "earlyStartEarlyEnd": "The start date of the early registration must not be later than the end date of the early registration.",

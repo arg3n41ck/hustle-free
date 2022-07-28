@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { theme } from '../../styles/theme'
-import clearCookies from '../../helpers/clearCookies'
+import clearCookies from '../../utils/clearCookies'
 import { LogoIcon } from '../../assets/svg/icons'
 import { lkOgTabs } from '../pages/LkOg/Tabs/tabConstants'
 import { lkTmTabs } from '../pages/LkTm/Tabs/tabConstants'
@@ -121,9 +121,7 @@ const Header = () => {
               </svg>
             </UserMenu>
           ) : (
-            <LoginButton onClick={() => outHandler()}>
-              {tHeader('userTabs.login')}
-            </LoginButton>
+            <LoginButton onClick={() => outHandler()}>{tHeader('userTabs.login')}</LoginButton>
           )}
           <Popover
             sx={{

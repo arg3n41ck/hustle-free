@@ -82,11 +82,11 @@ const Edits = () => {
         .string()
         .nullable()
         .test({
-          test: (value) => (value ? value.length === 12 : true),
+          test: (value) => (normalizePhone(value) ? value.length === 12 : true),
           message: tCommon('validation.phoneNumberMin'),
         }),
       gender: yup.mixed().nullable().required(tCommon('validation.required')),
-      dateBirthday: yup.mixed().nullable(),
+      dateBirthday: yup.date().nullable().required(tCommon('validation.required')),
       country: yup.string().required(tCommon('validation.required')).nullable(),
       city: yup.string().required(tCommon('validation.required')).nullable(),
     }),
@@ -247,9 +247,7 @@ const Edits = () => {
           className='auth-wrapper__input'
         >
           <div className='auth-wrapper__input'>
-            <p className='auth-title__input'>
-              {tCommon('form.fieldsNames.birthDate')} ({tCommon('form.fieldsNames.notNecessary')})
-            </p>
+            <p className='auth-title__input'>{tCommon('form.fieldsNames.birthDate')}</p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
               <MobileDatePicker
                 toolbarTitle={'Выбрать дату'}

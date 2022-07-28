@@ -27,7 +27,6 @@ const getTeamData = async (teamId) => {
 function TeamInfo({ onToggleSidebar, teamId, userStatusInTeam, checkUserStatus }) {
   const [team, setTeam] = useState(null)
   const [countries] = useSelector(selectCountriesAndCities)
-  const user = useSelector((state) => state.user.user)
   const { t: tLkTm } = useTranslation('lkTm')
 
   const dispatch = useDispatch()

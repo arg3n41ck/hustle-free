@@ -1,9 +1,9 @@
-import axios from "axios"
-import { API_URL } from "./constants"
-import { camelizeKeys, decamelizeKeys } from "humps"
-import { getCookie, setCookie } from "./JWTService"
-import { toast } from "react-toastify"
-import clearCookies from "../helpers/clearCookies"
+import axios from 'axios'
+import { API_URL } from './constants'
+import { camelizeKeys, decamelizeKeys } from 'humps'
+import { getCookie, setCookie } from './JWTService'
+import { toast } from 'react-toastify'
+import clearCookies from '../utils/clearCookies'
 
 const $api = axios.create({
   baseURL: API_URL,
@@ -18,14 +18,14 @@ const $api = axios.create({
 
 $api.interceptors.request.use(
   (config) => {
-    let token = getCookie("token")
+    let token = getCookie('token')
     if (token) {
       config.headers.Authorization = `Token ${token}`
     }
     config.data = decamelizeKeys(config.data)
     return config
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 )
 
 $api.interceptors.response.use(
@@ -34,19 +34,13 @@ $api.interceptors.response.use(
     return config
   },
   async (error) => {
-    const refreshToken = await getCookie("refresh")
-    if (
-      error?.response?.status === 401 &&
-      error?.config?.url !== "/accounts/auth/jwt/refresh/"
-    ) {
+    const refreshToken = await getCookie('refresh')
+    if (error?.response?.status === 401 && error?.config?.url !== '/accounts/auth/jwt/refresh/') {
       try {
-        const { data } = await axios.post(
-          `${API_URL}accounts/auth/jwt/refresh/`,
-          {
-            refresh: getCookie("refresh"),
-          }
-        )
-        await setCookie("token", data.access, 99999)
+        const { data } = await axios.post(`${API_URL}accounts/auth/jwt/refresh/`, {
+          refresh: getCookie('refresh'),
+        })
+        await setCookie('token', data.access, 99999)
         return axios({
           ...error.config,
           headers: {
@@ -54,21 +48,18 @@ $api.interceptors.response.use(
           },
         })
       } catch (e) {
-        console.log("clearing token AXIOS")
+        console.log('clearing token AXIOS')
         clearCookies()
-        if (getCookie("token")) {
-          location.href = "/login"
+        if (getCookie('token')) {
+          location.href = '/login'
         }
-        refreshToken &&
-          toast.error(
-            "Выполните авторизацию для получения полного доступа к сайту"
-          )
+        refreshToken && toast.error('Выполните авторизацию для получения полного доступа к сайту')
 
         return Promise.reject(error)
       }
     }
     return Promise.reject(error)
-  }
+  },
 )
 
 export default $api

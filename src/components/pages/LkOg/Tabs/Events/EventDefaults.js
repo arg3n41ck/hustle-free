@@ -7,17 +7,17 @@ import { BoxIcon } from '../../../Events/EventsCatalog/EventsFilter'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { ru } from 'date-fns/locale'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import { MobileDatePicker } from '@mui/lab'
+import { DatePicker } from '@mui/lab'
 import { asiaTimezone } from '../../../../../services/asia-timezone'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
 
 function EventDefaults({ formik }) {
-  const { touched, errors, values, handleChange, setFieldValue, handleSubmit } = formik
   const { t: tLkOg } = useTranslation('lkOg')
   const [sportTypes] = useSelector(selectSportTypes)
-
   const dispatch = useDispatch()
+
+  const { touched, errors, values, handleChange, setFieldValue, handleSubmit } = formik
 
   useEffect(() => {
     dispatch(fetchSportTypes())
@@ -43,12 +43,17 @@ function EventDefaults({ formik }) {
         <p className='auth-title__input'>{tLkOg('editEvent.generalInformation.typeSport')}</p>
         {!!sportTypes?.length && (
           <Autocomplete
+            value={sportTypes.find(({ id }) => id === values.typeSport) || null}
             noOptionsText={tLkOg('editEvent.generalInformation.nothingFound')}
-            onChange={(_, value) => setFieldValue('typeSport', value.id)}
+            onChange={(_, value) => setFieldValue('typeSport', value?.id || null)}
             options={sportTypes.map((option) => option)}
             getOptionLabel={(option) => option.name}
             fullWidth
-            value={sportTypes.find(({ id }) => id === values.typeSport)}
+            isOptionEqualToValue={() =>
+              sportTypes.some(({ id }) => {
+                return id === values.typeSport
+              })
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -71,7 +76,7 @@ function EventDefaults({ formik }) {
           {tLkOg('editEvent.generalInformation.tournamentStartDate')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-          <MobileDatePicker
+          <DatePicker
             toolbarTitle={tLkOg('editEvent.generalInformation.tournamentStartDate')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.dateStart}
@@ -98,12 +103,13 @@ function EventDefaults({ formik }) {
           {tLkOg('editEvent.generalInformation.tournamentEndDate')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-          <MobileDatePicker
+          <DatePicker
             toolbarTitle={tLkOg('editEvent.generalInformation.tournamentEndDate')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.dateEnd}
             onChange={(value) => setFieldValue('dateEnd', value)}
             inputFormat='dd/MM/yyyy'
+            disableCloseOnSelect={false}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -124,11 +130,12 @@ function EventDefaults({ formik }) {
         <p className='auth-title__input'>{tLkOg('editEvent.generalInformation.timezone')}</p>
         <Autocomplete
           noOptionsText={tLkOg('editEvent.generalInformation.nothingFound')}
-          onChange={(_, value) => value && setFieldValue('timezone', value.tz)}
+          onChange={(_, value) => value && setFieldValue('timezone', value?.tz || null)}
           options={asiaTimezone.map((option) => option)}
           getOptionLabel={(option) => `${option.country} ${option.tz}`}
           fullWidth
-          value={asiaTimezone.find(({ tz }) => tz === values.timezone)}
+          value={asiaTimezone.find(({ tz }) => tz === values.timezone) || null}
+          isOptionEqualToValue={() => asiaTimezone.some(({ tz }) => tz === values.timezone)}
           renderInput={(params) => (
             <TextField
               {...params}

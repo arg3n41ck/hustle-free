@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react"
-import LkLayout from "../../../../../../components/layouts/LkLayout"
-import { lkOgTabs } from "../../../../../../components/pages/LkOg/Tabs/tabConstants"
-import EventsCreateLayout from "../../../../../../components/layouts/EventsCreateLayout"
-import EventDescription from "../../../../../../components/pages/LkOg/Tabs/Events/EventDescription"
-import { useRouter } from "next/router"
-import { getEventDefaultValues } from "./location"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import React, { useEffect, useState } from 'react'
+import LkLayout from '../../../../../../components/layouts/LkLayout'
+import { lkOgTabs } from '../../../../../../components/pages/LkOg/Tabs/tabConstants'
+import EventsCreateLayout from '../../../../../../components/layouts/EventsCreateLayout'
+import EventDescription from '../../../../../../components/pages/LkOg/Tabs/Events/EventDescription'
+import { useRouter } from 'next/router'
+import { getEventDefaultValues } from './location'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 function Description() {
   const {
@@ -28,10 +28,7 @@ function Description() {
       <EventsCreateLayout>
         {/*<RouterLoader open={!eventDefaultValues} />*/}
         {eventDefaultValues && (
-          <EventDescription
-            defaultValues={eventDefaultValues}
-            eventId={eventId}
-          />
+          <EventDescription defaultValues={eventDefaultValues} eventId={eventId} />
         )}
       </EventsCreateLayout>
     </LkLayout>
@@ -40,15 +37,8 @@ function Description() {
 
 export default Description
 
-export const getStaticProps = async ({ locale }) => ({
+export const getServerSideProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "common", "lkOg", "footer"])),
+    ...(await serverSideTranslations(locale, ['header', 'common', 'lkOg', 'footer'])),
   },
 })
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [], //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
-  }
-}

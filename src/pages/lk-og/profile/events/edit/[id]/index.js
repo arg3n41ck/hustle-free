@@ -8,9 +8,9 @@ import { getEventDefaultValues } from './location'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { formDataHttp } from '../../../../../../helpers/formDataHttp'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'next-i18next'
+import { formDataHttp } from '../../../../../../helpers/formDataHttp'
 
 const emptyInitialValues = {
   name: '',
@@ -24,10 +24,10 @@ const emptyInitialValues = {
 function Index() {
   const {
     query: { id: eventId },
+    push: routerPush,
   } = useRouter()
-  const [eventDefaultValues, setEventDefaultValues] = useState(null)
-
-  const { push: routerPush } = useRouter()
+  const [eventDefaultValues, setEventDefaultValues] = useState(emptyInitialValues)
+  const [isDraft, setIsDraft] = useState(false)
   const { t: tLkOg } = useTranslation('lkOg')
 
   const { current: validationSchema } = useRef(
@@ -59,17 +59,10 @@ function Index() {
       // formatEvent: yup.string().required(tLkOg('validation.required')).nullable(),
     }),
   )
-
-  useEffect(() => {
-    eventId &&
-      getEventDefaultValues(`/organizer/events/${eventId}/`).then((data) => {
-        setEventDefaultValues(data)
-      })
-  }, [eventId])
-
   const formik = useFormik({
-    initialValues: eventDefaultValues || emptyInitialValues,
+    initialValues: eventDefaultValues,
     validationSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       try {
         const { data } = await formDataHttp(
@@ -79,22 +72,37 @@ function Index() {
             dateStart: new Date(values.dateStart).toISOString(),
             dateEnd: new Date(values.dateEnd).toISOString(),
           },
-          `organizer/events/${eventId}/`,
-          'post',
+          `organizer/events/${eventId ? eventId + '/' : ''}`,
+          eventId ? 'put' : 'post',
         )
-        routerPush(`/lk-og/profile/events/edit/${data.id}/location`)
-      } catch ({ response: { data } }) {
-        if (data['Wrong date']) {
+        routerPush(
+          isDraft ? `/lk-og/profile/events` : `/lk-og/profile/events/edit/${data.id}/location`,
+        )
+      } catch (error) {
+        console.log(error)
+        if (error?.response?.data['Wrong date']) {
           toast.error('Указаны неправильные даты!')
         }
       }
     },
   })
 
+  useEffect(() => {
+    eventId &&
+      getEventDefaultValues(`/organizer/events/${eventId}/`).then((data) => {
+        setEventDefaultValues(data)
+      })
+  }, [eventId])
+
+  const onDraft = () => {
+    setIsDraft(true)
+    formik.submitForm()
+  }
+
   return (
     <LkLayout tabs={lkOgTabs}>
-      <EventsCreateLayout>
-        {eventDefaultValues && <EventDefaults formik={formik} />}
+      <EventsCreateLayout onDraft={onDraft}>
+        <EventDefaults formik={formik} />
       </EventsCreateLayout>
     </LkLayout>
   )

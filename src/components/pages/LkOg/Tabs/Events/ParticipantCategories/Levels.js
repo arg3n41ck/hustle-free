@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import ParticipantCategoriesModal from './Modal'
-import { Form } from '../EventDefaults'
 import $api from '../../../../../../services/axios'
 import styled from 'styled-components'
 import { Checkbox, FormControlLabel, TextField } from '@mui/material'
@@ -37,13 +36,12 @@ function Levels({
       message: tLkOg('validation.chooseAtLeastOneLevel'),
     }),
   })
-
   const [levels, setLevels] = useState(null)
   const [fieldError, setFieldError] = useState(null)
   const [newLevel, setNewLevel] = useState('')
   const { handleSubmit, setFieldValue, touched, errors, values } = useFormik({
     initialValues: {
-      levels: defaultValues || [],
+      levels: defaultValues,
     },
     validationSchema,
     onSubmit: (values) => submit(values),
@@ -68,7 +66,8 @@ function Levels({
   const handleOnDeleteLevel = useCallback(
     async (id) => {
       await $api.delete(`/directory/discipline_level/${id}/`)
-      setSelectedLevels((s) => s.filter((_id) => _id !== id))
+      const newLevels = levels.filter((level) => id !== id)
+      setFieldValue('levels', newLevels)
       await getLevelsBySportType(sportType).then(setLevels)
     },
     [levels],
@@ -84,7 +83,7 @@ function Levels({
       onSubmit={handleSubmit}
     >
       <PCFieldName>{tLkOg('categoriesOfParticipants.levelsCategories')}</PCFieldName>
-      <Form>
+      <FormWrapper>
         <LevelsUl>
           {!!levels?.length &&
             levels.map(({ name, id, isManual }) => {
@@ -93,7 +92,7 @@ function Levels({
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={values.levels.includes(id)}
+                        checked={!!values?.levels?.length && values.levels.includes(id)}
                         onChange={({ target: { checked } }) =>
                           setFieldValue(
                             'levels',
@@ -116,45 +115,63 @@ function Levels({
             })}
 
           <LevelLi>
-            <AddButton
-              onClick={async () => {
-                if ((newLevel || '').split(' ').join('')) {
-                  await handleOnBlurNewLevel(newLevel)
-                  setNewLevel('')
-                  return
-                }
-                setFieldError('Заполните поле!')
-              }}
-              type='button'
-            >
-              {add}
-            </AddButton>
-            <TextField
-              sx={{
-                '& .MuiInputBase-colorPrimary': {
-                  color: '#828282',
-                  '&::before': { borderBottomColor: '#828282' },
-                },
-              }}
-              onChange={({ target: { value } }) => {
-                setNewLevel(value)
-                setFieldError(null)
-              }}
-              variant='standard'
-              value={newLevel}
-              placeholder={tLkOg('categoriesOfParticipants.addNewLevel')}
-              error={fieldError || (touched.levels && Boolean(errors.levels))}
-              helperText={fieldError || (touched.levels && errors.levels)}
-              fullWidth
-            />
+            <div>
+              <LevelForm
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  if ((newLevel || '').split(' ').join('')) {
+                    return handleOnBlurNewLevel(newLevel).then(() => setNewLevel(''))
+                  }
+                  setFieldError('Заполните поле!')
+                }}
+              >
+                <AddButton
+                  onClick={async () => {
+                    if ((newLevel || '').split(' ').join('')) {
+                      await handleOnBlurNewLevel(newLevel)
+                      setNewLevel('')
+                      return
+                    }
+                    setFieldError('Заполните поле!')
+                  }}
+                  type='button'
+                >
+                  {add}
+                </AddButton>
+                <TextField
+                  sx={{
+                    '& .MuiInputBase-colorPrimary': {
+                      color: '#828282',
+                      '&::before': { borderBottomColor: '#828282' },
+                    },
+                  }}
+                  onChange={({ target: { value } }) => {
+                    setNewLevel(value)
+                    setFieldError(null)
+                  }}
+                  variant='standard'
+                  value={newLevel}
+                  placeholder={tLkOg('categoriesOfParticipants.addNewLevel')}
+                  fullWidth
+                />
+              </LevelForm>
+              {<Error>{fieldError || (touched.levels && errors.levels)}</Error>}
+            </div>
           </LevelLi>
         </LevelsUl>
-      </Form>
+      </FormWrapper>
     </ParticipantCategoriesModal>
   )
 }
 
 export default Levels
+
+const FormWrapper = styled.div`
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 24px;
+`
 
 const LevelsUl = styled.ul``
 
@@ -184,6 +201,22 @@ const LevelLi = styled.li`
       display: block;
     }
   }
+`
+
+const LevelForm = styled.form`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const Error = styled.p`
+  color: #d32f2f;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.66;
+  letter-spacing: 0.03333em;
+  text-align: left;
+  margin: 5px 0 0;
 `
 
 const ClearIcon = ({ onClick }) => (

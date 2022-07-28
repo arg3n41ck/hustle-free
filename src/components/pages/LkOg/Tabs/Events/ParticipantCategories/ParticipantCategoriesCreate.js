@@ -97,7 +97,7 @@ function ParticipantCategoriesCreate({ onCreatePC, onCloseModals, open, eventId,
         <Weight
           open={step === 'weight' && open}
           onClose={onClose}
-          onBack={() => setStep('levels')}
+          onBack={() => setStep('age')}
           name={initialState.name}
           defaultValues={{
             fromWeight: initialState.fromWeight,

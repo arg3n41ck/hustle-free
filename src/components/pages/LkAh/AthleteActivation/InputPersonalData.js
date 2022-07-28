@@ -59,13 +59,12 @@ const InputPersonalData = () => {
         formik.values.password &&
         !Boolean(formik.errors.password)
       ) {
-        toast.info('Ожидайте ответа от сервера')
         try {
           try {
             const { data: _data } = await $api.post('/accounts/athlete/', values)
             setCookie('token', _data.access, 999)
             setCookie('refresh', _data.refresh, 999999)
-            toast.success('Вы успешно активировали свои учетные данные!')
+            toast.success(tAuth('toast.successActivation'))
             await router.push('/')
           } catch (e) {}
         } catch (e) {}

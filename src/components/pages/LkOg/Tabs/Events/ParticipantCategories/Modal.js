@@ -21,7 +21,7 @@ function ParticipantCategoriesModal({ open, onClose, onBack, onSubmit, title, ed
         <Content>{children}</Content>
         <Footer>
           <Button onClick={onBack}>{tLkOg('editEvent.back')}</Button>
-          <Button type='submit' onClick={onSubmit} className='primary'>
+          <Button type='button' onClick={onSubmit} className='primary'>
             {edit ? tLkOg('categoriesOfParticipants.apply') : tLkOg('editEvent.further')}
           </Button>
         </Footer>

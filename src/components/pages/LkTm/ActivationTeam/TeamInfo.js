@@ -54,7 +54,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
       setImageUrl(URL.createObjectURL(event.target.files[0]))
     }
   }
-  console.log(formik.errors)
+
   return (
     <Form onSubmit={formik.handleSubmit}>
       <div className='auth-wrapper__input'>

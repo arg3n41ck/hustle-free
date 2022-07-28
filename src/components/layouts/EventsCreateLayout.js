@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { BetweenIcon, StartIcon } from '../pages/LkOg/Tabs/Events/FormIcons'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
@@ -70,7 +70,7 @@ function EventsCreateLayout({ onToggleSidebar, children, onDraft }) {
       // },
     ]
   }
-  const readySteps = steps(eventId)
+  const readySteps = useMemo(() => steps(eventId), [eventId])
 
   return (
     <div>

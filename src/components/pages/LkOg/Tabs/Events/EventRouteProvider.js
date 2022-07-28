@@ -1,40 +1,40 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { createContext, useContext } from "react"
-import $api from "../../../../../services/axios"
-import { useRouter } from "next/router"
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext } from 'react'
+import $api from '../../../../../services/axios'
+import { useRouter } from 'next/router'
 
 const EventRouteContext = createContext()
 
 const steps = [
-  "general",
-  "location",
-  "periods",
-  "description",
-  "rules",
-  "participantCategories",
-  "contacts",
+  'general',
+  'location',
+  'periods',
+  'description',
+  'rules',
+  'participantCategories',
+  'contacts',
 ]
 
 const eventProfileFormPaths = [
-  "/lk-og/profile/events/edit/[id]",
-  "/lk-og/profile/events/edit/[id]/location",
-  "/lk-og/profile/events/edit/[id]/contacts",
-  "/lk-og/profile/events/edit/[id]/description",
-  "/lk-og/profile/events/edit/[id]/participant-categories",
-  "/lk-og/profile/events/edit/[id]/periods",
-  "/lk-og/profile/events/edit/[id]/rules",
-  "/lk-og/profile/events/edit/[id]",
-  "/lk-og/profile/events/edit",
+  '/lk-og/profile/events/edit/[id]',
+  '/lk-og/profile/events/edit/[id]/location',
+  '/lk-og/profile/events/edit/[id]/contacts',
+  '/lk-og/profile/events/edit/[id]/description',
+  '/lk-og/profile/events/edit/[id]/participant-categories',
+  '/lk-og/profile/events/edit/[id]/periods',
+  '/lk-og/profile/events/edit/[id]/rules',
+  '/lk-og/profile/events/edit/[id]',
+  '/lk-og/profile/events/edit',
 ]
 
 const pageNames = {
-  general: "general",
-  location: "location",
-  periods: "periods",
-  description: "description",
-  rules: "rules",
-  participantCategories: "participant-categories",
-  contacts: "contacts",
+  general: 'general',
+  location: 'location',
+  periods: 'periods',
+  description: 'description',
+  rules: 'rules',
+  participantCategories: 'participant-categories',
+  contacts: 'contacts',
 }
 
 function EventRouteWrapper({ children }) {
@@ -86,7 +86,7 @@ function EventRouteWrapper({ children }) {
             ...s,
             [statusKey]: {
               allFieldsFilled: isCurrentFilled,
-              access: statusKey === "general" ? true : !!isPreviousFilled,
+              access: statusKey === 'general' ? true : !!isPreviousFilled,
             },
           }))
         })
@@ -96,13 +96,13 @@ function EventRouteWrapper({ children }) {
             ...s,
             [key]: {
               allFieldsFilled: false,
-              access: key === "general",
+              access: key === 'general',
             },
           }))
         })
       }
     },
-    [eventId, pathname]
+    [eventId, pathname],
   )
 
   useEffect(() => {
@@ -115,19 +115,14 @@ function EventRouteWrapper({ children }) {
     }
   }, [ctxStep])
 
-  const isInOgProfile = useMemo(
-    () => eventProfileFormPaths.includes(pathname),
-    [eventId, pathname]
-  )
+  const isInOgProfile = useMemo(() => eventProfileFormPaths.includes(pathname), [eventId, pathname])
 
   useEffect(async () => {
     isInOgProfile && eventId
-      ? await $api
-          .get(`/organizer/events/${eventId}/event_creating_status/`)
-          .then(({ data }) => {
-            const { event, id, ...rest } = data
-            rowEventRoutes(rest)
-          })
+      ? await $api.get(`/organizer/events/${eventId}/event_creating_status/`).then(({ data }) => {
+          const { event, id, ...rest } = data
+          rowEventRoutes(rest)
+        })
       : rowEventRoutes(null)
   }, [eventId, pathname])
 
@@ -137,7 +132,9 @@ function EventRouteWrapper({ children }) {
 
     if (isInOgProfile && eventId && activePage && isInOtherEditPage) {
       await routerPush(
-        `/lk-og/profile/events/edit/${eventId}/${activePageName}`
+        `/lk-og/profile/events/edit/${eventId}/${
+          activePageName === 'general' ? '' : activePageName
+        }`,
       )
     }
   }, [activePage])

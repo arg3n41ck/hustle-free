@@ -8,7 +8,7 @@ import { GenderIcon } from '../../../../../assets/svg/icons'
 import { DefaultEmailIcon } from '../../../../../assets/svg/icons'
 import { DefaultPhoneIcon } from '../../../../../assets/svg/icons'
 import { theme } from '../../../../../styles/theme'
-import { phoneFormatter } from '../../../../../helpers/phoneFormatter'
+import { normalizePhone, phoneFormatter } from '../../../../../helpers/phoneFormatter'
 import { format, parseISO } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import LkDefaultHeader from '../../../../ui/LKui/LKDefaultHeader'
@@ -106,14 +106,18 @@ const Info = ({ onToggleSidebar }) => {
               </Item>
             </>
           )}
-          <Item>
-            <WrapperIcon>
-              <DefaultPhoneIcon />
-            </WrapperIcon>
-            {tLkAh('userProfile.contacts')}
-          </Item>
-          {/* <Item>{phoneFormatter(user?.phoneNumber)}</Item> */}
-          <Item>{user?.phoneNumber ? phoneFormatter(user?.phoneNumber) : ''}</Item>
+          {!!normalizePhone(user?.phoneNumber) && (
+            <>
+              <Item>
+                <WrapperIcon>
+                  <DefaultPhoneIcon />
+                </WrapperIcon>
+                {tLkAh('userProfile.contacts')}
+              </Item>
+              {/* <Item>{phoneFormatter(user?.phoneNumber)}</Item> */}
+              <Item>{phoneFormatter(user?.phoneNumber)}</Item>
+            </>
+          )}
           <Item>
             <WrapperIcon>
               <DefaultEmailIcon />

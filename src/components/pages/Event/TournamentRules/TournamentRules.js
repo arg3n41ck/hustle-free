@@ -1,83 +1,70 @@
-import React from "react"
-import styled from "styled-components"
-import Checkbox from "@mui/material/Checkbox"
-import Link from "next/link"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import styled from 'styled-components'
+import Checkbox from '@mui/material/Checkbox'
+import Link from 'next/link'
+import { useTranslation } from 'next-i18next'
 
 function TournamentRules({ event }) {
   const [checked, setChecked] = React.useState(false)
-  const { t: tEventDetail } = useTranslation("eventDetail")
+  const { t: tEventDetail } = useTranslation('eventDetail')
   //   console.log(eventCategory)
 
   return (
     <TournamentRulesContainer>
       <TournamentRulesHeading>
         <TournamentRulesHeadingText>
-          {tEventDetail("event.results.tournamentRules.tournamentRules")}
+          {tEventDetail('event.tournamentRules.tournamentRules')}
         </TournamentRulesHeadingText>
       </TournamentRulesHeading>
       <Line />
       <TournamentRulesHeroInfo>
         <TournamentRulesHeroInfoText>
-          Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco
-          cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-          reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea
-          quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore
-          cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt
-          sint deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit
-          cupieventt irure. Laborum magna nulla duis ullamco cillum dolor.
-          Voluptate exercitation incididunt aliquip deserunt reprehenderit elit
-          laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
-          Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor
-          enim. Elit aute irure tempor cupieventt incididunt sint deserunt ut
-          voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure.
-          Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation
-          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
-          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
-          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
-          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
-          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation
-          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
-          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
-          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
-          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
-          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation
-          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
-          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
-          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
-          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
-          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation
-          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
-          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
-          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
-          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
-          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation
-          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
-          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
-          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
-          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
-          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation
-          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
-          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
-          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
-          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
-          aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation
-          incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
-          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse
-          pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit
-          aute irure tempor cupieventt incididunt sint deserunt ut voluptate
-          aute id deserunt nisi.
+          Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor.
+          Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
+          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
+          mollit dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
+          deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt
+          reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
+          Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute
+          irure tempor cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.Nulla
+          Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate
+          exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat
+          nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit
+          dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
+          deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt
+          reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
+          Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute
+          irure tempor cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.Nulla
+          Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate
+          exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat
+          nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit
+          dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
+          deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt
+          reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
+          Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute
+          irure tempor cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.Nulla
+          Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate
+          exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat
+          nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit
+          dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
+          deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
+          magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt
+          reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
+          Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute
+          irure tempor cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.Nulla
+          Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate
+          exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat
+          nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit
+          dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
+          deserunt ut voluptate aute id deserunt nisi.
         </TournamentRulesHeroInfoText>
         <TournamentRulesHeroBottomInfo>
           <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
           <TournamentRulesHeroBottomInfoText>
-            {tEventDetail("event.results.tournamentRules.agree")}
+            {tEventDetail('event.tournamentRules.agree')}
           </TournamentRulesHeroBottomInfoText>
         </TournamentRulesHeroBottomInfo>
       </TournamentRulesHeroInfo>
@@ -85,17 +72,15 @@ function TournamentRules({ event }) {
       <TournamentRulesBottomButtons>
         <Link href={`/events/${event?.id}/`}>
           <TournamentRulesBottomButton>
-            {tEventDetail("event.results.tournamentRules.cancel")}
+            {tEventDetail('event.tournamentRules.cancel')}
           </TournamentRulesBottomButton>
         </Link>
         <Link href={`/events/${event?.id}/registration`} passHref>
           <TournamentRulesBottomButton
             disabled={!checked}
-            background={
-              checked && "linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)"
-            }
+            background={checked && 'linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)'}
           >
-            {tEventDetail("event.results.tournamentRules.further")}
+            {tEventDetail('event.tournamentRules.further')}
           </TournamentRulesBottomButton>
         </Link>
       </TournamentRulesBottomButtons>
@@ -116,7 +101,7 @@ const TournamentRulesBottomButtons = styled.div`
 `
 
 const TournamentRulesBottomButton = styled.button`
-  background: ${({ background }) => (!!background ? background : "#828282")};
+  background: ${({ background }) => (!!background ? background : '#828282')};
   border-radius: 16px;
   max-width: 256px;
   width: 100%;

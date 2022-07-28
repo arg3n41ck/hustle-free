@@ -15,7 +15,7 @@ import { fetchSportTypes } from '../../../../../redux/components/sportTypes'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { ru } from 'date-fns/locale'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import { MobileDatePicker } from '@mui/lab'
+import { DatePicker } from '@mui/lab'
 import { useRouter } from 'next/router'
 import { Cancel, EventFormFooter, Field, Form, Submit } from './EventDefaults'
 import { formDataHttp } from '../../../../../helpers/formDataHttp'
@@ -210,10 +210,11 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
             <Field style={{ marginTop: 24 }}>
               <p className='auth-title__input'>{tLkOg('registrationPeriods.sunriseStartDate')}</p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-                <MobileDatePicker
+                <DatePicker
                   toolbarTitle={tLkOg('registrationPeriods.sunriseStartDate')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.earlyRegStart}
+                  disableCloseOnSelect={false}
                   onChange={(value) => setFieldValue('earlyRegStart', value)}
                   inputFormat='dd/MM/yyyy'
                   renderInput={(params) => (
@@ -236,10 +237,11 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                 {tLkOg('registrationPeriods.endDateForEarlyRegistration')}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-                <MobileDatePicker
+                <DatePicker
                   toolbarTitle={tLkOg('registrationPeriods.endDateForEarlyRegistration')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.earlyRegEnd}
+                  disableCloseOnSelect={false}
                   onChange={(value) => setFieldValue('earlyRegEnd', value)}
                   inputFormat='dd/MM/yyyy'
                   renderInput={(params) => (
@@ -270,12 +272,13 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
           {tLkOg('registrationPeriods.standardEnrollmentStartDate')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-          <MobileDatePicker
+          <DatePicker
             toolbarTitle={tLkOg('registrationPeriods.standardEnrollmentStartDate')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.standartRegStart}
             onChange={(value) => setFieldValue('standartRegStart', value)}
             inputFormat='dd/MM/yyyy'
+            disableCloseOnSelect={false}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -297,12 +300,13 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
           {tLkOg('registrationPeriods.endDateOfStandardRegistration')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-          <MobileDatePicker
+          <DatePicker
             toolbarTitle={tLkOg('registrationPeriods.endDateOfStandardRegistration')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.standartRegEnd}
             onChange={(value) => setFieldValue('standartRegEnd', value)}
             inputFormat='dd/MM/yyyy'
+            disableCloseOnSelect={false}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -346,12 +350,13 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                 {tLkOg('registrationPeriods.lateRegistrationStartDate')}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-                <MobileDatePicker
+                <DatePicker
                   toolbarTitle={tLkOg('registrationPeriods.lateRegistrationStartDate')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.lateRegStart}
                   onChange={(value) => setFieldValue('lateRegStart', value)}
                   inputFormat='dd/MM/yyyy'
+                  disableCloseOnSelect={false}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -372,12 +377,13 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
                 {tLkOg('registrationPeriods.lateRegistrationEndDate')}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-                <MobileDatePicker
+                <DatePicker
                   toolbarTitle={tLkOg('registrationPeriods.lateRegistrationEndDate')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.lateRegEnd}
                   onChange={(value) => setFieldValue('lateRegEnd', value)}
                   inputFormat='dd/MM/yyyy'
+                  disableCloseOnSelect={false}
                   renderInput={(params) => (
                     <TextField
                       {...params}

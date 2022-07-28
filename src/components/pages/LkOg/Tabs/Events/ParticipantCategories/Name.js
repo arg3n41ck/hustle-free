@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import ParticipantCategoriesModal from './Modal'
@@ -14,9 +14,11 @@ const initialEmptyValues = {
 function Name({ open, onClose, edit, onBack, submit, defaultValues = initialEmptyValues }) {
   const { t: tLkOg } = useTranslation('lkOg')
 
-  const validationSchema = yup.object({
-    name: yup.string().required(tLkOg('validation.required')),
-  })
+  const { current: validationSchema } = useRef(
+    yup.object({
+      name: yup.string().required(tLkOg('validation.required')),
+    }),
+  )
   const { values, touched, errors, handleChange, handleSubmit } = useFormik({
     initialValues: defaultValues,
     validationSchema,
@@ -34,19 +36,21 @@ function Name({ open, onClose, edit, onBack, submit, defaultValues = initialEmpt
       onBack={onBack}
       onSubmit={handleSubmit}
     >
-      <Field>
-        <PCFieldName>{tLkOg('categoriesOfParticipants.nameCategory')}</PCFieldName>
-        <TextField
-          name='name'
-          placeholder={tLkOg('categoriesOfParticipants.nameCategory')}
-          variant='outlined'
-          fullWidth
-          error={touched.name && Boolean(errors.name)}
-          helperText={touched.name && errors.name}
-          onChange={handleChange}
-          value={values.name}
-        />
-      </Field>
+      <form onSubmit={handleSubmit}>
+        <Field>
+          <PCFieldName>{tLkOg('categoriesOfParticipants.nameCategory')}</PCFieldName>
+          <TextField
+            name='name'
+            placeholder={tLkOg('categoriesOfParticipants.nameCategory')}
+            variant='outlined'
+            fullWidth
+            error={touched.name && Boolean(errors.name)}
+            helperText={touched.name && errors.name}
+            onChange={handleChange}
+            value={values.name}
+          />
+        </Field>
+      </form>
     </ParticipantCategoriesModal>
   )
 }
