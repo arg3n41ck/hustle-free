@@ -72,7 +72,7 @@ function Index() {
             dateStart: new Date(values.dateStart).toISOString(),
             dateEnd: new Date(values.dateEnd).toISOString(),
           },
-          `organizer/events/${eventId ? eventId + '/' : ''}`,
+          `events/events/${eventId ? eventId + '/' : ''}`,
           eventId ? 'put' : 'post',
         )
         routerPush(
@@ -89,7 +89,7 @@ function Index() {
 
   useEffect(() => {
     eventId &&
-      getEventDefaultValues(`/organizer/events/${eventId}/`).then((data) => {
+      getEventDefaultValues(`/events/events/${eventId}/`).then((data) => {
         setEventDefaultValues(data)
       })
   }, [eventId])

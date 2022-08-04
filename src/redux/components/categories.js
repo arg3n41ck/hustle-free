@@ -1,34 +1,34 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
-import $api from "../../services/axios"
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import $api from '../../services/axios'
 
 export const fetchCategories = createAsyncThunk(
-  "categories/fetchCategories",
+  'categories/fetchCategories',
   async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/directory/participants_categories/`, {
+      const { data } = await $api.get(`/directories/participants_categories/`, {
         params,
       })
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
-  }
+  },
 )
 
 export const fetchLevel = createAsyncThunk(
-  "categories/fetchLevel",
+  'categories/fetchLevel',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/directory/discipline_level/`)
+      const { data } = await $api.get(`/directories/discipline_level/`)
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
-  }
+  },
 )
 
 export const categoriesSlice = createSlice({
-  name: "categories",
+  name: 'categories',
   initialState: {
     categories: {
       error: null,
@@ -74,7 +74,7 @@ export const categoriesSlice = createSlice({
 export const categoriesSelector = createSelector(
   (state) => state.categories.categories.categories,
   (state) => state.categories.categories.levels,
-  (categories, levels) => [categories, levels]
+  (categories, levels) => [categories, levels],
 )
 
 export default categoriesSlice.reducer

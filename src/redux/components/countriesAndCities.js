@@ -1,20 +1,20 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
-import $api from "../../services/axios"
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import $api from '../../services/axios'
 
 export const fetchCountries = createAsyncThunk(
-  "countries/fetchCountries",
+  'countries/fetchCountries',
   async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/directory/country_city/`)
+      const { data } = await $api.get(`/directories/country_city/`)
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
-  }
+  },
 )
 
 export const countriesSlice = createSlice({
-  name: "countries",
+  name: 'countries',
   initialState: {
     countries: {
       error: null,
@@ -46,11 +46,10 @@ export const selectCountriesAndCities = createSelector(
   (state) => state.countries.countries.data,
   (state) =>
     state.countries.countries.data.reduce(
-      (arr, { cityCountry }) =>
-        !!cityCountry.length ? [...arr, ...cityCountry] : arr,
-      []
+      (arr, { cityCountry }) => (!!cityCountry.length ? [...arr, ...cityCountry] : arr),
+      [],
     ),
-  (countries, cities) => [countries, cities]
+  (countries, cities) => [countries, cities],
 )
 
 export default countriesSlice.reducer

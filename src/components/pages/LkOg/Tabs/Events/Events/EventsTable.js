@@ -1,37 +1,37 @@
-import React, { useEffect, useMemo, useState } from "react"
-import styled from "styled-components"
-import { getRusBetweenDate } from "../../../../../../helpers/helpers"
-import { IconButton } from "@mui/material"
-import { Edit } from "@mui/icons-material"
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import styled from 'styled-components'
+import { getRusBetweenDate } from '../../../../../../helpers/helpers'
+import { IconButton } from '@mui/material'
+import { Edit } from '@mui/icons-material'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 
 function EventsTable({ events }) {
   const [rewrittenData, setRewrittenData] = useState([])
   const { push: routerPush } = useRouter()
-  const { t: tLkOg } = useTranslation("lkOg")
+  const { t: tLkOg } = useTranslation('lkOg')
 
-  const getEventStatus = (status) => {
+  const getEventStatus = useCallback((status) => {
     switch (status) {
-      case "published":
+      case 'published':
         return {
-          name: tLkOg("myEvents.soon"),
+          name: tLkOg('myEvents.soon'),
           value: status,
         }
-      case "in_proccessing":
+      case 'in_proccessing':
         return {
-          name: tLkOg("myEvents.nowGoes"),
+          name: tLkOg('myEvents.nowGoes'),
           value: status,
         }
       default:
         return {
-          name: tLkOg("myEvents.draft"),
+          name: tLkOg('myEvents.draft'),
           value: status,
         }
     }
-  }
+  }, [])
 
-  const createDataForTable = (events = []) => {
+  const createDataForTable = useCallback((events = []) => {
     return events.map((currentValue) => {
       const {
         id,
@@ -47,39 +47,35 @@ function EventsTable({ events }) {
         id,
         name,
         date: getRusBetweenDate(dateStart, dateEnd),
-        registration: `${getRegisteredParticipantsCount || 0}/${
-          maxParticipantCount || 0
-        }`,
+        registration: `${getRegisteredParticipantsCount || 0}/${maxParticipantCount || 0}`,
         paid: `${getPaidCount || 0}/${getRegisteredParticipantsCount || 0}`,
         status: getEventStatus(statusPublish),
       }
     })
-  }
-
-  const columns = useMemo(() => {
-    return [
-      {
-        column: tLkOg("myEvents.event"),
-        accessor: "name",
-      },
-      {
-        column: tLkOg("myEvents.date"),
-        accessor: "date",
-      },
-      {
-        column: tLkOg("myEvents.registrations"),
-        accessor: "registration",
-      },
-      {
-        column: tLkOg("myEvents.paid"),
-        accessor: "paid",
-      },
-      {
-        column: tLkOg("myEvents.status"),
-        accessor: "status",
-      },
-    ]
   }, [])
+
+  const { current: columns } = useRef([
+    {
+      column: tLkOg('myEvents.event'),
+      accessor: 'name',
+    },
+    {
+      column: tLkOg('myEvents.date'),
+      accessor: 'date',
+    },
+    {
+      column: tLkOg('myEvents.registrations'),
+      accessor: 'registration',
+    },
+    {
+      column: tLkOg('myEvents.paid'),
+      accessor: 'paid',
+    },
+    {
+      column: tLkOg('myEvents.status'),
+      accessor: 'status',
+    },
+  ])
 
   useEffect(() => {
     setRewrittenData(createDataForTable(events))
@@ -102,32 +98,27 @@ function EventsTable({ events }) {
                 return (
                   <Tr
                     key={`table-row-${cell.id}`}
-                    className={
-                      cell.status.value === "in_proccessing" ? "active" : ""
-                    }
+                    className={cell.status.value === 'in_proccessing' ? 'active' : ''}
                   >
                     {columns.map(({ accessor }) => (
                       <Td
-                        key={`table-cell-${cell[accessor]}-${cell.id}`}
+                        key={`table-cell-${accessor}-${cell.id}`}
                         onClick={() =>
-                          accessor === "name" &&
-                          cell.status.value === "published" &&
+                          accessor === 'name' &&
+                          cell.status.value === 'published' &&
                           routerPush(`/events/${cell.id}/`)
                         }
                       >
                         <div
                           className={
-                            accessor === "status" &&
-                            cell[accessor].value === "in_proccessing"
-                              ? "green"
-                              : cell[accessor].value === "published"
-                              ? "draft"
-                              : ""
+                            accessor === 'status' && cell[accessor].value === 'in_proccessing'
+                              ? 'green'
+                              : cell[accessor].value === 'published'
+                              ? 'draft'
+                              : ''
                           }
                         >
-                          {!!cell[accessor]?.name
-                            ? cell[accessor]?.name
-                            : cell[accessor]}
+                          {!!cell[accessor]?.name ? cell[accessor]?.name : cell[accessor]}
                         </div>
                       </Td>
                     ))}
@@ -152,7 +143,7 @@ function EventsTable({ events }) {
 
 export default EventsTable
 
-const Actions = styled.div`
+const Actions = styled.td`
   position: absolute;
   right: 0;
   top: 0;
@@ -191,16 +182,11 @@ const Tr = styled.tr`
   border-bottom: 1px solid #333;
   background: ${({ active }) =>
     active
-      ? "linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(109, 78, 234, 0.2), rgba(109, 78, 234, 0.2)), #191A1F"
-      : "transparent"};
+      ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), linear-gradient(0deg, rgba(109, 78, 234, 0.2), rgba(109, 78, 234, 0.2)), #191A1F'
+      : 'transparent'};
 
   &.active {
-    background: linear-gradient(
-        0deg,
-        rgba(39, 174, 96, 0.05),
-        rgba(39, 174, 96, 0.05)
-      ),
-      #1b1c22;
+    background: linear-gradient(0deg, rgba(39, 174, 96, 0.05), rgba(39, 174, 96, 0.05)), #1b1c22;
   }
 
   & td:nth-child(5) {

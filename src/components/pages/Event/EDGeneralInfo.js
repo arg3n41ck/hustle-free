@@ -85,7 +85,7 @@ const regArray = (event) => {
 function EdGeneralInfo({ event }) {
   const { t: tEventDetail } = useTranslation('eventDetail')
   const { user, userAuthenticated } = useSelector((state) => state.user)
-  const [ogEvents] = useSelector(selectOgEvents)
+  const [ogEventsId] = useSelector(selectOgEvents)
   const [openFullPcModal, setOpenFullPcModal] = useState(false)
   const [userStatusInEvent, setUserStatusInTeam] = useState()
 
@@ -96,7 +96,7 @@ function EdGeneralInfo({ event }) {
     reload,
   } = useRouter()
   const dispatch = useDispatch()
-  const ogAndIsMyEvent = user?.role === 'organizer' && (ogEvents || []).includes(+eventId)
+  const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
 
   useEffect(() => {
     user?.role === 'organizer' && dispatch(fetchOgEvents())
@@ -117,7 +117,7 @@ function EdGeneralInfo({ event }) {
           {
             image: file,
           },
-          `organizer/events/${eventId}/`,
+          `events/events/${eventId}/`,
           'patch',
         ).then(() => reload()))
     },
@@ -167,15 +167,17 @@ function EdGeneralInfo({ event }) {
     }
     return { regDisabled, regText }
   }, [canApplyToEventByDate, eventId, userStatusInEvent])
-
+  console.log('====================================')
+  console.log({ event })
+  console.log('====================================')
   return (
     <>
       {!ogAndIsMyEvent ? (
-        <EventBanner src={event.image} />
+        <EventBanner src={event?.description.banner} />
       ) : (
         <div style={{ height: '448px' }}>
           <FileUploaderBig
-            defaultImage={event?.image}
+            defaultImage={event?.description?.banner}
             onChange={async (file) => {
               await onUploadNewImage(file)
             }}

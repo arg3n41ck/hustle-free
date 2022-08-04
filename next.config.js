@@ -1,13 +1,14 @@
-const { i18n } = require("./next-i18next.config")
+const { i18n } = require('./next-i18next.config')
 
 module.exports = {
   reactStrictMode: true,
   images: {
     domains: [
-      "assets.vercel.com",
-      "api.dev.hustlefree.pro",
-      "unsplash.com",
-      "api.dev.main.jva.vc",
+      'assets.vercel.com',
+      'api.dev.hustlefree.pro',
+      'unsplash.com',
+      'api.dev.main.jva.vc',
+      '62.84.118.185:8000',
     ],
   },
   i18n,

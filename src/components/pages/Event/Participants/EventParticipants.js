@@ -41,7 +41,7 @@ const EventParticipants = () => {
   }
 
   useEffect(async () => {
-    const { data: levelsData } = await $api.get(`/directory/discipline_level/`)
+    const { data: levelsData } = await $api.get(`/directories/discipline_level/`)
     const params = {
       event_id: eventId,
       search: searchValue,

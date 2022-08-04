@@ -34,7 +34,7 @@ const emptyInitialValues = {
   lateRegActive: false,
 }
 
-function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
+function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }) {
   const { t: tLkOg } = useTranslation('lkOg')
 
   const { current: validationSchema } = useRef(
@@ -138,6 +138,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
   const { touched, errors, values, handleChange, setFieldValue, handleSubmit } = useFormik({
     initialValues: defaultValues,
     validationSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       await formDataHttp(
         {
@@ -152,9 +153,10 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId }) {
           lateRegStart: values.lateRegStart && format(new Date(values.lateRegStart), 'yyyy-MM-dd'),
           lateRegEnd: values.lateRegEnd && format(new Date(values.lateRegEnd), 'yyyy-MM-dd'),
           allFieldsFilled: true,
+          event: eventId,
         },
-        `organizer/events/${eventId}/registration/`,
-        'put',
+        `events/event_registr_periods/${periodsId ? periodsId + '/' : ''}`,
+        periodsId ? 'put' : 'post',
       )
       routerPush(`/lk-og/profile/events/edit/${eventId}/description`)
     },

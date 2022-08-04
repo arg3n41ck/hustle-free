@@ -1,28 +1,26 @@
-import React, { useState } from "react"
-import styled from "styled-components"
-import { TextField, Autocomplete } from "@mui/material"
-import Link from "next/link"
-import { useSelector } from "react-redux"
-import { useRouter } from "next/router"
-import { useFormik } from "formik"
-import { LocationIcon } from "../Events/EventsSlider"
-import { teamsSelector } from "../../../redux/components/teams"
-import { categoriesSelector } from "../../../redux/components/categories"
-import $api from "../../../services/axios"
-import * as yup from "yup"
-import { toast } from "react-toastify"
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { TextField, Autocomplete } from '@mui/material'
+import Link from 'next/link'
+import { useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
+import { useFormik } from 'formik'
+import { LocationIcon } from '../Events/EventsSlider'
+import { teamsSelector } from '../../../redux/components/teams'
+import { categoriesSelector } from '../../../redux/components/categories'
+import $api from '../../../services/axios'
+import * as yup from 'yup'
+import { toast } from 'react-toastify'
 
 const emptyInitialValues = {
-  team: "",
-  category: "",
-  level: "",
-  weight: "",
+  team: '',
+  category: '',
+  level: '',
+  weight: '',
 }
 
 const checkIsUserInfoFull = (user) => {
-  return ["firstName", "lastName", "gender", "country", "city"].some(
-    (key) => !user[key]
-  )
+  return ['firstName', 'lastName', 'gender', 'country', 'city'].some((key) => !user[key])
 }
 
 function RegistrationAthleteToEvent({ data }) {
@@ -39,10 +37,10 @@ function RegistrationAthleteToEvent({ data }) {
   const [currentWeights, setCurrentWeights] = useState(null)
 
   const validationSchema = yup.object({
-    team: yup.string().required("Обязательное поле"),
-    category: yup.string().required("Обязательное поле"),
-    level: yup.string().required("Обязательное поле"),
-    weight: yup.string().required("Обязательное поле"),
+    team: yup.string().required('Обязательное поле'),
+    category: yup.string().required('Обязательное поле'),
+    level: yup.string().required('Обязательное поле'),
+    weight: yup.string().required('Обязательное поле'),
   })
 
   const formik = useFormik({
@@ -59,9 +57,9 @@ function RegistrationAthleteToEvent({ data }) {
             level,
             weight,
           })
-          routerPush("/lk-ah/profile/events")
+          routerPush('/lk-ah/profile/events')
         } else {
-          toast.error("Заполните все поля участника!", { autoClose: 2000 })
+          toast.error('Заполните все поля участника!', { autoClose: 2000 })
         }
       } catch (e) {
         throw e
@@ -80,16 +78,12 @@ function RegistrationAthleteToEvent({ data }) {
   }
 
   const changeCurrentLevels = (changeCategory) => {
-    const findObj = categories.find(
-      (category) => category.id === changeCategory
-    )
+    const findObj = categories.find((category) => category.id === changeCategory)
     if (findObj) setCurrentLevels(findObj.levels)
   }
 
   const changeCurrentWeights = (changeCategory) => {
-    const findObj = categories.find(
-      (category) => category.id === changeCategory
-    )
+    const findObj = categories.find((category) => category.id === changeCategory)
     if (findObj)
       setCurrentWeights({
         fromWeight: findObj.fromWeight,
@@ -99,16 +93,12 @@ function RegistrationAthleteToEvent({ data }) {
   return (
     <form onSubmit={formik.handleSubmit}>
       <RegistrationAthleteToEventHeroInfo>
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">Выберите команду</p>
+        <div className='auth-wrapper__input'>
+          <p className='auth-title__input'>Выберите команду</p>
           <Autocomplete
-            noOptionsText={"Вы не зачислены ни в одну команду"}
-            onChange={(_, value) => formik.setFieldValue("team", value?.id)}
-            options={
-              (teams?.results?.length &&
-                teams?.results?.map((option) => option)) ||
-              []
-            }
+            noOptionsText={'Вы не зачислены ни в одну команду'}
+            onChange={(_, value) => formik.setFieldValue('team', value?.id)}
+            options={(teams?.results?.length && teams?.results?.map((option) => option)) || []}
             getOptionLabel={(option) => option?.name}
             value={
               teams?.results?.length &&
@@ -119,10 +109,8 @@ function RegistrationAthleteToEvent({ data }) {
               <TextField
                 {...params}
                 fullWidth
-                placeholder="Команды"
-                error={
-                  formik.touched.category && Boolean(formik.errors.category)
-                }
+                placeholder='Команды'
+                error={formik.touched.category && Boolean(formik.errors.category)}
                 helperText={formik.touched.category && formik.errors.category}
                 InputProps={{
                   ...params.InputProps,
@@ -133,39 +121,11 @@ function RegistrationAthleteToEvent({ data }) {
           />
         </div>
 
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">Выберите категорию</p>
+        <div className='auth-wrapper__input'>
+          <p className='auth-title__input'>Уровень</p>
           <Autocomplete
-            noOptionsText={"Ничего не найдено"}
-            onChange={(_, value) => [
-              changeCurrentLevels(value?.id),
-              changeCurrentWeights(value?.id),
-              formik.setFieldValue("level", ""),
-              formik.setFieldValue("category", value?.id),
-            ]}
-            options={categories.map((option) => option) || []}
-            getOptionLabel={(option) => option?.name}
-            value={categories.find(({ id }) => id === formik?.values?.category)}
-            fullWidth
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                fullWidth
-                placeholder="Категории"
-                error={
-                  formik.touched.category && Boolean(formik.errors.category)
-                }
-                helperText={formik.touched.category && formik.errors.category}
-              />
-            )}
-          />
-        </div>
-
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">Уровень</p>
-          <Autocomplete
-            noOptionsText={"Ничего не найдено"}
-            onChange={(_, value) => [formik.setFieldValue("level", value?.id)]}
+            noOptionsText={'Ничего не найдено'}
+            onChange={(_, value) => [formik.setFieldValue('level', value?.id)]}
             options={
               !currentLevels?.length
                 ? levels.map((option) => option)
@@ -178,7 +138,7 @@ function RegistrationAthleteToEvent({ data }) {
               <TextField
                 {...params}
                 fullWidth
-                placeholder="Уровень"
+                placeholder='Уровень'
                 error={formik.touched.level && Boolean(formik.errors.level)}
                 helperText={formik.touched.level && formik.errors.level}
               />
@@ -186,11 +146,11 @@ function RegistrationAthleteToEvent({ data }) {
           />
         </div>
 
-        <div className="auth-wrapper__input">
-          <p className="auth-title__input">Вес</p>
+        <div className='auth-wrapper__input'>
+          <p className='auth-title__input'>Вес</p>
           <Autocomplete
-            noOptionsText={"Ничего не найдено"}
-            onChange={(_, value) => formik.setFieldValue("weight", value)}
+            noOptionsText={'Ничего не найдено'}
+            onChange={(_, value) => formik.setFieldValue('weight', value)}
             options={
               !!currentWeights
                 ? getWeights(currentWeights.fromWeight, currentWeights.toWeight)
@@ -203,9 +163,35 @@ function RegistrationAthleteToEvent({ data }) {
               <TextField
                 {...params}
                 fullWidth
-                placeholder="Вес"
+                placeholder='Вес'
                 error={formik.touched.weight && Boolean(formik.errors.weight)}
                 helperText={formik.touched.weight && formik.errors.weight}
+              />
+            )}
+          />
+        </div>
+
+        <div className='auth-wrapper__input'>
+          <p className='auth-title__input'>Выберите категорию</p>
+          <Autocomplete
+            noOptionsText={'Ничего не найдено'}
+            onChange={(_, value) => [
+              changeCurrentLevels(value?.id),
+              changeCurrentWeights(value?.id),
+              formik.setFieldValue('level', ''),
+              formik.setFieldValue('category', value?.id),
+            ]}
+            options={categories.map((option) => option) || []}
+            getOptionLabel={(option) => option?.name}
+            value={categories.find(({ id }) => id === formik?.values?.category)}
+            fullWidth
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                fullWidth
+                placeholder='Категории'
+                error={formik.touched.category && Boolean(formik.errors.category)}
+                helperText={formik.touched.category && formik.errors.category}
               />
             )}
           />
@@ -214,13 +200,13 @@ function RegistrationAthleteToEvent({ data }) {
       <Line />
       <RegistrationAthleteToEventBottomButtons>
         <Link href={`/events/${data?.id}/`}>
-          <RegistrationAthleteToEventBottomButton type="button">
+          <RegistrationAthleteToEventBottomButton type='button'>
             Отмена
           </RegistrationAthleteToEventBottomButton>
         </Link>
         <RegistrationAthleteToEventBottomButton
-          type={"submit"}
-          background={"linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)"}
+          type={'submit'}
+          background={'linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)'}
         >
           Зарегистрироваться
         </RegistrationAthleteToEventBottomButton>
@@ -241,7 +227,7 @@ const RegistrationAthleteToEventBottomButtons = styled.div`
 `
 
 const RegistrationAthleteToEventBottomButton = styled.button`
-  background: ${({ background }) => (!!background ? background : "#828282")};
+  background: ${({ background }) => (!!background ? background : '#828282')};
   border-radius: 16px;
   max-width: 256px;
   width: 100%;

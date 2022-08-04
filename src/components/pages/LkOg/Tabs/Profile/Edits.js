@@ -189,7 +189,9 @@ const Edits = () => {
               toolbarTitle={'Выбрать дату'}
               cancelText={'Отмена'}
               value={formik?.values?.dateBirthday || ''}
-              onChange={(value) => formik.setFieldValue('dateBirthday', value)}
+              onChange={(value) => {
+                formik.setFieldValue('dateBirthday', value)
+              }}
               inputFormat='dd/MM/yyyy'
               renderInput={(params) => (
                 <TextField

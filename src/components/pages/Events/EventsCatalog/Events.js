@@ -1,18 +1,18 @@
-import React from "react"
-import { useSelector } from "react-redux"
-import { selectEvents } from "../../../../redux/components/events"
-import styled from "styled-components"
-import EventsArray from "../../../ui/Events"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { selectEvents } from '../../../../redux/components/events'
+import styled from 'styled-components'
+import EventsArray from '../../../ui/Events'
+import { useTranslation } from 'next-i18next'
 
 function Events() {
   const [, events] = useSelector(selectEvents)
-  const { t: tEvents } = useTranslation("events")
+  const { t: tEvents } = useTranslation('events')
 
   return (
     <EventsWrapper>
       <HeadPart>
-        <MainPageTitle>{tEvents("events.events")}</MainPageTitle>
+        <MainPageTitle>{tEvents('events.events')}</MainPageTitle>
         {/*<ViewTypeChanger>*/}
         {/*  <MenuIcon />*/}
         {/*  Карточки*/}

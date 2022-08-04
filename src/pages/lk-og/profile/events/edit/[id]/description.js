@@ -7,18 +7,26 @@ import { useRouter } from 'next/router'
 import { getEventDefaultValues } from './location'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
+const emptyInitialValues = {
+  description: '',
+  banner: null,
+}
+
 function Description() {
   const {
     query: { id: eventId },
   } = useRouter()
-  const [eventDefaultValues, setEventDefaultValues] = useState(null)
+  const [eventDefaultValues, setEventDefaultValues] = useState(emptyInitialValues)
+  const [descriptionId, setDescriptionId] = useState(null)
   useEffect(() => {
     if (eventId) {
-      getEventDefaultValues(`/organizer/events/${eventId}/`).then((data) => {
-        setEventDefaultValues({
-          image: data?.image || null,
-          description: data?.description?.description,
-        })
+      getEventDefaultValues(`/events/event_descriptions/?event=${eventId}`).then((data) => {
+        const currentPeriods = !!data?.length && data.find(({ event }) => event == eventId)
+        if (currentPeriods) {
+          const { id, event, ...rest } = currentPeriods
+          setDescriptionId(id)
+          !!data?.length && setEventDefaultValues(rest || emptyInitialValues)
+        }
       })
     }
   }, [eventId])
@@ -27,9 +35,11 @@ function Description() {
     <LkLayout tabs={lkOgTabs}>
       <EventsCreateLayout>
         {/*<RouterLoader open={!eventDefaultValues} />*/}
-        {eventDefaultValues && (
-          <EventDescription defaultValues={eventDefaultValues} eventId={eventId} />
-        )}
+        <EventDescription
+          defaultValues={eventDefaultValues}
+          eventId={eventId}
+          descriptionId={descriptionId}
+        />
       </EventsCreateLayout>
     </LkLayout>
   )

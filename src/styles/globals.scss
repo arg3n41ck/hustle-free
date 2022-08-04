@@ -1,6 +1,6 @@
-@import "auth.scss";
-@import "main_page_slider";
-@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+@import 'auth.scss';
+@import 'main_page_slider';
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
 html,
 body {
@@ -8,6 +8,29 @@ body {
   background-color: #0f0f10;
   overflow-x: hidden;
   color: #f2f2f2;
+
+  // CK Editor
+  --ck-color-toolbar-background: transparrent;
+  --ck-color-labeled-field-label-background: transparrent;
+  --ck-color-input-background: transparrent;
+  --ck-color-panel-background: #1b1c22;
+  --ck-color-input-background: #1b1c22;
+  --ck-color-text: #f2f2f2;
+  --ck-border-radius: 16px;
+  --ck-color-toolbar-border: #333;
+  --ck-color-base-border: #333;
+  --ck-color-list-button-hover-background: #333;
+  --ck-color-dropdown-panel-border: #333;
+  --ck-color-base-background: transparrent;
+  --ck-color-dropdown-panel-background: #1b1c22;
+  --ck-color-list-background: #1b1c22;
+  --ck-color-button-on-hover-background: #6d4eea;
+  --ck-color-button-on-background: #6d4eea;
+  --ck-color-button-default-hover-background: #6d4eea;
+  --ck-color-list-button-on-background-focus: #6d4eea;
+  --ck-focus-ring: #333;
+  --ck-color-input-border: #333;
+  --ck-focus-outer-shadow: #fff;
 }
 
 a,
@@ -24,7 +47,7 @@ button {
   outline: none;
   box-sizing: border-box;
   //word-break: break-all;
-  font-family: "Inter", sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
 .PrivateDatePickerToolbar-penIcon {

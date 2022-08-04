@@ -67,7 +67,7 @@ function Index() {
             dateStart: new Date(values.dateStart).toISOString(),
             dateEnd: new Date(values.dateEnd).toISOString(),
           },
-          `organizer/events/`,
+          `events/events/`,
           'post',
         )
         routerPush(

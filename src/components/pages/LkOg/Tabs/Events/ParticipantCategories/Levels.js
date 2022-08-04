@@ -10,7 +10,7 @@ import { PCFieldName } from './Name'
 
 const getLevelsBySportType = async (sportType) => {
   try {
-    const { data } = await $api.get('/directory/discipline_level/')
+    const { data } = await $api.get('/directories/discipline_level/')
 
     return data.filter(({ typeSport }) => sportType === typeSport)
   } catch (e) {
@@ -46,14 +46,14 @@ function Levels({
     validationSchema,
     onSubmit: (values) => submit(values),
   })
-
+  console.log({ levels: defaultValues })
   useEffect(() => {
     getLevelsBySportType(sportType).then(setLevels)
   }, [sportType, defaultValues])
 
   const handleOnBlurNewLevel = useCallback(
     async (name) => {
-      await $api.post('/directory/discipline_level/', {
+      await $api.post('/directories/discipline_level/', {
         name,
         type_sport: sportType,
       })
@@ -65,8 +65,8 @@ function Levels({
 
   const handleOnDeleteLevel = useCallback(
     async (id) => {
-      await $api.delete(`/directory/discipline_level/${id}/`)
-      const newLevels = levels.filter((level) => id !== id)
+      await $api.delete(`/directories/discipline_level/${id}/`)
+      const newLevels = levels.filter((level) => level.id !== id)
       setFieldValue('levels', newLevels)
       await getLevelsBySportType(sportType).then(setLevels)
     },

@@ -1,20 +1,20 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
-import $api from "../../services/axios"
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import $api from '../../services/axios'
 
 export const fetchSportTypes = createAsyncThunk(
-  "sportTypes/fetchSportTypes",
+  'sportTypes/fetchSportTypes',
   async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`directory/type_sport/`)
+      const { data } = await $api.get(`directories/type_sport/`)
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
-  }
+  },
 )
 
 export const sportTypesSlice = createSlice({
-  name: "sportTypes",
+  name: 'sportTypes',
   initialState: {
     sportTypes: {
       error: null,
@@ -44,7 +44,7 @@ export const sportTypesSlice = createSlice({
 
 export const selectSportTypes = createSelector(
   (state) => state.sportTypes.sportTypes.data,
-  (sportTypes) => [sportTypes]
+  (sportTypes) => [sportTypes],
 )
 
 export default sportTypesSlice.reducer

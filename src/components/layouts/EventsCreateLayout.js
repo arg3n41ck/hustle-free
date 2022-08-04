@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { BetweenIcon, StartIcon } from '../pages/LkOg/Tabs/Events/FormIcons'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
@@ -19,57 +19,61 @@ function EventsCreateLayout({ onToggleSidebar, children, onDraft }) {
   const { ctxStep } = useEventRouteContext()
   const { t: tLkOg } = useTranslation('lkOg')
 
-  const steps = (eventId) => {
-    return [
-      {
-        title: tLkOg('editEvent.generalInformation.generalInformation'),
-        href: !eventId ? '/lk-og/profile/events/edit' : '/lk-og/profile/events/edit/[id]',
-        ctxKey: 'general',
-        path: eventId ? `/lk-og/profile/events/edit/${eventId}` : null,
-      },
-      {
-        title: tLkOg('location.location'),
-        href: `/lk-og/profile/events/edit/[id]/location`,
-        ctxKey: 'location',
-        path: eventId ? `/lk-og/profile/events/edit/${eventId}/location` : null,
-      },
-      {
-        title: tLkOg('registrationPeriods.registrationPeriods'),
-        href: `/lk-og/profile/events/edit/[id]/periods`,
-        ctxKey: 'periods',
-        path: eventId ? `/lk-og/profile/events/edit/${eventId}/periods` : null,
-      },
-      {
-        title: tLkOg('coverAndDescription.coverAndDescription'),
-        href: `/lk-og/profile/events/edit/[id]/description`,
-        ctxKey: 'description',
-        path: eventId ? `/lk-og/profile/events/edit/${eventId}/description` : null,
-      },
-      {
-        title: tLkOg('tournamentRules.tournamentRules'),
-        href: `/lk-og/profile/events/edit/[id]/rules`,
-        ctxKey: 'rules',
-        path: eventId ? `/lk-og/profile/events/edit/${eventId}/rules` : null,
-      },
-      {
-        title: tLkOg('categoriesOfParticipants.categoriesOfParticipants'),
-        href: `/lk-og/profile/events/edit/[id]/participant-categories`,
-        ctxKey: 'participantCategories',
-        path: eventId ? `/lk-og/profile/events/edit/${eventId}/participant-categories` : null,
-      },
-      {
-        title: tLkOg('contacts.contacts'),
-        href: `/lk-og/profile/events/edit/[id]/contacts`,
-        ctxKey: 'contacts',
-        path: eventId ? `/lk-og/profile/events/edit/${eventId}/contacts` : null,
-      },
-      // {
-      //   title: "Кредиты",
-      //   href: `/lk-og/profile/events/edit/[id]/credits`,
-      //   path: eventId ? `/lk-og/profile/events/edit/${eventId}/credits` : null,
-      // },
-    ]
-  }
+  const steps = useCallback(
+    (eventId) => {
+      return [
+        {
+          title: tLkOg('editEvent.generalInformation.generalInformation'),
+          href: !eventId ? '/lk-og/profile/events/edit' : '/lk-og/profile/events/edit/[id]',
+          ctxKey: 'general',
+          path: eventId ? `/lk-og/profile/events/edit/${eventId}` : null,
+        },
+        {
+          title: tLkOg('location.location'),
+          href: `/lk-og/profile/events/edit/[id]/location`,
+          ctxKey: 'location',
+          path: eventId ? `/lk-og/profile/events/edit/${eventId}/location` : null,
+        },
+        {
+          title: tLkOg('registrationPeriods.registrationPeriods'),
+          href: `/lk-og/profile/events/edit/[id]/periods`,
+          ctxKey: 'periods',
+          path: eventId ? `/lk-og/profile/events/edit/${eventId}/periods` : null,
+        },
+        {
+          title: tLkOg('coverAndDescription.coverAndDescription'),
+          href: `/lk-og/profile/events/edit/[id]/description`,
+          ctxKey: 'description',
+          path: eventId ? `/lk-og/profile/events/edit/${eventId}/description` : null,
+        },
+        {
+          title: tLkOg('tournamentRules.tournamentRules'),
+          href: `/lk-og/profile/events/edit/[id]/rules`,
+          ctxKey: 'rules',
+          path: eventId ? `/lk-og/profile/events/edit/${eventId}/rules` : null,
+        },
+        {
+          title: tLkOg('categoriesOfParticipants.categoriesOfParticipants'),
+          href: `/lk-og/profile/events/edit/[id]/participant-categories`,
+          ctxKey: 'participantCategories',
+          path: eventId ? `/lk-og/profile/events/edit/${eventId}/participant-categories` : null,
+        },
+        {
+          title: tLkOg('contacts.contacts'),
+          href: `/lk-og/profile/events/edit/[id]/contacts`,
+          ctxKey: 'contacts',
+          path: eventId ? `/lk-og/profile/events/edit/${eventId}/contacts` : null,
+        },
+        // {
+        //   title: "Кредиты",
+        //   href: `/lk-og/profile/events/edit/[id]/credits`,
+        //   path: eventId ? `/lk-og/profile/events/edit/${eventId}/credits` : null,
+        // },
+      ]
+    },
+    [eventId],
+  )
+
   const readySteps = useMemo(() => steps(eventId), [eventId])
 
   return (
@@ -114,6 +118,7 @@ function EventsCreateLayout({ onToggleSidebar, children, onDraft }) {
               <Step key={`eventCreateSteps_${title}_${i}`}>
                 <ActiveLink
                   disabled
+                  // href={path && path ? path : asPath}
                   href={ctxStep[ctxKey]?.access && path ? path : asPath}
                   activeClassName={ctxStep[ctxKey]?.access && path ? 'activeECLink' : ''}
                 >

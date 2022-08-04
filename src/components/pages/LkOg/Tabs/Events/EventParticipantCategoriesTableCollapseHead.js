@@ -1,11 +1,11 @@
-import React, { useCallback } from "react"
-import { MenuItem, Select } from "@mui/material"
-import styled from "styled-components"
-import $api from "../../../../../services/axios"
-import { useTranslation } from "next-i18next"
+import React, { useCallback } from 'react'
+import { MenuItem, Select } from '@mui/material'
+import styled from 'styled-components'
+import $api from '../../../../../services/axios'
+import { useTranslation } from 'next-i18next'
 
 const deleteRow = (id) => {
-  $api.delete(`/directory/participants_categories/${id}/`)
+  $api.delete(`/directories/event_part_categories/${id}/`)
 }
 
 function EventParticipantCategoriesTableCollapseHead({
@@ -15,11 +15,11 @@ function EventParticipantCategoriesTableCollapseHead({
   onClickChangeSomeRows,
   refreshPC,
 }) {
-  const { t: tLkOg } = useTranslation("lkOg")
+  const { t: tLkOg } = useTranslation('lkOg')
   const removeRowsFromTable = useCallback(async () => {
     selectedInTableRows.length &&
       (await Promise.all(selectedInTableRows.map(deleteRow)).then(() =>
-        setTimeout(() => refreshPC(), 500)
+        setTimeout(() => refreshPC(), 500),
       ))
     setSelectedInTableRows([])
   }, [selectedInTableRows, selectedRows])
@@ -28,62 +28,45 @@ function EventParticipantCategoriesTableCollapseHead({
     <TableCollapseHead>
       <THCell>
         <ThText>
-          {tLkOg("categoriesOfParticipants.selected")}{" "}
-          {selectedInTableRows?.length}{" "}
-          {tLkOg("categoriesOfParticipants.category")}.{" "}
-          <span
-            onClick={() =>
-              setSelectedInTableRows(selectedRows.map(({ id }) => id))
-            }
-          >
-            {tLkOg("categoriesOfParticipants.selectAll")}
+          {tLkOg('categoriesOfParticipants.selected')} {selectedInTableRows?.length}{' '}
+          {tLkOg('categoriesOfParticipants.category')}.{' '}
+          <span onClick={() => setSelectedInTableRows(selectedRows.map(({ id }) => id))}>
+            {tLkOg('categoriesOfParticipants.selectAll')}
           </span>
         </ThText>
       </THCell>
       <THCell>
         <Select
           sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              border: "none",
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: 'none',
             },
 
-            "& .MuiSelect-select": {
-              padding: "0 37px 0 20px !important",
+            '& .MuiSelect-select': {
+              padding: '0 37px 0 20px !important',
             },
           }}
-          value={"none"}
+          value={'none'}
           onChange={onClickChangeSomeRows}
         >
-          <MenuItem value={"none"} sx={{ display: "none" }}>
-            {tLkOg("categoriesOfParticipants.edit")}
+          <MenuItem value={'none'} sx={{ display: 'none' }}>
+            {tLkOg('categoriesOfParticipants.edit')}
           </MenuItem>
-          <MenuItem value={"levels"}>
-            {tLkOg("categoriesOfParticipants.levels")}
-          </MenuItem>
-          <MenuItem value={"gender"}>
-            {tLkOg("categoriesOfParticipants.gender")}
-          </MenuItem>
-          <MenuItem value={"age"}>
-            {tLkOg("categoriesOfParticipants.age")}
-          </MenuItem>
-          <MenuItem value={"weight"}>
-            {tLkOg("categoriesOfParticipants.weight")}
-          </MenuItem>
-          <MenuItem value={"price"}>
-            {tLkOg("categoriesOfParticipants.price")}
-          </MenuItem>
+          <MenuItem value={'levels'}>{tLkOg('categoriesOfParticipants.levels')}</MenuItem>
+          <MenuItem value={'gender'}>{tLkOg('categoriesOfParticipants.gender')}</MenuItem>
+          <MenuItem value={'age'}>{tLkOg('categoriesOfParticipants.age')}</MenuItem>
+          <MenuItem value={'weight'}>{tLkOg('categoriesOfParticipants.weight')}</MenuItem>
+          <MenuItem value={'price'}>{tLkOg('categoriesOfParticipants.price')}</MenuItem>
         </Select>
       </THCell>
 
       <THCell onClick={removeRowsFromTable}>
-        <Delete type="button">
-          {tLkOg("categoriesOfParticipants.delete")}
-        </Delete>
+        <Delete type='button'>{tLkOg('categoriesOfParticipants.delete')}</Delete>
       </THCell>
 
       <THCell>
-        <THCancel type="button" onClick={() => setSelectedInTableRows([])}>
-          <XIcon /> {tLkOg("categoriesOfParticipants.reset")}
+        <THCancel type='button' onClick={() => setSelectedInTableRows([])}>
+          <XIcon /> {tLkOg('categoriesOfParticipants.reset')}
         </THCancel>
       </THCell>
     </TableCollapseHead>
@@ -144,26 +127,20 @@ const THCancel = styled.button`
 `
 
 const XIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'>
     <path
-      d="M15 5L5 15"
-      stroke="#F2F2F2"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      d='M15 5L5 15'
+      stroke='#F2F2F2'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
     />
     <path
-      d="M5 5L15 15"
-      stroke="#F2F2F2"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      d='M5 5L15 15'
+      stroke='#F2F2F2'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
     />
   </svg>
 )

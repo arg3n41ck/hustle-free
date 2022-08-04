@@ -1,48 +1,42 @@
-import React from "react"
-import styled from "styled-components"
-import { getRusBetweenDate } from "../../../../../../helpers/helpers"
-import { CalendarIcon, LocationIcon } from "../../../../Events/EventsSlider"
-import { Avatar, IconButton } from "@mui/material"
-import { DEFAULT_API_URL } from "../../../../../../services/constants"
-import { useRouter } from "next/router"
+import React from 'react'
+import styled from 'styled-components'
+import { getRusBetweenDate } from '../../../../../../helpers/helpers'
+import { CalendarIcon, LocationIcon } from '../../../../Events/EventsSlider'
+import { Avatar, IconButton } from '@mui/material'
+import { DEFAULT_API_URL } from '../../../../../../services/constants'
+import { useRouter } from 'next/router'
 
 function FilterMyEvents({ data }) {
   const { push: routerPush } = useRouter()
-  
 
   return (
     <EventContainer key={data?.id}>
       <EventItems>
         <Avatar
-          alt={DEFAULT_API_URL + data?.event?.image}
-          src={DEFAULT_API_URL + data?.event?.image}
+          alt={DEFAULT_API_URL + data?.event?.description?.banner}
+          src={DEFAULT_API_URL + data?.event?.description?.banner}
           sx={{ width: 112, height: 112 }}
         />
         <EventsInfo>
-          <EventInfoHeadingText
-            onClick={() => routerPush(`/events/${data?.event?.id}`)}
-          >
+          <EventInfoHeadingText onClick={() => routerPush(`/events/${data?.event?.id}`)}>
             {data?.event?.name}
           </EventInfoHeadingText>
           <EventInfoParticipantsInfo>
-            {data?.participationCategory?.eventParticipantsCategory?.name} /{" "}
-            {data?.participationCategory?.level} /{" "}
+            {data?.participationCategory?.eventParticipantsCategory?.name} /{' '}
+            {data?.participationCategory?.level} /{' '}
             {data?.participationCategory?.eventParticipantsCategory?.fromAge}-
-            {data?.participationCategory?.eventParticipantsCategory?.toAge} лет
-            /{" "}
-            {data?.participationCategory?.eventParticipantsCategory?.fromWeight}{" "}
-            кг -{" "}
-            {data?.participationCategory?.eventParticipantsCategory?.toWeight}{" "}
-            кг{" "}
+            {data?.participationCategory?.eventParticipantsCategory?.toAge} лет /{' '}
+            {data?.participationCategory?.eventParticipantsCategory?.fromWeight} кг -{' '}
+            {data?.participationCategory?.eventParticipantsCategory?.toWeight} кг{' '}
           </EventInfoParticipantsInfo>
           <EventBottomInfo>
-            <LocationIcon color={"#828282"} />
+            <LocationIcon color={'#828282'} />
             <EventCitiesAndDateInfo>
               {data?.event?.country}, {data?.event?.city}
             </EventCitiesAndDateInfo>
           </EventBottomInfo>
           <EventBottomInfo>
-            <CalendarIcon color={"#828282"} />
+            <CalendarIcon color={'#828282'} />
             <EventCitiesAndDateInfo>
               {getRusBetweenDate(data?.event?.dateStart, data?.event?.dateEnd)}
             </EventCitiesAndDateInfo>
@@ -53,7 +47,7 @@ function FilterMyEvents({ data }) {
           <IconButton sx={{ padding: 0 }}>
             <ManyEllipseIcon />
           </IconButton>
-          <PaidInfo color={"#27AE60 "}>Оплачено</PaidInfo>
+          <PaidInfo color={'#27AE60 '}>Оплачено</PaidInfo>
         </EventRightInfo>
       </EventItems>
     </EventContainer>
@@ -136,15 +130,9 @@ const EventInfoParticipantsInfo = styled.p`
 `
 
 export const ManyEllipseIcon = () => (
-  <svg
-    width="6"
-    height="32"
-    viewBox="0 0 6 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="3" cy="3" r="3" fill="#333333" />
-    <circle cx="3" cy="16" r="3" fill="#333333" />
-    <circle cx="3" cy="29" r="3" fill="#333333" />
+  <svg width='6' height='32' viewBox='0 0 6 32' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <circle cx='3' cy='3' r='3' fill='#333333' />
+    <circle cx='3' cy='16' r='3' fill='#333333' />
+    <circle cx='3' cy='29' r='3' fill='#333333' />
   </svg>
 )

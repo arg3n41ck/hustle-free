@@ -8,16 +8,39 @@ import { getEventDefaultValues } from './location'
 import { useSelector } from 'react-redux'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
+const emptyInitialValues = {
+  nameOrganization: '',
+  firstName: '',
+  lastName: '',
+  phoneNumber1: '',
+  telegram: '',
+  instagram: '',
+  youtube: '',
+  tiktok: '',
+  facebook: '',
+  linkedin: '',
+  twitter: '',
+  vk: '',
+  email: '',
+  webSite: '',
+}
+
 function Contacts() {
   const user = useSelector((state) => state.user.user)
   const {
     query: { id: eventId },
   } = useRouter()
+  const [contactsId, setContactsId] = useState(null)
   const [eventDefaultValues, setEventDefaultValues] = useState(null)
   useEffect(() => {
     if (eventId) {
-      getEventDefaultValues(`/organizer/events/${eventId}/contact/`).then((data) => {
-        setEventDefaultValues(data)
+      getEventDefaultValues(`/events/contacts/?event=${eventId}`).then((data) => {
+        const currentContacts = !!data?.length && data.find(({ event }) => event == eventId)
+        if (currentContacts) {
+          const { id, event, ...rest } = currentContacts
+          setContactsId(id)
+          !!data?.length && setEventDefaultValues(rest || emptyInitialValues)
+        }
       })
     }
   }, [eventId])
@@ -25,16 +48,15 @@ function Contacts() {
   return (
     <LkLayout tabs={lkOgTabs}>
       <EventsCreateLayout>
-        {eventDefaultValues && (
-          <EventContacts
-            defaultValue={{
-              ...eventDefaultValues,
-              ...user,
-              phoneNumber1: user.phoneNumber,
-            }}
-            eventId={eventId}
-          />
-        )}
+        <EventContacts
+          defaultValue={{
+            ...user,
+            ...eventDefaultValues,
+            phoneNumber1: user?.phoneNumber || '',
+          }}
+          eventId={eventId}
+          contactsId={contactsId}
+        />
       </EventsCreateLayout>
     </LkLayout>
   )

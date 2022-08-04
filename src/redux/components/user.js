@@ -1,45 +1,42 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
-import $api from "../../services/axios"
-import { camelizeKeys } from "humps"
-import { localStorageRemoveItem } from "../../helpers/helpers"
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import $api from '../../services/axios'
+import { camelizeKeys } from 'humps'
+import { localStorageRemoveItem } from '../../helpers/helpers'
 
 // async actions
-export const fetchUser = createAsyncThunk(
-  "user/get",
-  async (params, { rejectWithValue }) => {
-    try {
-      let newData
-      const { data } = await $api.get(`/accounts/users/me/`)
+export const fetchUser = createAsyncThunk('user/get', async (params, { rejectWithValue }) => {
+  try {
+    let newData
+    const { data } = await $api.get(`/accounts/users/me/`, { params })
 
-      if (data.role === "organizer") {
-        const { data: organizerData } = await $api.get(`/organizer/profile/`)
-        newData = { ...data, ...organizerData[0].user }
-      } else if (data.role === "athlete") {
-        const { data: athlete } = await $api.get(`/athlete/profile/`)
-        newData = { ...data, ...athlete[0].user }
-      } else if (data.role === "team") {
-        const { data: teamData } = await $api.get(`/teams/profile/`)
-        const { user, ...rst } = teamData[0]
-        newData = { ...data, ...user, ...rst }
-      }
-
-      return camelizeKeys(newData)
-    } catch (e) {
-      return rejectWithValue(e.response.status)
+    if (data.role === 'organizer') {
+      const { data: organizerData } = await $api.get(`/organizers/`)
+      newData = { ...data, ...organizerData[0].user, organizerId: organizerData[0].id }
+    } else if (data.role === 'athlete') {
+      const { data: athlete } = await $api.get(`/athlete/profile/`)
+      newData = { ...data, ...athlete.user }
+    } else if (data.role === 'team') {
+      const { data: teamData } = await $api.get(`/teams/profile/`)
+      const { user, ...rst } = teamData
+      newData = { ...data, ...user, ...rst }
     }
+
+    return camelizeKeys(newData)
+  } catch (e) {
+    return rejectWithValue(e.response.status)
   }
-)
+})
 
 export const fetchOgEvents = createAsyncThunk(
-  "user/get-og-events",
+  'user/get-og-events',
   async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/organizer/my_events_list/`)
+      const { data } = await $api.get(`/events/events/`, { params })
       return data || []
     } catch (e) {
       return rejectWithValue(e.response.status)
     }
-  }
+  },
 )
 
 // reducer
@@ -50,7 +47,7 @@ const initialState = {
 }
 
 export const profileMenuSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     saveUserItem(state, { payload }) {
@@ -62,7 +59,7 @@ export const profileMenuSlice = createSlice({
     exitUser(state) {
       state.user = initialState
       state.userAuthenticated = false
-      localStorageRemoveItem("role")
+      localStorageRemoveItem('role')
     },
   },
   extraReducers: (builder) => {
@@ -88,7 +85,7 @@ export const { saveUserItem, saveUser, exitUser } = profileMenuSlice.actions
 
 export const selectIsUserAuth = createSelector(
   (state) => state.user.userAuthenticated,
-  (userAuthenticated) => [userAuthenticated]
+  (userAuthenticated) => [userAuthenticated],
 )
 
 export const selectOgEvents = createSelector(
@@ -96,7 +93,11 @@ export const selectOgEvents = createSelector(
     const ogEvents = state?.user?.myEvents
     return ogEvents?.length ? ogEvents.map(({ id }) => id) : []
   },
-  (ogEvents) => [ogEvents]
+  (state) => {
+    const ogEvents = state?.user?.myEvents
+    return ogEvents?.length ? ogEvents : []
+  },
+  (ogEventsId, ogEvents) => [ogEventsId, ogEvents],
 )
 
 export default profileMenuSlice.reducer

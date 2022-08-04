@@ -295,8 +295,8 @@ function EventMainInfo({ event }) {
         <CategoriesShareTitle>{tEventDetail('eventMainInfo.share')}</CategoriesShareTitle>
         <CategorySocials>
           <EmailShareButton
-            subject={event.name}
-            body={event.description}
+            subject={event?.name}
+            body={event?.description?.description}
             url={`https://dev.hustlefree.pro/en/events/${event.id}`}
           >
             <EventGoogleHover />
@@ -307,7 +307,7 @@ function EventMainInfo({ event }) {
           <VKShareButton
             url={`https://dev.hustlefree.pro/en/events/${event.id}`}
             title={event.name}
-            image={event.image}
+            image={event?.description?.banner}
             noParse={true}
           >
             <EventVKHover />

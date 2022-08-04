@@ -21,7 +21,7 @@ const emptyState = {
 
 export const createParticipantCategory = async (values) => {
   try {
-    const { data } = await $api.post('/directory/participants_categories/', values)
+    const { data } = await $api.post('/directories/event_part_categories/', values)
     return data
   } catch (e) {
     console.log(e)

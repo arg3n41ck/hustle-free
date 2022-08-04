@@ -21,7 +21,7 @@ const emptyState = {
 
 export const editParticipantCategory = async (values, id) => {
   try {
-    const { data } = await $api.patch(`/directory/participants_categories/${id}/`, values)
+    const { data } = await $api.patch(`/directories/event_part_categories/${id}/`, values)
     return data
   } catch (e) {
     console.log(e)
@@ -80,7 +80,7 @@ function ParticipantCategoriesEdit({
           sportType={sportType}
           name={initialState.name}
           defaultValues={
-            initialState?.levels?.length ? initialState?.levels.map(({ id }) => id) : []
+            initialState?.levels?.length ? initialState.levels.map(({ id }) => id) : []
           }
           submit={(values) => onSubmit(values)}
         />

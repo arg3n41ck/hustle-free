@@ -1,39 +1,30 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { useFormik } from "formik"
-import * as yup from "yup"
-import { useRouter } from "next/router"
-import { Cancel, EventFormFooter, Field, Form, Submit } from "./EventDefaults"
-import styled from "styled-components"
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { useRouter } from 'next/router'
+import { Cancel, EventFormFooter, Field, Form, Submit } from './EventDefaults'
+import styled from 'styled-components'
 import ParticipantCategoriesCreate, {
   createParticipantCategory,
-} from "./ParticipantCategories/ParticipantCategoriesCreate"
-import Table from "../../../../ui/Table/Table"
-import { Collapse } from "@mui/material"
-import ParticipantCategoriesEdit from "./ParticipantCategories/ParticipantCategoriesEdit"
-import EventParticipantCategoriesTableCollapseHead from "./EventParticipantCategoriesTableCollapseHead"
-import EventParticipantAutocomplete from "./ParticipantCategories/EventParticipantAutocomplete"
-import { useTranslation } from "next-i18next"
+} from './ParticipantCategories/ParticipantCategoriesCreate'
+import Table from '../../../../ui/Table/Table'
+import { Collapse } from '@mui/material'
+import ParticipantCategoriesEdit from './ParticipantCategories/ParticipantCategoriesEdit'
+import EventParticipantCategoriesTableCollapseHead from './EventParticipantCategoriesTableCollapseHead'
+import EventParticipantAutocomplete from './ParticipantCategories/EventParticipantAutocomplete'
+import { useTranslation } from 'next-i18next'
 
 const emptyInitialValues = {
   pc: [],
 }
 
 export const getGender = (gender, isFull = false) =>
-  gender === "male" ? (!isFull ? "М" : "Мужской") : !isFull ? "Ж" : "Женский"
+  gender === 'male' ? (!isFull ? 'М' : 'Мужской') : !isFull ? 'Ж' : 'Женский'
 
 const createDataForTable = (defaultData = []) => {
   return defaultData.map((currentValue) => {
-    const {
-      fromAge,
-      fromWeight,
-      gender,
-      id,
-      levels,
-      name,
-      price,
-      toAge,
-      toWeight,
-    } = currentValue
+    const { fromAge, fromWeight, gender, id, levels, name, price, toAge, toWeight } = currentValue
+
     return {
       id,
       name,
@@ -43,7 +34,7 @@ const createDataForTable = (defaultData = []) => {
       weight: `${fromWeight} кг - ${toWeight} кг`,
       price: price
         ? `${Math.round(price.standartPrice)} ${price.currency.toUpperCase()}`
-        : null,
+        : `${Math.round(price || 0)}`,
     }
   })
 }
@@ -57,15 +48,15 @@ function EventParticipantCategories({
 }) {
   const [participantCategories, setParticipantCategories] = useState([])
   const [openPCM, setOpenPCM] = useState(false)
-  const [openPCME, setOpenPCME] = useState({ id: "" | [], step: "" })
+  const [openPCME, setOpenPCME] = useState({ id: '' | [], step: '' })
   const [selectedInTableRows, setSelectedInTableRows] = useState([])
   const { push: routerPush } = useRouter()
-  const { t: tLkOg } = useTranslation("lkOg")
+  const { t: tLkOg } = useTranslation('lkOg')
 
   const validationSchema = yup.object({
     pc: yup.mixed().test({
       test: (array) => array.some((value) => value),
-      message: tLkOg("validation.chooseAtLeastOneCategory"),
+      message: tLkOg('validation.chooseAtLeastOneCategory'),
     }),
   })
 
@@ -88,34 +79,34 @@ function EventParticipantCategories({
   const columns = useMemo(() => {
     return [
       {
-        column: tLkOg("categoriesOfParticipants.categories"),
-        accessor: "name",
-        onClick: (rowId) => setOpenPCME({ id: rowId, step: "name" }),
+        column: tLkOg('categoriesOfParticipants.categories'),
+        accessor: 'name',
+        onClick: (rowId) => setOpenPCME({ id: rowId, step: 'name' }),
       },
       {
-        column: tLkOg("categoriesOfParticipants.levels"),
-        accessor: "level",
-        onClick: (rowId) => setOpenPCME({ id: rowId, step: "levels" }),
+        column: tLkOg('categoriesOfParticipants.levels'),
+        accessor: 'level',
+        onClick: (rowId) => setOpenPCME({ id: rowId, step: 'levels' }),
       },
       {
-        column: tLkOg("categoriesOfParticipants.gender"),
-        accessor: "gender",
-        onClick: (rowId) => setOpenPCME({ id: rowId, step: "gender" }),
+        column: tLkOg('categoriesOfParticipants.gender'),
+        accessor: 'gender',
+        onClick: (rowId) => setOpenPCME({ id: rowId, step: 'gender' }),
       },
       {
-        column: tLkOg("categoriesOfParticipants.age"),
-        accessor: "age",
-        onClick: (rowId) => setOpenPCME({ id: rowId, step: "age" }),
+        column: tLkOg('categoriesOfParticipants.age'),
+        accessor: 'age',
+        onClick: (rowId) => setOpenPCME({ id: rowId, step: 'age' }),
       },
       {
-        column: tLkOg("categoriesOfParticipants.weight"),
-        accessor: "weight",
-        onClick: (rowId) => setOpenPCME({ id: rowId, step: "weight" }),
+        column: tLkOg('categoriesOfParticipants.weight'),
+        accessor: 'weight',
+        onClick: (rowId) => setOpenPCME({ id: rowId, step: 'weight' }),
       },
       {
-        column: tLkOg("categoriesOfParticipants.price"),
-        accessor: "price",
-        onClick: (rowId) => setOpenPCME({ id: rowId, step: "price" }),
+        column: tLkOg('categoriesOfParticipants.price'),
+        accessor: 'price',
+        onClick: (rowId) => setOpenPCME({ id: rowId, step: 'price' }),
       },
     ]
   }, [])
@@ -130,10 +121,10 @@ function EventParticipantCategories({
   useEffect(() => {
     participantCategories.length
       ? setFieldValue(
-          "pc",
-          participantCategories.map(({ id }) => id)
+          'pc',
+          participantCategories.map(({ id }) => id),
         )
-      : setFieldValue("pc", [])
+      : setFieldValue('pc', [])
   }, [participantCategories])
 
   const onSelectManual = useCallback((values) => {
@@ -180,16 +171,13 @@ function EventParticipantCategories({
 
         <EventFormFooter>
           <OpenPCM onClick={() => setOpenPCM(true)}>
-            + {tLkOg("categoriesOfParticipants.addANewCategory")}
+            + {tLkOg('categoriesOfParticipants.addANewCategory')}
           </OpenPCM>
-          <Cancel
-            type="button"
-            onClick={() => routerPush("/lk-og/profile/events")}
-          >
-            {tLkOg("editEvent.cancel")}
+          <Cancel type='button' onClick={() => routerPush('/lk-og/profile/events')}>
+            {tLkOg('editEvent.cancel')}
           </Cancel>
-          <Submit type="submit" onClick={handleSubmit}>
-            {tLkOg("editEvent.further")}
+          <Submit type='submit' onClick={handleSubmit}>
+            {tLkOg('editEvent.further')}
           </Submit>
         </EventFormFooter>
       </Form>
@@ -209,7 +197,7 @@ function EventParticipantCategories({
           sportType={sportType}
           refreshPC={refreshPC}
           eventId={eventId}
-          onCloseModals={() => setOpenPCME({ id: "", step: "" })}
+          onCloseModals={() => setOpenPCME({ id: '', step: '' })}
         />
       )}
     </>

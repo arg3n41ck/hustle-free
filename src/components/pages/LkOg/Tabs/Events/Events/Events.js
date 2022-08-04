@@ -1,40 +1,39 @@
-import React, { useEffect, useState } from "react"
-import LkDefaultHeader from "../../../../../ui/LKui/LKDefaultHeader"
-import { TitleHeader } from "../../../../../ui/LKui/HeaderContent"
-import styled from "styled-components"
-import { useRouter } from "next/router"
-import EventsTable from "./EventsTable"
-import $api from "../../../../../../services/axios"
-import { useTranslation } from "next-i18next"
-
-const getEvents = async () => {
-  const { data } = await $api.get("/organizer/my_events_list/")
-  return data
-}
+import React, { useEffect, useState } from 'react'
+import LkDefaultHeader from '../../../../../ui/LKui/LKDefaultHeader'
+import { TitleHeader } from '../../../../../ui/LKui/HeaderContent'
+import styled from 'styled-components'
+import { useRouter } from 'next/router'
+import EventsTable from './EventsTable'
+import $api from '../../../../../../services/axios'
+import { useTranslation } from 'next-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchOgEvents, selectOgEvents } from '../../../../../../redux/components/user'
 
 function EventsContent({ onToggleSidebar }) {
-  const [events, setEvents] = useState([])
+  const [, ogEvents] = useSelector(selectOgEvents)
+  const {
+    user: { user },
+  } = useSelector((state) => state)
   const { push: routerPush } = useRouter()
-  const { t: tLkOg } = useTranslation("lkOg")
+  const { t: tLkOg } = useTranslation('lkOg')
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    getEvents().then(setEvents)
-  }, [])
+    user?.email && dispatch(fetchOgEvents({ organizer: user?.email }))
+  }, [user])
 
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
-          <TitleHeader>{tLkOg("myEvents.myEvents")}</TitleHeader>
-          <CreateEventBTN
-            onClick={() => routerPush("/lk-og/profile/events/edit")}
-          >
-            {tLkOg("myEvents.createANewEvent")}
+          <TitleHeader>{tLkOg('myEvents.myEvents')}</TitleHeader>
+          <CreateEventBTN onClick={() => routerPush('/lk-og/profile/events/edit')}>
+            {tLkOg('myEvents.createANewEvent')}
           </CreateEventBTN>
         </HeaderWrapper>
       </LkDefaultHeader>
       <TableWrapper>
-        <EventsTable events={events} />
+        <EventsTable events={ogEvents} />
       </TableWrapper>
     </div>
   )

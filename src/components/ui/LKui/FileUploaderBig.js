@@ -1,25 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Box, IconButton } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import CropEasy from '../image-crop/CropEasy'
 import { Crop } from '@mui/icons-material'
 
-function FileUploaderBig({ onChange, defaultImage, error }) {
+function FileUploaderBig({ onChange, defaultBanner, error }) {
   const [file, setFile] = useState(null)
-  const [photoURL, setPhotoURL] = useState(defaultImage)
+  const [photoURL, setPhotoURL] = useState(defaultBanner)
   // const [openCrop, setOpenCrop] = useState(false)
   const { t: tLkOg } = useTranslation('lkOg')
 
+  console.log({ photoURL, defaultBanner })
+
   const handleOnDeleteImage = () => {
     setFile(null)
-    setDefaultImage(null)
+    setPhotoURL(null)
   }
+
+  useEffect(() => {
+    setPhotoURL(
+      !!defaultBanner && typeof (defaultBanner || '') !== 'string'
+        ? URL.createObjectURL(defaultBanner)
+        : defaultBanner,
+    )
+  }, [defaultBanner])
 
   const onUploadImage = (e) => {
     const _file = e.target.files[0]
     setFile(_file)
-    setPhotoURL(URL.createObjectURL(_file))
     // setOpenCrop(true)
     onChange(_file)
   }
@@ -45,11 +54,11 @@ function FileUploaderBig({ onChange, defaultImage, error }) {
           {tLkOg('coverAndDescription.coverPlaceholder')}{' '}
           <span>{tLkOg('coverAndDescription.download')}</span>
         </UploadText>
-        {file && (
+        {/* {file && (
           <IconButton aria-label='Crop' color='primary' onClick={() => setOpenCrop(true)}>
             <Crop />
           </IconButton>
-        )}
+        )} */}
         <UploadDescription>{tLkOg('coverAndDescription.coverPlaceholder2')}</UploadDescription>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </Box>

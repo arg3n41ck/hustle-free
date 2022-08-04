@@ -19,7 +19,7 @@ const initialEmptyValues = {
 
 const createPrice = async (values) => {
   try {
-    const { data } = await $api.post('/directory/participant_category_price/', values)
+    const { data } = await $api.post('/directories/part_category_price/', values)
     return data
   } catch (e) {
     console.log(e)
@@ -27,7 +27,7 @@ const createPrice = async (values) => {
 }
 const editPrice = async (values, id) => {
   try {
-    const { data } = await $api.put(`/directory/participant_category_price/${id}/`, values)
+    const { data } = await $api.put(`/directories/part_category_price/${id}/`, values)
     return data
   } catch (e) {
     console.log(e)
@@ -35,7 +35,7 @@ const editPrice = async (values, id) => {
 }
 
 const getPrice = async (id) => {
-  const { data } = await $api.get(`/directory/participant_category_price/${id}/`)
+  const { data } = await $api.get(`/directories/part_category_price/${id}/`)
   return data
 }
 

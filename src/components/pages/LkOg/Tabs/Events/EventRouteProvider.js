@@ -119,9 +119,9 @@ function EventRouteWrapper({ children }) {
 
   useEffect(async () => {
     isInOgProfile && eventId
-      ? await $api.get(`/organizer/events/${eventId}/event_creating_status/`).then(({ data }) => {
+      ? await $api.get(`/events/status/?event=${eventId}`).then(({ data }) => {
           const { event, id, ...rest } = data
-          rowEventRoutes(rest)
+          rowEventRoutes(rest['0'])
         })
       : rowEventRoutes(null)
   }, [eventId, pathname])
