@@ -10,7 +10,7 @@ import { theme } from '../../../../styles/theme'
 import { useTranslation } from 'next-i18next'
 
 const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => {
-  const [checked, setChecked] = useState(true)
+  const [checked, setChecked] = useState(false)
   const [imageUrl, setImageUrl] = useState(null)
   const { t: tAuth } = useTranslation('auth')
   const { t: tCommon } = useTranslation('common')
@@ -83,9 +83,15 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
 
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>{tAuth('common.description')}</p>
-        <TextArea
+        <TextField
+          sx={{ width: '100%' }}
+          variant='outlined'
           placeholder={tAuth('common.description')}
           name='description'
+          multiline
+          rows={8}
+          error={formik.touched.description && Boolean(formik.errors.description)}
+          helperText={formik.touched.description && formik.errors.description}
           onChange={formik.handleChange}
           value={formik.values.description}
         />
@@ -186,7 +192,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
       </Box>
 
       <AuthButton
-        disabled={!formik.isValid || checked === false}
+        disabled={!formik.isValid}
         active={formik.values.sports && !Boolean(formik.errors.sports)}
         type='submit'
       >

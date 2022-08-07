@@ -73,18 +73,21 @@ const Info = ({ onToggleSidebar }) => {
           </CenterRight>
         </Center>
         <List>
-          <Item>
-            <WrapperIcon>
-              <CalendarIcon />
-            </WrapperIcon>
-            {tLkAh('userProfile.birthDay')}:
-          </Item>
-          <Item>
-            {!!user?.dateBirthday &&
-              format(parseISO(user?.dateBirthday), 'dd MMMM yyyy г.', {
-                locale: ru,
-              })}
-          </Item>
+          {!!user?.dateBirthday && (
+            <>
+              <Item>
+                <WrapperIcon>
+                  <CalendarIcon />
+                </WrapperIcon>
+                {tLkAh('userProfile.birthDay')}:
+              </Item>
+              <Item>
+                {format(parseISO(user?.dateBirthday), 'dd MMMM yyyy г.', {
+                  locale: ru,
+                })}
+              </Item>{' '}
+            </>
+          )}
           <Item>
             <WrapperIcon>
               <GenderIcon />

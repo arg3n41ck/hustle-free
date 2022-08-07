@@ -111,7 +111,7 @@ const Edits = () => {
     validationSchema: validationSchemaChangePassword,
     onSubmit: async (values, { resetForm }) => {
       try {
-        await $api.post('/accounts/auth/users/set_password/', values)
+        await $api.patch('/accounts/users/me/', values)
         resetForm()
         toast.success(`Вы успешно изменили пароль!`)
       } catch (e) {
@@ -149,11 +149,13 @@ const Edits = () => {
         for (let key in newValues) {
           if (!newValues[key]) delete newValues[key]
         }
-
+        
         if (typeof newValues.avatar === 'string') delete newValues.avatar
-        const { data } = await formDataHttp(newValues, `athlete/profile/edit/`, 'patch')
+        const {isVisible, ...usersData} = newValues
+        const { data: atheletesData } = await formDataHttp({isVisible}, `athletes/${user?.athleteId}/`, 'patch')
+        const { data } = await formDataHttp({...usersData}, `accounts/users/me/`, 'patch')
 
-        dispatch(saveUser({ ...newValues, ...data }))
+        dispatch(saveUser({ ...newValues, ...data, atheletesData }))
         dispatch(fetchUser())
         await routerPush('/lk-ah/profile')
       } catch (e) {

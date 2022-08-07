@@ -24,11 +24,11 @@ const Info = ({ onToggleSidebar, onView }) => {
 
   useEffect(() => {
     if (user?.country && countries.length) {
-      const currentCountry = countries.find((country) => country.id === user?.country),
-        currentCity = currentCountry.cityCountry.find((country) => country.id === user?.city)
+      const currentCountry = countries[0],
+      currentCity = currentCountry.cityCountry.find((city) => city.id === user?.city.id)
       setCurrentLocations({
-        country: currentCountry.name,
-        city: currentCity.name,
+        country: currentCountry?.name,
+        city: currentCity?.name,
       })
     }
   }, [user, countries])
@@ -43,12 +43,12 @@ const Info = ({ onToggleSidebar, onView }) => {
       <Content>
         <Center>
           <Avatar
-            alt={`${user?.firstName} ${user?.lastName}`}
+            alt={`${user?.name}`}
             src={user?.avatar}
             sx={{ width: 112, height: 112 }}
           />
           <CenterText>
-            <CenterTitle>{user?.fullName}</CenterTitle>
+            <CenterTitle>{user?.name}</CenterTitle>
             <CenterDescription>{user?.description}</CenterDescription>
           </CenterText>
           <Button onClick={() => onView('edit')}>

@@ -45,6 +45,7 @@ function TeamTabs() {
       toast.success(tAuth('toast.successActivation'))
       await router.push('/')
     } catch (e) {
+      console.log(e)
       toast.error(tAuth('toast.someWrong'))
     }
   }, [])

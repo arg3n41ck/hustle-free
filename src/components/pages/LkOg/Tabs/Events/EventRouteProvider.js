@@ -126,18 +126,18 @@ function EventRouteWrapper({ children }) {
       : rowEventRoutes(null)
   }, [eventId, pathname])
 
-  useEffect(async () => {
-    const activePageName = pageNames[activePage]
-    const isInOtherEditPage = !pathname.includes(`${activePageName}`)
+  // useEffect(async () => {
+  //   const activePageName = pageNames[activePage]
+  //   const isInOtherEditPage = !pathname.includes(`${activePageName}`)
 
-    if (isInOgProfile && eventId && activePage && isInOtherEditPage) {
-      await routerPush(
-        `/lk-og/profile/events/edit/${eventId}/${
-          activePageName === 'general' ? '' : activePageName
-        }`,
-      )
-    }
-  }, [activePage])
+  //   if (isInOgProfile && eventId && activePage && isInOtherEditPage) {
+  //     await routerPush(
+  //       `/lk-og/profile/events/edit/${eventId}/${
+  //         activePageName === 'general' ? '' : activePageName
+  //       }`,
+  //     )
+  //   }
+  // }, [activePage])
 
   return (
     <EventRouteContext.Provider

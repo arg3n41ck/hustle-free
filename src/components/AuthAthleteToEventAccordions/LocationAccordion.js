@@ -82,7 +82,7 @@ function LocationAccordion({ event }) {
           </LocationAccordionItems>
 
           <Map active={!!mapPoints}>
-            {mapPoints && <MapFiledLeafLet defaultPoints={mapPoints} disabled />}
+            {mapPoints && <MapFiledLeafLet points={mapPoints} disabled />}
           </Map>
         </AccordionDetails>
       </LocationAccordionCustom>

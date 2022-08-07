@@ -23,7 +23,7 @@ import { useTranslation } from 'next-i18next'
 
 const Edits = ({ onView }) => {
   const {
-    user,
+    user: { user },
     sportTypes: {
       sportTypes: { data: sportTypes },
     },
@@ -33,7 +33,7 @@ const Edits = ({ onView }) => {
   const [currentSportTypes, setCurrentSportTypes] = useState([])
   const { t: tCommon } = useTranslation('common')
   const validationSchema = yup.object({
-    fullName: yup.string().nullable().required(tCommon('validation.required')),
+    name: yup.string().nullable(),
     country: yup.mixed().required(tCommon('validation.required')),
     city: yup.mixed().required(tCommon('validation.required')),
     webSite: yup.string().required(tCommon('validation.required')),
@@ -42,7 +42,7 @@ const Edits = ({ onView }) => {
       .string()
       .nullable()
       .test({
-        test: (value) => (value ? value.length === 12 : true),
+        test: (value) => (normalizePhone(value) ? value.length === 12 : true),
         message: tCommon('validation.phoneNumberMin'),
       }),
     emailCoach: yup
@@ -61,8 +61,13 @@ const Edits = ({ onView }) => {
       return true
     }),
   })
+
   const formik = useFormik({
-    initialValues: user.user,
+    initialValues: {
+      ...user,
+      city: user?.city?.name || null,
+      country: user?.country?.name || null,
+    },
     validationSchema,
     onSubmit: async (values) => {
       try {
@@ -81,9 +86,9 @@ const Edits = ({ onView }) => {
         if (typeof newValues.avatar === 'string') delete newValues.avatar
         const avaRes =
           newValues.avatar &&
-          (await formDataHttp({ avatar: newValues.avatar }, 'teams/profile/edit/', 'patch'))
+          (await formDataHttp({ avatar: newValues.avatar }, `accounts/users/me/`, 'patch'))
         const { avatar: waste, ...rest } = newValues
-        const { data } = await $api.patch('teams/profile/edit/', rest)
+        const { data } = await $api.patch(`teams/teams/${user.teamId}/`, rest)
         dispatch(
           saveUser({
             ...values,
@@ -106,19 +111,14 @@ const Edits = ({ onView }) => {
   }
 
   useEffect(() => {
-    if (typeof formik.values.country === 'number') {
-      const currentCountry = countries.find((country) => country.id === formik.values.country)
-      const currentCity = currentCountry?.cityCountry.find((city) => city.id === formik.values.city)
-      setCurrentCities(currentCountry.cityCountry)
-      formik.setFieldValue('country', currentCountry.name)
-      formik.setFieldValue('city', currentCity.name)
-    }
-
+    const currentCountry = countries.find((country) => country.name === formik.values.country)
+    setCurrentCities(currentCountry.cityCountry)
     const newSportTypes = []
-    formik.values?.sports?.map((sportId) => {
+    formik.values?.sports?.map(({ id: sportId }) => {
       const obj = sportTypes.find((sportType) => sportType.id === sportId)
       newSportTypes.push(obj)
     })
+
     setCurrentSportTypes(newSportTypes)
   }, [])
 
@@ -137,13 +137,13 @@ const Edits = ({ onView }) => {
           <p className='auth-title__input'>{tCommon('form.fieldsNames.organizationName')}</p>
           <TextField
             sx={{ width: '100%' }}
-            name='fullName'
+            name='name'
             onChange={formik.handleChange}
-            value={formik.values.fullName}
+            value={formik.values.name}
             placeholder={tCommon('form.fieldsNames.organizationName')}
             variant='outlined'
-            error={formik.touched.fullName && Boolean(formik.errors.fullName)}
-            helperText={formik.touched.fullName && formik.errors.fullName}
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
           />
         </div>
 
@@ -169,13 +169,14 @@ const Edits = ({ onView }) => {
                 ? formik.values.country
                 : tCommon('form.fieldsNames.country')}
             </option>
-            {countries
-              .filter((country) => country.name !== formik.values.country)
-              .map((country) => (
-                <option key={country.id} value={country.name}>
-                  {country.name}
-                </option>
-              ))}
+            {!!countries?.length &&
+              countries
+                .filter((country) => country.name !== formik.values.country)
+                .map((country) => (
+                  <option key={country.id} value={country.name}>
+                    {country.name}
+                  </option>
+                ))}
           </SelectUI>
         </div>
 
@@ -244,7 +245,8 @@ const Edits = ({ onView }) => {
             <InputMask
               name={'phoneCoach'}
               onChange={(e) => {
-                if (normalizePhone(e.target.value || '') === '7') {
+                console.log({ value: e.target.value })
+                if (normalizePhone(e.target.value || '') === '7' || !normalizePhone(e.target.value || '')) {
                   formik.setFieldValue('phoneCoach', '')
                 } else formik.setFieldValue('phoneCoach', `+${e.target.value.replace(/\D/gi, '')}`)
               }}

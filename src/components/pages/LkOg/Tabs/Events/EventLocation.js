@@ -171,10 +171,11 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId, locationId
           <MapWrapper style={{ height: 300 }}>
             <MapFiledLeafLet
               onPoint={({ lat, lng }) => {
+                console.log({ value: `lat - ${lat}, lng - ${lat}` })
                 setFieldValue('lat', `${lat}`)
                 setFieldValue('long', `${lng}`)
               }}
-              defaultPoints={eventId ? { lat: +values.lat, lng: +values.long } : null}
+              points={values.lat && values.long ? { lat: +values.lat, lng: +values.long } : null}
             />
           </MapWrapper>
         </Field>

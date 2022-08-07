@@ -272,7 +272,7 @@ function EventMainInfo({ event }) {
         </ul>
         <div />
         <Map active={!!mapPoints}>
-          <MapFiledLeafLet defaultPoints={mapPoints} disabled />
+          <MapFiledLeafLet points={mapPoints} disabled />
         </Map>
       </Column>
 
