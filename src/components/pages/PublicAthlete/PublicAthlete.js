@@ -9,7 +9,7 @@ import HorizontalTabsBorder from '../../ui/tabs/HorizontalTabsBorder'
 import { useTranslation } from 'next-i18next'
 
 function PublicAthlete({ athleteData }) {
-  const { user, teams, participations } = athleteData
+  const { user, teams, participations, isVisible } = athleteData
   const [view, setView] = React.useState('all') // all | wins | draws | defeats
   const dispatch = useDispatch()
   const { t: tLkAh } = useTranslation('lkAh')
@@ -42,7 +42,7 @@ function PublicAthlete({ athleteData }) {
 
   return (
     <MainWrapper>
-      {user && <AthleteUserData user={user} />}
+      {user && <AthleteUserData user={user} isVisible={isVisible} />}
       {!!teams && !!participations ? (
         <TeamsAndPartWrapper>
           <Teams teams={teams} />

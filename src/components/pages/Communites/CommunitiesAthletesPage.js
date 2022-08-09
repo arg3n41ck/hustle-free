@@ -44,8 +44,8 @@ function CommunitesAthletesPage() {
   ]
 
   const teaamsValue =
-    teams?.results?.length &&
-    teams?.results?.find((type) => `${type.id}` === query.get("team_id"))
+    teams?.length &&
+    teams?.find((type) => `${type.id}` === query.get("team_id"))
 
   const countriesValue =
     countries.length &&
@@ -117,11 +117,11 @@ function CommunitesAthletesPage() {
         </form>
 
         <CommunitesAutoCompletes>
-          {!!teams?.results?.length && (
+          {!!teams?.length && (
             <Autocomplete
               noOptionsText={tCommunities("communities.nothingFound")}
               onChange={(e, value) => handleTeamsTypesFilter(e, value)}
-              options={teams?.results?.map((option) => option)}
+              options={teams?.map((option) => option)}
               getOptionLabel={(option) => option.name}
               fullWidth
               value={teaamsValue}

@@ -11,7 +11,8 @@ export default Athlete
 
 export async function getServerSideProps(context) {
   const { query, locale } = context
-  const { data } = await $api.get(`/athlete/public-profile/${query.id}/`)
+  const { data } = await $api.get(`/athletes/${query.id}/`)
+  
   return {
     props: {
       athlete: data || null,

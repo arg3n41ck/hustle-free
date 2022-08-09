@@ -7,11 +7,11 @@ export const fetchAthletesByParams = createAsyncThunk(
     try {
       
       const {
-        data: { results },
-      } = await $api.get(`/athlete/athletes_list/`, {
+        data
+      } = await $api.get(`/athletes/`, {
         params,
       })
-      return results
+      return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
@@ -34,7 +34,7 @@ export const athletesSlice = createSlice({
     builder.addCase(fetchAthletesByParams.fulfilled, (state, action) => {
       state.isLoading = false
       state.data = action.payload
-      state.count = action.payload.count ?? action.payload.length
+      // state.count = action.payload.count ?? action.payload.length
       state.error = null
     })
     builder.addCase(fetchAthletesByParams.rejected, (state, action) => {

@@ -46,21 +46,16 @@ const getContacts = ({
   ]
 }
 
-function AthleteUserData({ user }) {
-  const [countries, cities] = useSelector(selectCountriesAndCities)
-
-  const userCity = cities.find(({ id }) => id === user.city)?.name || ''
-  const userCountry = countries.find(({ id }) => id === user.country)?.name || ''
-
+function AthleteUserData({ user, isVisible }) {
   const { current: contacts } = useRef(
-    getContacts({ ...user, city: userCity, country: userCountry }),
+    getContacts(user),
   )
 
   return (
     <MainWrapper>
       <MainInfo>
         <Avatar
-          src={`https://api.dev.hustlefree.pro${user.avatar}`}
+          src={user.avatar}
           alt={`${user.avatar}`}
           sx={{ width: 264, height: 264 }}
         />
@@ -70,7 +65,7 @@ function AthleteUserData({ user }) {
           <h3>{user.fullName}</h3>
         )}
       </MainInfo>
-      {!!user.isVisible && (
+      {!!isVisible && (
         <Contacts>
           {contacts.map(({ content, icon }, i) => (
             <div key={`AthleteUserData-Contacts-${i}`}>

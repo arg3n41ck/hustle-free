@@ -7,7 +7,8 @@ import $api from "../../../services/axios"
 import { serverSideTranslations } from "next-i18next/serverSideTranslations"
 
 export const getIsUserInTeam = async (teamId) => {
-  const { data } = await $api.get(`/teams/check_athlete_team/${teamId}/`)
+  const { data } = await $api.get(`/teams/teams/${teamId}/check_athlete/`)
+  console.log(data)
   return data
 }
 

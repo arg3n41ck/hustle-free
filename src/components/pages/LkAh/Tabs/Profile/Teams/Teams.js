@@ -6,20 +6,7 @@ import { Avatar } from "@mui/material"
 import { useRouter } from "next/router"
 
 function Teams({ data, column }) {
-  const [countries, cities] = useSelector(selectCountriesAndCities)
-
-  const [country, setCountry] = React.useState(null)
-  const [city, setCity] = React.useState(null)
   const { push: routerPush } = useRouter()
-
-  React.useEffect(() => {
-    setCountry(countries.find((country) => country.id === data?.country))
-    setCity(cities.find((city) => city.id === data?.city))
-  }, [data])
-
-  if (!country && !city) {
-    return <div />
-  }
 
   return (
     <TeamsContainer key={data?.id} column={column}>
@@ -40,7 +27,7 @@ function Teams({ data, column }) {
           <TeamsBottomInfoCol>
             <LocationIcon />
             <TeamsBottonInfoText>
-              {country?.name}, {city?.name}, {data?.address}{" "}
+              {data?.country?.name}, {data?.city?.name} {data?.address}{" "}
             </TeamsBottonInfoText>
           </TeamsBottomInfoCol>
           <TeamsBottomInfoCol>

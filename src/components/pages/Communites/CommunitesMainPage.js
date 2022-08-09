@@ -1,28 +1,25 @@
-import React, { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { fetchTeams, teamsSelector } from "../../../redux/components/teams"
-import styled from "styled-components"
-import CommunitesList from "./CommunitesTeamsList"
-import Link from "next/link"
-import useQuery from "../../../hooks/useQuery"
-import { useRouter } from "next/router"
-import {
-  fetchAthletesByParams,
-  selectAthletes,
-} from "../../../redux/components/athletes"
-import CommunitesAthletesList from "./CommunitiesAthleteList"
-import { fetchCountries } from "../../../redux/components/countriesAndCities"
-import { useTranslation } from "next-i18next"
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchTeams, teamsSelector } from '../../../redux/components/teams'
+import styled from 'styled-components'
+import CommunitesList from './CommunitesTeamsList'
+import Link from 'next/link'
+import useQuery from '../../../hooks/useQuery'
+import { useRouter } from 'next/router'
+import { fetchAthletesByParams, selectAthletes } from '../../../redux/components/athletes'
+import CommunitesAthletesList from './CommunitiesAthleteList'
+import { fetchCountries } from '../../../redux/components/countriesAndCities'
+import { useTranslation } from 'next-i18next'
 
 function CommunitesMainPage() {
   const dispatch = useDispatch()
   const [, teams] = useSelector(teamsSelector)
   const query = useQuery()
-  const searchValue = query.get("search")
+  const searchValue = query.get('search')
   const [search, setSearch] = useState(searchValue)
   const { push: routerPush } = useRouter()
   const [, athletes] = useSelector(selectAthletes)
-  const { t: tCommunities } = useTranslation("communities")
+  const { t: tCommunities } = useTranslation('communities')
 
   React.useEffect(() => {
     dispatch(fetchTeams())
@@ -36,7 +33,7 @@ function CommunitesMainPage() {
 
   const handleSubmit = (e, value) => {
     e.preventDefault()
-    value ? query.set("search", value) : query.delete("search")
+    value ? query.set('search', value) : query.delete('search')
     routerPush(`/communities/?${query}`)
   }
 
@@ -48,22 +45,20 @@ function CommunitesMainPage() {
             <CommunitesHeadingInput
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder={tCommunities("communities.search")}
+              placeholder={tCommunities('communities.search')}
             />
-            <CommunitesHeadingButton type="submit">
+            <CommunitesHeadingButton type='submit'>
               <SearchIcon />
-              {tCommunities("communities.find")}
+              {tCommunities('communities.find')}
             </CommunitesHeadingButton>
           </CommunitesHeadingInputAndButton>
         </form>
 
         <CommunitesItem>
-          <CommunitesHeadingText>
-            {tCommunities("communities.participants")}
-          </CommunitesHeadingText>
+          <CommunitesHeadingText>{tCommunities('communities.participants')}</CommunitesHeadingText>
           <Link href={`/communities/athletes`} passHref>
             <CommunitesHeadingTextViewAll>
-              {tCommunities("communities.seeAll")}
+              {tCommunities('communities.seeAll')}
             </CommunitesHeadingTextViewAll>
           </Link>
         </CommunitesItem>
@@ -71,16 +66,14 @@ function CommunitesMainPage() {
         <CommunitesAthletesList data={athletes.slice(0, 8)} />
 
         <CommunitesItem>
-          <CommunitesHeadingText>
-            {tCommunities("communities.teams")}
-          </CommunitesHeadingText>
+          <CommunitesHeadingText>{tCommunities('communities.teams')}</CommunitesHeadingText>
           <Link href={`/communities/teams`} passHref>
             <CommunitesHeadingTextViewAll>
-              {tCommunities("communities.seeAll")}
+              {tCommunities('communities.seeAll')}
             </CommunitesHeadingTextViewAll>
           </Link>
         </CommunitesItem>
-        <CommunitesList data={teams?.results?.slice(0, 6)} />
+        <CommunitesList data={teams?.slice(0, 6)} />
       </CommunitesItems>
     </CommunitesContainer>
   )
@@ -165,18 +158,12 @@ const CommunitesHeadingButton = styled.button`
 `
 
 const SearchIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
     <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.9036 19 14.652 18.3351 16.0255 17.2249C16.0661 17.4016 16.1552 17.5694 16.2929 17.7071L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.7071 16.2929C17.5694 16.1552 17.4016 16.0661 17.2249 16.0255C18.3351 14.652 19 12.9036 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z"
-      fill="white"
+      fillRule='evenodd'
+      clipRule='evenodd'
+      d='M11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C12.9036 19 14.652 18.3351 16.0255 17.2249C16.0661 17.4016 16.1552 17.5694 16.2929 17.7071L19.2929 20.7071C19.6834 21.0976 20.3166 21.0976 20.7071 20.7071C21.0976 20.3166 21.0976 19.6834 20.7071 19.2929L17.7071 16.2929C17.5694 16.1552 17.4016 16.0661 17.2249 16.0255C18.3351 14.652 19 12.9036 19 11C19 6.58172 15.4183 3 11 3ZM5 11C5 7.68629 7.68629 5 11 5C14.3137 5 17 7.68629 17 11C17 14.3137 14.3137 17 11 17C7.68629 17 5 14.3137 5 11Z'
+      fill='white'
     />
   </svg>
 )

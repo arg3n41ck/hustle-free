@@ -98,11 +98,11 @@ function RegistrationAthleteToEvent({ data }) {
           <Autocomplete
             noOptionsText={'Вы не зачислены ни в одну команду'}
             onChange={(_, value) => formik.setFieldValue('team', value?.id)}
-            options={(teams?.results?.length && teams?.results?.map((option) => option)) || []}
+            options={(teams?.length && teams?.map((option) => option)) || []}
             getOptionLabel={(option) => option?.name}
             value={
-              teams?.results?.length &&
-              teams?.results?.find(({ id }) => id === formik?.values?.team)
+              teams?.length &&
+              teams?.find(({ id }) => id === formik?.values?.team)
             }
             fullWidth
             renderInput={(params) => (

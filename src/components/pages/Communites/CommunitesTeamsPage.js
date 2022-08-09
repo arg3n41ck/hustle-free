@@ -137,7 +137,7 @@ function CommunitesPage() {
             {tCommunities("communities.teams")}
           </CommunitesHeadingText>
         </CommunitesItem>
-        <CommunitesList data={teams?.results} />
+        <CommunitesList data={teams} />
       </CommunitesItems>
     </CommunitesContainer>
   )

@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from "react"
-import Teams from "./Teams"
-import Applications from "./Applications"
-import HeaderContent, { TitleHeader } from "../../../../ui/LKui/HeaderContent"
-import $api from "../../../../../services/axios"
-import HorizontalTabsBorder from "../../../../ui/tabs/HorizontalTabsBorder"
-import { useSelector } from "react-redux"
-import { useTranslation } from "next-i18next"
+import React, { useEffect, useState } from 'react'
+import Teams from './Teams'
+import Applications from './Applications'
+import HeaderContent, { TitleHeader } from '../../../../ui/LKui/HeaderContent'
+import $api from '../../../../../services/axios'
+import HorizontalTabsBorder from '../../../../ui/tabs/HorizontalTabsBorder'
+import { useSelector } from 'react-redux'
+import { useTranslation } from 'next-i18next'
 
 const fetchMyRequests = async () => {
-  const { data: requests } = await $api.get(`/teams/teams/my_requests/`, {
+  const { data: requests } = await $api.get(`/teams/athlete_requests/`, {
     params: {
-      status: "in_panding",
+      status: 'in_panding',
     },
   })
   return requests
 }
 const fetchTeams = async (id) => {
   if (id) {
-    const { data } = await $api.get(`/teams/team_athlete/`, {
+    const { data } = await $api.get(`/teams/athlete_requests/`, {
       params: {
-        team_id: id,
+        team: id,
+        status: 'approved',
       },
     })
     return data
@@ -28,20 +29,19 @@ const fetchTeams = async (id) => {
 
 const Athletes = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
-  const [view, setView] = useState("teams") // teams | applicationsD
+  const [view, setView] = useState('teams') // teams | applicationsD
   const [teams, setTeams] = useState(null)
   const [applications, setApplications] = useState([])
-  const { t: tLkTm } = useTranslation("lkTm")
-
+  const { t: tLkTm } = useTranslation('lkTm')
 
   const tabs = [
     {
-      value: "teams",
-      name: `${tLkTm("athletes.tabs.participants")} (${!!teams ? teams.results.length : 0})`,
+      value: 'teams',
+      name: `${tLkTm('athletes.tabs.participants')} (${!!teams ? teams.length : 0})`,
     },
     {
-      value: "applications",
-      name: `${tLkTm("athletes.tabs.applications")} (${!!applications ? applications.length : 0})`,
+      value: 'applications',
+      name: `${tLkTm('athletes.tabs.applications')} (${!!applications ? applications.length : 0})`,
     },
   ]
 
@@ -53,45 +53,44 @@ const Athletes = ({ onToggleSidebar }) => {
     if (user?.id) {
       try {
         setApplications(await fetchMyRequests())
-        setTeams(await fetchTeams(user?.id))
+        setTeams(await fetchTeams(user?.teamId))
       } catch (e) {
         throw e
       }
     }
   }, [user])
 
-  const acceptOrRejectHandler = async (id, status = "approved") => {
+  const acceptOrRejectHandler = async (id, status = 'approved', athleteId) => {
     try {
-      const indexCurrentElement = applications.findIndex(
-        (application) => application.id === id
-      )
+      const indexCurrentElement = applications.findIndex((application) => application.id === id)
       setApplications((prev) => [
         ...prev.slice(0, indexCurrentElement),
         ...prev.slice(indexCurrentElement + 1),
       ])
-      await $api.put(`/teams/change_request/${id}/`, { status })
-      setTeams(await fetchTeams(user?.id))
+      await $api.put(`/teams/athlete_requests/${id}/`, {
+        status,
+        athlete: athleteId,
+        team: user?.teamId,
+      })
+      setTeams(await fetchTeams(user?.teamId))
     } catch (e) {}
   }
-
+  console.log({ teams })
   return (
     <>
       <HeaderContent onToggle={onToggleSidebar}>
-        <TitleHeader>{tLkTm("athletes.athletes")}</TitleHeader>
+        <TitleHeader>{tLkTm('athletes.athletes')}</TitleHeader>
       </HeaderContent>
       <HorizontalTabsBorder
         arrayTab={tabs}
         valueTab={view}
         onChangeHandler={viewHandler}
-        height={"96px"}
+        height={'96px'}
       >
-        {view === "teams" ? (
+        {view === 'teams' ? (
           <Teams teams={teams} />
         ) : (
-          <Applications
-            onAcceptOrReject={acceptOrRejectHandler}
-            applications={applications}
-          />
+          <Applications onAcceptOrReject={acceptOrRejectHandler} applications={applications} />
         )}
       </HorizontalTabsBorder>
     </>

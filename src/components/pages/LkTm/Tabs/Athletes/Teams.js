@@ -11,10 +11,10 @@ const Athletes = ({ teams }) => {
   useEffect(() => {
     dispatch(fetchCountries())
   }, [])
-
+console.log({athletes: teams});
   return (
     <List>
-      {teams.results.map((teamItem) => (
+      {teams.map((teamItem) => (
         <Athlete
           key={`${teamItem?.id}-${teamItem?.athlete?.id}`}
           user={teamItem?.athlete?.user || null}

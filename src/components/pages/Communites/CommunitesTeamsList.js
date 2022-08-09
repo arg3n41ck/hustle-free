@@ -3,6 +3,7 @@ import Teams from "../../pages/LkAh/Tabs/Profile/Teams/Teams"
 import styled from "styled-components"
 
 function CommunitesList({ data }) {
+  console.log({data});
   return (
     <CommunitesListItems>
       {!!data?.length &&

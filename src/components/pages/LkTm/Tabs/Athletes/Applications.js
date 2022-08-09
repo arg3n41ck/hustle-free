@@ -11,6 +11,7 @@ import { fetchCountries } from "../../../../../redux/components/countriesAndCiti
 import { useTranslation } from "next-i18next"
 
 const Applications = ({ applications, onAcceptOrReject }) => {
+
   return (
     <List>
       {applications.map((application) => (
@@ -39,36 +40,19 @@ const List = styled.ul`
 export default Applications
 
 const ApplicationItem = ({ applicationItem, onAcceptOrReject }) => {
-  const [athleteItem, setAthleteItem] = useState(null)
   const dispatch = useDispatch()
   const { id, athlete } = applicationItem
   const { t: tLkTm } = useTranslation("lkTm")
 
-  useEffect(async () => {
-    const { data } = await $api.get(`/athlete/athletes_list/${athlete}`)
-    setAthleteItem(data.user)
-    dispatch(fetchCountries())
-  }, [])
-
-  if (!athleteItem)
-    return (
-      <Skeleton
-        sx={{ background: "#333" }}
-        variant="rectangular"
-        width={328}
-        height={180}
-      />
-    )
-
   return (
-    <Athlete user={athleteItem}>
+    <Athlete user={athlete.user}>
       <Line />
       <WrapperButtons>
         <CustomButton
           typeButton={"secondary"}
           height={"32px"}
           borderRadius={"4px"}
-          onClick={() => onAcceptOrReject(id, "cancel")}
+          onClick={() => onAcceptOrReject(id, "cancel", athlete.id)}
           style={{ fontSize: 14 }}
         >
           {tLkTm("athletes.reject")}
@@ -78,7 +62,7 @@ const ApplicationItem = ({ applicationItem, onAcceptOrReject }) => {
           style={{ fontSize: 14 }}
           height={"32px"}
           borderRadius={"4px"}
-          onClick={() => onAcceptOrReject(id, "approved")}
+          onClick={() => onAcceptOrReject(id, "approved", athlete.id)}
         >
           {tLkTm("athletes.confirm")}
         </CustomButton>

@@ -14,15 +14,15 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
   const { push: routerPush } = useRouter()
   const user = useSelector((state) => state.user)
   const sendReq = useCallback(async () => {
-    if (userStatusInTeam?.message === 'not found') {
+    if (userStatusInTeam?.message === 'Not found') {
       try {
-        await $api.post('/teams/teams/requests/', { team: teamId })
+        await $api.post('/teams/athlete_requests/', { team: teamId, athlete: user?.user?.athleteId })
         setAthHasBeenReq(true)
         checkUserStatus()
       } catch (e) {
         setAthHasBeenReq(true)
       }
-    } else if (userStatusInTeam?.message === 'is anonymous') {
+    } else if (userStatusInTeam?.message === 'Is anonymous') {
       toast.info('Войдите в систему в роли атлета', { autoClose: 5000 })
 
       localStorageSetItem('role', 'athlete')
@@ -34,22 +34,22 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
       <CreateEventBTN
         disabled={
           athHasBeenReq ||
-          (userStatusInTeam?.message !== 'not found' &&
-            userStatusInTeam?.message !== 'is anonymous')
+          (userStatusInTeam?.message !== 'Not found' &&
+            userStatusInTeam?.message !== 'Is anonymous')
         }
         active={
-          userStatusInTeam?.message === 'not found' || userStatusInTeam?.message === 'is anonymous'
+          userStatusInTeam?.message === 'Not found' || userStatusInTeam?.message === 'is anonymous'
         }
         onClick={() => sendReq()}
       >
-        {userStatusInTeam?.message === 'not found' ||
-        userStatusInTeam?.message === 'is anonymous' ? (
+        {userStatusInTeam?.message === 'Not found' ||
+        userStatusInTeam?.message === 'Is anonymous' ? (
           <>
             <PlusIcon /> Вступить в команду
           </>
-        ) : userStatusInTeam?.message === 'user in pending' ? (
+        ) : userStatusInTeam?.message === 'User in pending' ? (
           'Запрошено'
-        ) : userStatusInTeam?.message === 'user rejected' ? (
+        ) : userStatusInTeam?.message === 'User rejected' ? (
           'Вас не приняли'
         ) : (
           'Вы уже в команде'
