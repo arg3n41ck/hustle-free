@@ -10,7 +10,7 @@ export const fetchUser = createAsyncThunk('user/get', async (params, { rejectWit
     const { data } = await $api.get(`/accounts/users/me/`, { params })
     newData = data
     if (data.role === 'organizer') {
-      const { data: organizerData } = await $api.get(`/organizers/`)
+      const { data: organizerData } = await $api.get(`/organizers/?user=${data.id}`)
       newData = { ...data, ...organizerData[0].user, organizerId: organizerData[0].id }
     } else if (data.role === 'athlete') {
       const { data: athlete } = await $api.get(`/athletes/`)

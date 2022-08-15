@@ -8,13 +8,13 @@ import { useRouter } from 'next/router'
 
 function FilterMyEvents({ data }) {
   const { push: routerPush } = useRouter()
-
+  console.log({data});
   return (
     <EventContainer key={data?.id}>
       <EventItems>
         <Avatar
-          alt={DEFAULT_API_URL + data?.event?.description?.banner}
-          src={DEFAULT_API_URL + data?.event?.description?.banner}
+          alt={data?.event?.description?.banner}
+          src={data?.event?.description?.banner}
           sx={{ width: 112, height: 112 }}
         />
         <EventsInfo>
@@ -23,7 +23,7 @@ function FilterMyEvents({ data }) {
           </EventInfoHeadingText>
           <EventInfoParticipantsInfo>
             {data?.participationCategory?.eventParticipantsCategory?.name} /{' '}
-            {data?.participationCategory?.level} /{' '}
+            {data?.participationCategory?.level?.name} /{' '}
             {data?.participationCategory?.eventParticipantsCategory?.fromAge}-
             {data?.participationCategory?.eventParticipantsCategory?.toAge} лет /{' '}
             {data?.participationCategory?.eventParticipantsCategory?.fromWeight} кг -{' '}
@@ -32,7 +32,7 @@ function FilterMyEvents({ data }) {
           <EventBottomInfo>
             <LocationIcon color={'#828282'} />
             <EventCitiesAndDateInfo>
-              {data?.event?.country}, {data?.event?.city}
+              {data?.event?.location?.country}, {data?.event?.location?.city}
             </EventCitiesAndDateInfo>
           </EventBottomInfo>
           <EventBottomInfo>

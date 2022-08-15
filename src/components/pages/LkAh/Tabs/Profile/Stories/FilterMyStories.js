@@ -6,6 +6,7 @@ import StoryCollapse from "./StoryCollapse"
 function FilterMyStories({ data }) {
   const [open, setOpen] = React.useState(false)
   const { id, place, event, participationCategory } = data
+  console.log(place, participationCategory)
   return (
     <>
       <EventContainer onClick={() => setOpen(!open)} key={id}>
@@ -22,7 +23,7 @@ function FilterMyStories({ data }) {
             <EventInfoHeadingText>{event?.name}</EventInfoHeadingText>
             <EventInfoParticipantsInfo>
               {participationCategory?.eventParticipantsCategory?.name} /{" "}
-              {participationCategory?.level} /{" "}
+              {participationCategory?.level?.name} /{" "}
               {participationCategory?.eventParticipantsCategory?.fromAge}-
               {participationCategory?.eventParticipantsCategory?.toAge} лет /{" "}
               {participationCategory?.eventParticipantsCategory?.fromWeight} кг

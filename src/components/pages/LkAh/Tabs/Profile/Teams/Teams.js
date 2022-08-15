@@ -1,7 +1,5 @@
 import React from "react"
-import { useSelector } from "react-redux"
 import styled from "styled-components"
-import { selectCountriesAndCities } from "../../../../../../redux/components/countriesAndCities"
 import { Avatar } from "@mui/material"
 import { useRouter } from "next/router"
 

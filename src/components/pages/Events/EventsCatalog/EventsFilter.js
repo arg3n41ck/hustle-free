@@ -62,28 +62,28 @@ function EventsFilter() {
   const fromDate = query.get('date_start') || null
   const toDate = query.get('date_end') || null
 
-  const futureValue = query.get('events_type_time') === 'future' ? null : { name: 'future' }
-  const liveValue = query.get('events_type_time') === 'live' ? null : { name: 'live' }
-  const pastValue = query.get('events_type_time') === 'past' ? null : { name: 'past' }
+  const futureValue = query.get('status') === 'future' ? null : { name: 'future' }
+  const liveValue = query.get('status') === 'continue' ? null : { name: 'continue' }
+  const pastValue = query.get('status') === 'past' ? null : { name: 'past' }
 
   return (
     <div>
       <BtnsWrapper>
         <SoonBtn
           className={!futureValue ? 'active' : ''}
-          onClick={() => handleFilter('events_type_time', futureValue)}
+          onClick={() => handleFilter('status', futureValue)}
         >
           {tEvents('events.filter.upcoming')}
         </SoonBtn>
         <LiveBtn
           className={!liveValue ? 'active' : ''}
-          onClick={() => handleFilter('events_type_time', liveValue)}
+          onClick={() => handleFilter('status', liveValue)}
         >
           • Live
         </LiveBtn>
         <PastEventsBtn
           className={!pastValue ? 'active' : ''}
-          onClick={() => handleFilter('events_type_time', pastValue)}
+          onClick={() => handleFilter('status', pastValue)}
         >
           {tEvents('events.filter.past')}
         </PastEventsBtn>

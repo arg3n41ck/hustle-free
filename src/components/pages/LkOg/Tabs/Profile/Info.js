@@ -80,18 +80,21 @@ const Info = ({ onToggleSidebar }) => {
             {tCommon('form.fieldsNames.organizationName')}
           </Item>
           <Item>{user?.nameOrganization}</Item>
-          <Item>
-            <WrapperIcon>
-              <CalendarIcon />
-            </WrapperIcon>
-            {tCommon('form.fieldsNames.birthDate')}
-          </Item>
-          <Item>
-            {!!user?.dateBirthday &&
-              format(parseISO(user?.dateBirthday), 'dd MMMM yyyy г.', {
-                locale: ru,
-              })}
-          </Item>
+          {!!user?.dateBirthday && (
+            <>
+              <Item>
+                <WrapperIcon>
+                  <CalendarIcon />
+                </WrapperIcon>
+                {tCommon('form.fieldsNames.birthDate')}
+              </Item>
+              <Item>
+                {format(parseISO(user?.dateBirthday), 'dd MMMM yyyy г.', {
+                  locale: ru,
+                })}
+              </Item>
+            </>
+          )}
           <Item>
             <WrapperIcon>
               <GenderIcon />

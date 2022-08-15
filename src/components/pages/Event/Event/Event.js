@@ -12,10 +12,6 @@ function Event({ event }) {
       <Title>{tEventDetail('event.eventDescription')}</Title>
       <Columns>
         <Column>{event?.description?.description}</Column>
-        <Column>
-          <h4 />
-          <p />
-        </Column>
       </Columns>
     </MainWrapper>
   )

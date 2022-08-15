@@ -19,7 +19,7 @@ const Filter = ({ onFilter }) => {
   const { t: tEventDetail } = useTranslation("eventDetail")
 
   useEffect(async () => {
-    const { data } = await $api.get(`/events/event_teams/`)
+    const { data } = await $api.get(`/events/team_events/`)
     const { data: categoriesData } = await $api.get(
       `/events/events/${router.query.id}/categories/`
     )

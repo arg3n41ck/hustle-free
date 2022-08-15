@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
-import $api from "../../services/axios"
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import $api from '../../services/axios'
 
 export const fetchEventsByParams = createAsyncThunk(
-  "products/fetchGoodsByCategory",
+  'products/fetchGoodsByCategory',
   async (params, { rejectWithValue }) => {
     try {
       const { data } = await $api.get(`/events/events/`, {
@@ -12,55 +12,55 @@ export const fetchEventsByParams = createAsyncThunk(
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
-  }
+  },
 )
 
 export const fetchEventsAthlete = createAsyncThunk(
-  "products/fetchEventsAthlete",
-  async (period, { rejectWithValue }) => {
+  'products/fetchEventsAthlete',
+  async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/athlete/events/`, {
+      const { data } = await $api.get(`/events/participant_athletes/`, {
+        params,
+      })
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  },
+)
+
+export const fetchEvents = createAsyncThunk(
+  'events/fetchEvent',
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/events/events/`, {
+        params,
+      })
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  },
+)
+
+export const fetchPopularEvents = createAsyncThunk(
+  'events/fetchPopularEvents',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/events/events/`, {
         params: {
-          period,
+          is_populars: true,
         },
       })
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
-  }
-)
-
-export const fetchEvents = createAsyncThunk(
-  "events/fetchEvent",
-  async (params, { rejectWithValue }) => {
-    try {
-      const { data } = await $api.get(`/events/events/`, {
-        params,
-      })
-      return data
-    } catch (e) {
-      return rejectWithValue(e.response.data)
-    }
-  }
-)
-
-export const fetchPopularEvents = createAsyncThunk(
-  "events/fetchPopularEvents",
-  async (params, { rejectWithValue }) => {
-    try {
-      const { data } = await $api.get(`/events/popular/`, {
-        params,
-      })
-      return data
-    } catch (e) {
-      return rejectWithValue(e.response.data)
-    }
-  }
+  },
 )
 
 export const handleSearch = createAsyncThunk(
-  "events/handleSearch",
+  'events/handleSearch',
   async (value, { rejectWithValue }) => {
     try {
       const { data } = await $api.get(`/events/?search=${value}`)
@@ -71,11 +71,11 @@ export const handleSearch = createAsyncThunk(
         value,
       }
     }
-  }
+  },
 )
 
 export const eventsSlice = createSlice({
-  name: "events",
+  name: 'events',
   initialState: {
     events: {
       error: null,
@@ -88,7 +88,7 @@ export const eventsSlice = createSlice({
   reducers: {
     setSearchValue: (state, action) => {
       state.search.value = action.payload
-      state.search.open = action.payload !== ""
+      state.search.open = action.payload !== ''
     },
     setSearchOpen: (state, action) => {
       state.search.open = action.payload
@@ -139,7 +139,7 @@ export const eventsSlice = createSlice({
     builder.addCase(handleSearch.fulfilled, ({ search }, action) => {
       search.data = action.payload
       search.isLoading = false
-      search.error = ""
+      search.error = ''
     })
     builder.addCase(handleSearch.rejected, ({ search }, action) => {
       search.isLoading = false
@@ -153,7 +153,7 @@ export const eventsSlice = createSlice({
     builder.addCase(fetchEventsAthlete.fulfilled, ({ events }, action) => {
       events.athleteEvents = action.payload
       events.isLoading = false
-      events.error = ""
+      events.error = ''
     })
     builder.addCase(fetchEventsAthlete.rejected, ({ events }, action) => {
       events.isLoading = false
@@ -162,25 +162,19 @@ export const eventsSlice = createSlice({
   },
 })
 
-export const { setSearchValue, setSearchOpen, setCartLength } =
-  eventsSlice.actions
+export const { setSearchValue, setSearchOpen, setCartLength } = eventsSlice.actions
 
 export const selectEvents = createSelector(
   (state) => state.events.events.isLoading,
   (state) => state.events.events.data,
   (state) => state.events.events.count,
   (state) => state.events.events.athleteEvents,
-  (loading, events, count, athleteEvents) => [
-    loading,
-    events,
-    count,
-    athleteEvents,
-  ]
+  (loading, events, count, athleteEvents) => [loading, events, count, athleteEvents],
 )
 
 export const selectPopularEvents = createSelector(
   (state) => state.events.events.popularEvents,
-  (popularEvents) => [popularEvents]
+  (popularEvents) => [popularEvents],
 )
 
 export default eventsSlice.reducer

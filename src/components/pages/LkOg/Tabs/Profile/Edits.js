@@ -97,7 +97,7 @@ const Edits = () => {
             city: currentCity.id,
           }
         typeof values.avatar === 'string' && delete newValues.avatar
-        await formDataHttp(newValues, 'organizer/profile/edit/', 'patch')
+        await formDataHttp(newValues, 'accounts/users/me/', 'patch')
         dispatch(fetchUser())
         routerPush('/lk-og/profile')
       } catch (e) {

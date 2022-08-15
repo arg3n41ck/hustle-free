@@ -11,8 +11,6 @@ function FileUploaderBig({ onChange, defaultBanner, error }) {
   // const [openCrop, setOpenCrop] = useState(false)
   const { t: tLkOg } = useTranslation('lkOg')
 
-  console.log({ photoURL, defaultBanner })
-
   const handleOnDeleteImage = () => {
     setFile(null)
     setPhotoURL(null)

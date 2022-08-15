@@ -8,19 +8,19 @@ import { useTranslation } from 'next-i18next'
 function Events() {
   const [, events] = useSelector(selectEvents)
   const { t: tEvents } = useTranslation('events')
-
+  
   return (
     <EventsWrapper>
       <HeadPart>
         <MainPageTitle>{tEvents('events.events')}</MainPageTitle>
-        {/*<ViewTypeChanger>*/}
+        {/* <ViewTypeChanger>*/}
         {/*  <MenuIcon />*/}
         {/*  Карточки*/}
         {/*</ViewTypeChanger>*/}
         {/*<SortByMap>*/}
         {/*  <LocationIcon />*/}
         {/*  На карте*/}
-        {/*</SortByMap>*/}
+        {/*</SortByMap> */}
       </HeadPart>
 
       <EventsArray data={events} />

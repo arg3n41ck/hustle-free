@@ -169,7 +169,7 @@ const getParticipantCategories = async (id) => {
       id: 'getParticipantCategories_3',
       label: `eventMainInfo.gender`,
       value: result?.gender
-        ? `${result?.gender?.male && 'М'}${result?.gender?.female ? ' / Ж' : ''}`
+        ? `${!!result?.gender?.male ? 'М  / ' : ""}${!!result?.gender?.female ? 'Ж' : ''}`
         : '',
     },
     {

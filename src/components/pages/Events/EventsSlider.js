@@ -89,17 +89,17 @@ function EventsSlider() {
           className="mySwiper"
         >
           {popularEvents.map(
-            ({ name, id, image, country, city, dateStart, dateEnd }) => (
+            ({ name, id, description, location, dateStart, dateEnd }) => (
               <SwiperSlide key={`swiper-slide-content-${id}`}>
                 <div
                   onClick={() => routerPush(`/events/${id}`)}
                   className="swiper-slide-content"
                 >
-                  <Event src={image}>
+                  <Event src={description?.banner}>
                     <h3>{name}</h3>
                     <div>
                       <LocationIcon />
-                      <span>{`${country}, ${city}`}</span>
+                      <span>{`${location?.country}, ${location?.city}`}</span>
                     </div>
                     <div>
                       <CalendarIcon />

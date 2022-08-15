@@ -6,6 +6,7 @@ import useDebounce from '../../../../hooks/useDebounce'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'next-i18next'
+import { getEnabledLevels } from '../Categories/EventCategories'
 
 const getEventParticipants = async (url, query) => {
   const { data } = await $api.get(url, { params: query })
@@ -41,27 +42,27 @@ const EventParticipants = () => {
   }
 
   useEffect(async () => {
-    const { data: levelsData } = await $api.get(`/directories/discipline_level/`)
     const params = {
-      event_id: eventId,
       search: searchValue,
+      event: eventId,
       level: levelValue,
       gender:
         (genderValue === tEventDetail('event.participants.eventParticipants.male') && 'male') ||
         (genderValue === tEventDetail('event.participants.eventParticipants.female') && 'female') ||
         '',
-      'category-tab': false,
       event_participants_category__from_weight: weightValue?.fromWeight || '',
       event_participants_category__to_weight: weightValue?.toWeight || '',
-      country_id: countryValue,
-      team_id: teamValue,
+      country: countryValue,
+      team: teamValue,
     }
-    const othersPC = await getEventParticipants(`/events/participant_category/`, params)
-    const athletePC = await getEventParticipants(`events/events/${eventId}/athlete_categories/`, {})
-    setLevels(levelsData)
+    const othersPC = await getEventParticipants(`/directories/participant_category/`, params)
+    const athletePC = await getEventParticipants(`/directories/participant_category/`, {
+      participants__athlete__user__id: `${user?.athleteId ? user?.id : ''}`,
+    })
+    othersPC?.length && setLevels(getEnabledLevels(othersPC))
     setEventParticipants(othersPC)
     user?.role === 'athlete' && setAthletePCState(athletePC)
-  }, [searchValue, levelValue, genderValue, weightValue, countryValue, teamValue])
+  }, [user, searchValue, levelValue, genderValue, weightValue, countryValue, teamValue])
 
   return (
     <>

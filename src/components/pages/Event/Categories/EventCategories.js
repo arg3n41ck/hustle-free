@@ -1,15 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react"
-import $api from "../../../../services/axios"
-import { useRouter } from "next/router"
-import Row from "./Row"
-import styled from "styled-components"
-import EDContentFilter from "../EDContentFilter"
-import Autocompletes from "./Autocompletes"
-import { useSelector } from "react-redux"
-import { useTranslation } from "next-i18next"
+import React, { useEffect, useMemo, useState } from 'react'
+import $api from '../../../../services/axios'
+import { useRouter } from 'next/router'
+import Row from './Row'
+import styled from 'styled-components'
+import EDContentFilter from '../EDContentFilter'
+import Autocompletes from './Autocompletes'
+import { useSelector } from 'react-redux'
+import { useTranslation } from 'next-i18next'
 
 export const getEventPC = async (query) => {
-  const { data } = await $api.get(`/events/participant_category/`, {
+  const { data } = await $api.get(`/directories/participant_category/`, {
     params: query,
   })
   return data
@@ -17,8 +17,7 @@ export const getEventPC = async (query) => {
 
 const createPCList = (pc) => {
   return pc.reduce((pre, { eventParticipantsCategory }) => {
-    const findIsPcInPre =
-      pre?.length && pre.some(({ id }) => id === eventParticipantsCategory.id)
+    const findIsPcInPre = pre?.length && pre.some(({ id }) => id === eventParticipantsCategory.id)
     if (!findIsPcInPre) {
       pre = [...(pre || []), eventParticipantsCategory]
     }
@@ -26,42 +25,22 @@ const createPCList = (pc) => {
   }, [])
 }
 
-const getEnabledLevels = (pc) => {
+export const getEnabledLevels = (pc) => {
   return [...new Set(pc.map(({ level }) => level))] || []
 }
 
-const filterPc = ({
-  pc,
-  levelQValue,
-  genderQValue,
-  search,
-  ageQValue,
-  weightQValue,
-}) => {
+const filterPc = ({ pc, search, ageQValue, weightQValue }) => {
   return pc
-    .filter(({ name }) =>
-      search ? (name || "").toLowerCase().indexOf(search) >= 0 : true
-    )
-    .filter(({ gender }) => (genderQValue ? genderQValue === gender : true))
-    .filter(({ levels }) => {
-      return levels.some(({ name }) =>
-        levelQValue ? name === levelQValue : true
-      )
-    })
     .sort(({ toAge: aAgeFrom }, { toAge: bAgeFrom }) => {
-      return ageQValue === "increase"
-        ? aAgeFrom - bAgeFrom
-        : bAgeFrom - aAgeFrom
+      return ageQValue === 'increase' ? aAgeFrom - bAgeFrom : bAgeFrom - aAgeFrom
     })
     .sort(({ toWeight: aWeightFrom }, { toWeight: bWeightFrom }) => {
-      return weightQValue === "increase"
-        ? aWeightFrom - bWeightFrom
-        : bWeightFrom - aWeightFrom
+      return weightQValue === 'increase' ? aWeightFrom - bWeightFrom : bWeightFrom - aWeightFrom
     })
 }
 
 function EventCategories() {
-  const { t: tEventDetail } = useTranslation("eventDetail")
+  const { t: tEventDetail } = useTranslation('eventDetail')
 
   const {
     query: {
@@ -73,7 +52,7 @@ function EventCategories() {
     },
   } = useRouter()
   const [pc, setPc] = useState([])
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState('')
   const [levelOptions, setLevelOptions] = useState([])
   const user = useSelector((state) => state.user.user)
   const isFilterOpen = useMemo(() => {
@@ -85,33 +64,35 @@ function EventCategories() {
       filterPc({
         pc,
         levelQValue,
-        search: (search || "").toLowerCase(),
         ageQValue,
         weightQValue,
         genderQValue,
       }),
-    [levelQValue, search, genderQValue, ageQValue, weightQValue, pc]
+    [levelQValue, genderQValue, ageQValue, weightQValue, pc],
   )
 
   useEffect(() => {
-    getEventPC({ event_id: eventId, "category-tab": true }).then((data) => {
+    getEventPC({
+      search,
+      event: eventId,
+      level: `${levelQValue || ''}`,
+      gender: `${genderQValue || ''}`,
+    }).then((data) => {
+      setPc(createPCList(data || []))
       if (data?.length) {
-        setPc(createPCList(data))
         setLevelOptions(getEnabledLevels(data))
       }
     })
-  }, [])
+  }, [levelQValue, genderQValue, search])
 
   return (
     <CollapseWrapper>
       <EDContentFilter
-        label={tEventDetail("event.categories.eventCategories.search")}
-        onSearch={(value) => setSearch((value || "").toLowerCase())}
+        label={tEventDetail('event.categories.eventCategories.search')}
+        onSearch={(value) => setSearch((value || '').toLowerCase())}
         openChildren={isFilterOpen}
       >
-        {user?.role !== "organizer" && (
-          <Autocompletes levelOptions={levelOptions} />
-        )}
+        {user?.role !== 'organizer' && <Autocompletes levelOptions={levelOptions} />}
       </EDContentFilter>
       <PCRows>
         {!!pc?.length &&

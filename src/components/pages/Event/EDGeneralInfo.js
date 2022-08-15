@@ -12,9 +12,10 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'next-i18next'
 
 const getIsUserInEvent = async (eventId) => {
-  const { data } = await $api.get(`/events/check_athlete_event/${eventId}/`)
+  const { data } = await $api.get(`/events/events/${eventId}/check_athlete/`)
   return data
 }
+
 const dateKeys = [
   {
     start: 'earlyRegStart',
@@ -41,7 +42,8 @@ const getIsEventOnRegistration = (registration) => {
   return dateKeys.some(({ start, end }) => {
     if (registration[start] && registration[end]) {
       const { today, endDate, startDate } = getRegDates(registration[start], registration[end])
-      return startDate <= today && today < endDate
+
+      return startDate <= today && today <= endDate
     }
   })
 }
@@ -149,8 +151,8 @@ function EdGeneralInfo({ event }) {
     let regDisabled = false,
       regText = ''
     if (
-      userStatusInEvent?.message === 'need to authorize' ||
-      userStatusInEvent?.message === 'event not found'
+      userStatusInEvent?.message === 'Need to authorize' ||
+      userStatusInEvent?.message === 'User is not event'
     ) {
       if (canApplyToEventByDate) {
         regText = tEventDetail('event.EDGeneralInfo.registrationEvent')
@@ -158,18 +160,16 @@ function EdGeneralInfo({ event }) {
         regText = tEventDetail('event.EDGeneralInfo.registrationClosed')
         regDisabled = true
       }
-    } else if (userStatusInEvent?.message === 'user in waiting list') {
+    } else if (userStatusInEvent?.message === 'User in waiting list') {
       regText = tEventDetail('event.EDGeneralInfo.requested')
       regDisabled = true
-    } else if (userStatusInEvent?.message === 'user in event') {
+    } else if (userStatusInEvent?.message === 'User in event') {
       regText = tEventDetail('event.EDGeneralInfo.alreadyInEvent')
       regDisabled = true
     }
     return { regDisabled, regText }
   }, [canApplyToEventByDate, eventId, userStatusInEvent])
-  console.log('====================================')
-  console.log({ event })
-  console.log('====================================')
+
   return (
     <>
       {!ogAndIsMyEvent ? (
@@ -177,7 +177,7 @@ function EdGeneralInfo({ event }) {
       ) : (
         <div style={{ height: '448px' }}>
           <FileUploaderBig
-            defaultImage={event?.description?.banner}
+            defaultBanner={event?.description?.banner}
             onChange={async (file) => {
               await onUploadNewImage(file)
             }}

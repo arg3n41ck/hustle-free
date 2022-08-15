@@ -70,7 +70,7 @@ const EventParticipantsItem = ({
         setActive={setOpen}
         heightWrapper={"184px"}
         additionalData={info}
-        title={`${eventParticipantsCategory.name} / ${eventParticipant?.level} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
+        title={`${eventParticipantsCategory.name} / ${eventParticipant?.level?.name} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
       >
         {isOrganizer ? (
           <>

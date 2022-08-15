@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from "react"
-import { useFormik } from "formik"
-import { useDispatch, useSelector } from "react-redux"
-import * as yup from "yup"
-import styled from "styled-components"
-import { Box, TextField, Autocomplete } from "@mui/material"
-import { ru } from "date-fns/locale"
-import { LocalizationProvider, MobileDatePicker } from "@mui/lab"
-import AdapterDateFns from "@mui/lab/AdapterDateFns"
-import Radio from "../../ui/Radio"
-import InputMask from "react-input-mask"
-import CustomButton from "../../ui/CustomButton"
-import { PhoneIcon } from "../../../assets/svg/icons"
-import { saveUser } from "../../../redux/components/user"
-import { format } from "date-fns"
+import React, { useEffect, useState } from 'react'
+import { useFormik } from 'formik'
+import { useDispatch, useSelector } from 'react-redux'
+import * as yup from 'yup'
+import styled from 'styled-components'
+import { Box, TextField, Autocomplete } from '@mui/material'
+import { ru } from 'date-fns/locale'
+import { LocalizationProvider, MobileDatePicker } from '@mui/lab'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import Radio from '../../ui/Radio'
+import InputMask from 'react-input-mask'
+import CustomButton from '../../ui/CustomButton'
+import { PhoneIcon } from '../../../assets/svg/icons'
+import { saveUser } from '../../../redux/components/user'
+import { format } from 'date-fns'
 import {
   fetchCountries,
   selectCountriesAndCities,
-} from "../../../redux/components/countriesAndCities"
-import { fetchUser } from "../../../redux/components/user"
-import { LocationIcon } from "../Events/EventsCatalog/EventsFilter"
-import { decamelizeKeys } from "humps"
-import { formDataHttp } from "../../../helpers/formDataHttp"
+} from '../../../redux/components/countriesAndCities'
+import { fetchUser } from '../../../redux/components/user'
+import { LocationIcon } from '../Events/EventsCatalog/EventsFilter'
+import { decamelizeKeys } from 'humps'
+import { formDataHttp } from '../../../helpers/formDataHttp'
 
 const validationSchema = yup.object({
-  firstName: yup.string().required("Обязательное поле"),
-  lastName: yup.string().required("Обязательное поле"),
+  firstName: yup.string().required('Обязательное поле'),
+  lastName: yup.string().required('Обязательное поле'),
   phoneNumber: yup.string().min(12),
   gender: yup.mixed(),
   dateBirthday: yup.mixed().nullable(),
-  country: yup.string().required("Обязательное поле").nullable(),
-  city: yup.string().required("Обязательное поле").nullable(),
+  country: yup.string().required('Обязательное поле').nullable(),
+  city: yup.string().required('Обязательное поле').nullable(),
 })
 
 const AthleteUserInfo = () => {
@@ -45,10 +45,10 @@ const AthleteUserInfo = () => {
 
   const formik = useFormik({
     initialValues: {
-      firstName: user?.firstName || "",
-      lastName: user?.lastName || "",
-      phoneNumber: user?.phoneNumber || "",
-      gender: user?.gender || "",
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
+      phoneNumber: user?.phoneNumber || '',
+      gender: user?.gender || '',
       dateBirthday: user?.dateBirthday || null,
       country: user?.country || null,
       city: user?.city || null,
@@ -61,19 +61,14 @@ const AthleteUserInfo = () => {
           ...decamelizeKeys({
             ...values,
             dateBirthday:
-              values.dateBirthday &&
-              format(new Date(values.dateBirthday), "yyyy-MM-dd"),
+              values.dateBirthday && format(new Date(values.dateBirthday), 'yyyy-MM-dd'),
           }),
         }
 
         for (let key in newValues) {
           if (!newValues[key]) delete newValues[key]
         }
-        const { data } = await formDataHttp(
-          newValues,
-          `athlete/profile/edit/`,
-          "patch"
-        )
+        const { data } = await formDataHttp(newValues, `accounts/users/me/`, 'patch')
 
         dispatch(saveUser({ ...newValues, ...data }))
         dispatch(fetchUser())
@@ -89,10 +84,8 @@ const AthleteUserInfo = () => {
   }
 
   useEffect(() => {
-    if (typeof formik.values?.country === "number") {
-      const currentCountry = countries.find(
-        (country) => country.id === formik.values?.country
-      )
+    if (typeof formik.values?.country === 'number') {
+      const currentCountry = countries.find((country) => country.id === formik.values?.country)
       setCurrentCities(currentCountry.cityCountry)
     }
 
@@ -108,119 +101,97 @@ const AthleteUserInfo = () => {
       <form onSubmit={formik.handleSubmit}>
         <Box
           sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
             gridColumnGap: 24,
           }}
         >
-          <div className="auth-wrapper__input">
-            <p className="auth-title__input">Фамилия</p>
+          <div className='auth-wrapper__input'>
+            <p className='auth-title__input'>Фамилия</p>
             <TextField
-              sx={{ width: "100%" }}
-              name="lastName"
+              sx={{ width: '100%' }}
+              name='lastName'
               value={formik.values?.lastName}
               onChange={(e) =>
-                formik.setFieldValue(
-                  "lastName",
-                  e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
-                )
+                formik.setFieldValue('lastName', e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, ''))
               }
-              placeholder="Фамилия"
-              variant="outlined"
+              placeholder='Фамилия'
+              variant='outlined'
               error={formik.touched.lastName && Boolean(formik.errors.lastName)}
               helperText={formik.touched.lastName && formik.errors.lastName}
             />
           </div>
 
-          <div className="auth-wrapper__input">
-            <p className="auth-title__input">Имя</p>
+          <div className='auth-wrapper__input'>
+            <p className='auth-title__input'>Имя</p>
             <TextField
-              sx={{ width: "100%" }}
-              name="firstName"
+              sx={{ width: '100%' }}
+              name='firstName'
               value={formik.values?.firstName}
               onChange={(e) =>
-                formik.setFieldValue(
-                  "firstName",
-                  e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, "")
-                )
+                formik.setFieldValue('firstName', e.target.value.replace(/[^\sa-zA-ZА-Яa-z]/gi, ''))
               }
-              placeholder="Имя"
-              variant="outlined"
-              error={
-                formik.touched.firstName && Boolean(formik.errors.firstName)
-              }
+              placeholder='Имя'
+              variant='outlined'
+              error={formik.touched.firstName && Boolean(formik.errors.firstName)}
               helperText={formik.touched.firstName && formik.errors.firstName}
             />
           </div>
         </Box>
         <Box
           sx={{
-            "& .MuiFormControl-root": {
-              display: "flex",
+            '& .MuiFormControl-root': {
+              display: 'flex',
             },
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
             gridColumnGap: 24,
           }}
-          className="auth-wrapper__input"
+          className='auth-wrapper__input'
         >
-          <div className="auth-wrapper__input">
-            <p className="auth-title__input">Дата рождения (не обязательно)</p>
+          <div className='auth-wrapper__input'>
+            <p className='auth-title__input'>Дата рождения (не обязательно)</p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
               <MobileDatePicker
-                toolbarTitle={"Выбрать дату"}
-                cancelText={"Отмена"}
+                toolbarTitle={'Выбрать дату'}
+                cancelText={'Отмена'}
                 value={formik.values?.dateBirthday}
                 onChange={(value) =>
-                  formik.setFieldValue(
-                    "dateBirthday",
-                    value && format(value, "yyyy-MM-dd")
-                  )
+                  formik.setFieldValue('dateBirthday', value && format(value, 'yyyy-MM-dd'))
                 }
-                inputFormat="dd/MM/yyyy"
+                inputFormat='dd/MM/yyyy'
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     fullWidth
-                    error={
-                      Boolean(formik.touched.dateBirthday) &&
-                      formik.errors.dateBirthday
-                    }
-                    helperText={
-                      formik.touched.dateBirthday && formik.errors.dateBirthday
-                    }
+                    error={Boolean(formik.touched.dateBirthday) && formik.errors.dateBirthday}
+                    helperText={formik.touched.dateBirthday && formik.errors.dateBirthday}
                     inputProps={{
                       ...params.inputProps,
-                      placeholder: "ДД/ММ/ГГГГ",
+                      placeholder: 'ДД/ММ/ГГГГ',
                     }}
                   />
                 )}
               />
             </LocalizationProvider>
           </div>
-          <div className="auth-wrapper__input">
-            <p className="auth-title__input">Номер телефона (не обязательно)</p>
+          <div className='auth-wrapper__input'>
+            <p className='auth-title__input'>Номер телефона (не обязательно)</p>
             <InputMask
-              name={"phoneNumber"}
+              name={'phoneNumber'}
               onChange={(e) =>
-                formik.setFieldValue(
-                  "phoneNumber",
-                  `+${e.target.value.replace(/\D/gi, "")}`
-                )
+                formik.setFieldValue('phoneNumber', `+${e.target.value.replace(/\D/gi, '')}`)
               }
-              value={`${formik.values?.phoneNumber}`.replace(/\D/gi, "")}
-              mask="+7(999) 999 99 99"
+              value={`${formik.values?.phoneNumber}`.replace(/\D/gi, '')}
+              mask='+7(999) 999 99 99'
             >
               {(inputProps) => (
                 <TextField
                   {...inputProps}
-                  sx={{ width: "100%" }}
-                  variant="outlined"
-                  placeholder={"+7 (7"}
-                  error={
-                    Boolean(formik.touched.phoneNumber) &&
-                    formik.errors.phoneNumber
-                  }
+                  sx={{ width: '100%' }}
+                  variant='outlined'
+                  placeholder={'+7 (7'}
+                  error={Boolean(formik.touched.phoneNumber) && formik.errors.phoneNumber}
                   InputProps={{
                     endAdornment: <PhoneIcon />,
                   }}
@@ -231,61 +202,51 @@ const AthleteUserInfo = () => {
         </Box>
         <Box
           sx={{
-            "& .MuiFormControl-root": {
-              display: "flex",
+            '& .MuiFormControl-root': {
+              display: 'flex',
             },
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
             gridColumnGap: 24,
           }}
-          className="auth-wrapper__input"
+          className='auth-wrapper__input'
         >
-          <div className="auth-wrapper__input">
-            <p className="auth-title__input">Страна</p>
+          <div className='auth-wrapper__input'>
+            <p className='auth-title__input'>Страна</p>
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
+              noOptionsText={'Ничего не найдено'}
               onChange={(_, value) => [
                 changeCurrentCities(value),
-                formik.setFieldValue("country", value?.id || null),
-                formik.setFieldValue("city", ""),
+                formik.setFieldValue('country', value?.id || null),
+                formik.setFieldValue('city', ''),
               ]}
               options={countries.map((option) => option) || []}
               getOptionLabel={(option) => option.name}
-              value={
-                countries.find(({ id }) => id === formik.values?.country) ||
-                null
-              }
+              value={countries.find(({ id }) => id === formik.values?.country) || null}
               fullWidth
               renderInput={(params) => (
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Страна"
+                  placeholder='Страна'
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <LocationIcon />,
                   }}
-                  error={
-                    Boolean(formik.touched.country) && formik.errors.country
-                  }
+                  error={Boolean(formik.touched.country) && formik.errors.country}
                   helperText={formik.touched.country && formik.errors.country}
                 />
               )}
             />
           </div>
 
-          <div className="auth-wrapper__input">
-            <p className="auth-title__input">Город</p>
+          <div className='auth-wrapper__input'>
+            <p className='auth-title__input'>Город</p>
 
             <Autocomplete
-              noOptionsText={"Ничего не найдено"}
-              onChange={(_, value) =>
-                formik.setFieldValue("city", value?.id || null)
-              }
-              options={
-                countries.find(({ id }) => id === formik.values?.country)
-                  ?.cityCountry || []
-              }
+              noOptionsText={'Ничего не найдено'}
+              onChange={(_, value) => formik.setFieldValue('city', value?.id || null)}
+              options={countries.find(({ id }) => id === formik.values?.country)?.cityCountry || []}
               getOptionLabel={(option) => option?.name}
               value={cities.find(({ id }) => id === formik.values.city) || null}
               fullWidth
@@ -293,7 +254,7 @@ const AthleteUserInfo = () => {
                 <TextField
                   {...params}
                   fullWidth
-                  placeholder="Город"
+                  placeholder='Город'
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: <LocationIcon />,
@@ -308,31 +269,31 @@ const AthleteUserInfo = () => {
 
         <Box
           sx={{
-            "& .MuiFormControl-root": {
-              display: "flex",
+            '& .MuiFormControl-root': {
+              display: 'flex',
             },
-            margin: "0 !important",
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            margin: '0 !important',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
             gridColumnGap: 24,
           }}
-          className="auth-wrapper__input"
+          className='auth-wrapper__input'
         >
-          <div style={{ margin: 0 }} className="auth-wrapper__input">
-            <p className="auth-title__input">Пол</p>
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+          <div style={{ margin: 0 }} className='auth-wrapper__input'>
+            <p className='auth-title__input'>Пол</p>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
               <RadioWrapper>
                 <Radio
-                  text={"Женский"}
-                  checked={formik.values?.gender === "female"}
-                  onChange={() => formik.setFieldValue("gender", "female")}
+                  text={'Женский'}
+                  checked={formik.values?.gender === 'female'}
+                  onChange={() => formik.setFieldValue('gender', 'female')}
                 />
               </RadioWrapper>
               <RadioWrapper>
                 <Radio
-                  text={"Мужской"}
-                  checked={formik.values?.gender === "male"}
-                  onChange={() => formik.setFieldValue("gender", "male")}
+                  text={'Мужской'}
+                  checked={formik.values?.gender === 'male'}
+                  onChange={() => formik.setFieldValue('gender', 'male')}
                 />
               </RadioWrapper>
             </Box>
@@ -341,10 +302,10 @@ const AthleteUserInfo = () => {
             )}
           </div>
 
-          <div style={{ margin: 0 }} className="auth-wrapper__input">
+          <div style={{ margin: 0 }} className='auth-wrapper__input'>
             {formik.dirty && (
               <ButtonWrapper>
-                <CustomButton type={"submit"} typeButton={"primary"}>
+                <CustomButton type={'submit'} typeButton={'primary'}>
                   Сохранить
                 </CustomButton>
               </ButtonWrapper>
@@ -368,9 +329,7 @@ const RadioWrapper = styled.div`
 const ButtonWrapper = styled.div`
   max-width: 256px;
   width: 100%;
-  &:first-child {
-    margin-right: 32px;
-  }
+  margin: 0 32px 0 auto;
 `
 const ErrorMessage = styled.p`
   color: #eb5757;

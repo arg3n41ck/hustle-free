@@ -5,7 +5,7 @@ export const fetchAthleteStories = createAsyncThunk(
   "stories/fetchAthleteStories",
   async (period, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/athlete/athlete_history/`, {
+      const { data } = await $api.get(`/events/participant_athletes/`, {
         params: {
           period,
         },

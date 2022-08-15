@@ -2,7 +2,7 @@ import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css'
 import 'leaflet-defaulticon-compatibility'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useRef } from 'react'
 import 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css'
 import { DARK_THEME_MAP } from '../../../services/constants'
 import L from 'leaflet'
@@ -19,7 +19,12 @@ const iconPerson = new L.Icon({
   className: 'leaflet-div-icon',
 })
 
-const MapFieldLeafLet = ({ onPoint, points = null, disabled }) => {
+const defaultPoints = {
+  lat: 43.2021727,
+  lng: 76.9684108,
+}
+
+const MapFieldLeafLet = ({ onPoint, points, disabled }) => {
   const mapRef = useRef()
 
   const LocationMarker = useCallback(() => {
@@ -36,15 +41,20 @@ const MapFieldLeafLet = ({ onPoint, points = null, disabled }) => {
     return points === null ? null : <Marker position={points} icon={iconPerson} />
   }, [points])
 
-  return points ? (
-    <MapContainer center={points} zoom={13} style={{ height: '100%', width: '100%' }} ref={mapRef}>
+  return (
+    <MapContainer
+      center={points || defaultPoints}
+      zoom={13}
+      style={{ height: '100%', width: '100%' }}
+      ref={mapRef}
+    >
       <TileLayer
         url={`https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/256/{z}/{x}/{y}@2x?access_token=${DARK_THEME_MAP}`}
         attribution='Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="https://www.mapbox.com/">Mapbox</a>'
       />
       <LocationMarker />
     </MapContainer>
-  ) : null
+  )
 }
 
 export default MapFieldLeafLet

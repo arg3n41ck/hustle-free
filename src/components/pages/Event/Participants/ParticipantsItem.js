@@ -40,8 +40,8 @@ export const OgParticipantsItem = ({
             alt={`${participant.fullName}`}
           />
           <ItemText>
-            <ItemTitle>{participant.fullName}</ItemTitle>
-            <ItemDescription>{participant.team}</ItemDescription>
+            <ItemTitle>{participant?.athlete?.user?.firstName}{" "}{participant?.athlete?.user?.lastName}</ItemTitle>
+            <ItemDescription>{participant?.team?.name}</ItemDescription>
           </ItemText>
         </Content>
         {!open && !isRegistered && <Line style={{ margin: "24px 0" }} />}
@@ -52,20 +52,20 @@ export const OgParticipantsItem = ({
                 <InfoTitle>
                   {tEventDetail("event.participants.participantsItem.country")}
                 </InfoTitle>
-                <InfoDescription>{participant.country}</InfoDescription>
+                <InfoDescription>{participant?.team?.country?.name}</InfoDescription>
               </div>
               <div>
                 <InfoTitle>
                   {tEventDetail("event.participants.participantsItem.age")}
                 </InfoTitle>
                 <InfoDescription>
-                  {participant.age}{" "}
+                  {participant?.athlete?.user?.age}{" "}
                   {tEventDetail("event.participants.participantsItem.years")}
                 </InfoDescription>
               </div>
             </Info>
             {isRegistered && <Line style={{ margin: "24px 0" }} />}
-            <Link href={`/athlete/${participant.athleteId}`} passHref>
+            <Link href={`/athlete/${participant.athlete?.id}`} passHref>
               {isRegistered ? (
                 <RegisteredBtnProfile>
                   {tEventDetail(

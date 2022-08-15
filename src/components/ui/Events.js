@@ -10,23 +10,23 @@ function Events({ data }) {
     <div>
       <EventsLWrapper>
         {!!data?.length ? (
-          data.map(({ city, country, dateEnd, dateStart, id, image, name, status }) => (
+          data.map(({ location, dateEnd, dateStart, id, description, name, getStatus }) => (
             <EventCard onClick={() => routerPush(`/events/${id}`)} key={`mainPageEvents${id}`}>
-              <EventImg src={image} />
+              <EventImg src={description?.banner} />
               <Texts>
                 <h4>{name}</h4>
                 <Content>
                   <ContentLeftSide>
                     <ContentItems>
                       <LocationIcon />
-                      <span>{`${country}, ${city}`}</span>
+                      <span>{`${location?.country}, ${location?.city}`}</span>
                     </ContentItems>
                     <ContentItems>
                       <CalendarIcon />
                       <span>{getRusBetweenDate(dateStart, dateEnd)}</span>
                     </ContentItems>
                   </ContentLeftSide>
-                  <ContentRightSide>{getEventStatus(status)}</ContentRightSide>
+                  <ContentRightSide>{getEventStatus(getStatus)}</ContentRightSide>
                 </Content>
               </Texts>
             </EventCard>

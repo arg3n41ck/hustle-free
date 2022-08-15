@@ -1,20 +1,20 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
-import $api from "../../services/axios"
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import $api from '../../services/axios'
 
 export const fetchAthleteTeams = createAsyncThunk(
-  "teams/my_teams",
+  'teams/my_teams',
   async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/athlete/my_teams/`)
+      const { data } = await $api.get(`/teams/my_teams/`, { params })
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
-  }
+  },
 )
 
 export const fetchTeams = createAsyncThunk(
-  "teams/fetchTeams",
+  'teams/fetchTeams',
   async (params, { rejectWithValue }) => {
     try {
       const { data } = await $api.get(`/teams/teams/`, {
@@ -24,11 +24,11 @@ export const fetchTeams = createAsyncThunk(
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
-  }
+  },
 )
 
 export const teamsSlice = createSlice({
-  name: "teams",
+  name: 'teams',
   initialState: {
     teams: {
       error: null,
@@ -74,7 +74,7 @@ export const teamsSlice = createSlice({
 export const teamsSelector = createSelector(
   (state) => state.teams.teams.athleteTeams,
   (state) => state.teams.teams.teams,
-  (athleteTeams, teams) => [athleteTeams, teams]
+  (athleteTeams, teams) => [athleteTeams, teams],
 )
 
 export default teamsSlice.reducer

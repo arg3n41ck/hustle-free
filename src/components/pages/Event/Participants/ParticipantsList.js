@@ -9,17 +9,16 @@ const ParticipantsList = ({ participants, active = true, isOrganizer }) => {
     query: { id: eventId },
   } = useRouter()
   const acceptHandler = async (id) => {
-    await $api.post(`/organizer/event-add-participant/`, {
-      event_id: +eventId,
-      participant_id: id,
+    await $api.post(`/events/events/${eventId}/add_participant/`, {
+      participant: id,
       proposal: true,
     })
   }
 
   const deleteHandler = async (id) => {
-    await $api.post(`/organizer/event-add-participant/`, {
+    await $api.post(`/events/events/${eventId}/add_participant/`, {
       event_id: +eventId,
-      participant_id: id,
+      participant: id,
       proposal: false,
     })
   }

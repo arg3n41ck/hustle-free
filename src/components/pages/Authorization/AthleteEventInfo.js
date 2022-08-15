@@ -39,7 +39,7 @@ function RegistrationAthleteToEvent({ data }) {
   const validationSchema = yup.object({
     team: yup.string().required('Обязательное поле'),
     category: yup.string().required('Обязательное поле'),
-    level: yup.string().required('Обязательное поле'),
+    level: yup.string().required('Обязательное поле').nullable(),
     weight: yup.string().required('Обязательное поле'),
   })
 
@@ -51,8 +51,9 @@ function RegistrationAthleteToEvent({ data }) {
         if (!checkIsUserInfoFull(user)) {
           const { category, level, team, weight } = values
 
-          await $api.post(`/athlete/events/${eventId}/registration/`, {
-            event_participant_category: category,
+          await $api.post(`/events/registration/`, {
+            event_part_category: +category,
+            event: +eventId,
             team,
             level,
             weight,
@@ -77,6 +78,8 @@ function RegistrationAthleteToEvent({ data }) {
     return weightsArr
   }
 
+  console.log(formik.errors, formik.values)
+
   const changeCurrentLevels = (changeCategory) => {
     const findObj = categories.find((category) => category.id === changeCategory)
     if (findObj) setCurrentLevels(findObj.levels)
@@ -90,6 +93,7 @@ function RegistrationAthleteToEvent({ data }) {
         toWeight: findObj.toWeight,
       })
   }
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <RegistrationAthleteToEventHeroInfo>
@@ -100,10 +104,7 @@ function RegistrationAthleteToEvent({ data }) {
             onChange={(_, value) => formik.setFieldValue('team', value?.id)}
             options={(teams?.length && teams?.map((option) => option)) || []}
             getOptionLabel={(option) => option?.name}
-            value={
-              teams?.length &&
-              teams?.find(({ id }) => id === formik?.values?.team)
-            }
+            value={teams?.length && teams?.find(({ id }) => id === formik?.values?.team)}
             fullWidth
             renderInput={(params) => (
               <TextField
@@ -125,14 +126,14 @@ function RegistrationAthleteToEvent({ data }) {
           <p className='auth-title__input'>Уровень</p>
           <Autocomplete
             noOptionsText={'Ничего не найдено'}
-            onChange={(_, value) => [formik.setFieldValue('level', value?.id)]}
+            onChange={(_, value) => formik.setFieldValue('level', value?.id)}
             options={
               !currentLevels?.length
                 ? levels.map((option) => option)
                 : currentLevels.map((option) => option)
             }
             getOptionLabel={(option) => option?.name}
-            value={levels.find(({ id }) => id === formik?.values?.level)}
+            value={levels.find(({ id }) => id === formik?.values?.level) || null}
             fullWidth
             renderInput={(params) => (
               <TextField
@@ -178,7 +179,7 @@ function RegistrationAthleteToEvent({ data }) {
             onChange={(_, value) => [
               changeCurrentLevels(value?.id),
               changeCurrentWeights(value?.id),
-              formik.setFieldValue('level', ''),
+              formik.setFieldValue('level', null),
               formik.setFieldValue('category', value?.id),
             ]}
             options={categories.map((option) => option) || []}

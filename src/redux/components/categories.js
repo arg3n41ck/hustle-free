@@ -5,7 +5,7 @@ export const fetchCategories = createAsyncThunk(
   'categories/fetchCategories',
   async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/directories/participants_categories/`, {
+      const { data } = await $api.get(`/directories/event_part_categories/`, {
         params,
       })
       return data

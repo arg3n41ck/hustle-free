@@ -27,7 +27,7 @@ function EventsDetail({ event }) {
         <meta content='https://www.youtube.com/watch?v=_XzBgefz_U8' property='og:see_also' />
         <meta content='https://twitter.com/hustlefree.pro' property='og:see_also' />
       </Head>
-      {/* <Content event={event} /> */}
+      <Content event={event} />
     </EdMainLayout>
   )
 }

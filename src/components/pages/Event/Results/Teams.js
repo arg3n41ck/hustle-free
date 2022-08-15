@@ -16,7 +16,7 @@ const Teams = () => {
   const { t: tEventDetail } = useTranslation("eventDetail")
 
   useEffect(async () => {
-    const { data } = await $api.get(`events/event_teams/`, {
+    const { data } = await $api.get(`/events/team_events/`, {
       params: {
         event_id: router.query.id,
         search: searchValue,
