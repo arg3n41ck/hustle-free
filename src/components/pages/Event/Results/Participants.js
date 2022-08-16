@@ -30,14 +30,13 @@ const Participants = ({ onloadPC }) => {
   }
 
   const updatePC = useCallback(async () => {
-    const { data } = await $api.get(`/events/event_participants_result/`, {
+    const { data } = await $api.get(`/directories/participant_category/`, {
       params: {
         search: searchValue,
-        country_id: countryValue,
-        team_id: teamValue,
+        country: countryValue,
+        team: teamValue,
         id: categoryValue,
-        event_id: eventId,
-        "category-tab": false,
+        event: eventId,
       },
     })
     setParticipants(data)

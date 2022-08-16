@@ -12,7 +12,6 @@ const emptyInitialValues = {
   nameOrganization: '',
   firstName: '',
   lastName: '',
-  phoneNumber1: '',
   telegram: '',
   instagram: '',
   youtube: '',
@@ -50,9 +49,9 @@ function Contacts() {
       <EventsCreateLayout>
         <EventContacts
           defaultValue={{
-            ...user,
             ...eventDefaultValues,
-            phoneNumber1: user?.phoneNumber || '',
+            ...user,
+            phoneNumber: (eventDefaultValues?.phoneNumber || user?.phoneNumber)
           }}
           eventId={eventId}
           contactsId={contactsId}

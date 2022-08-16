@@ -39,7 +39,7 @@ function PublicAthlete({ athleteData }) {
       value: 'defeats',
     },
   ])
-
+  console.log({participations})
   return (
     <MainWrapper>
       {user && <AthleteUserData user={user} isVisible={isVisible} />}
@@ -53,7 +53,7 @@ function PublicAthlete({ athleteData }) {
               onChangeHandler={(value) => setView(value)}
               height={'96px'}
             >
-              {participations.map(({ eventName, participationCategory }, i) => {
+              {participations.map(({ event, participationCategory }, i) => {
                 const {
                   eventParticipantsCategory: { name, fromAge, toAge, fromWeight, toWeight },
                   level,
@@ -61,8 +61,8 @@ function PublicAthlete({ athleteData }) {
 
                 return (
                   <Participations
-                    key={`${eventName}-${i}`}
-                    eventName={eventName}
+                    key={`${event?.name}-${i}`}
+                    eventName={event?.name}
                     level={level}
                     name={name}
                     fromAge={fromAge}

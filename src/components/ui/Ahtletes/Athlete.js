@@ -1,21 +1,11 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Avatar } from '@mui/material'
 import styled from 'styled-components'
-import { useSelector } from 'react-redux'
-import { selectCountriesAndCities } from '../../../redux/components/countriesAndCities'
 import { useRouter } from 'next/router'
 
-function Athlete({ children, user, athleteId }) {
-  const [countries, cities] = useSelector(selectCountriesAndCities)
+function Athlete({ children, user, athleteId, team }) {
   const { push: routerPush, pathname } = useRouter()
-  const { countryName, cityName } = useMemo(() => {
-    const city = cities?.length ? cities.find(({ id }) => id === user?.city) : { name: '' }
-    const country = countries?.length
-      ? countries.find(({ id }) => id === user?.country)
-      : { name: '' }
-    return { countryName: country?.name || '', cityName: city?.name || '' }
-  }, [user, children])
-
+  console.log({team})
   return (
     <div>
       {user && (
@@ -34,8 +24,8 @@ function Athlete({ children, user, athleteId }) {
               >
                 {user?.firstName || ''} {user?.lastName || ''}
               </ItemTitle>
-              {countryName && cityName && (
-                <ItemDescription>{`${countryName}, г. ${cityName}`}</ItemDescription>
+              {!!team?.name && (
+                <ItemDescription>{team?.name}</ItemDescription>
               )}
             </div>
           </Item>

@@ -1,27 +1,24 @@
 import React from 'react'
 import styled from 'styled-components'
 import Athlete from '../../ui/Ahtletes/Athlete'
-import { useSelector } from 'react-redux'
-import { selectCountriesAndCities } from '../../../redux/components/countriesAndCities'
 import { useTranslation } from 'next-i18next'
 
 function CommunitesAthletesList({ data }) {
-  const [countries] = useSelector(selectCountriesAndCities)
   const { t: tCommon } = useTranslation('common')
   const { t: tCommunities } = useTranslation('communities')
 
   return (
     <CommunitesAthletesListItems>
       {!!data?.length &&
-        data.map(({ id, user }) => (
-          <Athlete key={`communities-${id}-${user?.id}`} athleteId={id} user={user}>
+        data.map(({ id, user, teams }) => (
+          <Athlete key={`communities-${id}-${user?.id}`} athleteId={id} team={teams[0]} user={user}>
             <AthletesBottomInfo>
               <AthletesBottomItem>
                 <AthletesBottomItemTextHeading>
                   {tCommunities('communities.country')}
                 </AthletesBottomItemTextHeading>
                 <AthletesBottomItemText>
-                  {countries.find(({ id }) => id === user.country)?.name ||
+                  {user.country ||
                     tCommunities('communities.notSpecified')}
                 </AthletesBottomItemText>
               </AthletesBottomItem>

@@ -10,6 +10,7 @@ import { fetchAthletesByParams, selectAthletes } from '../../../redux/components
 import CommunitesAthletesList from './CommunitiesAthleteList'
 import { fetchCountries } from '../../../redux/components/countriesAndCities'
 import { useTranslation } from 'next-i18next'
+import useDebounce from '../../../hooks/useDebounce'
 
 function CommunitesMainPage() {
   const dispatch = useDispatch()
@@ -17,6 +18,7 @@ function CommunitesMainPage() {
   const query = useQuery()
   const searchValue = query.get('search')
   const [search, setSearch] = useState(searchValue)
+  const debouncedSearch = useDebounce(search, 400)
   const { push: routerPush } = useRouter()
   const [, athletes] = useSelector(selectAthletes)
   const { t: tCommunities } = useTranslation('communities')
@@ -30,6 +32,11 @@ function CommunitesMainPage() {
     dispatch(fetchAthletesByParams(query))
     dispatch(fetchTeams(query))
   }, [query])
+
+  React.useEffect(() => {
+    query.set('search', debouncedSearch || '')
+    routerPush(`/communities/?${query}`)
+  }, [debouncedSearch])
 
   const handleSubmit = (e, value) => {
     e.preventDefault()

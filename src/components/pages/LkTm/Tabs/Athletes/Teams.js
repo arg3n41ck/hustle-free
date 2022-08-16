@@ -1,8 +1,8 @@
-import React, { useEffect } from "react"
-import styled from "styled-components"
-import Athlete from "../../../../ui/Ahtletes/Athlete"
-import { useDispatch } from "react-redux"
-import { fetchCountries } from "../../../../../redux/components/countriesAndCities"
+import React, { useEffect } from 'react'
+import styled from 'styled-components'
+import Athlete from '../../../../ui/Ahtletes/Athlete'
+import { useDispatch } from 'react-redux'
+import { fetchCountries } from '../../../../../redux/components/countriesAndCities'
 
 const Athletes = ({ teams }) => {
   if (!teams) return null
@@ -11,7 +11,7 @@ const Athletes = ({ teams }) => {
   useEffect(() => {
     dispatch(fetchCountries())
   }, [])
-console.log({athletes: teams});
+
   return (
     <List>
       {teams.map((teamItem) => (
@@ -19,6 +19,7 @@ console.log({athletes: teams});
           key={`${teamItem?.id}-${teamItem?.athlete?.id}`}
           user={teamItem?.athlete?.user || null}
           athleteId={teamItem?.athlete?.id}
+          team={teamItem?.team}
         />
       ))}
     </List>

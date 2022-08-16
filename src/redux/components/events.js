@@ -49,7 +49,7 @@ export const fetchPopularEvents = createAsyncThunk(
     try {
       const { data } = await $api.get(`/events/events/`, {
         params: {
-          is_populars: true,
+          is_popular: 'True',
         },
       })
       return data

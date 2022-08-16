@@ -42,7 +42,7 @@ export const OgParticipantsItem = ({
           />
           <ItemText>
             <ItemTitle onClick={async () =>
-                routerPush(`/athlete/${participant.athleteId}`)
+                routerPush(`/athlete/${participant?.athlete?.id}`)
               }>{participant?.athlete?.user?.firstName}{" "}{participant?.athlete?.user?.lastName}</ItemTitle>
             <ItemDescription>{participant?.team?.name}</ItemDescription>
           </ItemText>
@@ -55,7 +55,7 @@ export const OgParticipantsItem = ({
                 <InfoTitle>
                   {tEventDetail("event.participants.participantsItem.country")}
                 </InfoTitle>
-                <InfoDescription>{participant?.team?.country?.name}</InfoDescription>
+                <InfoDescription>{participant?.athlete?.user?.country}</InfoDescription>
               </div>
               <div>
                 <InfoTitle>
@@ -152,6 +152,8 @@ const Line = styled.div`
 export const ParticipantsItem = ({ participant }) => {
   const [open, setOpen] = useState(false)
   const { push: routerPush } = useRouter()
+
+  console.log(participant)
   return (
     <Wrapper open={open} onClick={() => setOpen((prev) => !prev)}>
       <ParticipantsItemLi>
@@ -163,7 +165,7 @@ export const ParticipantsItem = ({ participant }) => {
           />
           <ItemText>
             <ItemTitle onClick={async () =>
-                routerPush(`/athlete/${participant.athleteId}`)
+                routerPush(`/athlete/${participant?.athlete?.id}`)
               }>{participant?.athlete?.user?.firstName}{" "}{participant?.athlete?.user?.lastName}</ItemTitle>
             <ItemDescription>{participant?.team?.name}</ItemDescription>
           </ItemText>
@@ -172,7 +174,7 @@ export const ParticipantsItem = ({ participant }) => {
           <Info>
             <div>
               <InfoTitle>Страна</InfoTitle>
-              <InfoDescription>{participant?.team?.country?.name}</InfoDescription>
+              <InfoDescription>{participant?.athlete?.user?.country}</InfoDescription>
             </div>
             <div>
               <InfoTitle>Возраст</InfoTitle>

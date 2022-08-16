@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import $api from '../../../services/axios'
 import LkDefaultHeader from '../../ui/LKui/LKDefaultHeader'
 import { TitleHeader } from '../../ui/LKui/HeaderContent'
@@ -26,7 +26,6 @@ const getTeamData = async (teamId) => {
 
 function TeamInfo({ onToggleSidebar, teamId, userStatusInTeam, checkUserStatus }) {
   const [team, setTeam] = useState(null)
-  const [countries] = useSelector(selectCountriesAndCities)
   const { t: tLkTm } = useTranslation('lkTm')
 
   const dispatch = useDispatch()
@@ -38,16 +37,6 @@ function TeamInfo({ onToggleSidebar, teamId, userStatusInTeam, checkUserStatus }
   useEffect(() => {
     teamId && getTeamData(teamId).then(setTeam)
   }, [teamId])
-
-  const currentLocations = useMemo(() => {
-    const country = team && countries.length && countries.find(({ id }) => id === team.country)
-    return country
-      ? {
-          ...country,
-          cityCountry: country?.cityCountry?.find(({ id }) => id === team.city)?.name,
-        }
-      : null
-  }, [countries, team])
 
   return (
     <div>
@@ -81,11 +70,9 @@ function TeamInfo({ onToggleSidebar, teamId, userStatusInTeam, checkUserStatus }
                     {tLkTm('teamProfile.country')}, {tLkTm('teamProfile.city')}
                   </p>
                 </ItemTitle>
-                {currentLocations && (
-                  <ItemDescription>
-                    {currentLocations?.name}, г. {currentLocations?.cityCountry}
-                  </ItemDescription>
-                )}
+                <ItemDescription>
+                  {team?.country?.name}, г. {team?.city?.name}
+                </ItemDescription>
               </Item>
               <Item>
                 <ItemTitle>

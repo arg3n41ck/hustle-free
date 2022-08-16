@@ -17,7 +17,7 @@ const emptyInitialValues = {
   nameOrganization: '',
   firstName: '',
   lastName: '',
-  phoneNumber1: '',
+  phoneNumber: '',
   telegram: '',
   instagram: '',
   youtube: '',
@@ -38,7 +38,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId 
       nameOrganization: yup.string().nullable().required(tLkOg('validation.required')),
       firstName: yup.string().nullable().required(tLkOg('validation.required')),
       lastName: yup.string().nullable().required(tLkOg('validation.required')),
-      phoneNumber1: yup.string().nullable().required(tLkOg('validation.required')),
+      phoneNumber: yup.string().nullable().required(tLkOg('validation.required')),
       telegram: '',
       instagram: '',
       youtube: '',
@@ -58,9 +58,8 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId 
       validationSchema,
       enableReinitialize: true,
       onSubmit: async (values) => {
-        const { phoneNumber1, phoneNumber2, phoneNumber3, phoneNumber4, ...rest } = values
         await formDataHttp(
-          { ...rest, allFieldsFilled: true, event: eventId },
+          { ...values, allFieldsFilled: true, event: eventId },
           `events/contacts/${contactsId ? contactsId + '/' : ''}`,
           contactsId ? 'put' : 'post',
         )
@@ -75,7 +74,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId 
   useEffect(() => {
     dispatch(fetchSportTypes())
   }, [])
-
+  console.log(values, errors, isValid)
   return (
     <Form onSubmit={handleSubmit}>
       <FormSubTitle>{tLkOg('contacts.organizer')}</FormSubTitle>
@@ -140,9 +139,9 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId 
       <Field>
         <p className='auth-title__input'>{tLkOg('contacts.phoneNumber')}</p>
         <InputMask
-          name={'phoneNumber1'}
-          onChange={(e) => setFieldValue('phoneNumber1', `+${e.target.value.replace(/\D/gi, '')}`)}
-          value={`${values.phoneNumber1}`.replace(/\D/gi, '')}
+          name={'phoneNumber'}
+          onChange={(e) => setFieldValue('phoneNumber', `+${e.target.value.replace(/\D/gi, '')}`)}
+          value={`${values.phoneNumber}`.replace(/\D/gi, '')}
           mask='+7(999) 999 99 99'
         >
           {(inputProps) => (
@@ -151,7 +150,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId 
               sx={{ width: '100%' }}
               variant='outlined'
               placeholder={'+7 (7'}
-              error={Boolean(touched.phoneNumber1) && errors.phoneNumber1}
+              error={Boolean(touched.phoneNumber) && errors.phoneNumber}
               InputProps={{
                 endAdornment: <PhoneIcon />,
               }}

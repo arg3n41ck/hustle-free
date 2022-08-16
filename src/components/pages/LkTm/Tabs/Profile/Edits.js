@@ -83,6 +83,7 @@ const Edits = ({ onView }) => {
           }),
           avatar,
         }
+        delete newValues.athletes
         if (typeof newValues.avatar === 'string') delete newValues.avatar
         const avaRes =
           newValues.avatar &&

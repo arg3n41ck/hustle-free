@@ -1,26 +1,28 @@
-import React from "react"
-import { PubAthTitles } from "./PublicAthlete"
-import styled from "styled-components"
-import { Avatar } from "@mui/material"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import { PubAthTitles } from './PublicAthlete'
+import styled from 'styled-components'
+import { Avatar } from '@mui/material'
+import { useTranslation } from 'next-i18next'
+import { useRouter } from "next/router"
 
 function Teams({ teams }) {
   if (!teams?.length) return null
-  const { t: tLkAh } = useTranslation("lkAh")
+  const {push: routerPush} = useRouter()
+  const { t: tLkAh } = useTranslation('lkAh')
 
   return (
     <TeamsWrapper>
-      <PubAthTitles>{tLkAh("teams")}</PubAthTitles>
+      <PubAthTitles>{tLkAh('teams')}</PubAthTitles>
 
       <ul>
-        {teams.map(({ user: { avatar, fullName } }, i) => (
-          <li key={`ATH-Teams-${i}`}>
+        {teams.map(({ user: { avatar }, fullNameCoach, id }, i) => (
+          <li key={`ATH-Teams-${i}`} onClick={() => routerPush(`/team/${id}`)}>
             <Avatar
-              src={`https://api.dev.hustlefree.pro${avatar}`}
+              src={avatar}
               alt={`${avatar}`}
               sx={{ width: 64, height: 64 }}
             />
-            <p>{fullName}</p>
+            <p>{fullNameCoach}</p>
           </li>
         ))}
       </ul>
@@ -42,6 +44,7 @@ const TeamsWrapper = styled.div`
       display: flex;
       align-items: center;
       grid-column-gap: 16px;
+      cursor: pointer;
 
       p {
         font-style: normal;

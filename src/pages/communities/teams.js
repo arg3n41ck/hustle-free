@@ -1,6 +1,6 @@
-import React from "react"
-import CommunitesPage from "../../components/pages/Communites/CommunitesTeamsPage"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import React from 'react'
+import CommunitesPage from '../../components/pages/Communites/CommunitesTeamsPage'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 function Teams() {
   return (
@@ -12,12 +12,7 @@ function Teams() {
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, [
-      "header",
-      "common",
-      "communities",
-      "footer",
-    ])),
+    ...(await serverSideTranslations(locale, ['header', 'common', 'communities', 'footer'])),
   },
 })
 

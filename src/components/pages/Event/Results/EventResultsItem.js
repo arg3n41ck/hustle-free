@@ -8,7 +8,7 @@ import { useTranslation } from "next-i18next"
 const EventResultsItem = ({ participant, updatePC }) => {
   const [open, setOpen] = useState(false)
   if (!participant) return null
-  const { eventParticipantsCategory } = participant
+  const { eventParticipantsCategory, level } = participant
   const { t: tEventDetail } = useTranslation("eventDetail")
 
   const participants = useMemo(() => {
@@ -21,7 +21,7 @@ const EventResultsItem = ({ participant, updatePC }) => {
         active={open}
         setActive={setOpen}
         heightWrapper={"100px"}
-        title={`${eventParticipantsCategory.name} / ${participant.level} / ${
+        title={`${eventParticipantsCategory.name} / ${level?.name} / ${
           eventParticipantsCategory.fromAge
         } - ${eventParticipantsCategory.toAge} ${tEventDetail(
           "event.results.eventResultsItem.years"

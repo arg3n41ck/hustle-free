@@ -75,7 +75,7 @@ const Athletes = ({ onToggleSidebar }) => {
       setTeams(await fetchTeams(user?.teamId))
     } catch (e) {}
   }
-  console.log({ teams })
+
   return (
     <>
       <HeaderContent onToggle={onToggleSidebar}>

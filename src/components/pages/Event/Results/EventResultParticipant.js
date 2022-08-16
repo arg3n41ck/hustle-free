@@ -40,21 +40,21 @@ function EventResultParticipant({ participant, updatePC }) {
               <p>{place}</p>
             </OtherPlace>
           )}
-        <Title>{participant.fullName}</Title>
+        <Title>{`${participant?.athlete?.user?.firstName} ${participant?.athlete?.user?.lastName}`}</Title>
       </Left>
       <Right>
         <InfoItem>
           <InfoItemTitle>
             {tEventDetail("event.results.eventResultsParticipant.team")}
           </InfoItemTitle>
-          <InfoItemDescription>{participant.team}</InfoItemDescription>
+          <InfoItemDescription>{participant.team?.name}</InfoItemDescription>
         </InfoItem>
-        {participant.country && (
+        {!!participant?.athlete?.user?.country && (
           <InfoItem>
             <InfoItemTitle>
               {tEventDetail("event.results.eventResultsParticipant.country")}
             </InfoItemTitle>
-            <InfoItemDescription>{participant.country}</InfoItemDescription>
+            <InfoItemDescription>{participant.athlete.user.country}</InfoItemDescription>
           </InfoItem>
         )}
         {user?.role === "organizer" && (

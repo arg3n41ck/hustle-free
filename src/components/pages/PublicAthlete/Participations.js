@@ -27,7 +27,7 @@ function Participations({
           <EventInfoHeadingText>{eventName || ""}</EventInfoHeadingText>
           <EventInfoParticipantsInfo>
             {(name && `${name} / `) || ""}
-            {(level && `${level} / `) || ""}
+            {(!!level?.name && `${level.name} / `) || ""}
             {(fromAge && `${fromAge}-`) || ""}
             {(toAge && `${toAge} ${tLkAh("years")} / `) || ""}
             {(fromWeight && `${fromWeight} ${tLkAh("kg")} - `) || ""}
