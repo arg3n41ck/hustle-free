@@ -1,31 +1,27 @@
-import React from "react"
-import styled from "styled-components"
-import EventParticipantsItem from "./EventParticipantsItem"
-import { useSelector } from "react-redux"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import styled from 'styled-components'
+import EventParticipantsItem from './EventParticipantsItem'
+import { useSelector } from 'react-redux'
+import { useTranslation } from 'next-i18next'
 
 const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
   const { user } = useSelector((state) => state.user)
-  const { t: tEventDetail } = useTranslation("eventDetail")
+  const { t: tEventDetail } = useTranslation('eventDetail')
 
   return (
     <>
-      {user?.role !== "organizer" && (
+      {user?.role !== 'organizer' && (
         <Title>
           {isAthletes
-            ? tEventDetail(
-                "event.participants.eventParticipantsList.categoriesBasedProfile"
-              )
-            : tEventDetail(
-                "event.participants.eventParticipantsList.otherCategories"
-              )}
+            ? tEventDetail('event.participants.eventParticipantsList.categoriesBasedProfile')
+            : tEventDetail('event.participants.eventParticipantsList.otherCategories')}
         </Title>
       )}
       {eventParticipants.map((eventParticipant) => (
         <EventParticipantsItem
           key={eventParticipant.id}
           isAthletes={isAthletes}
-          isOrganizer={user?.role === "organizer"}
+          isOrganizer={user?.role === 'organizer'}
           eventParticipant={eventParticipant}
         />
       ))}

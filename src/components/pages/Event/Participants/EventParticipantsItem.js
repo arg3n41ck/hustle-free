@@ -10,7 +10,7 @@ const EventParticipantsItem = ({
   isAthletes,
 }) => {
   const [open, setOpen] = useState(false)
-  const { eventParticipantsCategory } = eventParticipant
+  const { eventParticipantsCategory, level } = eventParticipant
   const { t: tEventDetail } = useTranslation("eventDetail")
   const participantsValues = useMemo(() => {
     if (isOrganizer) {
@@ -70,7 +70,7 @@ const EventParticipantsItem = ({
         setActive={setOpen}
         heightWrapper={"184px"}
         additionalData={info}
-        title={`${eventParticipantsCategory.name} / ${eventParticipant?.level?.name} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
+        title={`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
       >
         {isOrganizer ? (
           <>

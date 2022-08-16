@@ -13,6 +13,7 @@ export const OgParticipantsItem = ({
   onDelete,
 }) => {
   const [open, setOpen] = useState(false)
+  const { push: routerPush } = useRouter()
   const { t: tEventDetail } = useTranslation("eventDetail")
   const [isRegistered, setIsRegistered] = useState(isRegisteredValue)
   const variantsRefIsRegistered = useRef({
@@ -40,7 +41,9 @@ export const OgParticipantsItem = ({
             alt={`${participant.fullName}`}
           />
           <ItemText>
-            <ItemTitle>{participant?.athlete?.user?.firstName}{" "}{participant?.athlete?.user?.lastName}</ItemTitle>
+            <ItemTitle onClick={async () =>
+                routerPush(`/athlete/${participant.athleteId}`)
+              }>{participant?.athlete?.user?.firstName}{" "}{participant?.athlete?.user?.lastName}</ItemTitle>
             <ItemDescription>{participant?.team?.name}</ItemDescription>
           </ItemText>
         </Content>
@@ -159,25 +162,21 @@ export const ParticipantsItem = ({ participant }) => {
             alt={`${participant.fullName}`}
           />
           <ItemText>
-            <ItemTitle
-              onClick={async () =>
+            <ItemTitle onClick={async () =>
                 routerPush(`/athlete/${participant.athleteId}`)
-              }
-            >
-              {participant.fullName}
-            </ItemTitle>
-            <ItemDescription>{participant.team}</ItemDescription>
+              }>{participant?.athlete?.user?.firstName}{" "}{participant?.athlete?.user?.lastName}</ItemTitle>
+            <ItemDescription>{participant?.team?.name}</ItemDescription>
           </ItemText>
         </Content>
         <Collapse in={open}>
           <Info>
             <div>
               <InfoTitle>Страна</InfoTitle>
-              <InfoDescription>{participant.country}</InfoDescription>
+              <InfoDescription>{participant?.team?.country?.name}</InfoDescription>
             </div>
             <div>
               <InfoTitle>Возраст</InfoTitle>
-              <InfoDescription>{participant.age} лет</InfoDescription>
+              <InfoDescription>{participant?.athlete?.user?.age} лет</InfoDescription>
             </div>
           </Info>
         </Collapse>

@@ -4,8 +4,8 @@ import { Field } from '../../LkOg/Tabs/Events/EventDefaults'
 import { Autocomplete } from '@mui/lab'
 import { TextField } from '@mui/material'
 import { Fields } from '../Results/Participants'
-import { useSelector } from 'react-redux'
-import { selectCountriesAndCities } from '../../../../redux/components/countriesAndCities'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchCountries, selectCountriesAndCities } from '../../../../redux/components/countriesAndCities'
 import $api from '../../../../services/axios'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
@@ -16,6 +16,7 @@ const Filters = ({ levels, onFilter }) => {
   const [countries] = useSelector(selectCountriesAndCities)
   const [teams, setTeams] = useState([])
   const router = useRouter()
+  const dispatch = useDispatch()
 
   useEffect(async () => {
     const { data } = await $api.get(`/events/team_events/`)
@@ -24,6 +25,7 @@ const Filters = ({ levels, onFilter }) => {
     )
     setWeights(weightData)
     setTeams(data)
+    dispatch(fetchCountries())
   }, [])
 
   return (
@@ -177,6 +179,14 @@ const Filters = ({ levels, onFilter }) => {
               {tEventDetail('event.participants.filters.country')}
             </p>
             <Autocomplete
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  padding: '20px 68px 20px 20px',
+                },
+                '& .MuiAutocomplete-endAdornment': {
+                  right: '20px !important',
+                },
+              }}
               noOptionsText={tEventDetail('event.participants.filters.nothingFound')}
               onChange={(_, value) =>
                 onFilter({

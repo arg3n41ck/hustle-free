@@ -12,8 +12,12 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'next-i18next'
 
 const getIsUserInEvent = async (eventId) => {
-  const { data } = await $api.get(`/events/events/${eventId}/check_athlete/`)
+  try {
+    const { data } = await $api.get(`/events/events/${eventId}/check_athlete/`)
   return data
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const dateKeys = [
@@ -151,7 +155,7 @@ function EdGeneralInfo({ event }) {
     let regDisabled = false,
       regText = ''
     if (
-      userStatusInEvent?.message === 'Need to authorize' ||
+      userStatusInEvent?.message === 'User is not athlete' ||
       userStatusInEvent?.message === 'User is not event'
     ) {
       if (canApplyToEventByDate) {
