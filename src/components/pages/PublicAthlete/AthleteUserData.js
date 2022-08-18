@@ -37,7 +37,7 @@ const getContacts = ({
     },
     {
       icon: location,
-      content: (country ? `${country},` : '') + (city ? ` г. ${city}` : ''),
+      content: (country?.name ? `${country?.name},` : '') + (city?.name ? ` г. ${city?.name}` : ''),
     },
     {
       icon: phone,

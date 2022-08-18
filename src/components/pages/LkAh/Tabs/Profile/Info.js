@@ -28,21 +28,6 @@ const Info = ({ onToggleSidebar }) => {
   } = useSelector((state) => state.countries)
   const { t: tHeader } = useTranslation('header')
   const { t: tLkAh } = useTranslation('lkAh')
-  const [currentLocations, setCurrentLocations] = useState({
-    country: '',
-    city: '',
-  })
-
-  useEffect(() => {
-    if (user?.country && countries.length) {
-      const currentCountry = countries.find((country) => country.id === user?.country),
-        currentCity = currentCountry.cityCountry.find((country) => country.id === user?.city)
-      setCurrentLocations({
-        country: currentCountry.name,
-        city: currentCity.name,
-      })
-    }
-  }, [user, countries])
 
   React.useEffect(() => {
     dispatch(fetchCountries())
@@ -95,7 +80,7 @@ const Info = ({ onToggleSidebar }) => {
             {tLkAh('userProfile.gender')}
           </Item>
           <Item>{user?.gender === 'male' ? 'Мужской' : 'Женский'}</Item>
-          {(!!currentLocations?.country || !!currentLocations?.city) && (
+          {(!!user?.country || !!user?.city) && (
             <>
               <Item>
                 <WrapperIcon>
@@ -104,8 +89,8 @@ const Info = ({ onToggleSidebar }) => {
                 {tLkAh('userProfile.countryAndCity')}
               </Item>
               <Item>
-                {!!currentLocations?.country && `${currentLocations.country},`}
-                {!!currentLocations?.city && ` г. ${currentLocations.city}`}
+                {!!user?.country?.name && `${user.country?.name},`}
+                {!!user?.city?.name && ` г. ${user.city?.name}`}
               </Item>
             </>
           )}

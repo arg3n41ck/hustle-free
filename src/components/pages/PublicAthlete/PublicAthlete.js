@@ -39,7 +39,7 @@ function PublicAthlete({ athleteData }) {
       value: 'defeats',
     },
   ])
-  console.log({participations})
+
   return (
     <MainWrapper>
       {user && <AthleteUserData user={user} isVisible={isVisible} />}

@@ -69,6 +69,7 @@ function Weight({ open, edit, onClose, name, submit, onBack, defaultValues = ini
             onChange={handleChange}
             value={values.toWeight}
           />
+          <input style={{ display: 'none' }} type='submit' />
         </Form>
       </FieldsRow>
     </ParticipantCategoriesModal>

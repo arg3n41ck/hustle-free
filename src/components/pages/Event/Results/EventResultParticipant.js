@@ -49,12 +49,12 @@ function EventResultParticipant({ participant, updatePC }) {
           </InfoItemTitle>
           <InfoItemDescription>{participant.team?.name}</InfoItemDescription>
         </InfoItem>
-        {!!participant?.athlete?.user?.country && (
+        {!!participant?.athlete?.user?.country?.name && (
           <InfoItem>
             <InfoItemTitle>
               {tEventDetail("event.results.eventResultsParticipant.country")}
             </InfoItemTitle>
-            <InfoItemDescription>{participant.athlete.user.country}</InfoItemDescription>
+            <InfoItemDescription>{participant.athlete.user?.country?.name}</InfoItemDescription>
           </InfoItem>
         )}
         {user?.role === "organizer" && (

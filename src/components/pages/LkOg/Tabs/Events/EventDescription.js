@@ -10,6 +10,8 @@ import { FormHR, FormSubTitle } from './EventPeriods'
 import { TextField } from '@mui/material'
 import { formDataHttp } from '../../../../../helpers/formDataHttp'
 import { useTranslation } from 'next-i18next'
+import CKEditor5 from '../../../../ui/CKEditor/CKEditor5'
+import styled from 'styled-components'
 
 const emptyInitialValues = {
   description: '',
@@ -24,7 +26,7 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
     description: yup.string().nullable().required(tLkOg('validation.required')),
   })
 
-  const { touched, errors, values, handleChange, setFieldValue, handleSubmit, isValid } = useFormik(
+  const { touched, errors, values, setFieldValue, handleSubmit, isValid } = useFormik(
     {
       initialValues: defaultValues,
       validationSchema,
@@ -65,7 +67,7 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
       <FormSubTitle>{tLkOg('coverAndDescription.description')}</FormSubTitle>
 
       <Field>
-        <TextField
+        {/* <TextField
           name='description'
           placeholder={tLkOg('coverAndDescription.descriptionPlaceholder')}
           variant='outlined'
@@ -76,7 +78,13 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
           helperText={touched.description && errors.description}
           onChange={handleChange}
           value={values.description}
+        /> */}
+        <CKEditor5
+          onChange={(value) => setFieldValue('description', value)}
+          defaultValue={values.description || ''}
         />
+
+        <ErrorMessage>{touched.description && errors.description}</ErrorMessage>
       </Field>
 
       <EventFormFooter>
@@ -92,3 +100,7 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
 }
 
 export default EventForm
+
+const ErrorMessage = styled.p`
+  color: #eb5757;
+`

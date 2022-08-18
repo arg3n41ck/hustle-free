@@ -71,6 +71,7 @@ function Age({ open, edit, name, onClose, submit, onBack, defaultValues = initia
             onChange={(e) => setFieldValue('toAge', e.target.value.replace(/\D/gi, ''))}
             value={values.toAge}
           />
+          <input style={{display: 'none'}} type="submit"/>
         </FieldsRow>
       </form>
     </ParticipantCategoriesModal>

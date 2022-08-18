@@ -95,7 +95,7 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
       onSubmit={handleSubmit}
       edit={edit}
     >
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <FormSubTitle>{tLkOg('categoriesOfParticipants.categoryRegistrationPrices')}</FormSubTitle>
 
         <Field>
@@ -163,6 +163,7 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
             )}
           />
         </Field>
+        <input style={{ display: 'none' }} type='submit' />
       </Form>
     </ParticipantCategoriesModal>
   )
@@ -170,7 +171,7 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
 
 export default Price
 
-const Form = styled.div`
+const Form = styled.form`
   height: max-content;
   display: flex;
   flex-direction: column;

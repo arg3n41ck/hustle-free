@@ -216,13 +216,13 @@ function EdGeneralInfo({ event }) {
       <RegInfoUl>
         {!!regData?.length &&
           regData.map(({ id, label, value, icon }) => (
-            <RegInfoLi key={`EdGeneralInfo_${id}`}>
+            !!value ? <RegInfoLi key={`EdGeneralInfo_${id}`}>
               {icon}
               <div>
                 <span>{tEventDetail(label)}</span>
                 <p>{value}</p>
               </div>
-            </RegInfoLi>
+            </RegInfoLi> : ''
           ))}
       </RegInfoUl>
     </>
@@ -271,8 +271,9 @@ const ERegBtn = styled.button`
 const RegInfoUl = styled.ul`
   list-style: none;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
 const RegInfoLi = styled.li`

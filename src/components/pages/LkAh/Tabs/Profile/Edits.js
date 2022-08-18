@@ -19,7 +19,6 @@ import { useRouter } from 'next/router'
 import { theme } from '../../../../../styles/theme'
 import {
   fetchCountries,
-  selectCountriesAndCities,
 } from '../../../../../redux/components/countriesAndCities'
 import { fetchUser } from '../../../../../redux/components/user'
 import { LocationIcon } from '../../../Events/EventsCatalog/EventsFilter'
@@ -65,7 +64,6 @@ const Edits = () => {
   const { push: routerPush } = useRouter()
   const [currentCities, setCurrentCities] = useState([])
   const [imageUrl, setImageUrl] = useState(null)
-  const [, cities] = useSelector(selectCountriesAndCities)
   const [showPassword, setShowPassword] = useState(false)
   const [showPassword2, setShowPassword2] = useState(false)
   const { t: tCommon } = useTranslation('common')
@@ -87,8 +85,8 @@ const Edits = () => {
         }),
       gender: yup.mixed().nullable().required(tCommon('validation.required')),
       dateBirthday: yup.date().nullable().required(tCommon('validation.required')),
-      country: yup.string().required(tCommon('validation.required')).nullable(),
-      city: yup.string().required(tCommon('validation.required')).nullable(),
+      country: yup.object().required(tCommon('validation.required')).nullable(),
+      city: yup.object().required(tCommon('validation.required')).nullable(),
     }),
   )
 
@@ -127,20 +125,18 @@ const Edits = () => {
   })
 
   const formik = useFormik({
-    initialValues: !!user?.id ? { ...emptyInitialValues, ...user } : emptyInitialValues,
+    initialValues: emptyInitialValues,
     validationSchema,
     onSubmit: async (values) => {
       try {
         const { avatar, ...rstValues } = values
-        const currentCountry = countries.find((country) => country.id === values.country),
-          currentCity = currentCountry?.cityCountry?.find((country) => country.id === values.city)
         const newValues = {
           ...decamelizeKeys({
             ...rstValues,
             dateBirthday:
               values.dateBirthday && format(new Date(values.dateBirthday), 'yyyy-MM-dd'),
-            country: currentCountry.id,
-            city: currentCity.id,
+            city: rstValues?.city?.id,
+            country: rstValues?.country?.id,
             visible: !!values.isVisible,
           }),
           avatar,
@@ -149,11 +145,15 @@ const Edits = () => {
         for (let key in newValues) {
           if (!newValues[key]) delete newValues[key]
         }
-        
+
         if (typeof newValues.avatar === 'string') delete newValues.avatar
-        const {isVisible, ...usersData} = newValues
-        const { data: atheletesData } = await formDataHttp({isVisible}, `athletes/${user?.athleteId}/`, 'patch')
-        const { data } = await formDataHttp({...usersData}, `accounts/users/me/`, 'patch')
+        const { isVisible, ...usersData } = newValues
+        const { data: atheletesData } = await formDataHttp(
+          { isVisible },
+          `athletes/${user?.athleteId}/`,
+          'patch',
+        )
+        const { data } = await formDataHttp({ ...usersData }, `accounts/users/me/`, 'patch')
 
         dispatch(saveUser({ ...newValues, ...data, atheletesData }))
         dispatch(fetchUser())
@@ -165,7 +165,22 @@ const Edits = () => {
   })
 
   useEffect(() => {
-    if (user) formik.setValues(user)
+    if (user) formik.setValues({
+      email: user?.email || '',
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
+      phoneNumber: user?.phoneNumber || '',
+      gender: user?.gender || '',
+      dateBirthday: user?.dateBirthday || '',
+      age: user?.age || '',
+      role: user?.role || '',
+      country: user?.country || '',
+      city: user?.city || '',
+      avatar: user?.avatar || '',
+      nameOrganization: user?.nameOrganization || '',
+      address: user?.address || '',
+      isVisible: user?.isVisible || true,
+    })
   }, [user])
 
   const changeCurrentCities = (changeCountry) => {
@@ -192,6 +207,7 @@ const Edits = () => {
     return <div />
   }
 
+  console.log(formik.errors, countries)
   return (
     <form onSubmit={formik.handleSubmit}>
       <Header>
@@ -321,12 +337,12 @@ const Edits = () => {
               noOptionsText={'Ничего не найдено'}
               onChange={(_, value) => [
                 changeCurrentCities(value),
-                formik.setFieldValue('country', value?.id || null),
+                formik.setFieldValue('country', value || null),
                 formik.setFieldValue('city', ''),
               ]}
               options={countries.map((option) => option) || []}
-              getOptionLabel={(option) => option.name}
-              value={countries.find(({ id }) => id === formik.values?.country) || null}
+              getOptionLabel={(option) => option?.name || "" }
+              value={formik.values.country}
               fullWidth
               renderInput={(params) => (
                 <TextField
@@ -349,10 +365,10 @@ const Edits = () => {
 
             <Autocomplete
               noOptionsText={'Ничего не найдено'}
-              onChange={(_, value) => formik.setFieldValue('city', value?.id || null)}
-              options={countries.find(({ id }) => id === formik.values?.country)?.cityCountry || []}
-              getOptionLabel={(option) => option?.name}
-              value={cities.find(({ id }) => id === formik.values.city) || null}
+              onChange={(_, value) => formik.setFieldValue('city', value || null)}
+              options={countries.find(({ id }) => id === formik.values?.country.id)?.cityCountry || []}
+              getOptionLabel={(option) => option?.name || "" }
+              value={formik.values?.city}
               fullWidth
               renderInput={(params) => (
                 <TextField

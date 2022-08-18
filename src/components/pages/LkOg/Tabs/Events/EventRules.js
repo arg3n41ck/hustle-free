@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { TextField } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { fetchSportTypes } from '../../../../../redux/components/sportTypes'
 import { useRouter } from 'next/router'
