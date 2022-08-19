@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 function Athlete({ children, user, athleteId, team }) {
   const { push: routerPush, pathname } = useRouter()
-  console.log({team})
+
   return (
     <div>
       {user && (
@@ -24,9 +24,7 @@ function Athlete({ children, user, athleteId, team }) {
               >
                 {user?.firstName || ''} {user?.lastName || ''}
               </ItemTitle>
-              {!!team?.name && (
-                <ItemDescription>{team?.name}</ItemDescription>
-              )}
+              {!!team?.name && <ItemDescription>{team?.name}</ItemDescription>}
             </div>
           </Item>
           {children}

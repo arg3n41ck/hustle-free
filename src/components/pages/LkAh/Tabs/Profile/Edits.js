@@ -17,12 +17,9 @@ import { saveUser } from '../../../../../redux/components/user'
 import { format } from 'date-fns'
 import { useRouter } from 'next/router'
 import { theme } from '../../../../../styles/theme'
-import {
-  fetchCountries,
-} from '../../../../../redux/components/countriesAndCities'
+import { fetchCountries } from '../../../../../redux/components/countriesAndCities'
 import { fetchUser } from '../../../../../redux/components/user'
 import { LocationIcon } from '../../../Events/EventsCatalog/EventsFilter'
-import { decamelizeKeys } from 'humps'
 import { formDataHttp } from '../../../../../helpers/formDataHttp'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
@@ -45,7 +42,7 @@ const emptyInitialValues = {
   avatar: '',
   nameOrganization: '',
   address: '',
-  isVisible: true,
+  isVisible: false,
 }
 
 const ChangePasswordValues = {
@@ -129,58 +126,56 @@ const Edits = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const { avatar, ...rstValues } = values
         const newValues = {
-          ...decamelizeKeys({
-            ...rstValues,
-            dateBirthday:
-              values.dateBirthday && format(new Date(values.dateBirthday), 'yyyy-MM-dd'),
-            city: rstValues?.city?.id,
-            country: rstValues?.country?.id,
-            visible: !!values.isVisible,
-          }),
-          avatar,
+          ...values,
+          dateBirthday: values.dateBirthday && format(new Date(values.dateBirthday), 'yyyy-MM-dd'),
+          city: values?.city?.id,
+          country: values?.country?.id,
+          isVisible: !!values.isVisible,
         }
 
         for (let key in newValues) {
-          if (!newValues[key]) delete newValues[key]
+          if (typeof newValues[key] !== 'boolean' && !newValues[key]) delete newValues[key]
         }
 
         if (typeof newValues.avatar === 'string') delete newValues.avatar
+
         const { isVisible, ...usersData } = newValues
         const { data: atheletesData } = await formDataHttp(
           { isVisible },
           `athletes/${user?.athleteId}/`,
-          'patch',
+          'put',
         )
-        const { data } = await formDataHttp({ ...usersData }, `accounts/users/me/`, 'patch')
+        const { data } = await formDataHttp({ ...usersData }, `accounts/users/me/`, 'put')
 
         dispatch(saveUser({ ...newValues, ...data, atheletesData }))
         dispatch(fetchUser())
         await routerPush('/lk-ah/profile')
       } catch (e) {
+        console.log(e)
         throw e
       }
     },
   })
 
   useEffect(() => {
-    if (user) formik.setValues({
-      email: user?.email || '',
-      firstName: user?.firstName || '',
-      lastName: user?.lastName || '',
-      phoneNumber: user?.phoneNumber || '',
-      gender: user?.gender || '',
-      dateBirthday: user?.dateBirthday || '',
-      age: user?.age || '',
-      role: user?.role || '',
-      country: user?.country || '',
-      city: user?.city || '',
-      avatar: user?.avatar || '',
-      nameOrganization: user?.nameOrganization || '',
-      address: user?.address || '',
-      isVisible: user?.isVisible || true,
-    })
+    if (user)
+      formik.setValues({
+        email: user?.email || '',
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+        phoneNumber: user?.phoneNumber || '',
+        gender: user?.gender || '',
+        dateBirthday: user?.dateBirthday || '',
+        age: user?.age || '',
+        role: user?.role || '',
+        country: user?.country || '',
+        city: user?.city || '',
+        avatar: user?.avatar || '',
+        nameOrganization: user?.nameOrganization || '',
+        address: user?.address || '',
+        isVisible: !!user?.isVisible,
+      })
   }, [user])
 
   const changeCurrentCities = (changeCountry) => {
@@ -207,7 +202,6 @@ const Edits = () => {
     return <div />
   }
 
-  console.log(formik.errors, countries)
   return (
     <form onSubmit={formik.handleSubmit}>
       <Header>
@@ -341,7 +335,7 @@ const Edits = () => {
                 formik.setFieldValue('city', ''),
               ]}
               options={countries.map((option) => option) || []}
-              getOptionLabel={(option) => option?.name || "" }
+              getOptionLabel={(option) => option?.name || ''}
               value={formik.values.country}
               fullWidth
               renderInput={(params) => (
@@ -366,8 +360,10 @@ const Edits = () => {
             <Autocomplete
               noOptionsText={'Ничего не найдено'}
               onChange={(_, value) => formik.setFieldValue('city', value || null)}
-              options={countries.find(({ id }) => id === formik.values?.country.id)?.cityCountry || []}
-              getOptionLabel={(option) => option?.name || "" }
+              options={
+                countries.find(({ id }) => id === formik.values?.country.id)?.cityCountry || []
+              }
+              getOptionLabel={(option) => option?.name || ''}
               value={formik.values?.city}
               fullWidth
               renderInput={(params) => (

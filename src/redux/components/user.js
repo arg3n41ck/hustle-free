@@ -9,17 +9,17 @@ export const fetchUser = createAsyncThunk('user/get', async (params, { rejectWit
     let newData
     const { data } = await $api.get(`/accounts/users/me/`, { params })
     newData = data
-    console.log(newData``)
     if (data.role === 'organizer') {
       const { data: organizerData } = await $api.get(`/organizers/?user=${data.id}`)
       newData = { ...data, ...organizerData[0].user, organizerId: organizerData[0].id }
     } else if (data.role === 'athlete') {
-      const { data: athlete } = await $api.get(`/athletes/?user=${organizerData[0]?.user?.id}`)
+      const { data: athlete } = await $api.get(`/athletes/?user=${data?.id}`)
       const { id: athleteId, ...rest } = athlete[0]
       newData = { athleteId, ...data[0], ...rest?.user, ...rest }
     }
     return camelizeKeys(newData)
   } catch (e) {
+    console.log(e)
     return rejectWithValue(e.response.status)
   }
 })

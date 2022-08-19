@@ -10,17 +10,16 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
   const {
     query: { id: teamId },
   } = useRouter()
-  const [athHasBeenReq, setAthHasBeenReq] = useState(false)
   const { push: routerPush } = useRouter()
-  const user = useSelector((state) => state.user)
+  const { user } = useSelector((state) => state.user)
+  console.log({ userStatusInTeam })
   const sendReq = useCallback(async () => {
-    if (userStatusInTeam?.message === 'Not found') {
+    if (userStatusInTeam?.message === 'Not found' && user) {
       try {
-        await $api.post('/teams/athlete_requests/', { team: teamId, athlete: user?.user?.athleteId })
-        setAthHasBeenReq(true)
+        await $api.post('/teams/athlete_requests/', { team: teamId, athlete: user?.athleteId })
         checkUserStatus()
       } catch (e) {
-        setAthHasBeenReq(true)
+        console.log(e)
       }
     } else if (userStatusInTeam?.message === 'Is anonymous') {
       toast.info('Войдите в систему в роли атлета', { autoClose: 5000 })
@@ -28,17 +27,17 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
       localStorageSetItem('role', 'athlete')
       routerPush('/registration')
     }
-  }, [userStatusInTeam])
+  }, [userStatusInTeam, user])
+
   return (
-    (user.user?.role === 'athlete' || !user?.userAuthenticated) && (
+    (user?.role === 'athlete' || !user?.userAuthenticated) && (
       <CreateEventBTN
         disabled={
-          athHasBeenReq ||
-          (userStatusInTeam?.message !== 'Not found' &&
-            userStatusInTeam?.message !== 'Is anonymous')
+          userStatusInTeam?.message !== 'Is anonymous' &&
+          userStatusInTeam?.message !== 'User in pending'
         }
         active={
-          userStatusInTeam?.message === 'Not found' || userStatusInTeam?.message === 'is anonymous'
+          userStatusInTeam?.message === 'Not found' || userStatusInTeam?.message === 'Is anonymous'
         }
         onClick={() => sendReq()}
       >
