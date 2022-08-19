@@ -14,7 +14,7 @@ import { useTranslation } from 'next-i18next'
 const getIsUserInEvent = async (eventId) => {
   try {
     const { data } = await $api.get(`/events/events/${eventId}/check_athlete/`)
-  return data
+    return data
   } catch (e) {
     console.log(e)
   }
@@ -105,7 +105,7 @@ function EdGeneralInfo({ event }) {
   const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
 
   useEffect(() => {
-    user?.role === 'organizer' && dispatch(fetchOgEvents())
+    user?.role === 'organizer' && dispatch(fetchOgEvents({ organizer: user?.organizerId }))
   }, [user])
 
   const checkUserStatusInTeam = useCallback(() => {
@@ -215,15 +215,19 @@ function EdGeneralInfo({ event }) {
       </TitlePart>
       <RegInfoUl>
         {!!regData?.length &&
-          regData.map(({ id, label, value, icon }) => (
-            !!value ? <RegInfoLi key={`EdGeneralInfo_${id}`}>
-              {icon}
-              <div>
-                <span>{tEventDetail(label)}</span>
-                <p>{value}</p>
-              </div>
-            </RegInfoLi> : ''
-          ))}
+          regData.map(({ id, label, value, icon }) =>
+            !!value ? (
+              <RegInfoLi key={`EdGeneralInfo_${id}`}>
+                {icon}
+                <div>
+                  <span>{tEventDetail(label)}</span>
+                  <p>{value}</p>
+                </div>
+              </RegInfoLi>
+            ) : (
+              ''
+            ),
+          )}
       </RegInfoUl>
     </>
   )
