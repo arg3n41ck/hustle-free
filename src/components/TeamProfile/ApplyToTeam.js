@@ -33,8 +33,7 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
     (user?.role === 'athlete' || !user?.userAuthenticated) && (
       <CreateEventBTN
         disabled={
-          userStatusInTeam?.message !== 'Is anonymous' &&
-          userStatusInTeam?.message !== 'User in pending'
+          userStatusInTeam?.message !== 'Is anonymous' && userStatusInTeam?.message !== 'Not found'
         }
         active={
           userStatusInTeam?.message === 'Not found' || userStatusInTeam?.message === 'Is anonymous'

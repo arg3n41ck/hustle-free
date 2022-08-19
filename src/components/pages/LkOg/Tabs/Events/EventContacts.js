@@ -74,7 +74,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId 
   useEffect(() => {
     dispatch(fetchSportTypes())
   }, [])
-  console.log(values, errors, isValid)
+
   return (
     <Form onSubmit={handleSubmit}>
       <FormSubTitle>{tLkOg('contacts.organizer')}</FormSubTitle>

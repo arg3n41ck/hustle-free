@@ -51,7 +51,7 @@ function Contacts() {
           defaultValue={{
             ...eventDefaultValues,
             ...user,
-            phoneNumber: (eventDefaultValues?.phoneNumber || user?.phoneNumber)
+            phoneNumber: eventDefaultValues?.phoneNumber || user?.phoneNumber,
           }}
           eventId={eventId}
           contactsId={contactsId}

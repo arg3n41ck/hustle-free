@@ -259,7 +259,6 @@ const Edits = ({ onView }) => {
             <InputMask
               name={'phoneCoach'}
               onChange={(e) => {
-                console.log({ value: e.target.value })
                 if (
                   normalizePhone(e.target.value || '') === '7' ||
                   !normalizePhone(e.target.value || '')

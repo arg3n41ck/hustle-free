@@ -11,11 +11,8 @@ import { LinkIcon } from '../../../assets/svg/icons'
 import { UserIcon } from '../../../assets/svg/icons'
 import { DefaultPhoneIcon } from '../../../assets/svg/icons'
 import { phoneFormatter } from '../../../helpers/phoneFormatter'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  fetchCountries,
-  selectCountriesAndCities,
-} from '../../../redux/components/countriesAndCities'
+import { useDispatch } from 'react-redux'
+import { fetchCountries } from '../../../redux/components/countriesAndCities'
 import ApplyToTeam from '../../TeamProfile/ApplyToTeam'
 import { useTranslation } from 'next-i18next'
 

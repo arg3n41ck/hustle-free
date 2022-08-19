@@ -19,7 +19,7 @@ function EventsContent({ onToggleSidebar }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    user?.email && dispatch(fetchOgEvents({ organizer: user?.email }))
+    user?.organizerId && dispatch(fetchOgEvents({ organizer: user?.organizerId }))
   }, [user])
 
   return (
