@@ -12,7 +12,7 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
   } = useRouter()
   const { push: routerPush } = useRouter()
   const { user } = useSelector((state) => state.user)
-  console.log({ userStatusInTeam })
+
   const sendReq = useCallback(async () => {
     if (userStatusInTeam?.message === 'Not found' && user) {
       try {

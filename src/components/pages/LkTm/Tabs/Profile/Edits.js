@@ -64,9 +64,16 @@ const Edits = ({ onView }) => {
 
   const formik = useFormik({
     initialValues: {
-      ...user,
-      city: user?.city?.name || null,
-      country: user?.country?.name || null,
+      name: user?.name || '',
+      country: user?.country?.name || '',
+      city: user?.city?.name || '',
+      webSite: user?.webSite || '',
+      fullNameCoach: user?.fullNameCoach || '',
+      phoneCoach: user?.phoneCoach || '',
+      sports: user?.sports || '',
+      description: user?.description || '',
+      emailCoach: user?.emailCoach || '',
+      avatar: user?.avatar || '',
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -83,13 +90,17 @@ const Edits = ({ onView }) => {
           }),
           avatar,
         }
+
         delete newValues.athletes
         if (typeof newValues.avatar === 'string') delete newValues.avatar
+
         const avaRes =
           newValues.avatar &&
           (await formDataHttp({ avatar: newValues.avatar }, `accounts/users/me/`, 'patch'))
         const { avatar: waste, ...rest } = newValues
+
         const { data } = await $api.patch(`teams/teams/${user.teamId}/`, rest)
+
         dispatch(
           saveUser({
             ...values,
@@ -104,6 +115,7 @@ const Edits = ({ onView }) => {
       }
     },
   })
+
   const [currentCities, setCurrentCities] = useState([])
 
   const changeCurrentCities = (changeCountry) => {
@@ -114,6 +126,7 @@ const Edits = ({ onView }) => {
   useEffect(() => {
     const currentCountry = countries.find((country) => country.name === formik.values.country)
     setCurrentCities(currentCountry.cityCountry)
+
     const newSportTypes = []
     formik.values?.sports?.map(({ id: sportId }) => {
       const obj = sportTypes.find((sportType) => sportType.id === sportId)
@@ -247,7 +260,10 @@ const Edits = ({ onView }) => {
               name={'phoneCoach'}
               onChange={(e) => {
                 console.log({ value: e.target.value })
-                if (normalizePhone(e.target.value || '') === '7' || !normalizePhone(e.target.value || '')) {
+                if (
+                  normalizePhone(e.target.value || '') === '7' ||
+                  !normalizePhone(e.target.value || '')
+                ) {
                   formik.setFieldValue('phoneCoach', '')
                 } else formik.setFieldValue('phoneCoach', `+${e.target.value.replace(/\D/gi, '')}`)
               }}
@@ -325,6 +341,7 @@ const Edits = ({ onView }) => {
           <SportItem>
             <Checkbox
               defaultChecked
+              checked={!!currentSportTypes?.some((sportType) => sportType?.id === CSportType?.id)}
               onChange={() => deleteSport(CSportType)}
               sx={{
                 padding: 0,

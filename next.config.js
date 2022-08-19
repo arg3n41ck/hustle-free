@@ -9,6 +9,7 @@ module.exports = {
       'unsplash.com',
       'api.dev.main.jva.vc',
       '62.84.118.185:8000',
+      '62.84.118.185',
     ],
   },
   i18n,

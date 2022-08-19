@@ -16,6 +16,10 @@ export const fetchUser = createAsyncThunk('user/get', async (params, { rejectWit
       const { data: athlete } = await $api.get(`/athletes/?user=${data?.id}`)
       const { id: athleteId, ...rest } = athlete[0]
       newData = { athleteId, ...data[0], ...rest?.user, ...rest }
+    } else if (data.role === 'team') {
+      const { data: team } = await $api.get(`/teams/teams/?user=${data?.id}`)
+      const { id: teamId, ...rest } = team[0]
+      newData = { teamId, ...data[0], ...rest?.user, ...rest }
     }
     return camelizeKeys(newData)
   } catch (e) {
