@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import HeaderContent, { TitleHeader } from '../../../../ui/LKui/HeaderContent'
 import styled from 'styled-components'
-import { Avatar, Box } from '@mui/material'
+import { Box } from '@mui/material'
 import { EditIcon } from '../../../../../assets/svg/icons'
 import { DefaultEmailIcon } from '../../../../../assets/svg/icons'
 import { WebsiteIcon } from '../../../../../assets/svg/icons'
@@ -12,6 +12,9 @@ import { DefaultPhoneIcon } from '../../../../../assets/svg/icons'
 import { phoneFormatter } from '../../../../../helpers/phoneFormatter'
 import { selectCountriesAndCities } from '../../../../../redux/components/countriesAndCities'
 import { useTranslation } from 'next-i18next'
+import ProfileAvaUploader from '../../../../ui/ProfileAvaUploader'
+import { formDataHttp } from '../../../../../helpers/formDataHttp'
+import { fetchUser } from '../../../../../redux/components/user'
 
 const Info = ({ onToggleSidebar, onView }) => {
   const { user } = useSelector((state) => state.user)
@@ -22,10 +25,12 @@ const Info = ({ onToggleSidebar, onView }) => {
     city: '',
   })
 
+  const dispatch = useDispatch()
+
   useEffect(() => {
     if (user?.country && countries.length) {
       const currentCountry = countries[0],
-      currentCity = currentCountry.cityCountry.find((city) => city.id === user?.city.id)
+        currentCity = currentCountry.cityCountry.find((city) => city.id === user?.city.id)
       setCurrentLocations({
         country: currentCountry?.name,
         city: currentCity?.name,
@@ -42,10 +47,14 @@ const Info = ({ onToggleSidebar, onView }) => {
       </HeaderWrapper>
       <Content>
         <Center>
-          <Avatar
-            alt={`${user?.name}`}
+          <ProfileAvaUploader
+            alt={`${user?.firstName} ${user?.lastName}`}
             src={user?.avatar}
             sx={{ width: 112, height: 112 }}
+            onSave={async (file) => {
+              await formDataHttp({ avatar: file }, 'accounts/users/me/', 'patch')
+              dispatch(fetchUser())
+            }}
           />
           <CenterText>
             <CenterTitle>{user?.name}</CenterTitle>

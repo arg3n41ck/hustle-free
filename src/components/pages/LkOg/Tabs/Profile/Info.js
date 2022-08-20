@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { EditIcon } from '../../../../../assets/svg/icons'
-import { Avatar } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { LocationIcon } from '../../../../../assets/svg/icons'
 import { CalendarIcon } from '../../../../../assets/svg/icons'
@@ -20,6 +19,9 @@ import {
   selectCountriesAndCities,
 } from '../../../../../redux/components/countriesAndCities'
 import { useTranslation } from 'next-i18next'
+import ProfileAvaUploader from '../../../../ui/ProfileAvaUploader'
+import { formDataHttp } from '../../../../../helpers/formDataHttp'
+import { fetchUser } from '../../../../../redux/components/user'
 
 const Info = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
@@ -55,10 +57,14 @@ const Info = ({ onToggleSidebar }) => {
       </LkDefaultHeader>
       <Content>
         <Center>
-          <Avatar
+          <ProfileAvaUploader
             alt={`${user?.firstName} ${user?.lastName}`}
             src={user?.avatar}
             sx={{ width: 112, height: 112 }}
+            onSave={async (file) => {
+              await formDataHttp({ avatar: file }, 'accounts/users/me/', 'patch')
+              dispatch(fetchUser())
+            }}
           />
           <CenterRight>
             <FullName>

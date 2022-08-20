@@ -61,7 +61,12 @@
       "requisites": "Requisites",
       "bin": "BIN",
       "iban": "Account number (IBAN)",
-      "bankName": "Name of the Bank"
+      "bankName": "Name of the Bank",
+
+      "selectFile": "Select a file",
+      "uploadNewFile": "Uploading a new photo",
+      "userAvaRules1": "We recommend using an image of at least 600x600 pixels in PNG format.",
+      "userAvaRules2": "File size - no more than 4 MB."
     },
     "status": {
       "waitForServer": "Wait for a response from the server"
