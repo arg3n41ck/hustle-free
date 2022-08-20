@@ -40,7 +40,7 @@ function MyEvents({ onToggleSidebar }) {
   ]
 
   React.useEffect(() => {
-    user && ыdispatch(fetchEventsAthlete({ period: view, athlete: user.athleteId }))
+    user && dispatch(fetchEventsAthlete({ period: view, athlete: user.athleteId }))
   }, [view, user])
 
   const viewHandler = (value) => setView(value)
