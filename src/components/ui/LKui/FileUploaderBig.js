@@ -1,40 +1,57 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
-import { Box, IconButton } from '@mui/material'
+import { Box } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import CropEasy from '../image-crop/CropEasy'
-import { Crop } from '@mui/icons-material'
 
 function FileUploaderBig({ onChange, defaultBanner, error }) {
   const [file, setFile] = useState(null)
-  const [photoURL, setPhotoURL] = useState(defaultBanner)
-  // const [openCrop, setOpenCrop] = useState(false)
+  const [photoURLToShow, setPhotoURLToShow] = useState(null)
+  const [openCropModal, setOpenCropModal] = useState(false)
   const { t: tLkOg } = useTranslation('lkOg')
 
   const handleOnDeleteImage = () => {
     setFile(null)
-    setPhotoURL(null)
+    setPhotoURLToShow(null)
   }
-
-  useEffect(() => {
-    setPhotoURL(
-      !!defaultBanner && typeof (defaultBanner || '') !== 'string'
-        ? URL.createObjectURL(defaultBanner)
-        : defaultBanner,
-    )
-  }, [defaultBanner])
 
   const onUploadImage = (e) => {
     const _file = e.target.files[0]
     setFile(_file)
-    // setOpenCrop(true)
-    onChange(_file)
+    setOpenCropModal(true)
   }
+
+  const onCropImage = useCallback(
+    (file) => {
+      setFile(file)
+      onChange(file)
+    },
+    [file],
+  )
+
+  useEffect(() => {
+    if (file) {
+      setPhotoURLToShow(URL.createObjectURL(file))
+    }
+  }, [file])
+
+  useEffect(() => {
+    if (!file && defaultBanner) {
+      setPhotoURLToShow(defaultBanner)
+    }
+  }, [defaultBanner])
 
   return (
     <FileUploadLabel>
       <CustomInput type='file' error={!!error} onChange={onUploadImage} />
-      {/* {openCrop && <CropEasy {...{ openCrop, photoURL, setOpenCrop, setPhotoURL, setFile }} />} */}
+      {photoURLToShow && (
+        <CropEasy
+          open={openCropModal}
+          setOpen={setOpenCropModal}
+          onSave={onCropImage}
+          image={photoURLToShow}
+        />
+      )}
       <Box
         sx={{
           display: 'flex',
@@ -52,18 +69,13 @@ function FileUploaderBig({ onChange, defaultBanner, error }) {
           {tLkOg('coverAndDescription.coverPlaceholder')}{' '}
           <span>{tLkOg('coverAndDescription.download')}</span>
         </UploadText>
-        {/* {file && (
-          <IconButton aria-label='Crop' color='primary' onClick={() => setOpenCrop(true)}>
-            <Crop />
-          </IconButton>
-        )} */}
         <UploadDescription>{tLkOg('coverAndDescription.coverPlaceholder2')}</UploadDescription>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </Box>
 
-      {photoURL && (
+      {photoURLToShow && (
         <ImageWrapper>
-          <Image src={photoURL} />
+          <Image src={photoURLToShow} />
           <HoverBlock>
             <DeleteIcon onClick={handleOnDeleteImage} />
           </HoverBlock>
@@ -82,7 +94,9 @@ const ErrorMessage = styled.p`
 `
 
 const FileUploadLabel = styled.label`
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   cursor: pointer;
   border: 2px dashed #828282;
@@ -91,7 +105,7 @@ const FileUploadLabel = styled.label`
   padding: 22px 0;
   font-size: 18px;
   line-height: 24px;
-  min-height: 230px;
+  min-height: 285px;
   height: 100%;
 
   input[type='file'] {

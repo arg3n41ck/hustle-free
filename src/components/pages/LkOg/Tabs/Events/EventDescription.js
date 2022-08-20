@@ -7,7 +7,6 @@ import { useRouter } from 'next/router'
 import { Cancel, EventFormFooter, Field, Form, Submit } from './EventDefaults'
 import FileUploaderBig from '../../../../ui/LKui/FileUploaderBig'
 import { FormHR, FormSubTitle } from './EventPeriods'
-import { TextField } from '@mui/material'
 import { formDataHttp } from '../../../../../helpers/formDataHttp'
 import { useTranslation } from 'next-i18next'
 import CKEditor5 from '../../../../ui/CKEditor/CKEditor5'
@@ -26,24 +25,22 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
     description: yup.string().nullable().required(tLkOg('validation.required')),
   })
 
-  const { touched, errors, values, setFieldValue, handleSubmit, isValid } = useFormik(
-    {
-      initialValues: defaultValues,
-      validationSchema,
-      enableReinitialize: true,
-      onSubmit: async (values) => {
-        const path = `events/event_descriptions/${descriptionId ? descriptionId + '/' : ''}`
-        const method = descriptionId ? 'patch' : 'post'
-        const body =
-          (typeof values.banner || '') !== 'string'
-            ? { ...values, allFieldsFilled: true, event: eventId }
-            : { description: values.description, allFieldsFilled: true, event: eventId }
+  const { touched, errors, values, setFieldValue, handleSubmit, isValid } = useFormik({
+    initialValues: defaultValues,
+    validationSchema,
+    enableReinitialize: true,
+    onSubmit: async (values) => {
+      const path = `events/event_descriptions/${descriptionId ? descriptionId + '/' : ''}`
+      const method = descriptionId ? 'patch' : 'post'
+      const body =
+        (typeof values.banner || '') !== 'string'
+          ? { ...values, allFieldsFilled: true, event: eventId }
+          : { description: values.description, allFieldsFilled: true, event: eventId }
 
-        await formDataHttp(body, path, method)
-        routerPush(`/lk-og/profile/events/edit/${eventId}/rules/`)
-      },
+      await formDataHttp(body, path, method)
+      routerPush(`/lk-og/profile/events/edit/${eventId}/rules/`)
     },
-  )
+  })
 
   const { push: routerPush } = useRouter()
 

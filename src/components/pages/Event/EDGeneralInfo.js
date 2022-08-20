@@ -99,7 +99,6 @@ function EdGeneralInfo({ event }) {
   const {
     query: { id: eventId },
     push: routerPush,
-    reload,
   } = useRouter()
   const dispatch = useDispatch()
   const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
@@ -121,11 +120,11 @@ function EdGeneralInfo({ event }) {
       user?.role === 'organizer' &&
         (await formDataHttp(
           {
-            image: file,
+            banner: file,
           },
-          `events/events/${eventId}/`,
+          `events/event_descriptions/${event?.description?.id}/`,
           'patch',
-        ).then(() => reload()))
+        ))
     },
     [user, eventId],
   )
@@ -183,6 +182,7 @@ function EdGeneralInfo({ event }) {
           <FileUploaderBig
             defaultBanner={event?.description?.banner}
             onChange={async (file) => {
+              console.log({ file })
               await onUploadNewImage(file)
             }}
           />

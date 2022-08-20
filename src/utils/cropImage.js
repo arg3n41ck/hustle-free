@@ -76,6 +76,8 @@ export default async function getCroppedImg(
   return new Promise((resolve, reject) => {
     canvas.toBlob((file) => {
       file.name = 'hustle-cropped.jpeg'
+      file.lastModified = new Date().getTime()
+      file.webkitRelativePath = 'hustle-cropped.jpeg'
       resolve({ file: file, url: URL.createObjectURL(file) })
     }, 'image/jpeg')
   })
