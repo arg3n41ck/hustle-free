@@ -11,7 +11,8 @@ function Event({ event }) {
       <EventMainInfo event={event} />
       <Title>{tEventDetail('event.eventDescription')}</Title>
       <Columns>
-        <Column dangerouslySetInnerHTML={{__html: event?.description?.description}}/>
+        <Column dangerouslySetInnerHTML={{ __html: event?.description?.description }} />
+        <Column dangerouslySetInnerHTML={{ __html: event?.description?.descriptionExtra }} />
       </Columns>
     </MainWrapper>
   )

@@ -62,7 +62,8 @@
     "download": "загрузите",
     "coverPlaceholder2": "Поддерживаемые форматы: PNG, JPG",
     "description": "Описание",
-    "descriptionPlaceholder": "Введите описание турнира"
+    "descriptionPlaceholder": "Введите описание турнира",
+    "additionalDescription": "Дополнительное описание"
   },
   "tournamentRules": {
     "tournamentRules": "Правила турнира"

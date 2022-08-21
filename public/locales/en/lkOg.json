@@ -62,7 +62,8 @@
     "download": "download",
     "coverPlaceholder2": "Supported formats: PNG, JPG",
     "description": "Description",
-    "descriptionPlaceholder": "Enter Tournament Description"
+    "descriptionPlaceholder": "Enter Tournament Description",
+    "additionalDescription": "Additional description"
   },
   "tournamentRules": {
     "tournamentRules": "Tournament rules"

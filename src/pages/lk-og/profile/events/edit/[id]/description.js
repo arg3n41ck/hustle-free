@@ -10,6 +10,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 const emptyInitialValues = {
   description: '',
   banner: null,
+  descriptionExtra: '',
 }
 
 function Description() {

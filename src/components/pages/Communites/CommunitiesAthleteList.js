@@ -18,8 +18,7 @@ function CommunitesAthletesList({ data }) {
                   {tCommunities('communities.country')}
                 </AthletesBottomItemTextHeading>
                 <AthletesBottomItemText>
-                  {user.country?.name ||
-                    tCommunities('communities.notSpecified')}
+                  {user.country?.name || tCommunities('communities.notSpecified')}
                 </AthletesBottomItemText>
               </AthletesBottomItem>
               <AthletesBottomItem>

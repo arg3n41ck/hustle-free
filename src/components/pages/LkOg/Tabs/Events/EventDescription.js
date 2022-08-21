@@ -15,6 +15,7 @@ import styled from 'styled-components'
 const emptyInitialValues = {
   description: '',
   banner: null,
+  descriptionExtra: '',
 }
 
 function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId }) {
@@ -23,6 +24,7 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
   const validationSchema = yup.object({
     banner: yup.mixed().nullable().required(tLkOg('validation.coverValid')),
     description: yup.string().nullable().required(tLkOg('validation.required')),
+    descriptionExtra: yup.string().nullable(),
   })
 
   const { touched, errors, values, setFieldValue, handleSubmit, isValid } = useFormik({
@@ -32,10 +34,11 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
     onSubmit: async (values) => {
       const path = `events/event_descriptions/${descriptionId ? descriptionId + '/' : ''}`
       const method = descriptionId ? 'patch' : 'post'
+      const { banner, ...rest } = values
       const body =
         (typeof values.banner || '') !== 'string'
           ? { ...values, allFieldsFilled: true, event: eventId }
-          : { description: values.description, allFieldsFilled: true, event: eventId }
+          : { ...rest, allFieldsFilled: true, event: eventId }
 
       await formDataHttp(body, path, method)
       routerPush(`/lk-og/profile/events/edit/${eventId}/rules/`)
@@ -64,24 +67,22 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
       <FormSubTitle>{tLkOg('coverAndDescription.description')}</FormSubTitle>
 
       <Field>
-        {/* <TextField
-          name='description'
-          placeholder={tLkOg('coverAndDescription.descriptionPlaceholder')}
-          variant='outlined'
-          fullWidth
-          multiline
-          minRows={5}
-          error={touched.description && Boolean(errors.description)}
-          helperText={touched.description && errors.description}
-          onChange={handleChange}
-          value={values.description}
-        /> */}
         <CKEditor5
           onChange={(value) => setFieldValue('description', value)}
           defaultValue={values.description || ''}
         />
 
         <ErrorMessage>{touched.description && errors.description}</ErrorMessage>
+      </Field>
+
+      <Field>
+        <p className='auth-title__input'>{tLkOg('coverAndDescription.additionalDescription')}</p>
+        <CKEditor5
+          onChange={(value) => setFieldValue('descriptionExtra', value)}
+          defaultValue={values.descriptionExtra || ''}
+        />
+
+        <ErrorMessage>{touched.descriptionExtra && errors.descriptionExtra}</ErrorMessage>
       </Field>
 
       <EventFormFooter>
