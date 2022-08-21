@@ -1,166 +1,166 @@
 {
-    "event": {
-        "eventDescription": "Описание",
-        "categories": {
-            "autocompletes": {
-                "nothingFound": "Ничего не найдено",
-                "level": "Уровень",
-                "gender": "Пол",
-                "weight": "Вес",
-                "age": "Возраст",
-                "male": "Мужской",
-                "female": "Женский",
-                "descending": "По убыванию",
-                "ascending": "По возрастанию"
-            },
-            "eventCategories": {
-                "search": "Поиск"
-            },
-            "table": {
-                "levels": "Уровни",
-                "gender": "Пол",
-                "age": "Возраст",
-                "weight": "Вес",
-                "priceForStandardRegistrationPeriod": "Цена за стандартный период регистрации",
-                "price": "Цена"
-            }
-        },
-        "eventModal": {
-            "applicationSuccessfullySent": {
-                "submitYourApplication": "Оставить заявку",
-                "yourApplicationHasBeenSuccessfullySent": "Ваша заявка успешно отправлена"
-            },
-            "participantsAreFiledModal": {
-                "submitYourApplication": "Оставить заявку",
-                "membershipLimitReached": "Лимит участников исчерпан, вы можете оставить заявку для включения в резерв участников",
-                "cancel": "Отмена",
-                "send": "Отправить"
-            }
-        },
-        "participants": {
-            "eventParticipants": {
-                "male": "Мужчина",
-                "female": "Женщина"
-            },
-            "eventParticipantsList": {
-                "categoriesBasedProfile": "Категории на основе сведений в вашем профиле",
-                "otherCategories": "Остальные категории"
-            },
-            "eventParticipantsItem": {
-                "total": "Всего",
-                "confirmed": "Подтвержденные",
-                "registrations": "Регистраций",
-                "unconfirmed": "Неподтвержденных",
-                "paid": "Оплачено",
-                "notPaid": "Не оплачено",
-                "registers": "Зарегистрированные",
-                "unconfirmeds": "Неподтвержденные"
-            },
-            "filters": {
-                "team": "Команда",
-                "nothingFound": "Ничего не найдено",
-                "level": "Уровень",
-                "gender": "Пол",
-                "male": "Мужчина",
-                "female": "Женщина",
-                "weight": "Вес",
-                "country": "Страна"
-            },
-            "participantsItem": {
-                "country": "Страна",
-                "age": "Возраст",
-                "viewProfile": "Просмотреть профиль",
-                "reject": "Отклонить",
-                "confirm": "Подтвердить",
-                "years": "лет"
-            }
-        },
-        "results": {
-            "eventResultsParticipant": {
-                "team": "Команда",
-                "country": "Страна"
-            },
-            "eventResults": {
-                "participants": "Участники",
-                "teams": "Команды",
-                "totalFights": "Всего боев",
-                "gold": "Золото",
-                "silver": "Серебро",
-                "bronze": "Бронза"
-            },
-            "eventResultsItem": {
-                "years": "лет",
-                "kg": "кг"
-            },
-            "filter": {
-                "search": "Поиск",
-                "categories": "Категории",
-                "nothingFound": "Ничего не найдено",
-                "country": "Страна",
-                "team": "Команда"
-            },
-            "participants": {
-                "allResultsEvent": "Все результаты турнира"
-            },
-            "teamItem": {
-                "participant": "Участника",
-                "points": "Балла",
-                "wins": "Победы",
-                "defeats": "Поражений",
-                "gold": "Золото",
-                "silver": "Серебро",
-                "bronze": "Бронза"
-            },
-            "teams": {
-                "search": "Поиск",
-                "find": "Найти",
-                "allTeams": "Все команды"
-            }
-        },
-        "tournamentRules": {
-            "tournamentRules": "Правила турнира",
-            "agree": "Я согласен(-на) с условиями участия в турнире",
-            "cancel": "Отмена",
-            "further": "Далее"
-        },
-        "EDGeneralInfo": {
-            "earlyRegistration": "Ранняя регистрация",
-            "standartRegistration": "Стандартная регистрация",
-            "lateRegistration": "Поздняя регистрация",
-            "durationEvent": "Длительность турнира",
-            "registerAsAnAthlete": "Пройдите регистрацию в роли атлета",
-            "registrationEvent": "Зарегистрироваться на турнир",
-            "registrationClosed": "Регистрация закрыта",
-            "requested": "Запрощено",
-            "alreadyInEvent": "Вы уже в турнире",
-            "editEvent": "Редактировать турнир"
-        },
-        "EDMainLayout": {
-            "info": "Информация",
-            "categories": "Категории",
-            "participants": "Участники",
-            "results": "Результаты"
-        }
-    },
-    "eventMainInfo": {
-        "nameOfTheOrganization": "Название организации",
-        "organizer": "Организатор",
-        "email": "Элекронный адрес",
-        "phoneNumber": "Номер телефона",
-        "addressOfTheEvent": "Адрес проведения мероприятия",
-        "weighingAddress": "Адрес взвешивания",
-        "arenaName": "Название арены",
-        "categories": "Категории",
+  "event": {
+    "eventDescription": "Описание",
+    "categories": {
+      "autocompletes": {
+        "nothingFound": "Ничего не найдено",
+        "level": "Уровень",
+        "gender": "Пол",
+        "weight": "Вес",
+        "age": "Возраст",
+        "male": "Мужской",
+        "female": "Женский",
+        "descending": "По убыванию",
+        "ascending": "По возрастанию"
+      },
+      "eventCategories": {
+        "search": "Поиск"
+      },
+      "table": {
         "levels": "Уровни",
         "gender": "Пол",
         "age": "Возраст",
         "weight": "Вес",
-        "price": "Цены",
-        "linkСopied": "Ссылка скопирована",
-        "contacts": "Контакты",
-        "socialNetworks": "Социальные сети",
-        "location": "Локация",
-        "participantsCategories": "Категории участников",
-        "share": "Поделиться"
+        "priceForStandardRegistrationPeriod": "Цена за стандартный период регистрации",
+        "price": "Цена"
+      }
+    },
+    "eventModal": {
+      "applicationSuccessfullySent": {
+        "submitYourApplication": "Оставить заявку",
+        "yourApplicationHasBeenSuccessfullySent": "Ваша заявка успешно отправлена"
+      },
+      "participantsAreFiledModal": {
+        "submitYourApplication": "Оставить заявку",
+        "membershipLimitReached": "Лимит участников исчерпан, вы можете оставить заявку для включения в резерв участников",
+        "cancel": "Отмена",
+        "send": "Отправить"
+      }
+    },
+    "participants": {
+      "eventParticipants": {
+        "male": "Мужчина",
+        "female": "Женщина"
+      },
+      "eventParticipantsList": {
+        "categoriesBasedProfile": "Категории на основе сведений в вашем профиле",
+        "otherCategories": "Остальные категории"
+      },
+      "eventParticipantsItem": {
+        "total": "Всего",
+        "confirmed": "Подтвержденные",
+        "registrations": "Регистраций",
+        "unconfirmed": "Неподтвержденных",
+        "paid": "Оплачено",
+        "notPaid": "Не оплачено",
+        "registers": "Зарегистрированные",
+        "unconfirmeds": "Неподтвержденные"
+      },
+      "filters": {
+        "team": "Команда",
+        "nothingFound": "Ничего не найдено",
+        "level": "Уровень",
+        "gender": "Пол",
+        "male": "Мужчина",
+        "female": "Женщина",
+        "weight": "Вес",
+        "country": "Страна"
+      },
+      "participantsItem": {
+        "country": "Страна",
+        "age": "Возраст",
+        "viewProfile": "Просмотреть профиль",
+        "reject": "Отклонить",
+        "confirm": "Подтвердить",
+        "years": "лет"
+      }
+    },
+    "results": {
+      "eventResultsParticipant": {
+        "team": "Команда",
+        "country": "Страна"
+      },
+      "eventResults": {
+        "participants": "Участники",
+        "teams": "Команды",
+        "totalFights": "Всего боев",
+        "gold": "Золото",
+        "silver": "Серебро",
+        "bronze": "Бронза"
+      },
+      "eventResultsItem": {
+        "years": "лет",
+        "kg": "кг"
+      },
+      "filter": {
+        "search": "Поиск",
+        "categories": "Категории",
+        "nothingFound": "Ничего не найдено",
+        "country": "Страна",
+        "team": "Команда"
+      },
+      "participants": {
+        "allResultsEvent": "Все результаты турнира"
+      },
+      "teamItem": {
+        "participant": "Участника",
+        "points": "Балла",
+        "wins": "Победы",
+        "defeats": "Поражений",
+        "gold": "Золото",
+        "silver": "Серебро",
+        "bronze": "Бронза"
+      },
+      "teams": {
+        "search": "Поиск",
+        "find": "Найти",
+        "allTeams": "Все команды"
+      }
+    },
+    "tournamentRules": {
+      "tournamentRules": "Правила турнира",
+      "agree": "Я согласен(-на) с условиями участия в турнире",
+      "cancel": "Отмена",
+      "further": "Далее"
+    },
+    "EDGeneralInfo": {
+      "earlyRegistration": "Ранняя регистрация",
+      "standartRegistration": "Стандартная регистрация",
+      "lateRegistration": "Поздняя регистрация",
+      "durationEvent": "Длительность турнира",
+      "registerAsAnAthlete": "Пройдите регистрацию в роли атлета",
+      "registrationEvent": "Зарегистрироваться на турнир",
+      "registrationClosed": "Регистрация закрыта",
+      "requested": "Запрощено",
+      "alreadyInEvent": "Вы уже в турнире",
+      "editEvent": "Редактировать турнир"
+    },
+    "EDMainLayout": {
+      "info": "Информация",
+      "categories": "Категории",
+      "participants": "Участники",
+      "results": "Результаты"
     }
+  },
+  "eventMainInfo": {
+    "nameOfTheOrganization": "Название организации",
+    "organizer": "Организатор",
+    "email": "Элекронный адрес",
+    "phoneNumber": "Номер телефона",
+    "addressOfTheEvent": "Адрес проведения мероприятия",
+    "weighingAddress": "Адрес взвешивания",
+    "arenaName": "Название арены",
+    "categories": "Категории",
+    "levels": "Уровни",
+    "gender": "Пол",
+    "age": "Возраст",
+    "weight": "Вес",
+    "price": "Цены",
+    "linkCopied": "Ссылка скопирована",
+    "contacts": "Контакты",
+    "socialNetworks": "Социальные сети",
+    "location": "Локация",
+    "participantsCategories": "Категории участников",
+    "share": "Поделиться"
+  }
 }

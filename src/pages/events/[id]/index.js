@@ -15,7 +15,7 @@ function EventsDetail({ event }) {
         <meta content='website' property='og:type' />
         <meta content={`https://dev.hustlefree.pro/en/events/${event.id}`} property='og:url' />
         <meta content={event?.name || 'Hustle Free - Турнир'} property='og:title' />
-        <meta content={event?.description || ''} property='og:description' />
+        <meta content={event?.description?.description || ''} property='og:description' />
         {event?.desription?.banner && (
           <>
             <meta content={event?.desription?.banner} property='og:image' />
