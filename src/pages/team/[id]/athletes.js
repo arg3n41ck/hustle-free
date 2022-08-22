@@ -1,26 +1,23 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import LkLayout from "../../../components/layouts/LkLayout"
-import { useRouter } from "next/router"
-import { teamProfileTabs } from "../../../components/pages/Team/tabConstants"
-import { useDispatch, useSelector } from "react-redux"
-import {
-  fetchAthletesByParams,
-  selectAthletes,
-} from "../../../redux/components/athletes"
-import useQuery from "../../../hooks/useQuery"
-import { fetchCountries } from "../../../redux/components/countriesAndCities"
-import LkDefaultHeader from "../../../components/ui/LKui/LKDefaultHeader"
-import { HeaderWrapper } from "../../../components/pages/LkOg/Tabs/Events/Events/Events"
-import { TitleHeader } from "../../../components/ui/LKui/HeaderContent"
-import Athlete from "../../../components/ui/Ahtletes/Athlete"
-import styled from "styled-components"
-import { TextField } from "@mui/material"
-import { SearchIcon } from "../../../components/pages/Events/EventsGlobalSearch/EventsGlobalSearch"
-import useDebounce from "../../../hooks/useDebounce"
-import ApplyToTeam from "../../../components/TeamProfile/ApplyToTeam"
-import { getIsUserInTeam } from "./index"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
-import { useTranslation } from "next-i18next"
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import LkLayout from '../../../components/layouts/LkLayout'
+import { useRouter } from 'next/router'
+import { teamProfileTabs } from '../../../components/pages/Team/tabConstants'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchAthletesByParams, selectAthletes } from '../../../redux/components/athletes'
+import useQuery from '../../../hooks/useQuery'
+import { fetchCountries } from '../../../redux/components/countriesAndCities'
+import LkDefaultHeader from '../../../components/ui/LKui/LKDefaultHeader'
+import { HeaderWrapper } from '../../../components/pages/LkOg/Tabs/Events/Events/Events'
+import { TitleHeader } from '../../../components/ui/LKui/HeaderContent'
+import Athlete from '../../../components/ui/Ahtletes/Athlete'
+import styled from 'styled-components'
+import { TextField } from '@mui/material'
+import { SearchIcon } from '../../../components/pages/Events/EventsGlobalSearch/EventsGlobalSearch'
+import useDebounce from '../../../hooks/useDebounce'
+import ApplyToTeam from '../../../components/TeamProfile/ApplyToTeam'
+import { getIsUserInTeam } from './index'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
 
 function Athletes({ onToggleSidebar }) {
   const {
@@ -29,12 +26,12 @@ function Athletes({ onToggleSidebar }) {
   const query = useQuery()
   const [userStatusInTeam, setUserStatusInTeam] = useState(null)
   const [, athletes] = useSelector(selectAthletes)
-  const [searchValue, setSearchValue] = useState("")
+  const [searchValue, setSearchValue] = useState('')
   const searchDebounced = useDebounce(searchValue, 500)
   const checkUserStatus = useCallback(() => {
     teamId && getIsUserInTeam(teamId).then(setUserStatusInTeam)
   }, [teamId])
-  const { t: tLkTm } = useTranslation("lkTm")
+  const { t: tLkTm } = useTranslation('lkTm')
 
   const tabs = useMemo(() => {
     return teamProfileTabs(teamId)
@@ -43,13 +40,13 @@ function Athletes({ onToggleSidebar }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    query.set("team_id", teamId || "")
+    query.set('team_id', teamId || '')
     dispatch(fetchAthletesByParams(query))
     dispatch(fetchCountries())
   }, [query, teamId])
 
   useEffect(() => {
-    query.set("search", searchDebounced)
+    query.set('search', searchDebounced)
     dispatch(fetchAthletesByParams(query))
   }, [searchDebounced])
 
@@ -61,36 +58,38 @@ function Athletes({ onToggleSidebar }) {
     <LkLayout tabs={tabs}>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <HeaderWrapper>
-          <TitleHeader>{tLkTm("teamProfile.profile")}</TitleHeader>
-          <ApplyToTeam
-            userStatusInTeam={userStatusInTeam}
-            checkUserStatus={checkUserStatus}
-          />
+          <TitleHeader>{tLkTm('teamProfile.profile')}</TitleHeader>
+          <ApplyToTeam userStatusInTeam={userStatusInTeam} checkUserStatus={checkUserStatus} />
         </HeaderWrapper>
       </LkDefaultHeader>
 
       <Field>
         <TextField
           sx={{
-            ".MuiOutlinedInput-notchedOutline": {
-              borderRadius: "8px 0 0 8px !important",
+            '.MuiOutlinedInput-notchedOutline': {
+              borderRadius: '8px 0 0 8px !important',
             },
           }}
           onChange={(e) => setSearchValue(e.target.value)}
           fullWidth
           value={searchValue}
-          placeholder={tLkTm("statistics.search")}
+          placeholder={tLkTm('statistics.search')}
         />
         <SearchButton>
           <SearchIcon />
-          <span>{tLkTm("statistics.search")}</span>
+          <span>{tLkTm('statistics.search')}</span>
         </SearchButton>
       </Field>
 
       <AthletesWrapper>
         {!!athletes.length &&
-          athletes.map(({ id, user }, i) => (
-            <Athlete key={`${id}-team-profile-${user.id || i}`} user={user} />
+          athletes.map(({ id, user, teams }, i) => (
+            <Athlete
+              key={`${id}-team-profile-${user.id || i}`}
+              athleteId={id}
+              user={user}
+              team={teams[0]}
+            />
           ))}
       </AthletesWrapper>
     </LkLayout>
@@ -101,14 +100,14 @@ export default Athletes
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "common", "lkTm", "footer"])),
+    ...(await serverSideTranslations(locale, ['header', 'common', 'lkTm', 'footer'])),
   },
 })
 
 export const getStaticPaths = async () => {
   return {
     paths: [], //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
+    fallback: 'blocking', //indicates the type of fallback
   }
 }
 

@@ -1,48 +1,46 @@
-import React, { useEffect, useState } from "react"
-import EDContentFilter from "../../../Event/EDContentFilter"
-import styled from "styled-components"
-import useQuery from "../../../../../hooks/useQuery"
-import useDebounce from "../../../../../hooks/useDebounce"
-import { useRouter } from "next/router"
-import $api from "../../../../../services/axios"
-import EventRow from "./EventRow"
-import { useTranslation } from "next-i18next"
+import React, { useEffect, useState } from 'react'
+import EDContentFilter from '../../../Event/EDContentFilter'
+import styled from 'styled-components'
+import useQuery from '../../../../../hooks/useQuery'
+import useDebounce from '../../../../../hooks/useDebounce'
+import { useRouter } from 'next/router'
+import $api from '../../../../../services/axios'
+import EventRow from './EventRow'
+import { useTranslation } from 'next-i18next'
 
 const getStatistics = async (teamId, params) => {
-  const { data } = await $api.get(`/teams/team_statistic/?team_id=${teamId}`, {
+  const { data } = await $api.get(`/events/team_statistic/?team=${teamId}`, {
     params,
   })
   return data
 }
 
 function Events({ teamId, isPublic = false }) {
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 300)
   const [statics, setStatics] = useState([])
   const { push: routerPush } = useRouter()
-  const { t: tLkTm } = useTranslation("lkTm")
+  const { t: tLkTm } = useTranslation('lkTm')
   const query = useQuery()
 
   useEffect(async () => {
-    query.set("search", debouncedSearch)
+    query.set('search', debouncedSearch)
     await routerPush(
       `${
-        isPublic && teamId
-          ? `/team/${teamId}/statistics/`
-          : "/lk-tm/profile/statistics/"
-      }?${query}`
+        isPublic && teamId ? `/team/${teamId}/statistics/` : '/lk-tm/profile/statistics/'
+      }?${query}`,
     )
   }, [debouncedSearch])
-  // useEffect(() => {
-  //   teamId && getStatistics(teamId, query).then(setStatics)
-  // }, [query])
+  useEffect(() => {
+    teamId && getStatistics(teamId, query).then(setStatics)
+  }, [query])
 
   return (
     <MainWrapper>
       <EDContentFilter
         onSearch={setSearch}
-        label={tLkTm("statistics.events")}
-        searchPlaceholder={tLkTm("statistics.eventsSearch")}
+        label={tLkTm('statistics.events')}
+        searchPlaceholder={tLkTm('statistics.eventsSearch')}
       />
       <EventRows>
         {!!statics?.length ? (
@@ -55,7 +53,7 @@ function Events({ teamId, isPublic = false }) {
             />
           ))
         ) : (
-          <p>{tLkTm("statistics.noEvents")}</p>
+          <p>{tLkTm('statistics.noEvents')}</p>
         )}
       </EventRows>
     </MainWrapper>

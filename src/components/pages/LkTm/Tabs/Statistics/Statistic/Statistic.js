@@ -1,27 +1,23 @@
-import React from "react"
-import HeaderWithBack from "../../../../../ui/LKui/HeaderWithBack"
-import Row from "./Row"
-import styled from "styled-components"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import HeaderWithBack from '../../../../../ui/LKui/HeaderWithBack'
+import Row from './Row'
+import styled from 'styled-components'
+import { useTranslation } from 'next-i18next'
 
 function Statistic({ statistic, isPublic = false, teamId }) {
-  const { eventparticipantscategorySet, name } = statistic
-  const { t: tLkTm } = useTranslation("lkTm")
+  const { eventParticipantsCategory, name } = statistic
+  const { t: tLkTm } = useTranslation('lkTm')
 
   return (
     <div>
       <HeaderWithBack
-        link={
-          teamId && isPublic
-            ? `/team/${teamId}/statistics/`
-            : "/lk-tm/profile/statistics"
-        }
+        link={teamId && isPublic ? `/team/${teamId}/statistics/` : '/lk-tm/profile/statistics'}
         title={name}
       />
-      <Title>{tLkTm("statistics.categories")}</Title>
+      <Title>{tLkTm('statistics.categories')}</Title>
       <Rows>
-        {!!eventparticipantscategorySet?.length ? (
-          eventparticipantscategorySet.map((ePC, index) => (
+        {!!eventParticipantsCategory?.length ? (
+          eventParticipantsCategory.map((ePC, index) => (
             <>
               {!!ePC?.participantsCategory?.length &&
                 ePC?.participantsCategory.map(({ level, participants }, i) => (
@@ -34,7 +30,7 @@ function Statistic({ statistic, isPublic = false, teamId }) {
             </>
           ))
         ) : (
-          <Empty>{tLkTm("statistics.noCategories")}</Empty>
+          <Empty>{tLkTm('statistics.noCategories')}</Empty>
         )}
       </Rows>
     </div>

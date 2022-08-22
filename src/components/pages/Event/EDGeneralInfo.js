@@ -46,7 +46,6 @@ const getIsEventOnRegistration = (registration) => {
   return dateKeys.some(({ start, end }) => {
     if (registration[start] && registration[end]) {
       const { today, endDate, startDate } = getRegDates(registration[start], registration[end])
-
       return startDate <= today && today <= endDate
     }
   })
@@ -96,6 +95,7 @@ function EdGeneralInfo({ event }) {
   const [userStatusInEvent, setUserStatusInTeam] = useState()
 
   const regData = useMemo(() => regArray(event), [event])
+
   const {
     query: { id: eventId },
     push: routerPush,
@@ -182,7 +182,6 @@ function EdGeneralInfo({ event }) {
           <FileUploaderBig
             defaultBanner={event?.description?.banner}
             onChange={async (file) => {
-              console.log({ file })
               await onUploadNewImage(file)
             }}
           />

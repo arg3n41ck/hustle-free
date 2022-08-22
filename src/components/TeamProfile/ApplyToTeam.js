@@ -11,7 +11,7 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
     query: { id: teamId },
   } = useRouter()
   const { push: routerPush } = useRouter()
-  const { user } = useSelector((state) => state.user)
+  const { user, userAuthenticated } = useSelector((state) => state.user)
 
   const sendReq = useCallback(async () => {
     if (userStatusInTeam?.message === 'Not found' && user) {
@@ -29,32 +29,29 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
     }
   }, [userStatusInTeam, user])
 
-  return (
-    (user?.role === 'athlete' || !user?.userAuthenticated) && (
-      <CreateEventBTN
-        disabled={
-          userStatusInTeam?.message !== 'Is anonymous' && userStatusInTeam?.message !== 'Not found'
-        }
-        active={
-          userStatusInTeam?.message === 'Not found' || userStatusInTeam?.message === 'Is anonymous'
-        }
-        onClick={() => sendReq()}
-      >
-        {userStatusInTeam?.message === 'Not found' ||
-        userStatusInTeam?.message === 'Is anonymous' ? (
-          <>
-            <PlusIcon /> Вступить в команду
-          </>
-        ) : userStatusInTeam?.message === 'User in pending' ? (
-          'Запрошено'
-        ) : userStatusInTeam?.message === 'User rejected' ? (
-          'Вас не приняли'
-        ) : (
-          'Вы уже в команде'
-        )}
-      </CreateEventBTN>
-    )
-  )
+  return (userAuthenticated && user?.role === 'athlete') || !userAuthenticated ? (
+    <CreateEventBTN
+      disabled={
+        userStatusInTeam?.message !== 'Is anonymous' && userStatusInTeam?.message !== 'Not found'
+      }
+      active={
+        userStatusInTeam?.message === 'Not found' || userStatusInTeam?.message === 'Is anonymous'
+      }
+      onClick={() => sendReq()}
+    >
+      {userStatusInTeam?.message === 'Not found' || userStatusInTeam?.message === 'Is anonymous' ? (
+        <>
+          <PlusIcon /> Вступить в команду
+        </>
+      ) : userStatusInTeam?.message === 'User in pending' ? (
+        'Запрошено'
+      ) : userStatusInTeam?.message === 'User rejected' ? (
+        'Вас не приняли'
+      ) : (
+        'Вы уже в команде'
+      )}
+    </CreateEventBTN>
+  ) : null
 }
 
 export default ApplyToTeam

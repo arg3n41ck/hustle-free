@@ -1,51 +1,36 @@
-import React, { useEffect, useState } from "react"
-import { GoldMedalIcon } from "../../../../../assets/svg/icons"
-import { SilverMedalIcon } from "../../../../../assets/svg/icons"
-import { BronzeMedalIcon } from "../../../../../assets/svg/icons"
-import styled from "styled-components"
-import $api from "../../../../../services/axios"
-import { useTranslation } from "next-i18next"
+import React, { useEffect, useState } from 'react'
+import { GoldMedalIcon } from '../../../../../assets/svg/icons'
+import { SilverMedalIcon } from '../../../../../assets/svg/icons'
+import { BronzeMedalIcon } from '../../../../../assets/svg/icons'
+import styled from 'styled-components'
+import { useTranslation } from 'next-i18next'
+import { useSelector } from 'react-redux'
 
-const getAwards = async (teamId) => {
-  const { data } = await $api.get(`/teams/teams/${teamId}/statistic/`)
-  return data
-}
-
-function Awards({ teamId }) {
-  const [awards, setAwards] = useState(null)
-  const { t: tLkTm } = useTranslation("lkTm")
-
-  useEffect(() => {
-    teamId && getAwards(teamId).then(setAwards)
-  }, [])
+function Awards() {
+  const { t: tLkTm } = useTranslation('lkTm')
+  const { user } = useSelector((state) => state.user)
 
   return (
     <AwardsWrapper>
       <Award>
         <GoldMedalIcon />
         <AwardInfo>
-          <AwardText color={"#FFC107"}>{tLkTm("statistics.gold")}:</AwardText>
-          <AwardNumbers color={"#FFC107"}>
-            {awards?.places?.gold || "-"}
-          </AwardNumbers>
+          <AwardText color={'#FFC107'}>{tLkTm('statistics.gold')}:</AwardText>
+          <AwardNumbers color={'#FFC107'}>{user?.places?.gold || 0}</AwardNumbers>
         </AwardInfo>
       </Award>
       <Award>
         <SilverMedalIcon />
         <AwardInfo>
-          <AwardText color={"#E0E0E0"}>{tLkTm("statistics.silver")}:</AwardText>
-          <AwardNumbers color={"#E0E0E0"}>
-            {awards?.places?.silver || "-"}
-          </AwardNumbers>
+          <AwardText color={'#E0E0E0'}>{tLkTm('statistics.silver')}:</AwardText>
+          <AwardNumbers color={'#E0E0E0'}>{user?.places?.silver || 0}</AwardNumbers>
         </AwardInfo>
       </Award>
       <Award>
         <BronzeMedalIcon />
         <AwardInfo>
-          <AwardText color={"#D7832D"}>{tLkTm("statistics.bronze")}:</AwardText>
-          <AwardNumbers color={"#D7832D"}>
-            {awards?.places?.bronze || "-"}
-          </AwardNumbers>
+          <AwardText color={'#D7832D'}>{tLkTm('statistics.bronze')}:</AwardText>
+          <AwardNumbers color={'#D7832D'}>{user?.places?.bronze || 0}</AwardNumbers>
         </AwardInfo>
       </Award>
     </AwardsWrapper>

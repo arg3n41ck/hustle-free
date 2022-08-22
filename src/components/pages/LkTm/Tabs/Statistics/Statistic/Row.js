@@ -1,19 +1,19 @@
-import React, { useState } from "react"
-import DropdownData from "../../../../../ui/DropdownData"
-import { PlaceIcon } from "../../../../LkAh/Tabs/Profile/Stories/FilterMyStories"
-import styled from "styled-components"
-import { useTranslation } from "next-i18next"
+import React, { useState } from 'react'
+import DropdownData from '../../../../../ui/DropdownData'
+import { PlaceIcon } from '../../../../LkAh/Tabs/Profile/Stories/FilterMyStories'
+import styled from 'styled-components'
+import { useTranslation } from 'next-i18next'
 
 function Row({ ePC, participants }) {
   const [open, setOpen] = useState(false)
-  const { t: tLkTm } = useTranslation("lkTm")
+  const { t: tLkTm } = useTranslation('lkTm')
 
   return (
     <DropdownData
       title={`
-     ${ePC.name ? ePC.name + " /" : ""} ${ePC.level ? ePC.level + " /" : ""} ${
-        ePC.fromAge || 0
-      }-${ePC.toAge || 0} лет / ${ePC.fromWeight || 0}-${ePC.toWeight || 0} кг
+     ${ePC.name ? ePC.name + ' /' : ''} ${ePC.level ? ePC.level + ' /' : ''} ${ePC.fromAge || 0}-${
+        ePC.toAge || 0
+      } лет / ${ePC.fromWeight || 0}-${ePC.toWeight || 0} кг
     `}
       active={open}
       setActive={setOpen}
@@ -25,14 +25,14 @@ function Row({ ePC, participants }) {
             <AthleteName>{athleteName}</AthleteName>
             <WDWrapper>
               <WinDefeat>
-                <p className="win">{tLkTm("statistics.win")}</p>
+                <p className='win'>{tLkTm('statistics.win')}</p>
                 <p>{athleteName}</p>
-                <p>{tLkTm("statistics.onPoints")} 9–2</p>
+                <p>{tLkTm('statistics.onPoints')} 9–2</p>
               </WinDefeat>
               <WinDefeat>
-                <p className="defeat">{tLkTm("statistics.defeat")}</p>
+                <p className='defeat'>{tLkTm('statistics.defeat')}</p>
                 <p>{athleteName}</p>
-                <p>{tLkTm("statistics.onPoints")} 9–2</p>
+                <p>{tLkTm('statistics.onPoints')} 9–2</p>
               </WinDefeat>
             </WDWrapper>
           </AthleteWrapper>
@@ -49,7 +49,7 @@ export default Row
 const AthleteWrapper = styled.div`
   display: grid;
   grid-template: 1fr / 105px 1.5fr 1fr;
-  padding: 32px;
+  grid-gap: 24px;
   align-items: center;
   justify-items: flex-start;
 `

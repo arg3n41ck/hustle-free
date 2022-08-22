@@ -43,7 +43,7 @@ function PublicAthlete({ athleteData }) {
   return (
     <MainWrapper>
       {user && <AthleteUserData user={user} isVisible={isVisible} />}
-      {!!teams && !!participations ? (
+      {!!teams && !!participations && isVisible ? (
         <TeamsAndPartWrapper>
           <Teams teams={teams} />
           {!!participations?.length && (

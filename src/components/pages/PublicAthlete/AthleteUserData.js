@@ -47,18 +47,12 @@ const getContacts = ({
 }
 
 function AthleteUserData({ user, isVisible }) {
-  const { current: contacts } = useRef(
-    getContacts(user),
-  )
+  const { current: contacts } = useRef(getContacts(user))
 
   return (
     <MainWrapper>
       <MainInfo>
-        <Avatar
-          src={user.avatar}
-          alt={`${user.avatar}`}
-          sx={{ width: 264, height: 264 }}
-        />
+        <Avatar src={user.avatar} alt={`${user.avatar}`} sx={{ width: 264, height: 264 }} />
         {!user?.fullName ? (
           <h3>{`${user.firstName || ''} ${user.lastName || ''}`}</h3>
         ) : (

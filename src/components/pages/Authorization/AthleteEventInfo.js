@@ -1,16 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { TextField, Autocomplete } from '@mui/material'
 import Link from 'next/link'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { useFormik } from 'formik'
 import { LocationIcon } from '../Events/EventsSlider'
-import { teamsSelector } from '../../../redux/components/teams'
-import { categoriesSelector } from '../../../redux/components/categories'
+import { fetchTeams, teamsSelector } from '../../../redux/components/teams'
+import {
+  categoriesSelector,
+  fetchCategories,
+  fetchLevel,
+} from '../../../redux/components/categories'
 import $api from '../../../services/axios'
 import * as yup from 'yup'
 import { toast } from 'react-toastify'
+import { fetchCountries } from '../../../redux/components/countriesAndCities'
 
 const emptyInitialValues = {
   team: '',
@@ -23,6 +28,16 @@ const checkIsUserInfoFull = (user) => {
   return ['firstName', 'lastName', 'gender', 'country', 'city'].some((key) => !user[key])
 }
 
+function getWeights(fromWeight, toWeight) {
+  const weightsArr = []
+
+  for (let i = fromWeight; i <= toWeight; i++) {
+    weightsArr.push(i)
+  }
+
+  return weightsArr
+}
+
 function RegistrationAthleteToEvent({ data }) {
   const {
     push: routerPush,
@@ -33,15 +48,16 @@ function RegistrationAthleteToEvent({ data }) {
   } = useSelector((state) => state)
   const [categories, levels] = useSelector(categoriesSelector)
   const [, teams] = useSelector(teamsSelector)
-  const [currentLevels, setCurrentLevels] = useState([])
-  const [currentWeights, setCurrentWeights] = useState(null)
+  const dispatch = useDispatch()
 
-  const validationSchema = yup.object({
-    team: yup.string().required('Обязательное поле'),
-    category: yup.string().required('Обязательное поле'),
-    level: yup.string().required('Обязательное поле').nullable(),
-    weight: yup.string().required('Обязательное поле'),
-  })
+  const { current: validationSchema } = useRef(
+    yup.object({
+      team: yup.string().required('Обязательное поле'),
+      category: yup.string().required('Обязательное поле'),
+      level: yup.string().required('Обязательное поле').nullable(),
+      weight: yup.string().required('Обязательное поле'),
+    }),
+  )
 
   const formik = useFormik({
     initialValues: emptyInitialValues,
@@ -68,31 +84,23 @@ function RegistrationAthleteToEvent({ data }) {
     },
   })
 
-  function getWeights(fromWeight, toWeight) {
-    const weightsArr = []
+  useEffect(() => {
+    user && dispatch(fetchTeams({ athletes: user?.athleteId }))
+    dispatch(fetchLevel())
+    dispatch(fetchCountries())
+  }, [user])
 
-    for (let i = fromWeight; i <= toWeight; i++) {
-      weightsArr.push(i)
-    }
+  useEffect(() => {
+    dispatch(
+      fetchCategories({
+        event: eventId,
+        level: formik.values.level || '',
+        weight: formik.values.weight || '',
+      }),
+    )
+  }, [eventId, formik.values])
 
-    return weightsArr
-  }
-
-  console.log(formik.errors, formik.values)
-
-  const changeCurrentLevels = (changeCategory) => {
-    const findObj = categories.find((category) => category.id === changeCategory)
-    if (findObj) setCurrentLevels(findObj.levels)
-  }
-
-  const changeCurrentWeights = (changeCategory) => {
-    const findObj = categories.find((category) => category.id === changeCategory)
-    if (findObj)
-      setCurrentWeights({
-        fromWeight: findObj.fromWeight,
-        toWeight: findObj.toWeight,
-      })
-  }
+  console.log({ values: formik.values })
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -127,11 +135,7 @@ function RegistrationAthleteToEvent({ data }) {
           <Autocomplete
             noOptionsText={'Ничего не найдено'}
             onChange={(_, value) => formik.setFieldValue('level', value?.id)}
-            options={
-              !currentLevels?.length
-                ? levels.map((option) => option)
-                : currentLevels.map((option) => option)
-            }
+            options={levels.map((option) => option)}
             getOptionLabel={(option) => option?.name}
             value={levels.find(({ id }) => id === formik?.values?.level) || null}
             fullWidth
@@ -152,11 +156,7 @@ function RegistrationAthleteToEvent({ data }) {
           <Autocomplete
             noOptionsText={'Ничего не найдено'}
             onChange={(_, value) => formik.setFieldValue('weight', value)}
-            options={
-              !!currentWeights
-                ? getWeights(currentWeights.fromWeight, currentWeights.toWeight)
-                : getWeights(40, 92)
-            }
+            options={getWeights(25, 140)}
             getOptionLabel={(option) => `${option}`}
             value={formik?.values?.weight}
             fullWidth
@@ -178,8 +178,6 @@ function RegistrationAthleteToEvent({ data }) {
             noOptionsText={'Ничего не найдено'}
             onChange={(_, value) => [
               changeCurrentLevels(value?.id),
-              changeCurrentWeights(value?.id),
-              formik.setFieldValue('level', null),
               formik.setFieldValue('category', value?.id),
             ]}
             options={categories.map((option) => option) || []}

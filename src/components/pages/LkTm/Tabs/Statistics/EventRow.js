@@ -1,56 +1,56 @@
-import React from "react"
-import DropdownData from "../../../../ui/DropdownData"
-import styled from "styled-components"
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import DropdownData from '../../../../ui/DropdownData'
+import styled from 'styled-components'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 
 function EventRow({ eventResults, isPublic, teamId }) {
   const { push: routerPush } = useRouter()
-  const { t: tLkTm } = useTranslation("lkTm")
+  const { t: tLkTm } = useTranslation('lkTm')
 
   const info = (
     <Info>
-      <InfoItem color={"#828282"}>
+      <InfoItem color={'#828282'}>
         <p>542</p>
-        <div>{tLkTm("statistics.participant")}</div>
+        <div>{tLkTm('statistics.participant')}</div>
       </InfoItem>
-      <InfoItem color={"#2E79DD"}>
+      <InfoItem color={'#2E79DD'}>
         <p>0</p>
-        <div>{tLkTm("statistics.point")}</div>
+        <div>{tLkTm('statistics.point')}</div>
       </InfoItem>
-      <InfoItem color={"#27AE60"}>
+      <InfoItem color={'#27AE60'}>
         <p>0</p>
-        <div>{tLkTm("statistics.wins")}</div>
+        <div>{tLkTm('statistics.wins')}</div>
       </InfoItem>
-      <InfoItem color={"#EB5757"}>
+      <InfoItem color={'#EB5757'}>
         <p>0</p>
-        <div>{tLkTm("statistics.defeats")}</div>
+        <div>{tLkTm('statistics.defeats')}</div>
       </InfoItem>
-      <InfoItem color={"#FFC107"}>
+      <InfoItem color={'#FFC107'}>
         <p>{eventResults?.placesCount?.gold || 0}</p>
-        <div>{tLkTm("statistics.gold")}</div>
+        <div>{tLkTm('statistics.gold')}</div>
       </InfoItem>
-      <InfoItem color={"#E0E0E0"}>
+      <InfoItem color={'#E0E0E0'}>
         <p>{eventResults?.placesCount?.silver || 0}</p>
-        <div>{tLkTm("statistics.silver")}</div>
+        <div>{tLkTm('statistics.silver')}</div>
       </InfoItem>
-      <InfoItem color={"#D7832D"}>
+      <InfoItem color={'#D7832D'}>
         <p>{eventResults?.placesCount?.bronze || 0}</p>
-        <div>{tLkTm("statistics.bronze")}</div>
+        <div>{tLkTm('statistics.bronze')}</div>
       </InfoItem>
     </Info>
   )
 
   return (
     <DropdownData
-      heightWrapper={"212px"}
-      title={eventResults?.eventName || ""}
+      heightWrapper={'212px'}
+      title={eventResults?.eventName || ''}
       additionalData={info}
       onClickRedirect={async () =>
         await routerPush(
           isPublic && teamId
             ? `/team/${teamId}/statistics/${eventResults.id}/`
-            : `/lk-tm/profile/statistics/${eventResults.id}/`
+            : `/lk-tm/profile/statistics/${eventResults.id}/`,
         )
       }
     />

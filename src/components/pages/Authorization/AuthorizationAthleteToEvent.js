@@ -1,29 +1,9 @@
-import React, { useEffect } from "react"
-import styled from "styled-components"
-import { fetchCountries } from "../../../redux/components/countriesAndCities"
-import { useDispatch } from "react-redux"
-import { useRouter } from "next/router"
-import { fetchTeams } from "../../../redux/components/teams"
-import {
-  fetchCategories,
-  fetchLevel,
-} from "../../../redux/components/categories"
-import AthleteUserInfo from "./AthleteUserInfo"
-import AthleteEventInfo from "./AthleteEventInfo"
+import React from 'react'
+import styled from 'styled-components'
+import AthleteUserInfo from './AthleteUserInfo'
+import AthleteEventInfo from './AthleteEventInfo'
 
 function AuthorizationAthleteToEvent() {
-  const dispatch = useDispatch()
-  const {
-    query: { id: eventId },
-  } = useRouter()
-
-  useEffect(() => {
-    dispatch(fetchCategories({ event: eventId }))
-    dispatch(fetchTeams())
-    dispatch(fetchLevel())
-    dispatch(fetchCountries())
-  }, [])
-
   return (
     <RegistrationAthleteToEventContainer>
       <RegistrationAthleteToEventHeading>

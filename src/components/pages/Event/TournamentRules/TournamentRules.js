@@ -4,10 +4,9 @@ import Checkbox from '@mui/material/Checkbox'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
 
-function TournamentRules({ event }) {
+function TournamentRules({ event, rules }) {
   const [checked, setChecked] = React.useState(false)
   const { t: tEventDetail } = useTranslation('eventDetail')
-  //   console.log(eventCategory)
 
   return (
     <TournamentRulesContainer>
@@ -18,49 +17,7 @@ function TournamentRules({ event }) {
       </TournamentRulesHeading>
       <Line />
       <TournamentRulesHeroInfo>
-        <TournamentRulesHeroInfoText>
-          Nulla Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor.
-          Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id
-          fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt
-          mollit dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
-          deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-          reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
-          Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute
-          irure tempor cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.Nulla
-          Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate
-          exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat
-          nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit
-          dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
-          deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-          reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
-          Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute
-          irure tempor cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.Nulla
-          Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate
-          exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat
-          nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit
-          dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
-          deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-          reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
-          Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute
-          irure tempor cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.Nulla
-          Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate
-          exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat
-          nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit
-          dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
-          deserunt ut voluptate aute id deserunt nisi.Nulla Lorem mollit cupieventt irure. Laborum
-          magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt
-          reprehenderit elit laborum. Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et.
-          Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute
-          irure tempor cupieventt incididunt sint deserunt ut voluptate aute id deserunt nisi.Nulla
-          Lorem mollit cupieventt irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate
-          exercitation incididunt aliquip deserunt reprehenderit elit laborum. Aliqua id fugiat
-          nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit
-          dolore cillum minim tempor enim. Elit aute irure tempor cupieventt incididunt sint
-          deserunt ut voluptate aute id deserunt nisi.
-        </TournamentRulesHeroInfoText>
+        <TournamentRulesHeroInfoText dangerouslySetInnerHTML={{ __html: rules?.rules || '' }} />
         <TournamentRulesHeroBottomInfo>
           <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
           <TournamentRulesHeroBottomInfoText>
