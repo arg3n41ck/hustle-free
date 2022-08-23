@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import { selectCountriesAndCities } from '../../../../redux/components/countriesAndCities'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
+import { removeDuplicateObjectFromArray } from '../../../../helpers/helpers'
 
 const Filter = ({ onFilter }) => {
   const [teams, setTeams] = useState([])
@@ -25,8 +26,12 @@ const Filter = ({ onFilter }) => {
         event: router.query.id,
       },
     })
+    console.log({ categories })
     setCategories(categoriesData)
-    setTeams(data)
+    if (data.length) {
+      const _teams = data.map(({ team }) => team)
+      setTeams(removeDuplicateObjectFromArray(_teams, 'id'))
+    }
   }, [])
 
   return (
@@ -116,7 +121,7 @@ const Filter = ({ onFilter }) => {
                   },
                 })
               }
-              options={teams.map((option) => option.team)}
+              options={teams.map((option) => option)}
               getOptionLabel={(option) => option.name}
               fullWidth
               renderInput={(params) => (

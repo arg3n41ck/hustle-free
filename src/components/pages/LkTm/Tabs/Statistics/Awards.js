@@ -6,9 +6,8 @@ import styled from 'styled-components'
 import { useTranslation } from 'next-i18next'
 import { useSelector } from 'react-redux'
 
-function Awards() {
+function Awards({ places }) {
   const { t: tLkTm } = useTranslation('lkTm')
-  const { user } = useSelector((state) => state.user)
 
   return (
     <AwardsWrapper>
@@ -16,21 +15,21 @@ function Awards() {
         <GoldMedalIcon />
         <AwardInfo>
           <AwardText color={'#FFC107'}>{tLkTm('statistics.gold')}:</AwardText>
-          <AwardNumbers color={'#FFC107'}>{user?.places?.gold || 0}</AwardNumbers>
+          <AwardNumbers color={'#FFC107'}>{places?.gold || 0}</AwardNumbers>
         </AwardInfo>
       </Award>
       <Award>
         <SilverMedalIcon />
         <AwardInfo>
           <AwardText color={'#E0E0E0'}>{tLkTm('statistics.silver')}:</AwardText>
-          <AwardNumbers color={'#E0E0E0'}>{user?.places?.silver || 0}</AwardNumbers>
+          <AwardNumbers color={'#E0E0E0'}>{places?.silver || 0}</AwardNumbers>
         </AwardInfo>
       </Award>
       <Award>
         <BronzeMedalIcon />
         <AwardInfo>
           <AwardText color={'#D7832D'}>{tLkTm('statistics.bronze')}:</AwardText>
-          <AwardNumbers color={'#D7832D'}>{user?.places?.bronze || 0}</AwardNumbers>
+          <AwardNumbers color={'#D7832D'}>{places?.bronze || 0}</AwardNumbers>
         </AwardInfo>
       </Award>
     </AwardsWrapper>

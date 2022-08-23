@@ -14,8 +14,8 @@ const Statistics = ({ onToggleSidebar }) => {
       <HeaderContent onToggle={onToggleSidebar}>
         <TitleHeader>{tLkTm('statistics.statistic')}</TitleHeader>
       </HeaderContent>
-      <Awards />
-      {user && <Events teamId={user.teamId} />}
+      {user && <Awards places={user?.places} />}
+      {user && <Events teamId={user?.teamId} />}
     </>
   )
 }

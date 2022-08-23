@@ -1,82 +1,77 @@
-import React, { useMemo, useState } from "react"
-import styled from "styled-components"
-import HorizontalTabsBorder from "../../../ui/tabs/HorizontalTabsBorder"
-import { GoldMedalIcon } from "../../../../assets/svg/icons"
-import { SilverMedalIcon } from "../../../../assets/svg/icons"
-import { BronzeMedalIcon } from "../../../../assets/svg/icons"
-import Teams from "./Teams"
-import Participants from "./Participants"
-import { useTranslation } from "next-i18next"
+import React, { useMemo, useState } from 'react'
+import styled from 'styled-components'
+import HorizontalTabsBorder from '../../../ui/tabs/HorizontalTabsBorder'
+import { GoldMedalIcon } from '../../../../assets/svg/icons'
+import { SilverMedalIcon } from '../../../../assets/svg/icons'
+import { BronzeMedalIcon } from '../../../../assets/svg/icons'
+import Teams from './Teams'
+import Participants from './Participants'
+import { useTranslation } from 'next-i18next'
 
 const EventResults = () => {
-  const [view, setView] = useState("participants") // participants | teams
+  const [view, setView] = useState('participants') // participants | teams
   const [resultsPlaces, setResultsPlaces] = useState([])
-  const { t: tEventDetail } = useTranslation("eventDetail")
+  const { t: tEventDetail } = useTranslation('eventDetail')
 
   const tabs = [
     {
-      name: tEventDetail("event.results.eventResults.participants"),
-      value: "participants",
+      name: tEventDetail('event.results.eventResults.participants'),
+      value: 'participants',
     },
     {
-      name: tEventDetail("event.results.eventResults.teams"),
-      value: "teams",
+      name: tEventDetail('event.results.eventResults.teams'),
+      value: 'teams',
     },
   ]
 
   const onloadPC = (data) => {
-    data.length &&
-      setResultsPlaces(data.map((item) => item.participants).flat(Infinity))
+    data.length && setResultsPlaces(data.map((item) => item.participants).flat(Infinity))
   }
 
   const { first, second, third, all } = useMemo(() => {
     const firstP =
-      !!resultsPlaces.length &&
-      (resultsPlaces.filter(({ place }) => place === 1).length || "-")
+      !!resultsPlaces.length && (resultsPlaces.filter(({ place }) => place === 1).length || '0')
     const secondP =
-      !!resultsPlaces.length &&
-      (resultsPlaces.filter(({ place }) => place === 2).length || "-")
+      !!resultsPlaces.length && (resultsPlaces.filter(({ place }) => place === 2).length || '0')
     const thirdP =
-      !!resultsPlaces.length &&
-      (resultsPlaces.filter(({ place }) => place === 3).length || "-")
+      !!resultsPlaces.length && (resultsPlaces.filter(({ place }) => place === 3).length || '0')
 
     const allP =
-      !!resultsPlaces.length &&
-      (resultsPlaces.filter(({ place }) => place).length || "-")
+      !!resultsPlaces.length && (resultsPlaces.filter(({ place }) => place).length || '-')
     return { first: firstP, second: secondP, third: thirdP, all: allP }
   }, [resultsPlaces])
 
   return (
     <>
       <MedalsTitle>
-        {tEventDetail("event.results.eventResults.totalFights")}: {all}
+        {tEventDetail('event.results.eventResults.totalFights')}: {all}
       </MedalsTitle>
       <Medals>
         <Medal>
           <GoldMedalIcon />
           <MedalInfo>
-            <MedalText color={"#FFC107"}>
-              {tEventDetail("event.results.eventResults.gold")}:
+            <MedalText color={'#FFC107'}>
+              {tEventDetail('event.results.eventResults.gold')}:
             </MedalText>
-            <MedalText color={"#FFC107"}>{first}</MedalText>
+            <MedalText color={'#FFC107'}>{first}</MedalText>
           </MedalInfo>
         </Medal>
         <Medal>
           <SilverMedalIcon />
           <MedalInfo>
-            <MedalText color={"#D7832D"}>
-              {tEventDetail("event.results.eventResults.silver")}:
+            <MedalText color={'#E0E0E0'}>
+              {tEventDetail('event.results.eventResults.silver')}:
             </MedalText>
-            <MedalText color={"#E0E0E0"}>{second}</MedalText>
+            <MedalText color={'#E0E0E0'}>{second}</MedalText>
           </MedalInfo>
         </Medal>
         <Medal>
           <BronzeMedalIcon />
           <MedalInfo>
-            <MedalText color={"#E0E0E0"}>
-              {tEventDetail("event.results.eventResults.bronze")}:
+            <MedalText color={'#D7832D'}>
+              {tEventDetail('event.results.eventResults.bronze')}:
             </MedalText>
-            <MedalText color={"#D7832D"}>{third}</MedalText>
+            <MedalText color={'#D7832D'}>{third}</MedalText>
           </MedalInfo>
         </Medal>
       </Medals>
@@ -84,13 +79,9 @@ const EventResults = () => {
         arrayTab={tabs}
         valueTab={view}
         onChangeHandler={setView}
-        height={"96px"}
+        height={'96px'}
       >
-        {view === "participants" ? (
-          <Participants onloadPC={onloadPC} />
-        ) : (
-          <Teams />
-        )}
+        {view === 'participants' ? <Participants onloadPC={onloadPC} /> : <Teams />}
       </HorizontalTabsBorder>
     </>
   )

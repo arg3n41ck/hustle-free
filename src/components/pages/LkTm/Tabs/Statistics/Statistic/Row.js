@@ -18,28 +18,30 @@ function Row({ ePC, participants }) {
       active={open}
       setActive={setOpen}
     >
-      {!!participants?.length ? (
-        participants.map(({ athleteName, place }, index) => (
-          <AthleteWrapper key={`statistic-athlete-${index}`}>
-            <PlaceIcon place={place || 0} />
-            <AthleteName>{athleteName}</AthleteName>
-            <WDWrapper>
-              <WinDefeat>
-                <p className='win'>{tLkTm('statistics.win')}</p>
-                <p>{athleteName}</p>
-                <p>{tLkTm('statistics.onPoints')} 9–2</p>
-              </WinDefeat>
-              <WinDefeat>
-                <p className='defeat'>{tLkTm('statistics.defeat')}</p>
-                <p>{athleteName}</p>
-                <p>{tLkTm('statistics.onPoints')} 9–2</p>
-              </WinDefeat>
-            </WDWrapper>
-          </AthleteWrapper>
-        ))
-      ) : (
-        <p>Нет участников</p>
-      )}
+      <ListWrapper>
+        {!!participants?.length ? (
+          participants.map(({ athleteName, place }, index) => (
+            <AthleteWrapper key={`statistic-athlete-${index}`}>
+              <PlaceIcon place={place || 0} />
+              <AthleteName>{athleteName}</AthleteName>
+              <WDWrapper>
+                <WinDefeat>
+                  <p className='win'>{tLkTm('statistics.win')}</p>
+                  <p>{athleteName}</p>
+                  <p>{tLkTm('statistics.onPoints')} 9–2</p>
+                </WinDefeat>
+                <WinDefeat>
+                  <p className='defeat'>{tLkTm('statistics.defeat')}</p>
+                  <p>{athleteName}</p>
+                  <p>{tLkTm('statistics.onPoints')} 9–2</p>
+                </WinDefeat>
+              </WDWrapper>
+            </AthleteWrapper>
+          ))
+        ) : (
+          <p>Нет участников</p>
+        )}
+      </ListWrapper>
     </DropdownData>
   )
 }
@@ -95,4 +97,10 @@ const WinDefeat = styled.div`
       color: #eb5757;
     }
   }
+`
+
+const ListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 24px;
 `

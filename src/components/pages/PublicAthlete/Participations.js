@@ -1,41 +1,50 @@
-import React from "react"
-import styled from "styled-components"
-import { Collapse } from "@mui/material"
-import StoryCollapse from "../LkAh/Tabs/Profile/Stories/StoryCollapse"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import styled from 'styled-components'
+import { Collapse } from '@mui/material'
+import StoryCollapse from '../LkAh/Tabs/Profile/Stories/StoryCollapse'
+import { useTranslation } from 'next-i18next'
+import { FirstPlaceIcon, SecondPlaceIcon, ThirdPlaceIcon } from '../../../assets/svg/icons'
 
-function Participations({
-  eventName,
-  level,
-  fromAge,
-  fromWeight,
-  toAge,
-  name,
-  toWeight,
-}) {
+function Participations({ eventName, level, fromAge, fromWeight, toAge, name, toWeight, place }) {
   const [open, setOpen] = React.useState(false)
-  const { t: tLkAh } = useTranslation("lkAh")
+  const { t: tLkAh } = useTranslation('lkAh')
 
   return (
     <EventsWrapper>
       <EventsMainInfo onClick={() => setOpen((s) => !s)}>
-        <MedalContainer>
-          <MedalInfoPlace>0</MedalInfoPlace>
-          <MedalInfoPlaceText>{tLkAh("place")}</MedalInfoPlaceText>
-        </MedalContainer>
+        {(place === 1 && (
+          <MedalWrapper>
+            <FirstPlaceIcon />
+          </MedalWrapper>
+        )) ||
+          (place === 2 && (
+            <MedalWrapper>
+              <SecondPlaceIcon />
+            </MedalWrapper>
+          )) ||
+          (place === 3 && (
+            <MedalWrapper>
+              <ThirdPlaceIcon />
+            </MedalWrapper>
+          )) || (
+            <MedalContainer>
+              <MedalInfoPlace>{place}</MedalInfoPlace>
+              <MedalInfoPlaceText>{tLkAh('place')}</MedalInfoPlaceText>
+            </MedalContainer>
+          )}
         <EventsInfo>
-          <EventInfoHeadingText>{eventName || ""}</EventInfoHeadingText>
+          <EventInfoHeadingText>{eventName || ''}</EventInfoHeadingText>
           <EventInfoParticipantsInfo>
-            {(name && `${name} / `) || ""}
-            {(!!level?.name && `${level.name} / `) || ""}
-            {(fromAge && `${fromAge}-`) || ""}
-            {(toAge && `${toAge} ${tLkAh("years")} / `) || ""}
-            {(fromWeight && `${fromWeight} ${tLkAh("kg")} - `) || ""}
-            {(toWeight && `${toWeight}  ${tLkAh("kg")}`) || ""}
+            {(name && `${name} / `) || ''}
+            {(!!level?.name && `${level.name} / `) || ''}
+            {(fromAge && `${fromAge}-`) || ''}
+            {(toAge && `${toAge} ${tLkAh('years')} / `) || ''}
+            {(fromWeight && `${fromWeight} ${tLkAh('kg')} - `) || ''}
+            {(toWeight && `${toWeight}  ${tLkAh('kg')}`) || ''}
           </EventInfoParticipantsInfo>
         </EventsInfo>
       </EventsMainInfo>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse in={open} timeout='auto' unmountOnExit>
         <StoryCollapse />
       </Collapse>
     </EventsWrapper>
@@ -56,6 +65,10 @@ const EventsMainInfo = styled.div`
   display: grid;
   grid-template: 1fr / 104px auto;
   grid-column-gap: 32px;
+`
+const MedalWrapper = styled.div`
+  justify-self: center;
+  align-self: center;
 `
 
 const MedalInfoPlace = styled.p`

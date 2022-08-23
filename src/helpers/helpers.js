@@ -1,29 +1,29 @@
 export const getEventStatus = (status) => {
   switch (status) {
-    case "soon":
-      return "скоро"
-    case "continue":
-      return "сейчас"
-    case "past":
-      return "прошел"
+    case 'soon':
+      return 'скоро'
+    case 'continue':
+      return 'сейчас'
+    case 'past':
+      return 'прошел'
     default:
-      return "Не известно"
+      return 'Не известно'
   }
 }
 
 const rusMonth = [
-  "Янв",
-  "Фев",
-  "Мар",
-  "Апр",
-  "Май",
-  "Июн",
-  "Июл",
-  "Авг",
-  "Сен",
-  "Окт",
-  "Ноя",
-  "Дек",
+  'Янв',
+  'Фев',
+  'Мар',
+  'Апр',
+  'Май',
+  'Июн',
+  'Июл',
+  'Авг',
+  'Сен',
+  'Окт',
+  'Ноя',
+  'Дек',
 ]
 
 export const getRusBetweenDate = (start, end) => {
@@ -52,26 +52,26 @@ export const getRuDetailDate = (start) => {
 
 export const getRoleInRu = (role) => {
   switch (role) {
-    case "organizer":
-      return "Организатор"
-    case "athlete":
-      return "Атлет"
-    case "team":
-      return "Команда"
+    case 'organizer':
+      return 'Организатор'
+    case 'athlete':
+      return 'Атлет'
+    case 'team':
+      return 'Команда'
     default:
       return null
   }
 }
 
 export const localStorageGetItem = (key) => {
-  return typeof window !== "undefined" && window.localStorage.getItem(key)
+  return typeof window !== 'undefined' && window.localStorage.getItem(key)
 }
 
 export const localStorageSetItem = (key, value) => {
-  typeof window !== "undefined" && window.localStorage.setItem(key, value)
+  typeof window !== 'undefined' && window.localStorage.setItem(key, value)
 }
 export const localStorageRemoveItem = (key) => {
-  typeof window !== "undefined" && window.localStorage.removeItem(key)
+  typeof window !== 'undefined' && window.localStorage.removeItem(key)
 }
 
 export const truncateString = (str, num, dots = true) => {
@@ -79,5 +79,10 @@ export const truncateString = (str, num, dots = true) => {
     return str
   }
 
-  return (str || "").slice(0, num) + (dots ? "..." : "")
+  return (str || '').slice(0, num) + (dots ? '...' : '')
+}
+
+export const removeDuplicateObjectFromArray = (array, key) => {
+  const check = new Set()
+  return array.filter((obj) => !check.has(obj[key]) && check.add(obj[key]))
 }

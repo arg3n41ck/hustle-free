@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react"
-import styled from "styled-components"
-import { Box, TextField } from "@mui/material"
-import { SearchIcon } from "../../../../assets/svg/icons"
-import useDebounce from "../../../../hooks/useDebounce"
-import $api from "../../../../services/axios"
-import { useRouter } from "next/router"
-import TeamItem from "./TeamItem"
-import { useTranslation } from "next-i18next"
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { Box, TextField } from '@mui/material'
+import { SearchIcon } from '../../../../assets/svg/icons'
+import useDebounce from '../../../../hooks/useDebounce'
+import $api from '../../../../services/axios'
+import { useRouter } from 'next/router'
+import TeamItem from './TeamItem'
+import { useTranslation } from 'next-i18next'
+import { removeDuplicateObjectFromArray } from '../../../../helpers/helpers'
 
 const Teams = () => {
   const router = useRouter()
   const [teams, setTeams] = useState(null)
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState('')
   const searchValue = useDebounce(search, 500)
-  const { t: tEventDetail } = useTranslation("eventDetail")
+  const { t: tEventDetail } = useTranslation('eventDetail')
 
   useEffect(async () => {
     const { data } = await $api.get(`/events/team_events/`, {
@@ -22,34 +23,38 @@ const Teams = () => {
         search: searchValue,
       },
     })
-    setTeams(data)
+
+    if (data.length) {
+      const _teams = data.map(({ team }) => team)
+      setTeams(removeDuplicateObjectFromArray(_teams, 'id'))
+    }
   }, [searchValue])
 
   if (!teams) return null
 
   return (
     <>
-      <TitleBlock sx={{ margin: "32px 0 16px 0" }} component={"h4"}>
-        {tEventDetail("event.results.teams.search")}
+      <TitleBlock sx={{ margin: '32px 0 16px 0' }} component={'h4'}>
+        {tEventDetail('event.results.teams.search')}
       </TitleBlock>
       <Field>
         <TextField
           sx={{
-            "& fieldset": {
-              borderRadius: "16px 0 0 16px !important",
+            '& fieldset': {
+              borderRadius: '16px 0 0 16px !important',
             },
           }}
           onChange={(e) => setSearch(e.target.value)}
           fullWidth
-          placeholder={tEventDetail("event.results.teams.search")}
+          placeholder={tEventDetail('event.results.teams.search')}
         />
         <SearchButton>
           <SearchIcon />
-          <span>{tEventDetail("event.results.teams.find")}</span>
+          <span>{tEventDetail('event.results.teams.find')}</span>
         </SearchButton>
       </Field>
-      <TitleBlock sx={{ margin: "32px 0" }} component={"h4"}>
-        {tEventDetail("event.results.teams.allTeams")}
+      <TitleBlock sx={{ margin: '32px 0' }} component={'h4'}>
+        {tEventDetail('event.results.teams.allTeams')}
       </TitleBlock>
       <List>
         {teams.map((team, i) => (

@@ -22,8 +22,6 @@ function EventsContent({ onToggleSidebar }) {
     user?.organizerId && dispatch(fetchOgEvents({ organizer: user?.organizerId }))
   }, [user])
 
-  console.log({ ogEvents })
-
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>

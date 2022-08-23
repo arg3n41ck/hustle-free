@@ -5,10 +5,14 @@ import { Autocomplete } from '@mui/lab'
 import { TextField } from '@mui/material'
 import { Fields } from '../Results/Participants'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCountries, selectCountriesAndCities } from '../../../../redux/components/countriesAndCities'
+import {
+  fetchCountries,
+  selectCountriesAndCities,
+} from '../../../../redux/components/countriesAndCities'
 import $api from '../../../../services/axios'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
+import { removeDuplicateObjectFromArray } from '../../../../helpers/helpers'
 
 const Filters = ({ levels, onFilter }) => {
   const { t: tEventDetail } = useTranslation('eventDetail')
@@ -24,8 +28,12 @@ const Filters = ({ levels, onFilter }) => {
       `/directories/event_part_categories/?event=${router?.query?.id || ''}`,
     )
     setWeights(weightData)
-    setTeams(data)
     dispatch(fetchCountries())
+
+    if (data.length) {
+      const _teams = data.map(({ team }) => team)
+      setTeams(removeDuplicateObjectFromArray(_teams, 'id'))
+    }
   }, [])
 
   return (
@@ -61,7 +69,7 @@ const Filters = ({ levels, onFilter }) => {
                   },
                 })
               }
-              options={teams.map((option) => option.team)}
+              options={teams.map((option) => option)}
               getOptionLabel={(option) => option.name}
               fullWidth
               renderInput={(params) => (

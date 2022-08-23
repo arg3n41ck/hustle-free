@@ -1,10 +1,10 @@
-import React from "react"
-import styled from "styled-components"
-import Link from "next/link"
-import { useTranslation } from "next-i18next"
+import React from 'react'
+import styled from 'styled-components'
+import Link from 'next/link'
+import { useTranslation } from 'next-i18next'
 
-const TeamItem = ({ team: { team }, index }) => {
-  const { t: tEventDetail } = useTranslation("eventDetail")
+const TeamItem = ({ team, index }) => {
+  const { t: tEventDetail } = useTranslation('eventDetail')
   return (
     <Item>
       <Link href={`/team/${team.id}`} passHref>
@@ -18,35 +18,35 @@ const TeamItem = ({ team: { team }, index }) => {
           </ItemLeft>
           <ItemRight>
             <Info>
-              <InfoItem color={"#828282"}>
+              <InfoItem color={'#828282'}>
                 <p>{team.teamMembersCount}</p>
-                <div>{tEventDetail("event.results.teamItem.participant")}</div>
+                <div>{tEventDetail('event.results.teamItem.participant')}</div>
               </InfoItem>
-              <InfoItem color={"#2E79DD"}>
+              <InfoItem color={'#2E79DD'}>
                 <p>0</p>
-                <div>{tEventDetail("event.results.teamItem.points")}</div>
+                <div>{tEventDetail('event.results.teamItem.points')}</div>
               </InfoItem>
-              <InfoItem color={"#27AE60"}>
+              <InfoItem color={'#27AE60'}>
                 <p>0</p>
-                <div>{tEventDetail("event.results.teamItem.wins")}</div>
+                <div>{tEventDetail('event.results.teamItem.wins')}</div>
               </InfoItem>
-              <InfoItem color={"#EB5757"}>
+              <InfoItem color={'#EB5757'}>
                 <p>0</p>
-                <div>{tEventDetail("event.results.teamItem.defeats")}</div>
+                <div>{tEventDetail('event.results.teamItem.defeats')}</div>
               </InfoItem>
             </Info>
             <Medal>
-              <InfoItem color={"#FFC107"}>
+              <InfoItem color={'#FFC107'}>
                 <p>0</p>
-                <div>{tEventDetail("event.results.teamItem.gold")}</div>
+                <div>{tEventDetail('event.results.teamItem.gold')}</div>
               </InfoItem>
-              <InfoItem color={"#E0E0E0"}>
+              <InfoItem color={'#E0E0E0'}>
                 <p>0</p>
-                <div>{tEventDetail("event.results.teamItem.silver")}</div>
+                <div>{tEventDetail('event.results.teamItem.silver')}</div>
               </InfoItem>
-              <InfoItem color={"#D7832D"}>
+              <InfoItem color={'#D7832D'}>
                 <p>0</p>
-                <div>{tEventDetail("event.results.teamItem.bronze")}</div>
+                <div>{tEventDetail('event.results.teamItem.bronze')}</div>
               </InfoItem>
             </Medal>
           </ItemRight>

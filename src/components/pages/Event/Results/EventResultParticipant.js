@@ -1,22 +1,22 @@
-import React, { useState } from "react"
-import { FirstPlaceIcon } from "../../../../assets/svg/icons"
-import { SecondPlaceIcon } from "../../../../assets/svg/icons"
-import { ThirdPlaceIcon } from "../../../../assets/svg/icons"
-import PlaceField from "./PlaceField"
-import styled from "styled-components"
-import $api from "../../../../services/axios"
-import { useRouter } from "next/router"
-import { useSelector } from "react-redux"
-import { useTranslation } from "next-i18next"
+import React, { useState } from 'react'
+import { FirstPlaceIcon } from '../../../../assets/svg/icons'
+import { SecondPlaceIcon } from '../../../../assets/svg/icons'
+import { ThirdPlaceIcon } from '../../../../assets/svg/icons'
+import PlaceField from './PlaceField'
+import styled from 'styled-components'
+import $api from '../../../../services/axios'
+import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
+import { useTranslation } from 'next-i18next'
 
 const changeParticipantPlace = async (eventId, data) => {
-  await $api.patch(`/organizer/events/${eventId}/participant-place/`, data)
+  await $api.patch(`/events/events/${eventId}/participant_place/`, data)
 }
 
 function EventResultParticipant({ participant, updatePC }) {
   const user = useSelector((state) => state.user.user)
   const [place, setPlace] = useState(participant.place)
-  const { t: tEventDetail } = useTranslation("eventDetail")
+  const { t: tEventDetail } = useTranslation('eventDetail')
   const {
     query: { id: eventId },
   } = useRouter()
@@ -24,7 +24,7 @@ function EventResultParticipant({ participant, updatePC }) {
   const onChange = (pcId, count) => {
     setPlace(count)
     changeParticipantPlace(eventId, {
-      participant_id: pcId,
+      participant: pcId,
       place: count,
     })
     updatePC()
@@ -45,19 +45,19 @@ function EventResultParticipant({ participant, updatePC }) {
       <Right>
         <InfoItem>
           <InfoItemTitle>
-            {tEventDetail("event.results.eventResultsParticipant.team")}
+            {tEventDetail('event.results.eventResultsParticipant.team')}
           </InfoItemTitle>
           <InfoItemDescription>{participant.team?.name}</InfoItemDescription>
         </InfoItem>
         {!!participant?.athlete?.user?.country?.name && (
           <InfoItem>
             <InfoItemTitle>
-              {tEventDetail("event.results.eventResultsParticipant.country")}
+              {tEventDetail('event.results.eventResultsParticipant.country')}
             </InfoItemTitle>
             <InfoItemDescription>{participant.athlete.user?.country?.name}</InfoItemDescription>
           </InfoItem>
         )}
-        {user?.role === "organizer" && (
+        {user?.role === 'organizer' && (
           <PlaceField
             defaultCount={place || 0}
             onChange={(count) => onChange(participant.id, count)}

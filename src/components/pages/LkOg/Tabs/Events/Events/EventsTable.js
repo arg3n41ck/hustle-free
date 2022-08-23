@@ -39,16 +39,16 @@ function EventsTable({ events }) {
         dateEnd,
         dateStart,
         statusPublish,
-        getRegisteredParticipantsCount,
-        getPaidCount,
+        registrationParticipantCount,
+        participantIsPaidCount,
         maxParticipantCount,
       } = currentValue
       return {
         id,
         name,
         date: getRusBetweenDate(dateStart, dateEnd),
-        registration: `${getRegisteredParticipantsCount || 0}/${maxParticipantCount || 0}`,
-        paid: `${getPaidCount || 0}/${getRegisteredParticipantsCount || 0}`,
+        registration: `${registrationParticipantCount || 0}/${maxParticipantCount || 0}`,
+        paid: `${participantIsPaidCount || 0}`,
         status: getEventStatus(statusPublish),
       }
     })
@@ -92,7 +92,7 @@ function EventsTable({ events }) {
               ))}
             </Tr>
           </Thead>
-          <tbody>
+          <TBody>
             {!!rewrittenData.length &&
               rewrittenData.map((cell) => {
                 return (
@@ -134,7 +134,7 @@ function EventsTable({ events }) {
                   </Tr>
                 )
               })}
-          </tbody>
+          </TBody>
         </StyledTable>
       </Scrollbar>
     </Wrapper>
@@ -177,6 +177,21 @@ const Thead = styled.thead`
   border-bottom: 1px solid #333;
 `
 
+const TBody = styled.tbody`
+  tr:hover {
+    background: #0f0f10;
+    & td:nth-child(5) {
+      div {
+        opacity: 0;
+      }
+    }
+
+    & ${Actions} {
+      opacity: 1;
+    }
+  }
+`
+
 const Tr = styled.tr`
   position: relative;
   border-bottom: 1px solid #333;
@@ -192,19 +207,6 @@ const Tr = styled.tr`
   & td:nth-child(5) {
     div {
       min-width: 112px;
-    }
-  }
-
-  &:hover {
-    background: #0f0f10;
-    & td:nth-child(5) {
-      div {
-        opacity: 0;
-      }
-    }
-
-    & ${Actions} {
-      opacity: 1;
     }
   }
 

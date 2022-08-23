@@ -22,18 +22,13 @@ function FileUploaderBig({ onChange, defaultBanner, error }) {
   }
 
   const onCropImage = useCallback(
-    (file) => {
-      setFile(file)
-      onChange(file)
+    (_file) => {
+      setFile(_file)
+      onChange(_file)
+      setPhotoURLToShow(URL.createObjectURL(_file))
     },
     [file],
   )
-
-  useEffect(() => {
-    if (file) {
-      setPhotoURLToShow(URL.createObjectURL(file))
-    }
-  }, [file])
 
   useEffect(() => {
     if (!file && defaultBanner) {
@@ -44,12 +39,12 @@ function FileUploaderBig({ onChange, defaultBanner, error }) {
   return (
     <FileUploadLabel>
       <CustomInput type='file' error={!!error} onChange={onUploadImage} />
-      {photoURLToShow && (
+      {file && (
         <CropEasy
           open={openCropModal}
           setOpen={setOpenCropModal}
           onSave={onCropImage}
-          image={photoURLToShow}
+          image={URL.createObjectURL(file)}
         />
       )}
       <Box

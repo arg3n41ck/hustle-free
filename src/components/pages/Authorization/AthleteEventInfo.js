@@ -100,8 +100,6 @@ function RegistrationAthleteToEvent({ data }) {
     )
   }, [eventId, formik.values])
 
-  console.log({ values: formik.values })
-
   return (
     <form onSubmit={formik.handleSubmit}>
       <RegistrationAthleteToEventHeroInfo>
@@ -111,7 +109,7 @@ function RegistrationAthleteToEvent({ data }) {
             noOptionsText={'Вы не зачислены ни в одну команду'}
             onChange={(_, value) => formik.setFieldValue('team', value?.id)}
             options={(teams?.length && teams?.map((option) => option)) || []}
-            getOptionLabel={(option) => option?.name}
+            getOptionLabel={(option) => option?.name || null}
             value={teams?.length && teams?.find(({ id }) => id === formik?.values?.team)}
             fullWidth
             renderInput={(params) => (
@@ -175,11 +173,8 @@ function RegistrationAthleteToEvent({ data }) {
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>Выберите категорию</p>
           <Autocomplete
-            noOptionsText={'Ничего не найдено'}
-            onChange={(_, value) => [
-              changeCurrentLevels(value?.id),
-              formik.setFieldValue('category', value?.id),
-            ]}
+            noOptionsText={'Не найдено категорий по выбранным весу и уровню'}
+            onChange={(_, value) => formik.setFieldValue('category', value?.id)}
             options={categories.map((option) => option) || []}
             getOptionLabel={(option) => option?.name}
             value={categories.find(({ id }) => id === formik?.values?.category)}

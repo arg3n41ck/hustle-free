@@ -16,7 +16,7 @@ import { fetchCountries } from '../../../redux/components/countriesAndCities'
 import ApplyToTeam from '../../TeamProfile/ApplyToTeam'
 import { useTranslation } from 'next-i18next'
 
-const getTeamData = async (teamId) => {
+export const getTeamData = async (teamId) => {
   const { data } = await $api.get(`/teams/teams/${teamId}/`)
   return data
 }

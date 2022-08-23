@@ -52,7 +52,6 @@ const CropEasy = ({ image, onSave, open, setOpen }) => {
   const onCancel = useCallback(() => {
     setOpen(false)
     setCroppedAreaPixels(null)
-    setCroppedImage(null)
   }, [])
 
   return (

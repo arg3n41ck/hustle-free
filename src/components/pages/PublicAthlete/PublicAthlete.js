@@ -7,6 +7,7 @@ import Teams from './Teams'
 import Participations from './Participations'
 import HorizontalTabsBorder from '../../ui/tabs/HorizontalTabsBorder'
 import { useTranslation } from 'next-i18next'
+import Awards from '../LkTm/Tabs/Statistics/Awards'
 
 function PublicAthlete({ athleteData }) {
   const { user, teams, participations, isVisible } = athleteData
@@ -46,6 +47,7 @@ function PublicAthlete({ athleteData }) {
       {!!teams && !!participations && isVisible ? (
         <TeamsAndPartWrapper>
           <Teams teams={teams} />
+          <Awards places={athleteData?.medals} />
           {!!participations?.length && (
             <HorizontalTabsBorder
               arrayTab={tabs}
@@ -53,7 +55,7 @@ function PublicAthlete({ athleteData }) {
               onChangeHandler={(value) => setView(value)}
               height={'96px'}
             >
-              {participations.map(({ event, participationCategory }, i) => {
+              {participations.map(({ event, participationCategory, place }, i) => {
                 const {
                   eventParticipantsCategory: { name, fromAge, toAge, fromWeight, toWeight },
                   level,
@@ -64,6 +66,7 @@ function PublicAthlete({ athleteData }) {
                     key={`${event?.name}-${i}`}
                     eventName={event?.name}
                     level={level}
+                    place={place}
                     name={name}
                     fromAge={fromAge}
                     toAge={toAge}

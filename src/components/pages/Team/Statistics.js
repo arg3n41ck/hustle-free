@@ -1,22 +1,28 @@
-import React from "react"
-import { useRouter } from "next/router"
-import Events from "../LkTm/Tabs/Statistics/Events"
-import Awards from "../LkTm/Tabs/Statistics/Awards"
-import HeaderContent, { TitleHeader } from "../../ui/LKui/HeaderContent"
-import { useTranslation } from "next-i18next"
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import Events from '../LkTm/Tabs/Statistics/Events'
+import Awards from '../LkTm/Tabs/Statistics/Awards'
+import HeaderContent, { TitleHeader } from '../../ui/LKui/HeaderContent'
+import { useTranslation } from 'next-i18next'
+import { getTeamData } from './TeamProfile'
 
 const Statistics = ({ onToggleSidebar }) => {
   const {
     query: { id: teamId },
   } = useRouter()
-  const { t: tLkTm } = useTranslation("lkTm")
+  const [team, setTeam] = useState(null)
+  const { t: tLkTm } = useTranslation('lkTm')
+
+  useEffect(() => {
+    getTeamData(teamId).then(setTeam)
+  }, [])
 
   return (
     <>
       <HeaderContent onToggle={onToggleSidebar}>
-        <TitleHeader>{tLkTm("statistics.statistic")}</TitleHeader>
+        <TitleHeader>{tLkTm('statistics.statistic')}</TitleHeader>
       </HeaderContent>
-      {teamId && <Awards teamId={teamId} />}
+      {team && <Awards places={team?.places} />}
       {teamId && <Events teamId={teamId} isPublic />}
     </>
   )
