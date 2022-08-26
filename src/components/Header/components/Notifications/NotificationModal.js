@@ -1,14 +1,10 @@
-import React from "react"
-import { Box, Popover } from "@mui/material"
-import styled from "styled-components"
-import NotificationItems from "./NotificationItems"
+import React from 'react'
+import { Box, Popover } from '@mui/material'
+import styled from 'styled-components'
+import NotificationItems from './NotificationItems'
 
-function NotificationModal({
-  notifications,
-  anchorNotifications,
-  setAnchorNotifications,
-}) {
-  const idNotifications = !!anchorNotifications ? "simple-popover" : undefined
+function NotificationModal({ notifications, anchorNotifications, setAnchorNotifications }) {
+  const idNotifications = !!anchorNotifications ? 'simple-popover' : undefined
 
   return (
     <Popover
@@ -18,14 +14,14 @@ function NotificationModal({
       onClose={() => setAnchorNotifications(null)}
       anchorOrigin={{
         vertical: 58,
-        horizontal: "left",
+        horizontal: 'left',
       }}
       sx={{
-        "& .MuiPaper-root": {
+        '& .MuiPaper-root': {
           maxWidth: 480,
-          width: "100%",
-          borderRadius: "12px",
-          background: "#1B1C22",
+          width: '100%',
+          borderRadius: '12px',
+          background: '#1B1C22',
         },
       }}
     >
@@ -38,14 +34,9 @@ function NotificationModal({
             {!!notifications?.length ? (
               notifications.map(
                 (n) =>
-                  n?.kz &&
-                  n?.en &&
-                  n?.ru && (
-                    <NotificationItems
-                      key={`user-notifications-${n.id}`}
-                      notification={n}
-                    />
-                  )
+                  n?.text && (
+                    <NotificationItems key={`user-notifications-${n.id}`} notification={n} />
+                  ),
               )
             ) : (
               <EmptyText>У вас пока нет уведомлений</EmptyText>

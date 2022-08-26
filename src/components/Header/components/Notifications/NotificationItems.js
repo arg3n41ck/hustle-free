@@ -1,8 +1,7 @@
-import React from "react"
-import styled from "styled-components"
-import { useRouter } from "next/router"
-import Link from "next/link"
-import $api from "../../../../services/axios"
+import React from 'react'
+import styled from 'styled-components'
+import Link from 'next/link'
+import $api from '../../../../services/axios'
 
 //??? Notifications types (нужны для определения типа сслыки в Link)
 // ORGANIZER_EVENT_STATUS = 'oes'
@@ -12,26 +11,21 @@ import $api from "../../../../services/axios"
 // TEAM_NEW_PARTICIPANTS = 'tnp'
 
 const setChecked = async (id) => {
-  await $api.patch(`/accounts/notifications/${id}/`, { checked: true })
+  await $api.get(`/notifications/${id}/`)
 }
 
 const NotificationItems = ({ notification }) => {
-  const { locale } = useRouter()
-
   return (
     <>
       <Link
-        href={getNotificationLinkType(
-          notification.notificationType,
-          notification.objId
-        )}
+        href={getNotificationLinkType(notification.notificationType, notification.objId)}
         passHref
-        target={"_blank"}
+        target={'_blank'}
       >
         <a onClick={() => setChecked(notification.id)}>
           <ListItem>
             <Indicator />
-            <Text>{notification[locale]}</Text>
+            <Text>{notification?.text}</Text>
           </ListItem>
         </a>
       </Link>
@@ -43,18 +37,18 @@ export default NotificationItems
 
 const getNotificationLinkType = (type, id) => {
   switch (type) {
-    case "oes":
-      return "/lk-og/profile/events"
-    case "oenp":
-      return id ? `/events/${id}/participants` : "/"
-    case "aes":
-      return id ? `/events/${id}` : "/"
-    case "ats":
+    case 'organizer_event_status':
+      return '/lk-og/profile/events'
+    case 'organizer_event_new_participants':
+      return id ? `/events/${id}/participants` : '/'
+    case 'athlete_event_status':
+      return id ? `/events/${id}` : '/'
+    case 'athlete_team_status':
       return `/lk-ah/profile/teams`
-    case "tnp":
+    case 'team_new_participant':
       return `/lk-tm/profile/athletes`
     default:
-      return "/"
+      return '/'
   }
 }
 
