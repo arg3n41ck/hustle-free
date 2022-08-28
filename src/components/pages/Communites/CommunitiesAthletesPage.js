@@ -128,6 +128,9 @@ function CommunitesAthletesPage() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tCommunities('communities.team')}
                   InputProps={{
@@ -149,6 +152,9 @@ function CommunitesAthletesPage() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tCommunities('communities.country')}
                   InputProps={{
@@ -170,6 +176,9 @@ function CommunitesAthletesPage() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tCommon('form.fieldsNames.gender.label')}
                   InputProps={{

@@ -31,10 +31,6 @@ const Notifications = () => {
     user && getNotifications({ recipient: user?.id }).then(setNotifications)
   }, [route, user])
 
-  console.log('====================================')
-  console.log({ notifications })
-  console.log('====================================')
-
   return (
     <NotificationWrapper>
       <BellIcon onClick={(e) => setAnchorNotifications(e.currentTarget)} />

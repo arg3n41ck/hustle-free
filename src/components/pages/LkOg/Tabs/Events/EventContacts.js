@@ -147,7 +147,15 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId 
           {(inputProps) => (
             <TextField
               {...inputProps}
-              sx={{ width: '100%' }}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      touched.phoneNumber && Boolean(errors.phoneNumber) && '#d32f2f !important',
+                  },
+                },
+              }}
               variant='outlined'
               placeholder={'+7 (7'}
               error={Boolean(touched.phoneNumber) && errors.phoneNumber}

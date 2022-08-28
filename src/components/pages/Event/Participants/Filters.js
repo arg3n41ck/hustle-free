@@ -75,6 +75,9 @@ const Filters = ({ levels, onFilter }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tEventDetail('event.participants.filters.team')}
                 />
@@ -107,6 +110,9 @@ const Filters = ({ levels, onFilter }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tEventDetail('event.participants.filters.level')}
                 />
@@ -142,6 +148,9 @@ const Filters = ({ levels, onFilter }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tEventDetail('event.participants.filters.gender')}
                 />
@@ -175,6 +184,9 @@ const Filters = ({ levels, onFilter }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tEventDetail('event.participants.filters.weight')}
                 />
@@ -209,6 +221,9 @@ const Filters = ({ levels, onFilter }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tEventDetail('event.participants.filters.country')}
                 />

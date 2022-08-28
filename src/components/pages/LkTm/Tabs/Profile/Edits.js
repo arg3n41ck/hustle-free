@@ -150,7 +150,15 @@ const Edits = ({ onView }) => {
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>{tCommon('form.fieldsNames.organizationName')}</p>
           <TextField
-            sx={{ width: '100%' }}
+            sx={{
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                '& > fieldset': {
+                  borderColor:
+                    formik.touched.name && Boolean(formik.errors.name) && '#d32f2f !important',
+                },
+              },
+            }}
             name='name'
             onChange={formik.handleChange}
             value={formik.values.name}
@@ -222,7 +230,17 @@ const Edits = ({ onView }) => {
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>{tCommon('form.fieldsNames.website')}</p>
           <TextField
-            sx={{ width: '100%' }}
+            sx={{
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                '& > fieldset': {
+                  borderColor:
+                    formik.touched.webSite &&
+                    Boolean(formik.errors.webSite) &&
+                    '#d32f2f !important',
+                },
+              },
+            }}
             name='webSite'
             onChange={formik.handleChange}
             value={formik.values.webSite}
@@ -236,7 +254,17 @@ const Edits = ({ onView }) => {
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>{tCommon('form.fieldsNames.fullNameMainCoach')}</p>
           <TextField
-            sx={{ width: '100%' }}
+            sx={{
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                '& > fieldset': {
+                  borderColor:
+                    formik.touched.fullNameCoach &&
+                    Boolean(formik.errors.fullNameCoach) &&
+                    '#d32f2f !important',
+                },
+              },
+            }}
             name='fullNameCoach'
             onChange={formik.handleChange}
             value={formik.values.fullNameCoach}
@@ -273,7 +301,17 @@ const Edits = ({ onView }) => {
               {(inputProps) => (
                 <TextField
                   {...inputProps}
-                  sx={{ width: '100%' }}
+                  sx={{
+                    width: '100%',
+                    '& .MuiOutlinedInput-root': {
+                      '& > fieldset': {
+                        borderColor:
+                          formik.touched.phoneCoach &&
+                          Boolean(formik.errors.phoneCoach) &&
+                          '#d32f2f !important',
+                      },
+                    },
+                  }}
                   variant='outlined'
                   placeholder={tCommon('form.fieldsNames.contacts')}
                   InputProps={{
@@ -287,7 +325,17 @@ const Edits = ({ onView }) => {
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>{tCommon('form.fieldsNames.emailCoach')}</p>
             <TextField
-              sx={{ width: '100%' }}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      formik.touched.emailCoach &&
+                      Boolean(formik.errors.emailCoach) &&
+                      '#d32f2f !important',
+                  },
+                },
+              }}
               name='emailCoach'
               value={formik.values.emailCoach}
               onChange={formik.handleChange}

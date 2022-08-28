@@ -45,13 +45,13 @@ function Index() {
               new Date(this.parent.dateEnd).getTime() > new Date(value).getTime()
             )
           },
+        })
+        .test({
+          message: tLkOg('validation.validDate'),
+          test: function (value) {
+            return new Date().setHours(0, 0, 0, 0) <= new Date(value).setHours(0, 0, 0, 0)
+          },
         }),
-      // .test({
-      //   message: tLkOg('validation.validDate'),
-      //   test: function (value) {
-      //     return new Date().getTime() < new Date(value).getTime()
-      //   },
-      // }),
       dateEnd: yup.date().nullable().required(tLkOg('validation.fillInTheField')),
       timezone: yup.string().required(tLkOg('validation.required')).nullable(),
       // ?? Event Format Validation

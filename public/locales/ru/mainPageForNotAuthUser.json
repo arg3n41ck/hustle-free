@@ -1,24 +1,24 @@
 {
-    "mainPage": {
-        "forWhom": "Для кого",
-        "popular": "Популярные",
-        "upcomingTournaments": "Ближайшие турниры",
-        "viewAll": "Смотреть все",
-        "hero": {
-            "simplify": "Упростите",
-            "tournamentManagement": "управление турнирами",
-            "bestParticipate": "Самый лучший способ принимать участие, организовывать и следить засоревнованиями",
-            "viewEvents": "Смотреть турниры",
-            "viewEvent": "Создать турнир"
-        },
-        "auth": {
-            "forOrganizers": "Для организаторов",
-            "forOrganizersDesc": "профессиональных и клубных турниров",
-            "forAthletes": "Для атлетов",
-            "forAthletesDesc": "кому интересно покорять новые высоты",
-            "forTeams": "Для команд",
-            "forTeamsDesc": "управление участниками просто и удобно",
-            "signUp": "Зарегистрироваться"
-        }
+  "mainPage": {
+    "forWhom": "Для кого",
+    "popular": "Популярные",
+    "upcomingTournaments": "Ближайшие турниры",
+    "viewAll": "Смотреть все",
+    "hero": {
+      "simplify": "Упростите",
+      "tournamentManagement": "управление турнирами",
+      "bestParticipate": "Самый лучший способ принимать участие, организовывать и следить за соревнованиями",
+      "viewEvents": "Смотреть турниры",
+      "viewEvent": "Создать турнир"
+    },
+    "auth": {
+      "forOrganizers": "Для организаторов",
+      "forOrganizersDesc": "профессиональных и клубных турниров",
+      "forAthletes": "Для атлетов",
+      "forAthletesDesc": "кому интересно покорять новые высоты",
+      "forTeams": "Для команд",
+      "forTeamsDesc": "управление участниками просто и удобно",
+      "signUp": "Зарегистрироваться"
     }
+  }
 }

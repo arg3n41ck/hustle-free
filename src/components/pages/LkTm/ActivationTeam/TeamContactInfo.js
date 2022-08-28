@@ -60,7 +60,7 @@ const TeamContactInfo = ({ data, setData, setView }) => {
       web_site: yup
         .string()
         .matches(regMatch, tAuth('validation.webSiteUrl'))
-        .required(tCommon('validation.required'))
+        // .required(tCommon('validation.required'))
         .nullable(),
       full_name_coach: yup
         .string()
@@ -141,7 +141,17 @@ const TeamContactInfo = ({ data, setData, setView }) => {
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>{tAuth('team.teamTitle')}</p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.full_name &&
+                  Boolean(formik.errors.full_name) &&
+                  '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.full_name}
           name='full_name'
           onChange={formik.handleChange}
@@ -173,6 +183,17 @@ const TeamContactInfo = ({ data, setData, setView }) => {
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.country &&
+                        Boolean(formik.errors.country) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 placeholder={tAuth('common.country')}
                 InputProps={{
@@ -198,6 +219,15 @@ const TeamContactInfo = ({ data, setData, setView }) => {
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.city && Boolean(formik.errors.city) && '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 placeholder={tAuth('common.city')}
                 InputProps={{
@@ -214,7 +244,17 @@ const TeamContactInfo = ({ data, setData, setView }) => {
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>{tAuth('common.webSite')}</p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.web_site &&
+                  Boolean(formik.errors.web_site) &&
+                  '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.web_site}
           name='web_site'
           onChange={formik.handleChange}
@@ -227,12 +267,22 @@ const TeamContactInfo = ({ data, setData, setView }) => {
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>{tAuth('team.coachName')}</p>
         <TextField
-          sx={{ width: '100%' }}
           value={formik.values.full_name_coach}
           name='full_name_coach'
           onChange={formik.handleChange}
           placeholder={tAuth('team.coachName')}
           variant='outlined'
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.full_name_coach &&
+                  Boolean(formik.errors.full_name_coach) &&
+                  '#d32f2f !important',
+              },
+            },
+          }}
           error={formik.touched.full_name_coach && Boolean(formik.errors.full_name_coach)}
           helperText={formik.touched.full_name_coach && formik.errors.full_name_coach}
         />
@@ -259,7 +309,17 @@ const TeamContactInfo = ({ data, setData, setView }) => {
             {(inputProps) => (
               <TextField
                 {...inputProps}
-                sx={{ width: '100%' }}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.phone_coach &&
+                        Boolean(formik.errors.phone_coach) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 variant='outlined'
                 placeholder={'+7 (999) 999 99 99'}
                 InputProps={{
@@ -288,7 +348,17 @@ const TeamContactInfo = ({ data, setData, setView }) => {
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>{tAuth('team.coachEmail')}</p>
           <TextField
-            sx={{ width: '100%' }}
+            sx={{
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                '& > fieldset': {
+                  borderColor:
+                    formik.touched.email_coach &&
+                    Boolean(formik.errors.email_coach) &&
+                    '#d32f2f !important',
+                },
+              },
+            }}
             value={formik.values.email_coach}
             name='email_coach'
             onChange={formik.handleChange}
@@ -333,6 +403,15 @@ const TeamContactInfo = ({ data, setData, setView }) => {
             placeholder={tAuth('common.password')}
             name='password'
             value={formik.values.password}
+            sx={{
+              width: '100%',
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.password &&
+                  Boolean(formik.errors.password) &&
+                  '#d32f2f !important',
+              },
+            }}
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
             type={showPassword ? 'text' : 'password'}

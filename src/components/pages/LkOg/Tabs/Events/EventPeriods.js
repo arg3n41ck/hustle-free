@@ -97,7 +97,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
         .test({
           message: tLkOg('validation.validDate'),
           test: function (value) {
-            return new Date().getTime() < new Date(value).getTime()
+            return new Date().setHours(0, 0, 0, 0) <= new Date(value).setHours(0, 0, 0, 0)
           },
         }),
       standartRegEnd: yup.date().nullable().required(tLkOg('validation.required')),
@@ -217,11 +217,22 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.earlyRegStart}
                   disableCloseOnSelect={false}
-                  onChange={(value) => setFieldValue('earlyRegStart', value)}
+                  onChange={(value) => value && setFieldValue('earlyRegStart', value)}
                   inputFormat='dd/MM/yyyy'
                   renderInput={(params) => (
                     <TextField
                       {...params}
+                      sx={{
+                        width: '100%',
+                        '& .MuiOutlinedInput-root': {
+                          '& > fieldset': {
+                            borderColor:
+                              touched.earlyRegStart &&
+                              Boolean(errors.earlyRegStart) &&
+                              '#d32f2f !important',
+                          },
+                        },
+                      }}
                       fullWidth
                       error={touched.earlyRegStart && Boolean(errors.earlyRegStart)}
                       helperText={touched.earlyRegStart && errors.earlyRegStart}
@@ -244,11 +255,26 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.earlyRegEnd}
                   disableCloseOnSelect={false}
-                  onChange={(value) => setFieldValue('earlyRegEnd', value)}
+                  onChange={(value) => value && setFieldValue('earlyRegEnd', value)}
+                  shouldDisableDate={(date) =>
+                    values.earlyRegStart &&
+                    date.setHours(0, 0, 0, 0) < new Date(values.earlyRegStart)
+                  }
                   inputFormat='dd/MM/yyyy'
                   renderInput={(params) => (
                     <TextField
                       {...params}
+                      sx={{
+                        width: '100%',
+                        '& .MuiOutlinedInput-root': {
+                          '& > fieldset': {
+                            borderColor:
+                              touched.earlyRegEnd &&
+                              Boolean(errors.earlyRegEnd) &&
+                              '#d32f2f !important',
+                          },
+                        },
+                      }}
                       fullWidth
                       error={touched.earlyRegEnd && Boolean(errors.earlyRegEnd)}
                       helperText={touched.earlyRegEnd && errors.earlyRegEnd}
@@ -278,12 +304,27 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
             toolbarTitle={tLkOg('registrationPeriods.standardEnrollmentStartDate')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.standartRegStart}
-            onChange={(value) => setFieldValue('standartRegStart', value)}
+            onChange={(value) => value && setFieldValue('standartRegStart', value)}
             inputFormat='dd/MM/yyyy'
             disableCloseOnSelect={false}
+            shouldDisableDate={(date) =>
+              date.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) ||
+              (values.earlyRegEnd && date.setHours(0, 0, 0, 0) < new Date(values.earlyRegEnd))
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        touched.standartRegStart &&
+                        Boolean(errors.standartRegStart) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 error={touched.standartRegStart && Boolean(errors.standartRegStart)}
                 helperText={touched.standartRegStart && errors.standartRegStart}
@@ -306,12 +347,29 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
             toolbarTitle={tLkOg('registrationPeriods.endDateOfStandardRegistration')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.standartRegEnd}
-            onChange={(value) => setFieldValue('standartRegEnd', value)}
+            onChange={(value) => value && setFieldValue('standartRegEnd', value)}
             inputFormat='dd/MM/yyyy'
             disableCloseOnSelect={false}
+            shouldDisableDate={(date) =>
+              date.setHours(0, 0, 0, 0) <
+              (values.standartRegStart
+                ? new Date(values.standartRegStart)
+                : new Date().setHours(0, 0, 0, 0))
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        touched.standartRegEnd &&
+                        Boolean(errors.standartRegEnd) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 error={touched.standartRegEnd && Boolean(errors.standartRegEnd)}
                 helperText={touched.standartRegEnd && errors.standartRegEnd}
@@ -356,12 +414,27 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
                   toolbarTitle={tLkOg('registrationPeriods.lateRegistrationStartDate')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.lateRegStart}
-                  onChange={(value) => setFieldValue('lateRegStart', value)}
+                  onChange={(value) => value && setFieldValue('lateRegStart', value)}
                   inputFormat='dd/MM/yyyy'
                   disableCloseOnSelect={false}
+                  shouldDisableDate={(date) =>
+                    date.setHours(0, 0, 0, 0) <
+                    (values.standartRegEnd ? new Date(values.standartRegEnd) : new Date())
+                  }
                   renderInput={(params) => (
                     <TextField
                       {...params}
+                      sx={{
+                        width: '100%',
+                        '& .MuiOutlinedInput-root': {
+                          '& > fieldset': {
+                            borderColor:
+                              touched.lateRegStart &&
+                              Boolean(errors.lateRegStart) &&
+                              '#d32f2f !important',
+                          },
+                        },
+                      }}
                       fullWidth
                       error={touched.lateRegStart && Boolean(errors.lateRegStart)}
                       helperText={touched.lateRegStart && errors.lateRegStart}
@@ -383,12 +456,27 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
                   toolbarTitle={tLkOg('registrationPeriods.lateRegistrationEndDate')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.lateRegEnd}
-                  onChange={(value) => setFieldValue('lateRegEnd', value)}
+                  onChange={(value) => value && setFieldValue('lateRegEnd', value)}
                   inputFormat='dd/MM/yyyy'
                   disableCloseOnSelect={false}
+                  shouldDisableDate={(date) =>
+                    date.setHours(0, 0, 0, 0) <
+                    (values.lateRegStart ? new Date(values.lateRegStart) : new Date())
+                  }
                   renderInput={(params) => (
                     <TextField
                       {...params}
+                      sx={{
+                        width: '100%',
+                        '& .MuiOutlinedInput-root': {
+                          '& > fieldset': {
+                            borderColor:
+                              touched.lateRegEnd &&
+                              Boolean(errors.lateRegEnd) &&
+                              '#d32f2f !important',
+                          },
+                        },
+                      }}
                       fullWidth
                       error={touched.lateRegEnd && Boolean(errors.lateRegEnd)}
                       helperText={touched.lateRegEnd && errors.lateRegEnd}

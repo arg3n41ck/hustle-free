@@ -115,6 +115,17 @@ function RegistrationAthleteToEvent({ data }) {
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.category &&
+                        Boolean(formik.errors.category) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 placeholder='Команды'
                 error={formik.touched.category && Boolean(formik.errors.category)}
@@ -140,6 +151,17 @@ function RegistrationAthleteToEvent({ data }) {
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.level &&
+                        Boolean(formik.errors.level) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 placeholder='Уровень'
                 error={formik.touched.level && Boolean(formik.errors.level)}
@@ -161,6 +183,17 @@ function RegistrationAthleteToEvent({ data }) {
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.weight &&
+                        Boolean(formik.errors.weight) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 placeholder='Вес'
                 error={formik.touched.weight && Boolean(formik.errors.weight)}
@@ -182,6 +215,17 @@ function RegistrationAthleteToEvent({ data }) {
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.category &&
+                        Boolean(formik.errors.category) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 placeholder='Категории'
                 error={formik.touched.category && Boolean(formik.errors.category)}

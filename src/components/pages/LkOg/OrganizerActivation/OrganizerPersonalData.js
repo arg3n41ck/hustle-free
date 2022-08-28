@@ -146,7 +146,17 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>{tCommon('form.fieldsNames.lastName')}</p>
           <TextField
-            sx={{ width: '100%' }}
+            sx={{
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                '& > fieldset': {
+                  borderColor:
+                    formik.touched.lastName &&
+                    Boolean(formik.errors.lastName) &&
+                    '#d32f2f !important',
+                },
+              },
+            }}
             name='lastName'
             value={formik.values.lastName}
             onChange={(e) =>
@@ -161,7 +171,17 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>{tCommon('form.fieldsNames.firstName')}</p>
           <TextField
-            sx={{ width: '100%' }}
+            sx={{
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                '& > fieldset': {
+                  borderColor:
+                    formik.touched.firstName &&
+                    Boolean(formik.errors.firstName) &&
+                    '#d32f2f !important',
+                },
+              },
+            }}
             name='firstName'
             value={formik.values.firstName}
             onChange={(e) =>
@@ -196,6 +216,17 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.birthDate &&
+                        Boolean(formik.errors.birthDate) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 inputProps={{
                   ...params.inputProps,
                   placeholder: tCommon('form.fieldsNames.dateFormat'),
@@ -260,7 +291,15 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
           {(inputProps) => (
             <TextField
               {...inputProps}
-              sx={{ width: '100%' }}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      formik.touched.phone && Boolean(formik.errors.phone) && '#d32f2f !important',
+                  },
+                },
+              }}
               variant='outlined'
               placeholder={'+7 (7'}
               error={formik.touched.phone && Boolean(formik.errors.phone)}
@@ -289,7 +328,15 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>{tCommon('form.fieldsNames.email')}</p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.email && Boolean(formik.errors.email) && '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.email}
           name='email'
           onChange={formik.handleChange}
@@ -330,7 +377,17 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
           <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.position &&
+                  Boolean(formik.errors.position) &&
+                  '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.position}
           name='position'
           onChange={formik.handleChange}

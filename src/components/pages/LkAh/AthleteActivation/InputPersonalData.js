@@ -102,7 +102,17 @@ const InputPersonalData = () => {
             <div className='auth-wrapper__input'>
               <p className='auth-title__input'>{tCommon('form.fieldsNames.lastName')}</p>
               <TextField
-                sx={{ width: '100%' }}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.lastName &&
+                        Boolean(formik.errors.lastName) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 name='lastName'
                 value={formik.values.lastName}
                 onChange={(e) =>
@@ -120,7 +130,17 @@ const InputPersonalData = () => {
             <div className='auth-wrapper__input'>
               <p className='auth-title__input'>{tCommon('form.fieldsNames.firstName')}</p>
               <TextField
-                sx={{ width: '100%' }}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.firstName &&
+                        Boolean(formik.errors.firstName) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 name='firstName'
                 value={formik.values.firstName}
                 onChange={(e) =>
@@ -139,7 +159,15 @@ const InputPersonalData = () => {
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>{tCommon('form.fieldsNames.email')}</p>
             <TextField
-              sx={{ width: '100%' }}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      formik.touched.email && Boolean(formik.errors.email) && '#d32f2f !important',
+                  },
+                },
+              }}
               value={formik.values.email}
               disabled
               name='email'
@@ -149,7 +177,20 @@ const InputPersonalData = () => {
           </div>
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>{tCommon('form.fieldsNames.password')}</p>
-            <FormControl sx={{ width: '100%' }} variant='outlined'>
+            <FormControl
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      formik.touched.password &&
+                      Boolean(formik.errors.password) &&
+                      '#d32f2f !important',
+                  },
+                },
+              }}
+              variant='outlined'
+            >
               <OutlinedInput
                 placeholder={tCommon('form.fieldsNames.password')}
                 name='password'

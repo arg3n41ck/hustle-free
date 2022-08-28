@@ -73,7 +73,16 @@ const Filter = ({ onFilter }) => {
               options={categories.map((option) => option)}
               getOptionLabel={(option) => option.eventParticipantsCategory.name}
               fullWidth
-              renderInput={(params) => <TextField {...params} fullWidth placeholder='Категории' />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  sx={{
+                    width: '100%',
+                  }}
+                  fullWidth
+                  placeholder='Категории'
+                />
+              )}
             />
           </Field>
 
@@ -94,6 +103,9 @@ const Filter = ({ onFilter }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tEventDetail('event.results.filter.country')}
                 />
@@ -127,6 +139,9 @@ const Filter = ({ onFilter }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tEventDetail('event.results.filter.team')}
                 />

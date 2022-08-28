@@ -100,7 +100,17 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>{tCommon('form.fieldsNames.organizationName')}</p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.nameOrganizer &&
+                  Boolean(formik.errors.nameOrganizer) &&
+                  '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.nameOrganizer}
           name='nameOrganizer'
           onChange={formik.handleChange}
@@ -126,6 +136,17 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           renderInput={(params) => (
             <TextField
               {...params}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      formik.touched.country &&
+                      Boolean(formik.errors.country) &&
+                      '#d32f2f !important',
+                  },
+                },
+              }}
               fullWidth
               placeholder={tCommon('form.fieldsNames.country')}
               InputProps={{
@@ -151,6 +172,15 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           renderInput={(params) => (
             <TextField
               {...params}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      formik.touched.city && Boolean(formik.errors.city) && '#d32f2f !important',
+                  },
+                },
+              }}
               fullWidth
               placeholder={tCommon('form.fieldsNames.city')}
               InputProps={{
@@ -170,7 +200,17 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.actualAddress &&
+                  Boolean(formik.errors.actualAddress) &&
+                  '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.actualAddress}
           name='actualAddress'
           onChange={formik.handleChange}
@@ -185,7 +225,17 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.legalName &&
+                  Boolean(formik.errors.legalName) &&
+                  '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.legalName}
           name='legalName'
           onChange={formik.handleChange}
@@ -217,7 +267,15 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.bin && Boolean(formik.errors.bin) && '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.bin}
           name='bin'
           onChange={formik.handleChange}
@@ -232,7 +290,15 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.number && Boolean(formik.errors.number) && '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.number}
           name='number'
           onChange={formik.handleChange}
@@ -247,7 +313,15 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
           <span style={{ color: '#828282' }}>({tCommon('form.fieldsNames.notNecessary')})</span>
         </p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.swift && Boolean(formik.errors.swift) && '#d32f2f !important',
+              },
+            },
+          }}
           value={formik.values.swift}
           name='swift'
           onChange={formik.handleChange}

@@ -155,6 +155,15 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        touched.currency && Boolean(errors.currency) && '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 error={touched.currency && Boolean(errors.currency)}
                 helperText={touched.currency && errors.currency}

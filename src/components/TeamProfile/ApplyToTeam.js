@@ -14,7 +14,12 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
   const { user, userAuthenticated } = useSelector((state) => state.user)
 
   const sendReq = useCallback(async () => {
-    if (userStatusInTeam?.message === 'Not found' && user) {
+    console.log({ userStatusInTeam })
+    if (
+      (userStatusInTeam?.message === 'Not found' ||
+        userStatusInTeam?.message === 'User rejected') &&
+      user
+    ) {
       try {
         await $api.post('/teams/athlete_requests/', { team: teamId, athlete: user?.athleteId })
         checkUserStatus()
@@ -32,21 +37,25 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
   return (userAuthenticated && user?.role === 'athlete') || !userAuthenticated ? (
     <CreateEventBTN
       disabled={
-        userStatusInTeam?.message !== 'Is anonymous' && userStatusInTeam?.message !== 'Not found'
+        userStatusInTeam?.message !== 'Is anonymous' &&
+        userStatusInTeam?.message !== 'Not found' &&
+        userStatusInTeam?.message !== 'User rejected'
       }
       active={
-        userStatusInTeam?.message === 'Not found' || userStatusInTeam?.message === 'Is anonymous'
+        userStatusInTeam?.message === 'Not found' ||
+        userStatusInTeam?.message === 'Is anonymous' ||
+        userStatusInTeam?.message === 'User rejected'
       }
       onClick={() => sendReq()}
     >
-      {userStatusInTeam?.message === 'Not found' || userStatusInTeam?.message === 'Is anonymous' ? (
+      {userStatusInTeam?.message === 'Not found' ||
+      userStatusInTeam?.message === 'Is anonymous' ||
+      userStatusInTeam?.message === 'User rejected' ? (
         <>
           <PlusIcon /> Вступить в команду
         </>
       ) : userStatusInTeam?.message === 'User in pending' ? (
         'Запрошено'
-      ) : userStatusInTeam?.message === 'User rejected' ? (
-        'Вас не приняли'
       ) : (
         'Вы уже в команде'
       )}

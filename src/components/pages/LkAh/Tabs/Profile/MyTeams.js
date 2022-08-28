@@ -14,7 +14,7 @@ function MyTeams({ onToggleSidebar }) {
   const { t: tLkAh } = useTranslation('lkAh')
 
   React.useEffect(() => {
-    !!user?.athleteId && dispatch(fetchAthleteTeams({ athlete: user.athleteId }))
+    !!user?.athleteId && dispatch(fetchAthleteTeams({ athletes: user.athleteId }))
     dispatch(fetchCountries())
   }, [user])
 

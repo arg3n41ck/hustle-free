@@ -101,6 +101,9 @@ function CommunitesPage() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tCommunities('communities.kindOfSport')}
                   InputProps={{
@@ -122,6 +125,9 @@ function CommunitesPage() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tCommunities('communities.country')}
                   InputProps={{

@@ -29,18 +29,18 @@ $api.interceptors.request.use(
 )
 
 $api.interceptors.response.use(
-  async (config) => {
-    config.data = await camelizeKeys(config.data)
+  (config) => {
+    config.data = camelizeKeys(config.data)
     return config
   },
   async (error) => {
-    const refreshToken = await getCookie('refresh')
+    const refreshToken = getCookie('refresh')
     if (error?.response?.status === 401 && error?.config?.url !== '/accounts/auth/jwt/refresh/') {
       try {
         const { data } = await axios.post(`${API_URL}accounts/auth/jwt/refresh/`, {
           refresh: getCookie('refresh'),
         })
-        await setCookie('token', data.access, 99999)
+        setCookie('token', data.access, 99999)
         return axios({
           ...error.config,
           headers: {

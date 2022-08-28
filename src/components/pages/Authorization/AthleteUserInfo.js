@@ -109,7 +109,17 @@ const AthleteUserInfo = () => {
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>Фамилия</p>
             <TextField
-              sx={{ width: '100%' }}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      formik.touched.lastName &&
+                      Boolean(formik.errors.lastName) &&
+                      '#d32f2f !important',
+                  },
+                },
+              }}
               name='lastName'
               value={formik.values?.lastName}
               onChange={(e) =>
@@ -125,7 +135,17 @@ const AthleteUserInfo = () => {
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>Имя</p>
             <TextField
-              sx={{ width: '100%' }}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      formik.touched.firstName &&
+                      Boolean(formik.errors.firstName) &&
+                      '#d32f2f !important',
+                  },
+                },
+              }}
               name='firstName'
               value={formik.values?.firstName}
               onChange={(e) =>
@@ -163,6 +183,17 @@ const AthleteUserInfo = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
+                    sx={{
+                      width: '100%',
+                      '& .MuiOutlinedInput-root': {
+                        '& > fieldset': {
+                          borderColor:
+                            formik.touched.dateBirthday &&
+                            Boolean(formik.errors.dateBirthday) &&
+                            '#d32f2f !important',
+                        },
+                      },
+                    }}
                     fullWidth
                     error={Boolean(formik.touched.dateBirthday) && formik.errors.dateBirthday}
                     helperText={formik.touched.dateBirthday && formik.errors.dateBirthday}
@@ -188,7 +219,17 @@ const AthleteUserInfo = () => {
               {(inputProps) => (
                 <TextField
                   {...inputProps}
-                  sx={{ width: '100%' }}
+                  sx={{
+                    width: '100%',
+                    '& .MuiOutlinedInput-root': {
+                      '& > fieldset': {
+                        borderColor:
+                          formik.touched.phoneNumber &&
+                          Boolean(formik.errors.phoneNumber) &&
+                          '#d32f2f !important',
+                      },
+                    },
+                  }}
                   variant='outlined'
                   placeholder={'+7 (7'}
                   error={Boolean(formik.touched.phoneNumber) && formik.errors.phoneNumber}
@@ -227,6 +268,17 @@ const AthleteUserInfo = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                    '& .MuiOutlinedInput-root': {
+                      '& > fieldset': {
+                        borderColor:
+                          formik.touched.country &&
+                          Boolean(formik.errors.country) &&
+                          '#d32f2f !important',
+                      },
+                    },
+                  }}
                   fullWidth
                   placeholder='Страна'
                   InputProps={{
@@ -253,6 +305,17 @@ const AthleteUserInfo = () => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                    '& .MuiOutlinedInput-root': {
+                      '& > fieldset': {
+                        borderColor:
+                          formik.touched.city &&
+                          Boolean(formik.errors.city) &&
+                          '#d32f2f !important',
+                      },
+                    },
+                  }}
                   fullWidth
                   placeholder='Город'
                   InputProps={{

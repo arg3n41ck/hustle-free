@@ -25,7 +25,8 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
           (value) => !!(value || '').replace(/\s/g, ''),
         )
         .required(tCommon('validation.required')),
-      description: yup.string().required(tCommon('validation.required')),
+      description: yup.string(),
+      // .required(tCommon('validation.required')),
     }),
   )
 
@@ -69,6 +70,17 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
           renderInput={(params) => (
             <TextField
               {...params}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      formik.touched.sports &&
+                      Boolean(formik.errors.sports) &&
+                      '#d32f2f !important',
+                  },
+                },
+              }}
               fullWidth
               placeholder={tAuth('common.sportTypes')}
               error={formik.errors.sports && formik.touched.sports}
@@ -84,7 +96,17 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
       <div className='auth-wrapper__input'>
         <p className='auth-title__input'>{tAuth('common.description')}</p>
         <TextField
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.description &&
+                  Boolean(formik.errors.description) &&
+                  '#d32f2f !important',
+              },
+            },
+          }}
           variant='outlined'
           placeholder={tAuth('common.description')}
           name='description'

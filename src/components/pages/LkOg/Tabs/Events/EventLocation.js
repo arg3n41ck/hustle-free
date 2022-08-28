@@ -102,6 +102,15 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId, locationId
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                    '& .MuiOutlinedInput-root': {
+                      '& > fieldset': {
+                        borderColor:
+                          touched.country && Boolean(errors.country) && '#d32f2f !important',
+                      },
+                    },
+                  }}
                   fullWidth
                   placeholder={tLkOg('location.country')}
                   error={touched.country && Boolean(errors.country)}
@@ -133,6 +142,14 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId, locationId
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                    '& .MuiOutlinedInput-root': {
+                      '& > fieldset': {
+                        borderColor: touched.city && Boolean(errors.city) && '#d32f2f !important',
+                      },
+                    },
+                  }}
                   fullWidth
                   placeholder={tLkOg('location.city')}
                   error={touched.city && Boolean(errors.city)}

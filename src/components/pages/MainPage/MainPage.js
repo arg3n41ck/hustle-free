@@ -1,30 +1,26 @@
-import React, { useEffect } from "react"
-import { Container } from "../../ui/Wrappers/Container"
-import EventsSlider from "../Events/EventsSlider"
-import EventsGlobalSearch from "../Events/EventsGlobalSearch/EventsGlobalSearch"
-import styled from "styled-components"
-import { useDispatch } from "react-redux"
-import { fetchEvents } from "../../../redux/components/events"
-import EventsCatalog from "../Events/EventsCatalog/EventsCatalog"
-import { useTranslation } from "next-i18next"
+import React, { useEffect } from 'react'
+import { Container } from '../../ui/Wrappers/Container'
+import EventsSlider from '../Events/EventsSlider'
+import EventsGlobalSearch from '../Events/EventsGlobalSearch/EventsGlobalSearch'
+import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+import { fetchEvents } from '../../../redux/components/events'
+import EventsCatalog from '../Events/EventsCatalog/EventsCatalog'
+import { useTranslation } from 'next-i18next'
 
 const MainPage = () => {
-  const { t: tMainPageFotNotAuthUser } = useTranslation(
-    "mainPageForNotAuthUser"
-  )
+  const { t: tMainPageFotNotAuthUser } = useTranslation('mainPageForNotAuthUser')
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchEvents())
+    dispatch(fetchEvents({ status_publish: 'published' }))
   }, [])
 
   return (
     <Container>
       <MainPageWrapper>
         <EventsGlobalSearch />
-        <MainPageTitle>
-          {tMainPageFotNotAuthUser("mainPage.popular")}
-        </MainPageTitle>
+        <MainPageTitle>{tMainPageFotNotAuthUser('mainPage.popular')}</MainPageTitle>
         <EventsSlider />
         <EventsCatalog />
       </MainPageWrapper>

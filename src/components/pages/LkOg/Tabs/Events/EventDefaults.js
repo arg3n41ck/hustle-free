@@ -57,6 +57,15 @@ function EventDefaults({ formik }) {
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        touched.typeSport && Boolean(errors.typeSport) && '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 placeholder={tLkOg('editEvent.generalInformation.typeSport')}
                 error={touched.typeSport && Boolean(errors.typeSport)}
@@ -80,11 +89,23 @@ function EventDefaults({ formik }) {
             toolbarTitle={tLkOg('editEvent.generalInformation.tournamentStartDate')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.dateStart}
-            onChange={(value) => setFieldValue('dateStart', value)}
+            onChange={(value) => value && setFieldValue('dateStart', value)}
+            shouldDisableDate={(date) =>
+              date.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
+            }
             inputFormat='dd/MM/yyyy'
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        touched.dateStart && Boolean(errors.dateStart) && '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 error={touched.dateStart && Boolean(errors.dateStart)}
                 helperText={touched.dateStart && errors.dateStart}
@@ -107,12 +128,25 @@ function EventDefaults({ formik }) {
             toolbarTitle={tLkOg('editEvent.generalInformation.tournamentEndDate')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.dateEnd}
-            onChange={(value) => setFieldValue('dateEnd', value)}
+            onChange={(value) => value && setFieldValue('dateEnd', value)}
             inputFormat='dd/MM/yyyy'
             disableCloseOnSelect={false}
+            shouldDisableDate={(date) =>
+              date.setHours(0, 0, 0, 0) <
+              (values?.dateStart ? new Date(values?.dateStart) : new Date())
+            }
             renderInput={(params) => (
               <TextField
                 {...params}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        touched.dateEnd && Boolean(errors.dateEnd) && '#d32f2f !important',
+                    },
+                  },
+                }}
                 fullWidth
                 error={touched.dateEnd && Boolean(errors.dateEnd)}
                 helperText={touched.dateEnd && errors.dateEnd}
@@ -139,6 +173,15 @@ function EventDefaults({ formik }) {
           renderInput={(params) => (
             <TextField
               {...params}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-root': {
+                  '& > fieldset': {
+                    borderColor:
+                      touched.timezone && Boolean(errors.timezone) && '#d32f2f !important',
+                  },
+                },
+              }}
               fullWidth
               error={touched.timezone && Boolean(errors.timezone)}
               helperText={touched.timezone && errors.timezone}

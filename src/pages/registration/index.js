@@ -94,7 +94,17 @@ const Index = () => {
             <div className='auth-wrapper__input'>
               <p className='auth-title__input'>{tAuth('common.email')}</p>
               <TextField
-                sx={{ width: '100%' }}
+                sx={{
+                  width: '100%',
+                  '& .MuiOutlinedInput-root': {
+                    '& > fieldset': {
+                      borderColor:
+                        formik.touched.email &&
+                        Boolean(formik.errors.email) &&
+                        '#d32f2f !important',
+                    },
+                  },
+                }}
                 name='email'
                 onChange={formik.handleChange}
                 placeholder={tAuth('common.email')}

@@ -28,7 +28,7 @@ function EventsFilter() {
 
   useEffect(() => {
     query.delete('ordering')
-    dispatch(fetchEventsByParams(query))
+    dispatch(fetchEventsByParams({ ...query, status_publish: 'published' }))
     dispatch(fetchCountries())
     dispatch(fetchSportTypes())
   }, [])
@@ -50,7 +50,7 @@ function EventsFilter() {
   )
 
   useEffect(() => {
-    dispatch(fetchEventsByParams(query))
+    dispatch(fetchEventsByParams({ ...query, status_publish: 'published' }))
   }, [query])
 
   const sportTypesValue =
@@ -106,6 +106,9 @@ function EventsFilter() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tEvents('events.filter.kindOfSport')}
                   InputProps={{
@@ -127,6 +130,9 @@ function EventsFilter() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   placeholder={tEvents('events.filter.country')}
                   InputProps={{
@@ -151,6 +157,9 @@ function EventsFilter() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   inputProps={{
                     ...params.inputProps,
@@ -173,6 +182,9 @@ function EventsFilter() {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  sx={{
+                    width: '100%',
+                  }}
                   fullWidth
                   inputProps={{
                     ...params.inputProps,
@@ -190,7 +202,17 @@ function EventsFilter() {
           {/*  fullWidth*/}
           {/*  renderInput={(params) => (*/}
           {/*    <TextField*/}
-          {/*      {...params}*/}
+          {/*      {...params} sx={{
+            width: '100%',
+            '& .MuiOutlinedInput-root': {
+              '& > fieldset': {
+                borderColor:
+                  formik.touched.full_name_coach &&
+                  Boolean(formik.errors.full_name_coach) &&
+                  '#d32f2f !important',
+              },
+            },
+          }}*/}
           {/*      fullWidth*/}
           {/*      placeholder="Сортировать"*/}
           {/*      InputProps={{*/}

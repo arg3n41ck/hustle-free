@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react"
-import styled from "styled-components"
-import { Avatar } from "@mui/material"
-import { Skeleton } from "@mui/lab"
-import $api from "../../../../../services/axios"
-import { useDispatch, useSelector } from "react-redux"
-import CustomButton from "../../../../ui/CustomButton"
-import { theme } from "../../../../../styles/theme"
-import Athlete from "../../../../ui/Ahtletes/Athlete"
-import { fetchCountries } from "../../../../../redux/components/countriesAndCities"
-import { useTranslation } from "next-i18next"
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { Avatar } from '@mui/material'
+import { Skeleton } from '@mui/lab'
+import $api from '../../../../../services/axios'
+import { useDispatch, useSelector } from 'react-redux'
+import CustomButton from '../../../../ui/CustomButton'
+import { theme } from '../../../../../styles/theme'
+import Athlete from '../../../../ui/Ahtletes/Athlete'
+import { fetchCountries } from '../../../../../redux/components/countriesAndCities'
+import { useTranslation } from 'next-i18next'
 
 const Applications = ({ applications, onAcceptOrReject }) => {
-
   return (
     <List>
       {applications.map((application) => (
@@ -32,7 +31,7 @@ const List = styled.ul`
   @media (max-width: 1100px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  ${theme.mqMax("md")} {
+  ${theme.mqMax('md')} {
     grid-template-columns: repeat(1, 1fr);
   }
 `
@@ -42,29 +41,29 @@ export default Applications
 const ApplicationItem = ({ applicationItem, onAcceptOrReject }) => {
   const dispatch = useDispatch()
   const { id, athlete } = applicationItem
-  const { t: tLkTm } = useTranslation("lkTm")
+  const { t: tLkTm } = useTranslation('lkTm')
 
   return (
-    <Athlete user={athlete.user}>
+    <Athlete athleteId={athlete.id} user={athlete.user}>
       <Line />
       <WrapperButtons>
         <CustomButton
-          typeButton={"secondary"}
-          height={"32px"}
-          borderRadius={"4px"}
-          onClick={() => onAcceptOrReject(id, "cancel", athlete.id)}
+          typeButton={'secondary'}
+          height={'32px'}
+          borderRadius={'4px'}
+          onClick={() => onAcceptOrReject(id, 'cancel', athlete.id)}
           style={{ fontSize: 14 }}
         >
-          {tLkTm("athletes.reject")}
+          {tLkTm('athletes.reject')}
         </CustomButton>
 
         <CustomButton
           style={{ fontSize: 14 }}
-          height={"32px"}
-          borderRadius={"4px"}
-          onClick={() => onAcceptOrReject(id, "approved", athlete.id)}
+          height={'32px'}
+          borderRadius={'4px'}
+          onClick={() => onAcceptOrReject(id, 'approved', athlete.id)}
         >
-          {tLkTm("athletes.confirm")}
+          {tLkTm('athletes.confirm')}
         </CustomButton>
       </WrapperButtons>
     </Athlete>
@@ -80,6 +79,6 @@ const Line = styled.div`
 const WrapperButtons = styled.div`
   display: flex;
   justify-content: space-between;
-  
+
   grid-column-gap: 24px;
 `

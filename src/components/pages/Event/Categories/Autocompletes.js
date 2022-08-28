@@ -76,6 +76,9 @@ function Autocompletes({ levelOptions }) {
           renderInput={(params) => (
             <TextField
               {...params}
+              sx={{
+                width: '100%',
+              }}
               fullWidth
               placeholder={tEventDetail('event.categories.autocompletes.level')}
               InputProps={{
@@ -95,6 +98,9 @@ function Autocompletes({ levelOptions }) {
         renderInput={(params) => (
           <TextField
             {...params}
+            sx={{
+              width: '100%',
+            }}
             fullWidth
             placeholder={tEventDetail('event.categories.autocompletes.gender')}
             InputProps={{
@@ -113,6 +119,9 @@ function Autocompletes({ levelOptions }) {
         renderInput={(params) => (
           <TextField
             {...params}
+            sx={{
+              width: '100%',
+            }}
             fullWidth
             placeholder={tEventDetail('event.categories.autocompletes.weight')}
             InputProps={{
@@ -131,6 +140,9 @@ function Autocompletes({ levelOptions }) {
         renderInput={(params) => (
           <TextField
             {...params}
+            sx={{
+              width: '100%',
+            }}
             fullWidth
             placeholder={tEventDetail('event.categories.autocompletes.age')}
             InputProps={{
