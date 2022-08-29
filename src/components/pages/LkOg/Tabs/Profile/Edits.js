@@ -151,7 +151,9 @@ const Edits = () => {
                 '& .MuiOutlinedInput-root': {
                   '& > fieldset': {
                     borderColor:
-                      touched.lastName && Boolean(errors.lastName) && '#d32f2f !important',
+                      formik.touched.lastName &&
+                      Boolean(formik.errors.lastName) &&
+                      '#d32f2f !important',
                   },
                 },
               }}
