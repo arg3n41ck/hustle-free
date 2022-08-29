@@ -88,110 +88,61 @@ const getAddresses = (event) => {
   ]
 }
 
-const catInitialValues = {
-  categories: [],
-  gender: {
-    male: false,
-    female: false,
-  },
-  ages: { aFrom: 0, aTo: 0 },
-  weights: { wFrom: 0, wTo: 0 },
-  levels: [],
-  price: 0,
-  currency: null,
-}
-
-const getParticipantCategories = async (id) => {
-  const data = await getEventPC({ event_id: id })
-
-  const result =
-    data.length &&
-    data.reduce((prev, cur) => {
-      const { eventParticipantsCategory } = cur
-      const curPrice = Math.round(+eventParticipantsCategory?.price?.standartPrice)
-      const pcArray = (prev?.categories || []).includes(eventParticipantsCategory?.id)
-        ? prev?.categories
-        : [...(prev.categories || []), eventParticipantsCategory?.id]
-      const price = curPrice < +prev.price || +prev.price === 0 ? curPrice : +prev.price
-      const gender = {
-        ...prev.gender,
-        [eventParticipantsCategory.gender]: true,
-      }
-
-      const curLevels =
-        eventParticipantsCategory?.levels?.length &&
-        eventParticipantsCategory?.levels.map((level) => level?.id)
-
-      const weights = {
-        wFrom:
-          eventParticipantsCategory?.fromWeight < prev?.weights?.wFrom || prev?.weights?.wFrom === 0
-            ? eventParticipantsCategory?.fromWeight
-            : prev?.weights?.wFrom,
-        wTo:
-          eventParticipantsCategory?.toWeight > prev?.weights?.wTo
-            ? eventParticipantsCategory?.toWeight
-            : prev?.weights?.wTo,
-      }
-      const ages = {
-        aFrom:
-          eventParticipantsCategory?.fromAge < prev?.ages?.aFrom || prev?.ages?.aFrom === 0
-            ? eventParticipantsCategory?.fromAge
-            : prev?.ages?.aFrom,
-        aTo:
-          eventParticipantsCategory?.toAge > prev?.ages?.aTo
-            ? eventParticipantsCategory?.toAge
-            : prev?.ages?.aTo,
-      }
-
-      return {
-        categories: pcArray,
-        price,
-        ages,
-        weights,
-        gender,
-        levels: [...new Set([...prev.levels, ...curLevels])],
-        currency: eventParticipantsCategory?.price?.currency || prev.currency,
-      }
-    }, catInitialValues)
+const getParticipantCategories = (event) => {
+  const minPrice = event?.eventParticipantsCategory?.length
+    ? event.eventParticipantsCategory.reduce(
+        (prev, cur) => {
+          const curEarlyPrice = Math.round(+cur?.price?.earlyPrice || 0)
+          return {
+            price: prev?.price == 0 || +prev?.price > curEarlyPrice ? curEarlyPrice : prev?.price,
+            currency:
+              prev?.price == 0 || +prev?.price > curEarlyPrice
+                ? cur?.price?.currency
+                : prev?.currency,
+          }
+        },
+        { price: 0, currency: '' },
+      )
+    : { price: 0, currency: '' }
 
   return [
     {
       id: 'getParticipantCategories_1',
       label: `eventMainInfo.categories`,
-      value: result?.categories?.length || 0,
+      value: event?.categoryAmount || 0,
     },
     {
       id: 'getParticipantCategories_2',
       label: `eventMainInfo.levels`,
-      value: result?.levels?.length || 0,
+      value: event?.levelAmount || 0,
     },
     {
       id: 'getParticipantCategories_3',
       label: `eventMainInfo.gender`,
-      value: result?.gender
-        ? `${!!result?.gender?.male ? 'М  / ' : ''}${!!result?.gender?.female ? 'Ж' : ''}`
-        : '',
+      value: event?.getGender || '',
     },
     {
       id: 'getParticipantCategories_4',
       label: `eventMainInfo.age`,
-      value: result?.ages
-        ? `${result?.ages?.aFrom || 0}${result?.ages?.aTo ? ' - ' + result?.ages?.aTo : ''}`
+      value: event?.averageAge
+        ? `${event?.averageAge?.minAge || 0}${
+            event?.averageAge?.maxAge ? ' - ' + event?.averageAge?.maxAge : ''
+          }`
         : '',
     },
     {
       id: 'getParticipantCategories_5',
       label: `eventMainInfo.weight`,
-      value: result?.weights
-        ? `${result?.weights?.wFrom || 0} кг${
-            result?.weights?.wTo ? ' - ' + result?.weights?.wTo + ' кг' : ''
+      value: event?.averageWeight
+        ? `${event?.averageWeight?.minWeight || 0} кг${
+            event?.averageWeight?.maxWeight ? ' - ' + event?.averageWeight?.maxWeight + ' кг' : ''
           }`
         : '',
     },
     {
       id: 'getParticipantCategories_6',
       label: `eventMainInfo.price`,
-      value: result?.price ? `от ${result?.price} ${(result?.currency || '').toUpperCase()}` : '',
+      value: `от ${minPrice?.price} ${(minPrice?.currency || '').toUpperCase()}`,
     },
   ]
 }
@@ -207,13 +158,14 @@ function EventMainInfo({ event }) {
   }, [event])
 
   useEffect(() => {
-    event?.id && getParticipantCategories(event.id).then(setCategories)
+    event?.id && setCategories(getParticipantCategories(event))
   }, [event])
 
   const copyUrl = (url) => {
     navigator.clipboard?.writeText(url)
     toast.success(`${tEventDetail('eventMainInfo.linkCopied')}`)
   }
+
   const mapPoints =
     event?.location?.lat && event?.location?.long
       ? {

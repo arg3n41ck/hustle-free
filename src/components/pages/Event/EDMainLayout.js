@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next'
 
 function EdMainLayout({ event, children }) {
   const { t: tEventDetail } = useTranslation('eventDetail')
-  console.log({ event })
+
   return (
     <MainWrapper>
       <EdGeneralInfo event={event} />
