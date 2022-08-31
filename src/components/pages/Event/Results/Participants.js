@@ -1,24 +1,24 @@
-import React, { useCallback, useEffect, useState } from "react"
-import useDebounce from "../../../../hooks/useDebounce"
-import styled from "styled-components"
-import { Box } from "@mui/material"
-import EventResultsItem from "./EventResultsItem"
-import Filter from "./Filter"
-import $api from "../../../../services/axios"
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
+import React, { useCallback, useEffect, useState } from 'react'
+import useDebounce from '../../../../hooks/useDebounce'
+import styled from 'styled-components'
+import { Box } from '@mui/material'
+import EventResultsItem from './EventResultsItem'
+import Filter from './Filter'
+import $api from '../../../../services/axios'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 
 const Participants = ({ onloadPC }) => {
   const [participants, setParticipants] = useState([])
-  const { t: tEventDetail } = useTranslation("eventDetail")
+  const { t: tEventDetail } = useTranslation('eventDetail')
   const {
     query: { id: eventId },
   } = useRouter()
   const [filter, setFilter] = useState({
-    search: "",
-    teamId: "",
-    countryId: "",
-    id: "",
+    search: '',
+    teamId: '',
+    countryId: '',
+    id: '',
   })
   const searchValue = useDebounce(filter.search, 500)
   const countryValue = useDebounce(filter.countryId, 500)
@@ -50,16 +50,12 @@ const Participants = ({ onloadPC }) => {
   return (
     <>
       <Filter onFilter={filterHandler} />
-      <TitleBlock sx={{ margin: "32px 0" }} component={"h4"}>
-        {tEventDetail("event.results.participants.allResultsEvent")}
+      <TitleBlock sx={{ margin: '32px 0' }} component={'h4'}>
+        {tEventDetail('event.results.participants.allResultsEvent')}
       </TitleBlock>
       <EventResults>
         {participants.map((participant) => (
-          <EventResultsItem
-            key={participant.id}
-            participant={participant}
-            updatePC={updatePC}
-          />
+          <EventResultsItem key={participant.id} participant={participant} updatePC={updatePC} />
         ))}
       </EventResults>
     </>

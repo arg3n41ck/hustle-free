@@ -3,12 +3,11 @@ import styled from 'styled-components'
 import { getRusBetweenDate } from '../../../../../../helpers/helpers'
 import { CalendarIcon, LocationIcon } from '../../../../Events/EventsSlider'
 import { Avatar, IconButton } from '@mui/material'
-import { DEFAULT_API_URL } from '../../../../../../services/constants'
 import { useRouter } from 'next/router'
 
 function FilterMyEvents({ data }) {
   const { push: routerPush } = useRouter()
-  console.log({data});
+
   return (
     <EventContainer key={data?.id}>
       <EventItems>
@@ -47,7 +46,9 @@ function FilterMyEvents({ data }) {
           <IconButton sx={{ padding: 0 }}>
             <ManyEllipseIcon />
           </IconButton>
-          <PaidInfo color={'#27AE60 '}>Оплачено</PaidInfo>
+          <PaidInfo color={data?.isPaid ? '#27AE60' : '#828282'}>
+            {data?.isPaid ? 'Оплачено' : 'Не оплачено'}
+          </PaidInfo>
         </EventRightInfo>
       </EventItems>
     </EventContainer>
@@ -73,6 +74,7 @@ const EventRightInfo = styled.div`
 `
 
 const PaidInfo = styled.p`
+  width: fit-content;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -82,7 +84,7 @@ const PaidInfo = styled.p`
 
 const EventItems = styled.div`
   display: grid;
-  grid-template-columns: 112px auto min-content;
+  grid-template-columns: 112px auto auto;
   grid-column-gap: 32px;
 `
 const EventsInfo = styled.div`

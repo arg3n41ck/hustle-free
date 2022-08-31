@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 const getNotifications = async (params) => {
   try {
     const { data } = await $api.get('/notifications/', { params })
-    return data
+    return data?.length ? data.filter(({ checked }) => !checked) : []
   } catch ({ response }) {
     console.log(response)
   }

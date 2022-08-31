@@ -1,62 +1,57 @@
-import { useTranslation } from "next-i18next"
-import React, { useMemo, useState } from "react"
-import styled from "styled-components"
-import DropdownData from "../../../ui/DropdownData"
-import ParticipantsList from "./ParticipantsList"
+import { useTranslation } from 'next-i18next'
+import React, { useMemo, useState } from 'react'
+import styled from 'styled-components'
+import DropdownData from '../../../ui/DropdownData'
+import ParticipantsList from './ParticipantsList'
 
-const EventParticipantsItem = ({
-  eventParticipant,
-  isOrganizer,
-  isAthletes,
-}) => {
-  const [open, setOpen] = useState(false)
+const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) => {
   const { eventParticipantsCategory, level } = eventParticipant
-  const { t: tEventDetail } = useTranslation("eventDetail")
+  const { t: tEventDetail } = useTranslation('eventDetail')
   const participantsValues = useMemo(() => {
     if (isOrganizer) {
-      const isPaid = eventParticipant?.participants.filter(
-        (participant) => participant.isPaid
-      )
-      const isNotPaid = eventParticipant?.participants.filter(
-        (participant) => !participant.isPaid
-      )
+      const isPaid = eventParticipant?.participants.filter((participant) => participant.isPaid)
+      const isNotPaid = eventParticipant?.participants.filter((participant) => !participant.isPaid)
       const registered = eventParticipant?.participants.filter(
-        (participant) => participant.proposal === "add_event"
+        (participant) => participant.proposal === 'add_event',
       )
 
       return { isPaid, isNotPaid, registered }
     } else {
       const registered = eventParticipant?.participants.filter(
-        (participant) => participant.proposal === "add_event"
+        (participant) => participant.proposal === 'add_event',
       )
       const unconfirmed = eventParticipant?.participants.filter(
-        (participant) => participant.proposal === "waiting_list"
+        (participant) => participant.proposal === 'waiting_list',
       )
       return { registered, unconfirmed }
     }
   }, [eventParticipant])
 
+  const [open, setOpen] = useState(
+    !!participantsValues.registered?.length || !!participantsValues.unconfirmed?.length,
+  )
+
   const info = (
     <Info>
       <InfoText>
-        {tEventDetail("event.participants.eventParticipantsItem.total")}:{" "}
+        {tEventDetail('event.participants.eventParticipantsItem.total')}:{' '}
         {eventParticipant?.allParticipants}
       </InfoText>
       {isOrganizer && (
-        <InfoText color={"#6D4EEA"}>
-          {tEventDetail("event.participants.eventParticipantsItem.confirmed")}:{" "}
+        <InfoText color={'#6D4EEA'}>
+          {tEventDetail('event.participants.eventParticipantsItem.confirmed')}:{' '}
           {eventParticipant?.allParticipants
             ? (+eventParticipant?.allParticipants || 0) -
               (+eventParticipant?.isNotAcceptParticipants || 0)
             : 0}
         </InfoText>
       )}
-      <InfoText color="#27AE60">
-        {tEventDetail("event.participants.eventParticipantsItem.registrations")}
-        : {eventParticipant?.isAcceptParticipants}
+      <InfoText color='#27AE60'>
+        {tEventDetail('event.participants.eventParticipantsItem.registrations')}:{' '}
+        {eventParticipant?.isAcceptParticipants}
       </InfoText>
-      <InfoText color="#F2994A">
-        {tEventDetail("event.participants.eventParticipantsItem.unconfirmed")}:{" "}
+      <InfoText color='#F2994A'>
+        {tEventDetail('event.participants.eventParticipantsItem.unconfirmed')}:{' '}
         {eventParticipant?.isNotAcceptParticipants}
       </InfoText>
     </Info>
@@ -68,16 +63,14 @@ const EventParticipantsItem = ({
         isAthletes={isAthletes}
         active={open}
         setActive={setOpen}
-        heightWrapper={"184px"}
+        heightWrapper={'184px'}
         additionalData={info}
         title={`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
       >
         {isOrganizer ? (
           <>
             {!!participantsValues?.isPaid?.length && (
-              <TitleList>
-                {tEventDetail("event.participants.eventParticipantsItem.paid")}
-              </TitleList>
+              <TitleList>{tEventDetail('event.participants.eventParticipantsItem.paid')}</TitleList>
             )}
             <ParticipantsList
               isOrganizer={true}
@@ -86,9 +79,7 @@ const EventParticipantsItem = ({
             />
             {!!participantsValues?.isNotPaid?.length && (
               <TitleList>
-                {tEventDetail(
-                  "event.participants.eventParticipantsItem.notPaid"
-                )}
+                {tEventDetail('event.participants.eventParticipantsItem.notPaid')}
               </TitleList>
             )}
             <ParticipantsList
@@ -98,9 +89,7 @@ const EventParticipantsItem = ({
             />
             {!!participantsValues?.registered?.length && (
               <TitleList>
-                {tEventDetail(
-                  "event.participants.eventParticipantsItem.confirmed"
-                )}
+                {tEventDetail('event.participants.eventParticipantsItem.confirmed')}
               </TitleList>
             )}
             <ParticipantsList
@@ -113,9 +102,7 @@ const EventParticipantsItem = ({
           <>
             {!!participantsValues?.registered?.length && (
               <TitleList>
-                {tEventDetail(
-                  "event.participants.eventParticipantsItem.registers"
-                )}
+                {tEventDetail('event.participants.eventParticipantsItem.registers')}
               </TitleList>
             )}
             <ParticipantsList
@@ -125,9 +112,7 @@ const EventParticipantsItem = ({
             />
             {!!participantsValues?.unconfirmed?.length && (
               <TitleList>
-                {tEventDetail(
-                  "event.participants.eventParticipantsItem.unconfirmeds"
-                )}
+                {tEventDetail('event.participants.eventParticipantsItem.unconfirmeds')}
               </TitleList>
             )}
             <ParticipantsList
@@ -166,7 +151,7 @@ const InfoText = styled.p`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  color: ${(p) => (p.color ? p.color : "#f2f2f2")};
+  color: ${(p) => (p.color ? p.color : '#f2f2f2')};
 `
 
 export default EventParticipantsItem

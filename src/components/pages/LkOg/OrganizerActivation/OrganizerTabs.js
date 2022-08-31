@@ -47,7 +47,7 @@ function OrganizerTabs() {
   return (
     <div className='auth-container'>
       <div className='auth-wrapper'>
-        <h3 className='auth-title'>{tAuth('organizer.welcom')}</h3>
+        <h3 className='auth-title'>{tAuth('organizer.welcome')}</h3>
         <p className='auth-description'>{tAuth('regorganizerP')}</p>
         <HorizontalTabs arrayTab={tabs} valueTab={view} onChangeHandler={setView}>
           {view === 'contactInfo' && (

@@ -17,9 +17,9 @@ export const fetchCategories = createAsyncThunk(
 
 export const fetchLevel = createAsyncThunk(
   'categories/fetchLevel',
-  async (_, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/directories/discipline_level/`)
+      const { data } = await $api.get(`/directories/discipline_level/`, { params })
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)

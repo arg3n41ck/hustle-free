@@ -1,24 +1,22 @@
-import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
-import $api from "../../services/axios"
+import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import $api from '../../services/axios'
 
 export const fetchAthleteStories = createAsyncThunk(
-  "stories/fetchAthleteStories",
-  async (period, { rejectWithValue }) => {
+  'stories/fetchAthleteStories',
+  async (params, { rejectWithValue }) => {
     try {
       const { data } = await $api.get(`/events/participant_athletes/`, {
-        params: {
-          period,
-        },
+        params,
       })
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
-  }
+  },
 )
 
 export const storiesSlice = createSlice({
-  name: "stories",
+  name: 'stories',
   initialState: {
     stories: {
       error: null,
@@ -47,7 +45,7 @@ export const storiesSlice = createSlice({
 
 export const storiesSelector = createSelector(
   (state) => state.stories.stories.athleteStories,
-  (athleteStories) => [athleteStories]
+  (athleteStories) => [athleteStories],
 )
 
 export default storiesSlice.reducer

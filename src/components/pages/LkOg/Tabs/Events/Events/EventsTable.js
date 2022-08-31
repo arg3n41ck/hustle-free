@@ -39,15 +39,15 @@ function EventsTable({ events }) {
         dateEnd,
         dateStart,
         statusPublish,
-        registrationParticipantCount,
+        participantNotPaidCount,
         participantIsPaidCount,
-        maxParticipantCount,
+        registration,
       } = currentValue
       return {
         id,
         name,
         date: getRusBetweenDate(dateStart, dateEnd),
-        registration: `${registrationParticipantCount || 0}/${maxParticipantCount || 0}`,
+        registration: `${participantNotPaidCount || 0}/${registration?.maxParticipantCount || 0}`,
         paid: `${participantIsPaidCount || 0}`,
         status: getEventStatus(statusPublish),
       }

@@ -18,13 +18,19 @@ const NotificationItems = ({ notification }) => {
   return (
     <>
       <Link
-        href={getNotificationLinkType(notification.notificationType, notification.objId)}
+        href={getNotificationLinkType(notification.notificationType, notification.event)}
         passHref
         target={'_blank'}
       >
         <a onClick={() => setChecked(notification.id)}>
           <ListItem>
-            <Indicator />
+            <Indicator
+              style={
+                notification?.sender?.avatar
+                  ? { background: `no-repeat url(${notification?.sender?.avatar}) center / cover` }
+                  : { background: '#6d4eea' }
+              }
+            />
             <Text>{notification?.text}</Text>
           </ListItem>
         </a>
@@ -66,7 +72,6 @@ const Indicator = styled.div`
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: #6d4eea;
 `
 
 const Text = styled.p`

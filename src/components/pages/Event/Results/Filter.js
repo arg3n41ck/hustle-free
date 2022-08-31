@@ -26,7 +26,7 @@ const Filter = ({ onFilter }) => {
         event: router.query.id,
       },
     })
-    console.log({ categories })
+
     setCategories(categoriesData)
     if (data.length) {
       const _teams = data.map(({ team }) => team)

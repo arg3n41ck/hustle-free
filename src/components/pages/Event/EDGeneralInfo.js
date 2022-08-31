@@ -36,9 +36,9 @@ const dateKeys = [
 ]
 
 const getRegDates = (start, end) => {
-  const startDate = new Date(start)
-  const endDate = new Date(end)
-  const today = new Date()
+  const startDate = new Date(start).setHours(0, 0, 0, 0)
+  const endDate = new Date(end).setHours(0, 0, 0, 0)
+  const today = new Date().setHours(0, 0, 0, 0)
   return { startDate, endDate, today }
 }
 

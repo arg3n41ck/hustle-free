@@ -12,7 +12,7 @@ export const getEventPC = async (query) => {
   const { data } = await $api.get(`/directories/participant_category/`, {
     params: query,
   })
-  console.log({ query, data })
+
   return data
 }
 

@@ -86,7 +86,7 @@ function RegistrationAthleteToEvent({ data }) {
 
   useEffect(() => {
     user && dispatch(fetchTeams({ athletes: user?.athleteId }))
-    dispatch(fetchLevel())
+    dispatch(fetchLevel({ event: eventId }))
     dispatch(fetchCountries())
   }, [user])
 
@@ -106,10 +106,10 @@ function RegistrationAthleteToEvent({ data }) {
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>Выберите команду</p>
           <Autocomplete
-            noOptionsText={'Вы не зачислены ни в одну команду'}
+            noOptionsText={'Необходимо вступить в определённую команду в разделе "Сообщество"'}
             onChange={(_, value) => formik.setFieldValue('team', value?.id)}
             options={(teams?.length && teams?.map((option) => option)) || []}
-            getOptionLabel={(option) => option?.name || null}
+            getOptionLabel={(option) => option?.name || 'Выберите команду'}
             value={teams?.length && teams?.find(({ id }) => id === formik?.values?.team)}
             fullWidth
             renderInput={(params) => (
@@ -120,16 +120,14 @@ function RegistrationAthleteToEvent({ data }) {
                   '& .MuiOutlinedInput-root': {
                     '& > fieldset': {
                       borderColor:
-                        formik.touched.category &&
-                        Boolean(formik.errors.category) &&
-                        '#d32f2f !important',
+                        formik.touched.team && Boolean(formik.errors.team) && '#d32f2f !important',
                     },
                   },
                 }}
                 fullWidth
                 placeholder='Команды'
-                error={formik.touched.category && Boolean(formik.errors.category)}
-                helperText={formik.touched.category && formik.errors.category}
+                error={formik.touched.team && Boolean(formik.errors.team)}
+                helperText={formik.touched.team && formik.errors.team}
                 InputProps={{
                   ...params.InputProps,
                   endAdortment: <LocationIcon />,

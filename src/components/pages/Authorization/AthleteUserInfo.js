@@ -5,7 +5,7 @@ import * as yup from 'yup'
 import styled from 'styled-components'
 import { Box, TextField, Autocomplete } from '@mui/material'
 import { ru } from 'date-fns/locale'
-import { LocalizationProvider, MobileDatePicker } from '@mui/lab'
+import { DatePicker, LocalizationProvider, MobileDatePicker } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import Radio from '../../ui/Radio'
 import InputMask from 'react-input-mask'
@@ -21,13 +21,17 @@ import { fetchUser } from '../../../redux/components/user'
 import { LocationIcon } from '../Events/EventsCatalog/EventsFilter'
 import { decamelizeKeys } from 'humps'
 import { formDataHttp } from '../../../helpers/formDataHttp'
+import { normalizePhone } from '../../../helpers/phoneFormatter'
 
 const validationSchema = yup.object({
   firstName: yup.string().required('Обязательное поле'),
   lastName: yup.string().required('Обязательное поле'),
-  phoneNumber: yup.string().min(12),
-  gender: yup.mixed(),
-  dateBirthday: yup.mixed().nullable(),
+  phoneNumber: yup.string().test({
+    test: (value) => (normalizePhone(value) ? value.length === 12 : true),
+    message: 'Номер телефона должен быть не менее 12 символов',
+  }),
+  gender: yup.mixed().required('Обязательное поле'),
+  dateBirthday: yup.mixed().nullable().required('Обязательное поле'),
   country: yup.string().required('Обязательное поле').nullable(),
   city: yup.string().required('Обязательное поле').nullable(),
 })
@@ -95,7 +99,7 @@ const AthleteUserInfo = () => {
   if (!user?.id && !countries?.length && !currentCities?.length) {
     return <div />
   }
-
+  console.log(formik.errors)
   return (
     <FormWrapper>
       <form onSubmit={formik.handleSubmit}>
@@ -170,11 +174,12 @@ const AthleteUserInfo = () => {
           className='auth-wrapper__input'
         >
           <div className='auth-wrapper__input'>
-            <p className='auth-title__input'>Дата рождения (не обязательно)</p>
+            <p className='auth-title__input'>Дата рождения</p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-              <MobileDatePicker
+              <DatePicker
                 toolbarTitle={'Выбрать дату'}
                 cancelText={'Отмена'}
+                disableCloseOnSelect={false}
                 value={formik.values?.dateBirthday}
                 onChange={(value) =>
                   formik.setFieldValue('dateBirthday', value && format(value, 'yyyy-MM-dd'))
@@ -221,14 +226,6 @@ const AthleteUserInfo = () => {
                   {...inputProps}
                   sx={{
                     width: '100%',
-                    '& .MuiOutlinedInput-root': {
-                      '& > fieldset': {
-                        borderColor:
-                          formik.touched.phoneNumber &&
-                          Boolean(formik.errors.phoneNumber) &&
-                          '#d32f2f !important',
-                      },
-                    },
                   }}
                   variant='outlined'
                   placeholder={'+7 (7'}

@@ -56,13 +56,14 @@ const EventParticipants = () => {
       team: teamValue,
     }
     const othersPC = await getEventParticipants(`/directories/participant_category/`, params)
-    const athletePC = await getEventParticipants(`/directories/participant_category/`, {
+    const athletePC = await getEventParticipants(
+      `/directories/participant_category/`,
+      params,
       // participants__athlete__user__id: user?.role === 'athlete' ? `${user?.athleteId || ''}` : '',
-    })
+    )
     othersPC?.length && setLevels(getEnabledLevels(othersPC))
     setEventParticipants(othersPC)
     user?.role === 'athlete' && setAthletePCState(athletePC)
-    console.log({ athletePC, othersPC })
   }, [user, searchValue, levelValue, genderValue, weightValue, countryValue, teamValue])
   return (
     <>
