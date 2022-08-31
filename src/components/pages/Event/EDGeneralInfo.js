@@ -154,6 +154,7 @@ function EdGeneralInfo({ event }) {
     let regDisabled = false,
       regText = ''
     if (
+      !userAuthenticated ||
       userStatusInEvent?.message === 'User is not athlete' ||
       userStatusInEvent?.message === 'User is not event'
     ) {
