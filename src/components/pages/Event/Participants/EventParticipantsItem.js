@@ -72,31 +72,19 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) =>
             {!!participantsValues?.isPaid?.length && (
               <TitleList>{tEventDetail('event.participants.eventParticipantsItem.paid')}</TitleList>
             )}
-            <ParticipantsList
-              isOrganizer={true}
-              active={true}
-              participants={participantsValues.isPaid}
-            />
+            <ParticipantsList active={true} participants={participantsValues.isPaid} />
             {!!participantsValues?.isNotPaid?.length && (
               <TitleList>
                 {tEventDetail('event.participants.eventParticipantsItem.notPaid')}
               </TitleList>
             )}
-            <ParticipantsList
-              isOrganizer={true}
-              active={false}
-              participants={participantsValues.isNotPaid}
-            />
+            <ParticipantsList active={false} participants={participantsValues.isNotPaid} />
             {!!participantsValues?.registered?.length && (
               <TitleList>
                 {tEventDetail('event.participants.eventParticipantsItem.confirmed')}
               </TitleList>
             )}
-            <ParticipantsList
-              isOrganizer={true}
-              active={true}
-              participants={participantsValues.registered}
-            />
+            <ParticipantsList active={true} participants={participantsValues.registered} />
           </>
         ) : (
           <>
@@ -105,21 +93,13 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) =>
                 {tEventDetail('event.participants.eventParticipantsItem.registers')}
               </TitleList>
             )}
-            <ParticipantsList
-              isOrganizer={false}
-              active={true}
-              participants={participantsValues.registered}
-            />
+            <ParticipantsList active={true} participants={participantsValues.registered} />
             {!!participantsValues?.unconfirmed?.length && (
               <TitleList>
                 {tEventDetail('event.participants.eventParticipantsItem.unconfirmeds')}
               </TitleList>
             )}
-            <ParticipantsList
-              isOrganizer={false}
-              active={false}
-              participants={participantsValues.unconfirmed}
-            />
+            <ParticipantsList active={false} participants={participantsValues.unconfirmed} />
           </>
         )}
       </DropdownData>
