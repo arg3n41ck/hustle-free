@@ -28,7 +28,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) =>
   }, [eventParticipant])
 
   const [open, setOpen] = useState(
-    !!participantsValues.registered?.length || !!participantsValues.unconfirmed?.length,
+    Object.keys(participantsValues).some((key) => !!participantsValues[key]?.length),
   )
 
   const info = (

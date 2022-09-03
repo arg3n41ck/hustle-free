@@ -172,7 +172,7 @@ function EdGeneralInfo({ event }) {
       regDisabled = true
     }
     return { regDisabled, regText }
-  }, [canApplyToEventByDate, eventId, userStatusInEvent])
+  }, [canApplyToEventByDate, eventId, userStatusInEvent, userAuthenticated])
 
   return (
     <>

@@ -37,7 +37,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
       avatar: !!data?.avatar ? data.avatar : '',
     },
     onSubmit: async (values) => {
-      toast.info(tCommon('form.status.waitForServer'))
+      // toast.info(tCommon('form.status.waitForServer'))
       const _data = {
         ...dataPersonal,
         sports: [values.sports],

@@ -82,7 +82,7 @@ const Index = () => {
               <AuthInfo
                 title={tAuth('toast.perfect')}
                 text={`${tAuth('toast.sendToEmailP1')} ${formik.values.email} ${tAuth(
-                  'toast.sendToEmailP1',
+                  'toast.sendToEmailP2',
                 )}`}
                 toggleShow={setToggleInfoModal}
               />

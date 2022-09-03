@@ -69,7 +69,7 @@ const OrganizerLegalData = ({ dataPersonal, onSubmit, data }) => {
         formik.values.city &&
         !Boolean(formik.errors.city)
       ) {
-        toast.info(tCommon('form.status.waitForServer'))
+        // toast.info(tCommon('form.status.waitForServer'))
         const data = {
           ...dataPersonal,
           name_organization: values.nameOrganizer,

@@ -17,7 +17,9 @@ function TournamentRules({ event, rules }) {
       </TournamentRulesHeading>
       <Line />
       <TournamentRulesHeroInfo>
-        <TournamentRulesHeroInfoText dangerouslySetInnerHTML={{ __html: rules?.rules || '' }} />
+        {!!rules?.rules && (
+          <TournamentRulesHeroInfoText dangerouslySetInnerHTML={{ __html: rules.rules }} />
+        )}
         <TournamentRulesHeroBottomInfo>
           <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
           <TournamentRulesHeroBottomInfoText>
@@ -107,7 +109,7 @@ const TournamentRulesHeroBottomInfoText = styled.p`
   color: #f2f2f2;
 `
 
-const TournamentRulesHeroInfoText = styled.p`
+const TournamentRulesHeroInfoText = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 18px;

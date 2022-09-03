@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react"
-import styled from "styled-components"
-import { Avatar, Collapse } from "@mui/material"
-import Link from "next/link"
-import CustomButton from "../../../ui/CustomButton"
-import { useRouter } from "next/router"
-import { useTranslation } from "next-i18next"
+import React, { useRef, useState } from 'react'
+import styled from 'styled-components'
+import { Avatar, Collapse } from '@mui/material'
+import Link from 'next/link'
+import CustomButton from '../../../ui/CustomButton'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'next-i18next'
 
 export const OgParticipantsItem = ({
   participant,
@@ -14,7 +14,7 @@ export const OgParticipantsItem = ({
 }) => {
   const [open, setOpen] = useState(false)
   const { push: routerPush } = useRouter()
-  const { t: tEventDetail } = useTranslation("eventDetail")
+  const { t: tEventDetail } = useTranslation('eventDetail')
   const [isRegistered, setIsRegistered] = useState(isRegisteredValue)
   const variantsRefIsRegistered = useRef({
     open: { height: 214 },
@@ -28,58 +28,48 @@ export const OgParticipantsItem = ({
   return (
     <Wrapper open={open} onClick={() => setOpen((prev) => !prev)}>
       <ParticipantsItemLi
-        animate={open ? "open" : "closed"}
+        animate={open ? 'open' : 'closed'}
         transition={{ transition: 0.2 }}
-        variants={
-          isRegistered ? variantsRefIsRegistered : variantsRefIsNotRegistered
-        }
+        variants={isRegistered ? variantsRefIsRegistered : variantsRefIsNotRegistered}
       >
         <Content>
           <Avatar
             src={participant?.avatar}
-            sx={{ marginRight: 1.2, objectFit: "cover" }}
+            sx={{ marginRight: 1.2, objectFit: 'cover' }}
             alt={`${participant.fullName}`}
           />
           <ItemText>
-            <ItemTitle onClick={async () =>
-                routerPush(`/athlete/${participant?.athlete?.id}`)
-              }>{participant?.athlete?.user?.firstName}{" "}{participant?.athlete?.user?.lastName}</ItemTitle>
+            <ItemTitle onClick={async () => routerPush(`/athlete/${participant?.athlete?.id}`)}>
+              {participant?.athlete?.user?.firstName} {participant?.athlete?.user?.lastName}
+            </ItemTitle>
             <ItemDescription>{participant?.team?.name}</ItemDescription>
           </ItemText>
         </Content>
-        {!open && !isRegistered && <Line style={{ margin: "24px 0" }} />}
+        {!open && !isRegistered && <Line style={{ margin: '24px 0' }} />}
         {open && (
           <>
             <Info>
               <div>
-                <InfoTitle>
-                  {tEventDetail("event.participants.participantsItem.country")}
-                </InfoTitle>
+                <InfoTitle>{tEventDetail('event.participants.participantsItem.country')}</InfoTitle>
                 <InfoDescription>{participant?.athlete?.user?.country?.name}</InfoDescription>
               </div>
               <div>
-                <InfoTitle>
-                  {tEventDetail("event.participants.participantsItem.age")}
-                </InfoTitle>
+                <InfoTitle>{tEventDetail('event.participants.participantsItem.age')}</InfoTitle>
                 <InfoDescription>
-                  {participant?.athlete?.user?.age}{" "}
-                  {tEventDetail("event.participants.participantsItem.years")}
+                  {participant?.athlete?.user?.age}{' '}
+                  {tEventDetail('event.participants.participantsItem.years')}
                 </InfoDescription>
               </div>
             </Info>
-            {isRegistered && <Line style={{ margin: "24px 0" }} />}
+            {isRegistered && <Line style={{ margin: '24px 0' }} />}
             <Link href={`/athlete/${participant.athlete?.id}`} passHref>
               {isRegistered ? (
                 <RegisteredBtnProfile>
-                  {tEventDetail(
-                    "event.participants.participantsItem.viewProfile"
-                  )}
+                  {tEventDetail('event.participants.participantsItem.viewProfile')}
                 </RegisteredBtnProfile>
               ) : (
                 <NotRegisteredBtnProfile>
-                  {tEventDetail(
-                    "event.participants.participantsItem.viewProfile"
-                  )}
+                  {tEventDetail('event.participants.participantsItem.viewProfile')}
                 </NotRegisteredBtnProfile>
               )}
             </Link>
@@ -89,22 +79,22 @@ export const OgParticipantsItem = ({
       {!isRegistered && (
         <BtnWrapper onClick={() => setIsRegistered(true)}>
           <CustomButton
-            typeButton={"secondary"}
-            height={"32px"}
-            borderRadius={"4px"}
+            typeButton={'secondary'}
+            height={'32px'}
+            borderRadius={'4px'}
             onClick={() => onDelete(participant.id)}
-            style={{ fontSize: 14, color: "#fff", background: "none" }}
+            style={{ fontSize: 14, color: '#fff', background: 'none' }}
           >
-            {tEventDetail("event.participants.participantsItem.reject")}
+            {tEventDetail('event.participants.participantsItem.reject')}
           </CustomButton>
 
           <CustomButton
-            style={{ fontSize: 14, color: "#fff" }}
-            height={"32px"}
-            borderRadius={"4px"}
+            style={{ fontSize: 14, color: '#fff' }}
+            height={'32px'}
+            borderRadius={'4px'}
             onClick={() => onAccept(participant.id)}
           >
-            {tEventDetail("event.participants.participantsItem.confirm")}
+            {tEventDetail('event.participants.participantsItem.confirm')}
           </CustomButton>
         </BtnWrapper>
       )}
@@ -153,20 +143,19 @@ export const ParticipantsItem = ({ participant }) => {
   const [open, setOpen] = useState(false)
   const { push: routerPush } = useRouter()
 
-  console.log(participant)
   return (
     <Wrapper open={open} onClick={() => setOpen((prev) => !prev)}>
       <ParticipantsItemLi>
         <Content>
           <Avatar
             src={participant?.avatar}
-            sx={{ marginRight: 1.2, objectFit: "cover" }}
+            sx={{ marginRight: 1.2, objectFit: 'cover' }}
             alt={`${participant.fullName}`}
           />
           <ItemText>
-            <ItemTitle onClick={async () =>
-                routerPush(`/athlete/${participant?.athlete?.id}`)
-              }>{participant?.athlete?.user?.firstName}{" "}{participant?.athlete?.user?.lastName}</ItemTitle>
+            <ItemTitle onClick={async () => routerPush(`/athlete/${participant?.athlete?.id}`)}>
+              {participant?.athlete?.user?.firstName} {participant?.athlete?.user?.lastName}
+            </ItemTitle>
             <ItemDescription>{participant?.team?.name}</ItemDescription>
           </ItemText>
         </Content>
@@ -198,12 +187,9 @@ const Wrapper = styled.div`
   height: min-content;
   cursor: pointer;
   background: ${(p) =>
-    p.open
-      ? "linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), #191a1f"
-      : "#1b1c22"};
+    p.open ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), #191a1f' : '#1b1c22'};
   &:hover {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-      #191a1f;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), #191a1f;
   }
 `
 const ParticipantsItemLi = styled.li`

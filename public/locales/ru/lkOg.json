@@ -1,7 +1,7 @@
 {
   "myEvents": {
     "myEvents": "Мои турниры",
-    "createANewEvent": "Создать новое мероприятие",
+    "createANewEvent": "Создать новый турнир",
     "event": "Турнир",
     "date": "Дата",
     "registrations": "Регистрации",
@@ -17,6 +17,7 @@
     "cancel": "Отмена",
     "back": "Назад",
     "further": "Далее",
+    "sendToModeration": "Отправить на модерацию",
     "generalInformation": {
       "generalInformation": "Общая информация",
       "nameEvent": "Название турнира",

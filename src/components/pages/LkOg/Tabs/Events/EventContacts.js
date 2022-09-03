@@ -244,7 +244,7 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId 
           {tLkOg('editEvent.cancel')}
         </Cancel>
         <Submit disabled={!isValid} type='submit'>
-          {tLkOg('editEvent.further')}
+          {tLkOg('editEvent.sendToModeration')}
         </Submit>
       </EventFormFooter>
     </Form>
