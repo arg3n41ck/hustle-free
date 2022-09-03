@@ -1,14 +1,14 @@
-import React from "react"
-import styled from "styled-components"
-import AuthAthleteToEventAllAccordions from "../../../components/AuthAthleteToEventAccordions/AuthAthleteToEventAllAccordions"
-import AuthorizationAthleteToEvent from "../../../components/pages/Authorization/AuthorizationAthleteToEvent"
-import $api from "../../../services/axios"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import React from 'react'
+import styled from 'styled-components'
+import AuthAthleteToEventAllAccordions from '../../../components/AuthAthleteToEventAccordions/AuthAthleteToEventAllAccordions'
+import AuthorizationAthleteToEvent from '../../../components/pages/Authorization/AuthorizationAthleteToEvent'
+import $api from '../../../services/axios'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 function Registration({ data }) {
   return (
     <RegistrationContainer>
-      <AuthorizationAthleteToEvent />
+      <AuthorizationAthleteToEvent event={data} />
       <AuthAthleteToEventAllAccordions event={data} />
     </RegistrationContainer>
   )
@@ -25,11 +25,11 @@ export async function getServerSideProps(context) {
       data,
       query,
       ...(await serverSideTranslations(locale, [
-        "header",
-        "common",
-        "eventDetail",
-        "lkTm",
-        "footer",
+        'header',
+        'common',
+        'eventDetail',
+        'lkTm',
+        'footer',
       ])),
     }, // will be passed to the page component as props
   }

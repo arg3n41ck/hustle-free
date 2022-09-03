@@ -17,6 +17,40 @@ import * as yup from 'yup'
 import { toast } from 'react-toastify'
 import { fetchCountries } from '../../../redux/components/countriesAndCities'
 
+const dateKeys = [
+  {
+    start: 'earlyRegStart',
+    end: 'earlyRegEnd',
+    type: 'early_reg',
+  },
+  {
+    start: 'lateRegStart',
+    end: 'lateRegEnd',
+    type: 'late_reg',
+  },
+  {
+    start: 'standartRegStart',
+    end: 'standartRegEnd',
+    type: 'standart_reg',
+  },
+]
+
+const getRegDates = (start, end) => {
+  const startDate = new Date(start).setHours(0, 0, 0, 0)
+  const endDate = new Date(end).setHours(0, 0, 0, 0)
+  const today = new Date().setHours(0, 0, 0, 0)
+  return { startDate, endDate, today }
+}
+
+const getRegistrationType = (registration) => {
+  return dateKeys.find(({ start, end }) => {
+    if (registration[start] && registration[end]) {
+      const { today, endDate, startDate } = getRegDates(registration[start], registration[end])
+      return startDate <= today && today <= endDate
+    }
+  })
+}
+
 const emptyInitialValues = {
   team: '',
   category: '',
@@ -38,7 +72,7 @@ function getWeights(fromWeight, toWeight) {
   return weightsArr
 }
 
-function RegistrationAthleteToEvent({ data }) {
+function RegistrationAthleteToEvent({ eventRegistration }) {
   const {
     push: routerPush,
     query: { id: eventId },
@@ -66,13 +100,16 @@ function RegistrationAthleteToEvent({ data }) {
       try {
         if (!checkIsUserInfoFull(user)) {
           const { category, level, team, weight } = values
-
+          const typeRegistration = eventRegistration
+            ? getRegistrationType(eventRegistration)?.type
+            : ''
           await $api.post(`/events/registration/`, {
             event_part_category: +category,
             event: +eventId,
             team,
             level,
             weight,
+            typeRegistration,
           })
           routerPush('/lk-ah/profile/events')
         } else {
@@ -171,33 +208,25 @@ function RegistrationAthleteToEvent({ data }) {
 
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>Вес</p>
-          <Autocomplete
-            noOptionsText={'Ничего не найдено'}
-            onChange={(_, value) => formik.setFieldValue('weight', value)}
-            options={getWeights(25, 140)}
-            getOptionLabel={(option) => `${option}`}
-            value={formik?.values?.weight}
+          <TextField
+            name='weight'
+            placeholder='Вес'
+            variant='outlined'
             fullWidth
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                sx={{
-                  width: '100%',
-                  '& .MuiOutlinedInput-root': {
-                    '& > fieldset': {
-                      borderColor:
-                        formik.touched.weight &&
-                        Boolean(formik.errors.weight) &&
-                        '#d32f2f !important',
-                    },
-                  },
-                }}
-                fullWidth
-                placeholder='Вес'
-                error={formik.touched.weight && Boolean(formik.errors.weight)}
-                helperText={formik.touched.weight && formik.errors.weight}
-              />
-            )}
+            type='number'
+            sx={{
+              width: '100%',
+              '& .MuiOutlinedInput-root': {
+                '& > fieldset': {
+                  borderColor:
+                    formik.touched.weight && Boolean(formik.errors.weight) && '#d32f2f !important',
+                },
+              },
+            }}
+            error={formik.touched.weight && Boolean(formik.errors.weight)}
+            helperText={formik.touched.weight && formik.errors.weight}
+            onChange={formik.handleChange}
+            value={formik.values.weight}
           />
         </div>
 
@@ -235,7 +264,7 @@ function RegistrationAthleteToEvent({ data }) {
       </RegistrationAthleteToEventHeroInfo>
       <Line />
       <RegistrationAthleteToEventBottomButtons>
-        <Link href={`/events/${data?.id}/`}>
+        <Link href={`/events/${eventId}/`}>
           <RegistrationAthleteToEventBottomButton type='button'>
             Отмена
           </RegistrationAthleteToEventBottomButton>

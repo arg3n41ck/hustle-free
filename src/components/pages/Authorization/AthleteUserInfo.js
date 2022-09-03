@@ -90,7 +90,7 @@ const AthleteUserInfo = () => {
   useEffect(() => {
     if (typeof formik.values?.country === 'number') {
       const currentCountry = countries.find((country) => country.id === formik.values?.country)
-      setCurrentCities(currentCountry.cityCountry)
+      currentCountry && setCurrentCities(currentCountry?.cityCountry)
     }
 
     !countries?.length && dispatch(fetchCountries())
@@ -99,7 +99,7 @@ const AthleteUserInfo = () => {
   if (!user?.id && !countries?.length && !currentCities?.length) {
     return <div />
   }
-  console.log(formik.errors)
+
   return (
     <FormWrapper>
       <form onSubmit={formik.handleSubmit}>

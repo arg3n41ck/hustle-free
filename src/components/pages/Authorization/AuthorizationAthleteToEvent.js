@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import AthleteUserInfo from './AthleteUserInfo'
 import AthleteEventInfo from './AthleteEventInfo'
 
-function AuthorizationAthleteToEvent() {
+function AuthorizationAthleteToEvent({ event }) {
   return (
     <RegistrationAthleteToEventContainer>
       <RegistrationAthleteToEventHeading>
@@ -14,7 +14,7 @@ function AuthorizationAthleteToEvent() {
       <Line />
       <AthleteUserInfo />
       <Line />
-      <AthleteEventInfo />
+      <AthleteEventInfo eventRegistration={event?.registration} />
     </RegistrationAthleteToEventContainer>
   )
 }
