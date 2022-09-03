@@ -123,19 +123,21 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
 
   useEffect(() => {
     user && dispatch(fetchTeams({ athletes: user?.athleteId }))
-    dispatch(fetchLevel({ event: eventId }))
+    user && dispatch(fetchLevel({ event: eventId, gender: user?.gender }))
     dispatch(fetchCountries())
   }, [user])
 
   useEffect(() => {
-    dispatch(
-      fetchCategories({
-        event: eventId,
-        level: formik.values.level || '',
-        weight: formik.values.weight || '',
-      }),
-    )
-  }, [eventId, formik.values])
+    user &&
+      dispatch(
+        fetchCategories({
+          event: eventId,
+          level: formik.values.level || '',
+          weight: formik.values.weight || '',
+          gender: user?.gender,
+        }),
+      )
+  }, [eventId, formik.values, user])
 
   return (
     <form onSubmit={formik.handleSubmit}>
