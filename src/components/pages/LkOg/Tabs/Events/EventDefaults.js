@@ -133,7 +133,9 @@ function EventDefaults({ formik }) {
             disableCloseOnSelect={false}
             shouldDisableDate={(date) =>
               date.setHours(0, 0, 0, 0) <
-              (values?.dateStart ? new Date(values?.dateStart) : new Date())
+              (values?.dateStart
+                ? new Date(values?.dateStart).setDate(new Date(values?.dateStart).getDate() - 1)
+                : new Date())
             }
             renderInput={(params) => (
               <TextField

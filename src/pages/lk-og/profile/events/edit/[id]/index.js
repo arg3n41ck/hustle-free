@@ -42,7 +42,8 @@ function Index() {
           test: function (value) {
             return (
               this.parent.dateEnd &&
-              new Date(this.parent.dateEnd).getTime() > new Date(value).getTime()
+              new Date(this.parent.dateEnd).setHours(0, 0, 0, 0) >=
+                new Date(value).setHours(0, 0, 0, 0)
             )
           },
         })
