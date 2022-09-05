@@ -3,11 +3,11 @@ import { PubAthTitles } from './PublicAthlete'
 import styled from 'styled-components'
 import { Avatar } from '@mui/material'
 import { useTranslation } from 'next-i18next'
-import { useRouter } from "next/router"
+import { useRouter } from 'next/router'
 
 function Teams({ teams }) {
   if (!teams?.length) return null
-  const {push: routerPush} = useRouter()
+  const { push: routerPush } = useRouter()
   const { t: tLkAh } = useTranslation('lkAh')
 
   return (
@@ -15,14 +15,10 @@ function Teams({ teams }) {
       <PubAthTitles>{tLkAh('teams')}</PubAthTitles>
 
       <ul>
-        {teams.map(({ user: { avatar }, fullNameCoach, id }, i) => (
+        {teams.map(({ user: { avatar }, name, id }, i) => (
           <li key={`ATH-Teams-${i}`} onClick={() => routerPush(`/team/${id}`)}>
-            <Avatar
-              src={avatar}
-              alt={`${avatar}`}
-              sx={{ width: 64, height: 64 }}
-            />
-            <p>{fullNameCoach}</p>
+            <Avatar src={avatar} alt={`${avatar}`} sx={{ width: 64, height: 64 }} />
+            <p>{name}</p>
           </li>
         ))}
       </ul>

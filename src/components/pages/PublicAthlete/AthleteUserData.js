@@ -2,11 +2,10 @@ import React, { useRef } from 'react'
 import { Avatar } from '@mui/material'
 import styled from 'styled-components'
 import { calendar, email, gender, location, phone } from './Icons'
-import { useSelector } from 'react-redux'
-import { selectCountriesAndCities } from '../../../redux/components/countriesAndCities'
 import { getRuDetailDate } from '../../../helpers/helpers'
 import { phoneFormatter } from '../../../helpers/phoneFormatter'
 import { useTranslation } from 'next-i18next'
+import { format } from 'date-fns'
 
 const getContacts = ({
   email: userEmail,
@@ -25,7 +24,7 @@ const getContacts = ({
     },
     {
       icon: calendar,
-      content: dateBirthday ? getRuDetailDate(dateBirthday) : '',
+      content: dateBirthday ? format(new Date(dateBirthday), 'dd.MM.yyyy') : '',
     },
     {
       icon: gender,
@@ -61,12 +60,15 @@ function AthleteUserData({ user, isVisible }) {
       </MainInfo>
       {!!isVisible && (
         <Contacts>
-          {contacts.map(({ content, icon }, i) => (
-            <div key={`AthleteUserData-Contacts-${i}`}>
-              {icon}
-              <p>{content}</p>
-            </div>
-          ))}
+          {contacts.map(
+            ({ content, icon }, i) =>
+              content && (
+                <div key={`AthleteUserData-Contacts-${i}`}>
+                  {icon}
+                  <p>{content}</p>
+                </div>
+              ),
+          )}
         </Contacts>
       )}
     </MainWrapper>

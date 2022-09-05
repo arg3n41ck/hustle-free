@@ -56,23 +56,20 @@ function PublicAthlete({ athleteData }) {
               height={'96px'}
             >
               {participations.map(({ event, participationCategory, place }, i) => {
-                const {
-                  eventParticipantsCategory: { name, fromAge, toAge, fromWeight, toWeight },
-                  level,
-                } = participationCategory
-
                 return (
-                  <Participations
-                    key={`${event?.name}-${i}`}
-                    eventName={event?.name}
-                    level={level}
-                    place={place}
-                    name={name}
-                    fromAge={fromAge}
-                    toAge={toAge}
-                    fromWeight={fromWeight}
-                    toWeight={toWeight}
-                  />
+                  participationCategory && (
+                    <Participations
+                      key={`${event?.name}-${i}`}
+                      eventName={event?.name}
+                      level={participationCategory?.level}
+                      place={place}
+                      name={participationCategory?.eventParticipantsCategory?.name}
+                      fromAge={participationCategory?.eventParticipantsCategory?.fromAge}
+                      toAge={participationCategory?.eventParticipantsCategory?.toAge}
+                      fromWeight={participationCategory?.eventParticipantsCategory?.fromWeight}
+                      toWeight={participationCategory?.eventParticipantsCategory?.toWeight}
+                    />
+                  )
                 )
               })}
             </HorizontalTabsBorder>

@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { ParticipantsItem, OgParticipantsItem } from './ParticipantsItem'
 import $api from '../../../../services/axios'
 import { useRouter } from 'next/router'
-import { useSelector } from 'react-redux'
-import { selectOgEvents } from '../../../../redux/components/user'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchUser, selectOgEvents } from '../../../../redux/components/user'
 
 const ParticipantsList = ({ participants, active = true }) => {
   const {
@@ -13,19 +13,25 @@ const ParticipantsList = ({ participants, active = true }) => {
   const { user } = useSelector((state) => state.user)
   const [ogEventsId] = useSelector(selectOgEvents)
   const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
+  const dispatch = useDispatch()
+
   const acceptHandler = async (id) => {
-    await $api.post(`/events/events/${eventId}/add_participant/`, {
-      participant: id,
-      proposal: true,
-    })
+    await $api
+      .post(`/events/events/${eventId}/add_participant/`, {
+        participant: id,
+        proposal: true,
+      })
+      .then(() => dispatch(fetchUser()))
   }
 
   const deleteHandler = async (id) => {
-    await $api.post(`/events/events/${eventId}/add_participant/`, {
-      event_id: +eventId,
-      participant: id,
-      proposal: false,
-    })
+    await $api
+      .post(`/events/events/${eventId}/add_participant/`, {
+        event_id: +eventId,
+        participant: id,
+        proposal: false,
+      })
+      .then(() => dispatch(fetchUser()))
   }
 
   return (

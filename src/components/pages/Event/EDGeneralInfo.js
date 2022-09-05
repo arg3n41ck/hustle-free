@@ -143,8 +143,7 @@ function EdGeneralInfo({ event }) {
         toast.info(tEventDetail('event.EDGeneralInfo.registerAsAnAthlete'), {
           autoClose: 5000,
         })
-        localStorageSetItem('role', 'athlete')
-        routerPush('/registration')
+        routerPush('/login')
       }
     },
     [eventId, userAuthenticated, user, event],

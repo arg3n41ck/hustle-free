@@ -110,27 +110,33 @@ function EventsTable({ events }) {
                         }
                       >
                         <div
-                          className={
+                          className={`${
                             accessor === 'status' && cell[accessor].value === 'in_proccessing'
                               ? 'green'
                               : cell[accessor].value === 'published'
                               ? 'draft'
                               : ''
-                          }
+                          }`}
                         >
-                          {!!cell[accessor]?.name ? cell[accessor]?.name : cell[accessor]}
+                          <CellWrapper>
+                            <span>
+                              {!!cell[accessor]?.name ? cell[accessor]?.name : cell[accessor]}
+                            </span>
+                            {accessor === 'status' && (
+                              <Actions>
+                                <IconButton
+                                  onClick={() => {
+                                    routerPush(`/lk-og/profile/events/edit/${cell.id}/`)
+                                  }}
+                                >
+                                  <Edit />
+                                </IconButton>
+                              </Actions>
+                            )}
+                          </CellWrapper>
                         </div>
                       </Td>
                     ))}
-                    <Actions>
-                      <IconButton
-                        onClick={() => {
-                          routerPush(`/lk-og/profile/events/edit/${cell.id}/`)
-                        }}
-                      >
-                        <Edit />
-                      </IconButton>
-                    </Actions>
                   </Tr>
                 )
               })}
@@ -143,18 +149,20 @@ function EventsTable({ events }) {
 
 export default EventsTable
 
-const Actions = styled.td`
+const CellWrapper = styled.div`
+  position: relative;
+  transition: 0.1s ease-in;
+`
+
+const Actions = styled.div`
   position: absolute;
   right: 0;
   top: 0;
-  width: 179px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding: 20px 30px;
-  opacity: 0;
-  transition: 0.1s ease-in;
 `
 
 const Wrapper = styled.div`
@@ -181,13 +189,12 @@ const TBody = styled.tbody`
   tr:hover {
     background: #0f0f10;
     & td:nth-child(5) {
-      div {
+      span {
         opacity: 0;
       }
-    }
-
-    & ${Actions} {
-      opacity: 1;
+      & ${Actions} {
+        opacity: 1;
+      }
     }
   }
 `
@@ -202,12 +209,6 @@ const Tr = styled.tr`
 
   &.active {
     background: linear-gradient(0deg, rgba(39, 174, 96, 0.05), rgba(39, 174, 96, 0.05)), #1b1c22;
-  }
-
-  & td:nth-child(5) {
-    div {
-      min-width: 112px;
-    }
   }
 
   &:last-child {
@@ -241,6 +242,7 @@ const Td = styled.td`
 
   border-right: 1px solid #333;
   & div {
+    width: 100%;
     min-height: 60px;
     display: flex;
     align-items: center;
@@ -255,5 +257,9 @@ const Td = styled.td`
   }
   &:last-child {
     border-right: none;
+
+    ${Actions} {
+      opacity: 0;
+    }
   }
 `

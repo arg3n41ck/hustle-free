@@ -34,7 +34,7 @@ export const OgParticipantsItem = ({
       >
         <Content>
           <Avatar
-            src={participant?.avatar}
+            src={participant?.athlete?.user?.avatar}
             sx={{ marginRight: 1.2, objectFit: 'cover' }}
             alt={`${participant.fullName}`}
           />
@@ -148,7 +148,7 @@ export const ParticipantsItem = ({ participant }) => {
       <ParticipantsItemLi>
         <Content>
           <Avatar
-            src={participant?.avatar}
+            src={participant?.athlete?.user?.avatar}
             sx={{ marginRight: 1.2, objectFit: 'cover' }}
             alt={`${participant.fullName}`}
           />

@@ -15,9 +15,25 @@ function Footer() {
       <Social>
         <p>{tFooter('footer.aboutUs')}</p>
         <Icons>
-          <Facebook />
-          <Twitter />
-          <Insta />
+          <a href='https://t.me/hustlefreechannel' target='_blank' rel='noreferrer noopener'>
+            <Facebook />
+          </a>
+
+          <a
+            href='https://youtube.com/channel/UCLDTo8Ymc9XyNoxL2Eyll-g'
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <Twitter />
+          </a>
+
+          <a
+            href='https://instagram.com/hustlefree.pro?igshid=YmMyMTA2M2Y='
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <Insta />
+          </a>
         </Icons>
       </Social>
       <Copyright>Copyright © 2022. Hustle Free. All rights reserved.</Copyright>
@@ -27,7 +43,7 @@ function Footer() {
 
 export default Footer
 
-const FooterMainWrapper = styled.div`
+const FooterMainWrapper = styled.a`
   display: flex;
   flex-direction: column;
   grid-row-gap: 16px;

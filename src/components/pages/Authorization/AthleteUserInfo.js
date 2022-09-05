@@ -182,7 +182,11 @@ const AthleteUserInfo = () => {
                 disableCloseOnSelect={false}
                 value={formik.values?.dateBirthday}
                 onChange={(value) =>
-                  formik.setFieldValue('dateBirthday', value && format(value, 'yyyy-MM-dd'))
+                  formik.setFieldValue(
+                    'dateBirthday',
+                    !!(value instanceof Date && !isNaN(value.valueOf())) &&
+                      format(value, 'yyyy-MM-dd'),
+                  )
                 }
                 inputFormat='dd/MM/yyyy'
                 renderInput={(params) => (
