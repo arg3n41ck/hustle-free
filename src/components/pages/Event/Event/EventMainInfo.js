@@ -92,7 +92,9 @@ const getParticipantCategories = (event) => {
   const minPrice = event?.eventParticipantsCategory?.length
     ? event.eventParticipantsCategory.reduce(
         (prev, cur) => {
-          const curEarlyPrice = Math.round(+cur?.price?.earlyPrice || 0)
+          const curEarlyPrice = Math.round(
+            +cur?.price?.earlyPrice || +cur?.price?.standartPrice || +cur?.price?.latePrice,
+          )
           return {
             price: prev?.price == 0 || +prev?.price > curEarlyPrice ? curEarlyPrice : prev?.price,
             currency:

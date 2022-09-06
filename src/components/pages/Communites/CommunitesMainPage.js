@@ -62,7 +62,9 @@ function CommunitesMainPage() {
         </form>
 
         <CommunitesItem>
-          <CommunitesHeadingText>{tCommunities('communities.participants')}</CommunitesHeadingText>
+          <CommunitesHeadingText>{`${tCommunities('communities.participants')} ${
+            athletes?.length ? '(' + athletes?.length + ')' : ''
+          }`}</CommunitesHeadingText>
           <Link href={`/communities/athletes`} passHref>
             <CommunitesHeadingTextViewAll>
               {tCommunities('communities.seeAll')}
@@ -73,7 +75,9 @@ function CommunitesMainPage() {
         <CommunitesAthletesList data={athletes.slice(0, 8)} />
 
         <CommunitesItem>
-          <CommunitesHeadingText>{tCommunities('communities.teams')}</CommunitesHeadingText>
+          <CommunitesHeadingText>{`${tCommunities('communities.teams')} ${
+            teams?.length ? '(' + teams?.length + ')' : ''
+          }`}</CommunitesHeadingText>
           <Link href={`/communities/teams`} passHref>
             <CommunitesHeadingTextViewAll>
               {tCommunities('communities.seeAll')}

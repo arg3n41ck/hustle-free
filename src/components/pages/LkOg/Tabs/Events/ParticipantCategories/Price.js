@@ -39,13 +39,31 @@ const getPrice = async (id) => {
   return data
 }
 
+const getEventPeriods = async (id) => {
+  const { data } = await $api.get(`/events/event_registr_periods/`, { params: { event: id } })
+  return data?.length ? data[0] : data
+}
+
 function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id: pcId }) {
   const [defaultValues, setDefaultValues] = useState(initialEmptyValues)
   const { t: tLkOg } = useTranslation('lkOg')
   const { t: tCommon } = useTranslation('common')
+  const [eventPeriods, setEventPeriods] = useState(null)
 
   const validationSchema = yup.object({
     standartPrice: yup.string().required(tLkOg('validation.required')),
+    earlyPrice: yup.lazy(() => {
+      if (eventPeriods?.earlyRegActive) {
+        return yup.string().required(tLkOg('validation.required'))
+      }
+      return yup.string()
+    }),
+    latePrice: yup.lazy(() => {
+      if (eventPeriods?.lateRegActive) {
+        return yup.string().required(tLkOg('validation.required'))
+      }
+      return yup.string()
+    }),
   })
 
   const { values, setFieldValue, touched, errors, handleChange, handleSubmit } = useFormik({
@@ -80,6 +98,10 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
     priceId && getPrice(priceId).then(setDefaultValues)
   }, [priceId])
 
+  useEffect(() => {
+    eventId && getEventPeriods(eventId).then(setEventPeriods)
+  }, [eventId])
+
   const currencyOptions = [
     { name: tCommon('currency.kzt'), value: 'kzt' },
     { name: tCommon('currency.usd'), value: 'usd' },
@@ -98,20 +120,22 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
       <Form onSubmit={handleSubmit}>
         <FormSubTitle>{tLkOg('categoriesOfParticipants.categoryRegistrationPrices')}</FormSubTitle>
 
-        <Field>
-          <p className='auth-title__input'>{tLkOg('registrationPeriods.earlyRegistration')}</p>
-          <TextField
-            name='earlyPrice'
-            placeholder={tLkOg('categoriesOfParticipants.price')}
-            variant='outlined'
-            fullWidth
-            type='number'
-            error={touched.earlyPrice && Boolean(errors.earlyPrice)}
-            helperText={touched.earlyPrice && errors.earlyPrice}
-            onChange={handleChange}
-            value={values.earlyPrice ? Math.round(values.earlyPrice) : values.earlyPrice}
-          />
-        </Field>
+        {eventPeriods?.earlyRegActive && (
+          <Field>
+            <p className='auth-title__input'>{tLkOg('registrationPeriods.earlyRegistration')}</p>
+            <TextField
+              name='earlyPrice'
+              placeholder={tLkOg('categoriesOfParticipants.price')}
+              variant='outlined'
+              fullWidth
+              type='number'
+              error={touched.earlyPrice && Boolean(errors.earlyPrice)}
+              helperText={touched.earlyPrice && errors.earlyPrice}
+              onChange={handleChange}
+              value={values.earlyPrice ? Math.round(values.earlyPrice) : values.earlyPrice}
+            />
+          </Field>
+        )}
 
         <Field>
           <p className='auth-title__input'>{tLkOg('registrationPeriods.standartRegistrations')}</p>
@@ -128,20 +152,22 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
           />
         </Field>
 
-        <Field>
-          <p className='auth-title__input'>{tLkOg('registrationPeriods.tateCheckIn')}</p>
-          <TextField
-            name='latePrice'
-            placeholder={tLkOg('categoriesOfParticipants.price')}
-            variant='outlined'
-            fullWidth
-            type='number'
-            error={touched.latePrice && Boolean(errors.latePrice)}
-            helperText={touched.latePrice && errors.latePrice}
-            onChange={handleChange}
-            value={values.latePrice ? Math.round(values.latePrice) : values.latePrice}
-          />
-        </Field>
+        {eventPeriods?.lateRegActive && (
+          <Field>
+            <p className='auth-title__input'>{tLkOg('registrationPeriods.tateCheckIn')}</p>
+            <TextField
+              name='latePrice'
+              placeholder={tLkOg('categoriesOfParticipants.price')}
+              variant='outlined'
+              fullWidth
+              type='number'
+              error={touched.latePrice && Boolean(errors.latePrice)}
+              helperText={touched.latePrice && errors.latePrice}
+              onChange={handleChange}
+              value={values.latePrice ? Math.round(values.latePrice) : values.latePrice}
+            />
+          </Field>
+        )}
 
         <Field>
           <p className='auth-title__input'>{tLkOg('categoriesOfParticipants.valuta')}</p>
