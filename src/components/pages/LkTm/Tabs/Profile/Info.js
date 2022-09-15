@@ -9,7 +9,7 @@ import { WebsiteIcon } from '../../../../../assets/svg/icons'
 import { LinkIcon } from '../../../../../assets/svg/icons'
 import { UserIcon } from '../../../../../assets/svg/icons'
 import { DefaultPhoneIcon } from '../../../../../assets/svg/icons'
-import { phoneFormatter } from '../../../../../helpers/phoneFormatter'
+import { normalizePhone, phoneFormatter } from '../../../../../helpers/phoneFormatter'
 import { selectCountriesAndCities } from '../../../../../redux/components/countriesAndCities'
 import { useTranslation } from 'next-i18next'
 import ProfileAvaUploader from '../../../../ui/ProfileAvaUploader'
@@ -79,7 +79,8 @@ const Info = ({ onToggleSidebar, onView }) => {
                 </p>
               </ItemTitle>
               <ItemDescription>
-                {currentLocations.country}, г. {currentLocations.city}
+                {currentLocations.country || ''}{' '}
+                {currentLocations.city && `, г. ${currentLocations.city}`}
               </ItemDescription>
             </Item>
             <Item>
@@ -91,15 +92,15 @@ const Info = ({ onToggleSidebar, onView }) => {
               </ItemTitle>
               <ItemDescription>{user?.email}</ItemDescription>
             </Item>
-            <Item>
-              <ItemTitle>
-                <WrapperIcon>
-                  <WebsiteIcon />
-                </WrapperIcon>
-                <p>{tLkTm('teamProfile.website')}</p>
-              </ItemTitle>
-              <ItemDescription>
-                {
+            {user?.webSite && (
+              <Item>
+                <ItemTitle>
+                  <WrapperIcon>
+                    <WebsiteIcon />
+                  </WrapperIcon>
+                  <p>{tLkTm('teamProfile.website')}</p>
+                </ItemTitle>
+                <ItemDescription>
                   <a
                     target={'_blank'}
                     style={{ color: '#2E79DD', textDecoration: 'underline' }}
@@ -110,9 +111,9 @@ const Info = ({ onToggleSidebar, onView }) => {
                       <LinkIcon />
                     </Box>
                   </a>
-                }
-              </ItemDescription>
-            </Item>
+                </ItemDescription>
+              </Item>
+            )}
             <CoachBlock>
               <CoachItem>
                 <ItemTitle>
@@ -124,17 +125,17 @@ const Info = ({ onToggleSidebar, onView }) => {
                 <ItemDescription>{user?.fullNameCoach}</ItemDescription>
               </CoachItem>
 
-              <CoachItem style={{ marginTop: 16 }}>
-                <ItemTitle>
-                  <WrapperIcon>
-                    <DefaultPhoneIcon />
-                  </WrapperIcon>
-                  <p>{tLkTm('teamProfile.contacts')}</p>
-                </ItemTitle>
-                <ItemDescription>
-                  {!!user?.phoneCoach && phoneFormatter(user?.phoneCoach)}
-                </ItemDescription>
-              </CoachItem>
+              {!!normalizePhone(user?.phoneCoach || '') && (
+                <CoachItem style={{ marginTop: 16 }}>
+                  <ItemTitle>
+                    <WrapperIcon>
+                      <DefaultPhoneIcon />
+                    </WrapperIcon>
+                    <p>{tLkTm('teamProfile.contacts')}</p>
+                  </ItemTitle>
+                  <ItemDescription>{phoneFormatter(user?.phoneCoach)}</ItemDescription>
+                </CoachItem>
+              )}
             </CoachBlock>
           </List>
         </Footer>

@@ -34,7 +34,7 @@ function Events({ teamId, isPublic = false }) {
   useEffect(() => {
     teamId && getStatistics(teamId, query).then(setStatics)
   }, [query])
-
+  console.log({ statics })
   return (
     <MainWrapper>
       <EDContentFilter

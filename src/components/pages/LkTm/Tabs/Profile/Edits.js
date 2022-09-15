@@ -32,11 +32,12 @@ const Edits = ({ onView }) => {
   const dispatch = useDispatch()
   const [currentSportTypes, setCurrentSportTypes] = useState([])
   const { t: tCommon } = useTranslation('common')
+  const { t: tAuth } = useTranslation('auth')
   const validationSchema = yup.object({
     name: yup.string().nullable(),
     country: yup.mixed().required(tCommon('validation.required')),
     city: yup.mixed().required(tCommon('validation.required')),
-    webSite: yup.string().required(tCommon('validation.required')),
+    webSite: yup.string(),
     fullNameCoach: yup.string().required(tCommon('validation.required')),
     phoneCoach: yup
       .string()
@@ -60,6 +61,7 @@ const Edits = ({ onView }) => {
       }
       return true
     }),
+    preliminaryModeration: yup.boolean(),
   })
 
   const formik = useFormik({
@@ -74,6 +76,7 @@ const Edits = ({ onView }) => {
       description: user?.description || '',
       emailCoach: user?.emailCoach || '',
       avatar: user?.avatar || '',
+      preliminaryModeration: false,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -449,6 +452,33 @@ const Edits = ({ onView }) => {
             <GrayText>{tCommon('form.fieldsNames.profileAvatar.rules4mb')}</GrayText>
           </GalleryBlock>
         </Gallery>
+        <CheckboxText>{tAuth('team.athleteModeration')}</CheckboxText>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: '20px auto',
+            gridGap: '16px',
+            alignItems: 'start',
+            paddingBottom: '32px',
+            borderBottom: '1px solid #333333',
+          }}
+        >
+          <Checkbox
+            name='preliminaryModeration'
+            checked={formik.values.preliminaryModeration}
+            onClick={formik.handleChange}
+            sx={{
+              color: '#6D4EEA',
+              '&.Mui-checked': {
+                color: '#6D4EEA',
+              },
+            }}
+          />
+          <CheckboxDescriptions>
+            <CheckboxDescription>{tAuth('team.athleteModerationP')}</CheckboxDescription>
+            <CheckboxDescription2>{tAuth('team.athleteModerationP2')}</CheckboxDescription2>
+          </CheckboxDescriptions>
+        </Box>
         <div className='auth-wrapper__independent' style={{ margin: '0 0 32px' }}>
           <Link href={'/auth/auth-reset-password'}>
             <a>
@@ -508,6 +538,36 @@ const ButtonWrapper = styled.div`
     margin-right: 32px;
   }
 `
+
+const CheckboxDescriptions = styled.div`
+  margin-top: 7px;
+`
+
+const CheckboxText = styled.p`
+  color: #f2f2f2;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 32px;
+  margin-top: 32px;
+`
+
+const CheckboxDescription = styled.p`
+  color: #f2f2f2;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+`
+
+const CheckboxDescription2 = styled.p`
+  color: #828282;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+`
+
 const SportItem = styled.div`
   margin-top: 16px;
   display: flex;

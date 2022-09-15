@@ -10,7 +10,6 @@ import { theme } from '../../../../styles/theme'
 import { useTranslation } from 'next-i18next'
 
 const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => {
-  const [checked, setChecked] = useState(false)
   const [imageUrl, setImageUrl] = useState(null)
   const { t: tAuth } = useTranslation('auth')
   const { t: tCommon } = useTranslation('common')
@@ -26,6 +25,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
         )
         .required(tCommon('validation.required')),
       description: yup.string(),
+      preliminaryModeration: yup.boolean(),
       // .required(tCommon('validation.required')),
     }),
   )
@@ -35,6 +35,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
       sports: !!data?.sports ? data.sports : '',
       description: !!data?.description ? data.description : '',
       avatar: !!data?.avatar ? data.avatar : '',
+      preliminaryModeration: false,
     },
     onSubmit: async (values) => {
       // toast.info(tCommon('form.status.waitForServer'))
@@ -55,7 +56,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
       setImageUrl(URL.createObjectURL(event.target.files[0]))
     }
   }
-
+  console.log(formik.values)
   return (
     <Form onSubmit={formik.handleSubmit}>
       <div className='auth-wrapper__input'>
@@ -197,9 +198,9 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
         }}
       >
         <Checkbox
-          checked={checked}
-          name='moderation'
-          onClick={() => setChecked(!checked)}
+          name='preliminaryModeration'
+          checked={formik.values.preliminaryModeration}
+          onClick={formik.handleChange}
           sx={{
             color: '#6D4EEA',
             '&.Mui-checked': {

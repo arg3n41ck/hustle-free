@@ -68,7 +68,8 @@ function TeamInfo({ onToggleSidebar, teamId, userStatusInTeam, checkUserStatus }
                   </p>
                 </ItemTitle>
                 <ItemDescription>
-                  {team?.country?.name}, г. {team?.city?.name}
+                  {team?.country?.name || ''}
+                  {team?.city?.name && `, г. ${team?.city?.name}`}
                 </ItemDescription>
               </Item>
               <Item>
@@ -80,15 +81,15 @@ function TeamInfo({ onToggleSidebar, teamId, userStatusInTeam, checkUserStatus }
                 </ItemTitle>
                 {team?.emailCoach && <ItemDescription>{team?.emailCoach}</ItemDescription>}
               </Item>
-              <Item>
-                <ItemTitle>
-                  <WrapperIcon>
-                    <WebsiteIcon />
-                  </WrapperIcon>
-                  <p>{tLkTm('teamProfile.website')}</p>
-                </ItemTitle>
-                <ItemDescription>
-                  {
+              {team?.webSite && (
+                <Item>
+                  <ItemTitle>
+                    <WrapperIcon>
+                      <WebsiteIcon />
+                    </WrapperIcon>
+                    <p>{tLkTm('teamProfile.website')}</p>
+                  </ItemTitle>
+                  <ItemDescription>
                     <a
                       target={'_blank'}
                       style={{
@@ -98,14 +99,14 @@ function TeamInfo({ onToggleSidebar, teamId, userStatusInTeam, checkUserStatus }
                       rel='noreferrer noopener'
                       href={team?.webSite}
                     >
-                      {team?.webSite || ''}
+                      {team?.webSite}
                       <Box component={'span'} sx={{ marginLeft: 1 }}>
                         <LinkIcon />
                       </Box>
                     </a>
-                  }
-                </ItemDescription>
-              </Item>
+                  </ItemDescription>
+                </Item>
+              )}
               <CoachBlock>
                 <CoachItem>
                   <ItemTitle>
@@ -117,17 +118,17 @@ function TeamInfo({ onToggleSidebar, teamId, userStatusInTeam, checkUserStatus }
                   <ItemDescription>{team?.fullNameCoach || ''}</ItemDescription>
                 </CoachItem>
 
-                <CoachItem style={{ marginTop: 16 }}>
-                  <ItemTitle>
-                    <WrapperIcon>
-                      <DefaultPhoneIcon />
-                    </WrapperIcon>
-                    <p>{tLkTm('teamProfile.contacts')}</p>
-                  </ItemTitle>
-                  <ItemDescription>
-                    {!!team?.phoneCoach && phoneFormatter(team?.phoneCoach)}
-                  </ItemDescription>
-                </CoachItem>
+                {!!team?.phoneCoach && (
+                  <CoachItem style={{ marginTop: 16 }}>
+                    <ItemTitle>
+                      <WrapperIcon>
+                        <DefaultPhoneIcon />
+                      </WrapperIcon>
+                      <p>{tLkTm('teamProfile.contacts')}</p>
+                    </ItemTitle>
+                    <ItemDescription>{phoneFormatter(team?.phoneCoach)}</ItemDescription>
+                  </CoachItem>
+                )}
               </CoachBlock>
             </List>
           </div>

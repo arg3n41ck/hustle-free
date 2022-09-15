@@ -3,32 +3,75 @@ import styled from 'styled-components'
 import { getGender } from '../../LkOg/Tabs/Events/EventParticipantCategories'
 import { useTranslation } from 'next-i18next'
 import Tooltip from '@mui/material/Tooltip'
+import { useRouter } from 'next/router'
+import $api from '../../../../services/axios'
 
-const createDataForTable = (pc = []) => {
-  const {
-    id,
-    fromAge,
-    toAge,
-    fromWeight,
-    levels,
-    toWeight,
-    gender,
-    price: { standartPrice, currency, earlyPrice, latePrice },
-  } = pc
+const getEventRegistrationPeriods = async (eventId) => {
+  try {
+    const { data } = await $api.get(`/events/event_registr_periods/?event=${eventId}`)
+    return data?.length ? data[0] : null
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const dateKeys = [
+  {
+    start: 'earlyRegStart',
+    end: 'earlyRegEnd',
+    priceKey: 'earlyPrice',
+  },
+  {
+    start: 'lateRegStart',
+    end: 'lateRegEnd',
+    priceKey: 'latePrice',
+  },
+  {
+    start: 'standartRegStart',
+    end: 'standartRegEnd',
+    priceKey: 'standartPrice',
+  },
+]
+const getRegDates = (start, end) => {
+  const startDate = new Date(start).setHours(0, 0, 0, 0)
+  const endDate = new Date(end).setHours(0, 0, 0, 0)
+  const today = new Date().setHours(0, 0, 0, 0)
+  return { startDate, endDate, today }
+}
+
+const getPriceByRegistration = (registration) => {
+  return dateKeys.find(({ start, end }) => {
+    if (registration[start] && registration[end]) {
+      const { today, endDate, startDate } = getRegDates(registration[start], registration[end])
+      return startDate <= today && today <= endDate
+    }
+  })
+}
+
+const createDataForTable = (pc = [], crp) => {
+  const { id, fromAge, toAge, fromWeight, levels, toWeight, gender, price } = pc
+  const { standartPrice, currency, latePrice } = price
   return levels
-    .map(({ id: lId, name: lName }, i) => ({
-      id: `${id}-${lId}-${i}`,
-      gender: getGender(gender, true),
-      age: `${fromAge} - ${toAge} лет`,
-      price: `${Math.round(standartPrice || earlyPrice || latePrice)} ${currency.toLowerCase()}`,
-      weight: `${fromWeight} - ${toWeight} кг`,
-      name: lName,
-    }))
+    .map(({ id: lId, name: lName }, i) => {
+      return {
+        id: `${id}-${lId}-${i}`,
+        gender: getGender(gender, true),
+        age: `${fromAge} - ${toAge} лет`,
+        price: `${Math.round(price[crp] || standartPrice || latePrice)} ${currency.toLowerCase()}`,
+        weight: `${fromWeight} - ${toWeight} кг`,
+        name: lName,
+      }
+    })
     .flat(Infinity)
 }
 
 function Table({ pc }) {
   const [rewrittenData, setRewrittenData] = useState([])
+  const [eventReg, setEventReg] = useState(null)
+  const [currentRegPeriod, setCurrentRegPeriod] = useState(null)
+  const {
+    query: { id: eventId },
+  } = useRouter()
   const { t: tEventDetail } = useTranslation('eventDetail')
 
   const columns = useMemo(() => {
@@ -67,8 +110,19 @@ function Table({ pc }) {
   }, [])
 
   useEffect(() => {
-    setRewrittenData(createDataForTable(pc))
-  }, [pc])
+    setRewrittenData(createDataForTable(pc, currentRegPeriod))
+  }, [pc, currentRegPeriod])
+
+  useEffect(() => {
+    eventId && getEventRegistrationPeriods(eventId).then(setEventReg)
+  }, [eventId])
+
+  useEffect(() => {
+    if (eventReg) {
+      const crp = getPriceByRegistration(eventReg)?.priceKey || null
+      setCurrentRegPeriod(crp)
+    }
+  }, [eventReg])
 
   return (
     <Wrapper>

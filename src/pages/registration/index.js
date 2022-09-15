@@ -50,6 +50,7 @@ const Index = () => {
       language: locale,
     },
     onSubmit: async (values) => {
+      console.log('submit: ', values)
       setLoading(true)
       if (agreement && formik.values.email && !Boolean(formik.errors.email)) {
         try {
@@ -68,6 +69,8 @@ const Index = () => {
   useEffect(() => {
     setErrorMessage(null)
   }, [formik.values.email])
+
+  console.log(formik.values)
 
   return (
     <>
