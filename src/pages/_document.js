@@ -1,15 +1,29 @@
-import Document, { Head, Html, Main, NextScript } from "next/document"
-import { ServerStyleSheet } from "styled-components"
-import React from "react"
+import Document, { Head, Html, Main, NextScript } from 'next/document'
+import { ServerStyleSheet } from 'styled-components'
+import React from 'react'
+import { YMInitializer } from 'react-yandex-metrika'
 
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="ru">
+      <Html lang='ru'>
         <Head>
-          <link rel="icon" href="/favicon.ico" />
-          <meta charSet="utf-8" />
+          <link rel='icon' href='/favicon.ico' />
+          <meta charSet='utf-8' />
         </Head>
+
+        <YMInitializer
+          accounts={[90223044]}
+          options={{
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true,
+            // trackHash: true,
+          }}
+          version='2'
+        />
+
         <body>
           <Main />
           <NextScript />
@@ -24,8 +38,7 @@ export default class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
+          enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
         })
 
       const initialProps = await Document.getInitialProps(ctx)

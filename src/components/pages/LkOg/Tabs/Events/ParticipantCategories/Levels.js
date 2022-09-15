@@ -46,7 +46,7 @@ function Levels({
     validationSchema,
     onSubmit: (values) => submit(values),
   })
-  console.log({ levels: defaultValues })
+
   useEffect(() => {
     getLevelsBySportType(sportType).then(setLevels)
   }, [sportType, defaultValues])
