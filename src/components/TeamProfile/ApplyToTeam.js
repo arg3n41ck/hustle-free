@@ -14,7 +14,6 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
   const { user, userAuthenticated } = useSelector((state) => state.user)
 
   const sendReq = useCallback(async () => {
-    console.log({ userStatusInTeam })
     if (
       (userStatusInTeam?.message === 'Not found' ||
         userStatusInTeam?.message === 'User rejected') &&
