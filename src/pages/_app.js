@@ -1,16 +1,17 @@
-import "../styles/globals.scss"
-import { ThemeProvider as ThemeProviderMui } from "@mui/material"
-import { ThemeProvider } from "styled-components"
-import { appWithTranslation } from "next-i18next"
+import '../styles/globals.scss'
+import { ThemeProvider as ThemeProviderMui } from '@mui/material'
+import { ThemeProvider } from 'styled-components'
+import { appWithTranslation } from 'next-i18next'
 
-import { theme, themeMui } from "../styles/theme"
-import Layout from "../components/layouts/Layout"
-import { Provider } from "react-redux"
-import store from "../redux/store"
-import "react-toastify/dist/ReactToastify.css"
-import RouterLoader from "../components/ui/RouterLoader"
-import EventRouteWrapper from "../components/pages/LkOg/Tabs/Events/EventRouteProvider"
-import { ToastContainer } from "react-toastify"
+import { theme, themeMui } from '../styles/theme'
+import Layout from '../components/layouts/Layout'
+import { Provider } from 'react-redux'
+import store from '../redux/store'
+import 'react-toastify/dist/ReactToastify.css'
+import RouterLoader from '../components/ui/RouterLoader'
+import EventRouteWrapper from '../components/pages/LkOg/Tabs/Events/EventRouteProvider'
+import { ToastContainer } from 'react-toastify'
+import { YMInitializer } from 'react-yandex-metrika'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -20,7 +21,7 @@ function MyApp({ Component, pageProps }) {
           <Layout>
             <RouterLoader />
             <ToastContainer
-              position="top-right"
+              position='top-right'
               autoClose={2000}
               hideProgressBar={false}
               newestOnTop={false}
@@ -36,6 +37,17 @@ function MyApp({ Component, pageProps }) {
           </Layout>
         </ThemeProvider>
       </ThemeProviderMui>
+      <YMInitializer
+        accounts={[90223044]}
+        options={{
+          clickmap: true,
+          trackLinks: true,
+          accurateTrackBounce: true,
+          webvisor: true,
+          // trackHash: true,
+        }}
+        version='2'
+      />
     </Provider>
   )
 }

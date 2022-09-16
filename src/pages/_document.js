@@ -1,7 +1,6 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 import React from 'react'
-import { YMInitializer } from 'react-yandex-metrika'
 
 export default class MyDocument extends Document {
   render() {
@@ -11,19 +10,6 @@ export default class MyDocument extends Document {
           <link rel='icon' href='/favicon.ico' />
           <meta charSet='utf-8' />
         </Head>
-
-        <YMInitializer
-          accounts={[90223044]}
-          options={{
-            clickmap: true,
-            trackLinks: true,
-            accurateTrackBounce: true,
-            webvisor: true,
-            // trackHash: true,
-          }}
-          version='2'
-        />
-
         <body>
           <Main />
           <NextScript />
