@@ -3,7 +3,7 @@ import { Avatar } from '@mui/material'
 import styled from 'styled-components'
 import { calendar, email, gender, location, phone } from './Icons'
 import { getRuDetailDate } from '../../../helpers/helpers'
-import { phoneFormatter } from '../../../helpers/phoneFormatter'
+import { normalizePhone, phoneFormatter } from '../../../helpers/phoneFormatter'
 import { useTranslation } from 'next-i18next'
 import { format } from 'date-fns'
 
@@ -40,7 +40,7 @@ const getContacts = ({
     },
     {
       icon: phone,
-      content: phoneNumber ? phoneFormatter(phoneNumber) : '',
+      content: !!normalizePhone(phoneNumber || 0) ? phoneFormatter(phoneNumber) : '',
     },
   ]
 }
@@ -104,7 +104,7 @@ const Contacts = styled.div`
   border-top: 1px solid #333;
   margin-top: 16px;
   padding: 16px 0 0;
-
+  overflow: hidden;
   div {
     display: grid;
     grid-template-columns: 24px auto;

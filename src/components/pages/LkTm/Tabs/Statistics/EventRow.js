@@ -11,7 +11,7 @@ function EventRow({ eventResults, isPublic, teamId }) {
   const info = (
     <Info>
       <InfoItem color={'#828282'}>
-        <p>542</p>
+        <p>{eventResults?.countParticipant || 0}</p>
         <div>{tLkTm('statistics.participant')}</div>
       </InfoItem>
       <InfoItem color={'#2E79DD'}>

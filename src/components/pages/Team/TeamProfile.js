@@ -10,7 +10,7 @@ import { DefaultEmailIcon } from '../../../assets/svg/icons'
 import { LinkIcon } from '../../../assets/svg/icons'
 import { UserIcon } from '../../../assets/svg/icons'
 import { DefaultPhoneIcon } from '../../../assets/svg/icons'
-import { phoneFormatter } from '../../../helpers/phoneFormatter'
+import { normalizePhone, phoneFormatter } from '../../../helpers/phoneFormatter'
 import { useDispatch } from 'react-redux'
 import { fetchCountries } from '../../../redux/components/countriesAndCities'
 import ApplyToTeam from '../../TeamProfile/ApplyToTeam'
@@ -118,7 +118,7 @@ function TeamInfo({ onToggleSidebar, teamId, userStatusInTeam, checkUserStatus }
                   <ItemDescription>{team?.fullNameCoach || ''}</ItemDescription>
                 </CoachItem>
 
-                {!!team?.phoneCoach && (
+                {!!normalizePhone(team?.phoneCoach) && (
                   <CoachItem style={{ marginTop: 16 }}>
                     <ItemTitle>
                       <WrapperIcon>

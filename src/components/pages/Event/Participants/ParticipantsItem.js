@@ -51,7 +51,7 @@ export const OgParticipantsItem = ({
             <Info>
               <div>
                 <InfoTitle>{tEventDetail('event.participants.participantsItem.country')}</InfoTitle>
-                <InfoDescription>{participant?.athlete?.user?.country?.name}</InfoDescription>
+                <InfoDescription>{participant?.athlete?.user?.country}</InfoDescription>
               </div>
               <div>
                 <InfoTitle>{tEventDetail('event.participants.participantsItem.age')}</InfoTitle>
@@ -163,7 +163,7 @@ export const ParticipantsItem = ({ participant }) => {
           <Info>
             <div>
               <InfoTitle>Страна</InfoTitle>
-              <InfoDescription>{participant?.athlete?.user?.country?.name}</InfoDescription>
+              <InfoDescription>{participant?.athlete?.user?.country}</InfoDescription>
             </div>
             <div>
               <InfoTitle>Возраст</InfoTitle>
