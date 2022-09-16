@@ -6,7 +6,6 @@ import Statistic from '../../../../components/pages/LkTm/Tabs/Statistics/Statist
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 function StatisticPage({ statistic }) {
-  console.log({ statistic })
   return (
     <LkLayout tabs={lkTmTabs}>
       {statistic && <Statistic statistic={statistic[0]?.event} />}

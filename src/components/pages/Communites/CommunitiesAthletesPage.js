@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTeams, teamsSelector } from '../../../redux/components/teams'
 import styled from 'styled-components'
-import { Autocomplete, TextField } from '@mui/material'
+import { Autocomplete, Pagination, TextField } from '@mui/material'
 import {
   selectCountriesAndCities,
   fetchCountries,
@@ -24,7 +24,7 @@ function CommunitesAthletesPage() {
   const searchValue = query.get('search')
   const [search, setSearch] = useState(searchValue)
   const debouncedSearch = useDebounce(search, 400)
-  const [, athletes] = useSelector(selectAthletes)
+  const [, athletes, count] = useSelector(selectAthletes)
   const { push: routerPush } = useRouter()
   const { t: tCommon } = useTranslation('common')
   const { t: tCommunities } = useTranslation('communities')
@@ -195,12 +195,28 @@ function CommunitesAthletesPage() {
           <CommunitesHeadingText>{tCommunities('communities.participants')}</CommunitesHeadingText>
         </CommunitesItem>
         <CommunitesAthletesList data={athletes} />
+        <PaginationWrapper>
+          <Pagination
+            onChange={(_, value) => {
+              query.set('page', value)
+              routerPush(`/communities/athletes/?${query}`)
+            }}
+            count={Math.ceil(count / 20)}
+            variant='outlined'
+            shape='rounded'
+          />
+        </PaginationWrapper>
       </CommunitesItems>
     </CommunitesContainer>
   )
 }
 
 export default CommunitesAthletesPage
+
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 const CommunitesAutoCompletes = styled.div`
   width: 100%;

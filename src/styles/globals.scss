@@ -166,11 +166,28 @@ span.Mui-checked {
   color: #333;
   -webkit-text-fill-color: #a6a6a6;
 }
+
 .MuiMenu-paper {
   background: #333 !important;
   .MuiMenu-list {
     //background: #333 !important;
     color: #f2f2f2 !important;
+  }
+}
+
+.MuiPaginationItem-root {
+  color: #fff;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+
+  &.Mui-selected {
+    background-color: rgba(109, 78, 234, 0.7);
+
+    &:hover {
+      background-color: rgb(109, 78, 234, 1);
+    }
   }
 }
 

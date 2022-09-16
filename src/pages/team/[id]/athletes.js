@@ -40,7 +40,7 @@ function Athletes({ onToggleSidebar }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    query.set('team_id', teamId || '')
+    query.set('team', teamId || '')
     dispatch(fetchAthletesByParams(query))
     dispatch(fetchCountries())
   }, [query, teamId])
