@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Avatar } from '@mui/material'
+import { useMediaQuery } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { EditIcon, LocationIcon } from '../../../../../assets/svg/icons'
 import { CalendarIcon } from '../../../../../assets/svg/icons'
@@ -31,6 +31,8 @@ const Info = ({ onToggleSidebar }) => {
   } = useSelector((state) => state.countries)
   const { t: tHeader } = useTranslation('header')
   const { t: tLkAh } = useTranslation('lkAh')
+  const md = useMediaQuery('(max-width: 768px)')
+  const sm = useMediaQuery('(max-width: 578px)')
 
   React.useEffect(() => {
     dispatch(fetchCountries())
@@ -46,7 +48,12 @@ const Info = ({ onToggleSidebar }) => {
           <ProfileAvaUploader
             alt={`${user?.firstName} ${user?.lastName}`}
             src={user?.avatar}
-            sx={{ width: 112, height: 112 }}
+            sx={{
+              maxWidth: 326,
+              width: sm ? '100%' : 112,
+              height: sm ? 326 : 112,
+              borderRadius: sm ? '12px' : '50%',
+            }}
             onSave={async (file) => {
               await formDataHttp({ avatar: file }, 'accounts/users/me/', 'patch')
               dispatch(fetchUser())
@@ -73,11 +80,11 @@ const Info = ({ onToggleSidebar }) => {
                 </WrapperIcon>
                 {tLkAh('userProfile.birthDay')}:
               </Item>
-              <Item>
+              <Item borderNone={md}>
                 {format(parseISO(user?.dateBirthday), 'dd MMMM yyyy г.', {
                   locale: ru,
                 })}
-              </Item>{' '}
+              </Item>
             </>
           )}
           <Item>
@@ -86,7 +93,7 @@ const Info = ({ onToggleSidebar }) => {
             </WrapperIcon>
             {tLkAh('userProfile.gender')}
           </Item>
-          <Item>{user?.gender === 'male' ? 'Мужской' : 'Женский'}</Item>
+          <Item borderNone={md}>{user?.gender === 'male' ? 'Мужской' : 'Женский'}</Item>
           {(!!user?.country || !!user?.city) && (
             <>
               <Item>
@@ -95,7 +102,7 @@ const Info = ({ onToggleSidebar }) => {
                 </WrapperIcon>
                 {tLkAh('userProfile.countryAndCity')}
               </Item>
-              <Item>
+              <Item borderNone={md}>
                 {!!user?.country?.name && `${user.country?.name},`}
                 {!!user?.city?.name && ` г. ${user.city?.name}`}
               </Item>
@@ -130,6 +137,10 @@ const Content = styled.div`
 `
 const Center = styled.div`
   display: flex;
+  @media screen and (max-width: 578px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 const CenterRight = styled.div`
   display: flex;
@@ -137,6 +148,11 @@ const CenterRight = styled.div`
   justify-content: space-between;
   margin-left: 35px;
   width: 100%;
+
+  @media screen and (max-width: 578px) {
+    align-items: center;
+    margin-left: 0;
+  }
 `
 const FullName = styled.p`
   font-style: normal;
@@ -144,6 +160,10 @@ const FullName = styled.p`
   font-size: 18px;
   line-height: 40px;
   color: #f2f2f2;
+
+  @media screen and (max-width: 768px) {
+    margin: 15px 0;
+  }
 `
 const Button = styled.button`
   border: 1px solid #333333;
@@ -161,6 +181,10 @@ const Button = styled.button`
   line-height: 40px;
   color: #bdbdbd;
   height: 40px;
+
+  @media screen and (max-width: 578px) {
+    max-width: 100%;
+  }
 `
 const IconWrapper = styled.div`
   width: 15px;
@@ -173,11 +197,11 @@ const List = styled.ul`
   display: grid;
   grid-template: repeat(6, 96px) / 1fr 1fr;
   ${theme.mqMax('md')} {
-    grid-template: repeat(11, 66px) / 1fr;
+    grid-template: repeat(11, 46px) / 1fr;
   }
 `
 const Item = styled.li`
-  border-top: 1px solid #333333;
+  border-top: ${({ borderNone }) => (borderNone ? 'none' : '1px solid #333333')};
   display: flex;
   align-items: center;
   &:nth-child(odd) {
