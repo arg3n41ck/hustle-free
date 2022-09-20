@@ -24,7 +24,7 @@ function MyTeams({ onToggleSidebar }) {
         <TitleHeader>{tLkAh('myTeams.myTeams')}</TitleHeader>
       </LkDefaultHeader>
 
-      {!!athleteTeams?.length && athleteTeams.map((item) => <Teams data={item} />)}
+      {!!athleteTeams?.length && <Teams athleteTeams={athleteTeams} />}
     </div>
   )
 }

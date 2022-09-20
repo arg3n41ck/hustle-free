@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useCallback } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
 import { Avatar } from '@mui/material'

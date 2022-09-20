@@ -10,32 +10,40 @@ function CommunitesAthletesList({ data }) {
   return (
     <CommunitesAthletesListItems>
       {!!data?.length &&
-        data.map(({ id, user, teams }) => (
-          <Athlete key={`communities-${id}-${user?.id}`} athleteId={id} team={teams[0]} user={user}>
-            <AthletesBottomInfo>
-              <AthletesBottomItem>
-                <AthletesBottomItemTextHeading>
-                  {tCommunities('communities.country')}
-                </AthletesBottomItemTextHeading>
-                <AthletesBottomItemText>
-                  {user.country || tCommunities('communities.notSpecified')}
-                </AthletesBottomItemText>
-              </AthletesBottomItem>
-              <AthletesBottomItem>
-                <AthletesBottomItemTextHeading>
-                  {tCommon('form.fieldsNames.gender.label')}
-                </AthletesBottomItemTextHeading>
-                <AthletesBottomItemText>
-                  {user?.gender === 'male'
-                    ? tCommunities('communities.male')
-                    : user?.gender === 'female'
-                    ? tCommunities('communities.female')
-                    : tCommunities('communities.notSpecified')}
-                </AthletesBottomItemText>
-              </AthletesBottomItem>
-            </AthletesBottomInfo>
-          </Athlete>
-        ))}
+        data.map((item) => {
+          const { id, user, teams } = item
+          return (
+            <Athlete
+              key={`communities-${id}-${user?.id}`}
+              athleteId={id}
+              team={teams[0]}
+              user={user}
+            >
+              <AthletesBottomInfo>
+                <AthletesBottomItem>
+                  <AthletesBottomItemTextHeading>
+                    {tCommunities('communities.country')}
+                  </AthletesBottomItemTextHeading>
+                  <AthletesBottomItemText>
+                    {user.country || tCommunities('communities.notSpecified')}
+                  </AthletesBottomItemText>
+                </AthletesBottomItem>
+                <AthletesBottomItem>
+                  <AthletesBottomItemTextHeading>
+                    {tCommon('form.fieldsNames.gender.label')}
+                  </AthletesBottomItemTextHeading>
+                  <AthletesBottomItemText>
+                    {user?.gender === 'male'
+                      ? tCommunities('communities.male')
+                      : user?.gender === 'female'
+                      ? tCommunities('communities.female')
+                      : tCommunities('communities.notSpecified')}
+                  </AthletesBottomItemText>
+                </AthletesBottomItem>
+              </AthletesBottomInfo>
+            </Athlete>
+          )
+        })}
     </CommunitesAthletesListItems>
   )
 }

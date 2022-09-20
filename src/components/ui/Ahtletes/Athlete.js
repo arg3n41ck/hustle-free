@@ -38,7 +38,7 @@ export default Athlete
 
 const ItemWrapper = styled.div`
   background: #1b1c22;
-  border: 1px solid #333333;
+  border: 1px solid #1b1c22;
   border-radius: 16px;
   padding: 24px;
 `
