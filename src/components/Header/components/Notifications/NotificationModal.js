@@ -2,12 +2,13 @@ import React from 'react'
 import { Box, Popover } from '@mui/material'
 import styled from 'styled-components'
 import NotificationItems from './NotificationItems'
+import { theme } from '../../../../styles/theme'
 
 function NotificationModal({ notifications, anchorNotifications, setAnchorNotifications }) {
   const idNotifications = !!anchorNotifications ? 'simple-popover' : undefined
 
   return (
-    <Popover
+    <CustomPopover
       id={idNotifications}
       open={!!anchorNotifications}
       anchorEl={anchorNotifications}
@@ -44,11 +45,27 @@ function NotificationModal({ notifications, anchorNotifications, setAnchorNotifi
           </List>
         </Wrapper>
       </Box>
-    </Popover>
+    </CustomPopover>
   )
 }
 
 export default NotificationModal
+
+const CustomPopover = styled(Popover)`
+  ${theme.mqMax('xl')} {
+    & .MuiPaper-root {
+      /* left: 5px !important; */
+      right: 5px !important;
+    }
+  }
+  ${theme.mqMax('sm')} {
+    & .MuiPaper-root {
+      max-width: calc(100vw - 10px);
+      left: 5px !important;
+      right: 5px !important;
+    }
+  }
+`
 
 const Wrapper = styled.div`
   max-width: 480px;

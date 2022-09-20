@@ -1,10 +1,10 @@
-import { createTheme } from "@mui/material"
+import { createTheme } from '@mui/material'
 
 // mui
 export const themeMui = createTheme({
   palette: {
     primary: {
-      main: "#6D4EEA",
+      main: '#6D4EEA',
     },
   },
 })
@@ -20,12 +20,14 @@ const breakpoints = {
 
 const mq = (breakpoint) => `@media (min-width: ${breakpoints[breakpoint]}px)`
 
-const mqMax = (breakpoint) =>
-  `@media (max-width: ${breakpoints[breakpoint] - 0.0001}px)`
+const mqMax = (breakpoint) => `@media (max-width: ${breakpoints[breakpoint] - 0.0001}px)`
+
+const mqMin = (breakpoint) => `@media (min-width: ${breakpoints[breakpoint] - 0.0001}px)`
 
 export const theme = {
   mq,
   mqMax,
+  mqMin,
   breakpoints,
   colors: {},
 }

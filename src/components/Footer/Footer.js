@@ -1,6 +1,7 @@
 import { useTranslation } from 'next-i18next'
 import React from 'react'
 import styled from 'styled-components'
+import { theme } from '../../styles/theme'
 
 function Footer() {
   const { t: tFooter } = useTranslation('footer')
@@ -51,7 +52,7 @@ function Footer() {
 
 export default Footer
 
-const FooterMainWrapper = styled.a`
+const FooterMainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   grid-row-gap: 16px;
@@ -84,6 +85,11 @@ const Social = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  ${theme.mqMax('md')} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
 `
 const Icons = styled.div`
   display: flex;

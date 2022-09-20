@@ -16,6 +16,7 @@ import { exitUser, selectIsUserAuth } from '../../redux/components/user'
 import HeaderLocalizationPopover from './components/HeaderLocalizationPopover'
 import { truncateString } from '../../helpers/helpers'
 import { useTranslation } from 'next-i18next'
+import MobileNavigations from './components/MobileNavigation/MobileNavigations'
 
 const Header = () => {
   const { push: routerPush } = useRouter()
@@ -165,6 +166,7 @@ const Header = () => {
             </WrapperUserMenu>
           </Popover>
         </Right>
+        <MobileNavigations />
       </WrapperItems>
     </Wrapper>
   )
@@ -190,6 +192,10 @@ const WrapperItems = styled.div`
   grid-gap: 10px;
   align-items: center;
   padding: 16px 38px;
+
+  ${theme.mqMax('xl')} {
+    padding: 16px;
+  }
 `
 
 const UserInfo = styled.div`
@@ -245,13 +251,17 @@ const WrapperCenter = styled.div`
   width: 100%;
   max-width: 690px;
   ${theme.mqMax('xl')} {
-    margin: 0 10px;
+    display: none;
   }
 `
 
 const Right = styled.div`
   display: flex;
   grid-column-gap: 32px;
+
+  ${theme.mqMax('xl')} {
+    display: none;
+  }
 `
 
 const UserMenu = styled.button`
