@@ -109,7 +109,6 @@ const Info = ({ onToggleSidebar }) => {
                 </WrapperIcon>
                 {tLkAh('userProfile.contacts')}
               </Item>
-              {/* <Item>{phoneFormatter(user?.phoneNumber)}</Item> */}
               <Item>{phoneFormatter(user?.phoneNumber)}</Item>
             </>
           )}
