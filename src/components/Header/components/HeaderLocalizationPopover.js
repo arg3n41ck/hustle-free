@@ -1,14 +1,14 @@
-import React  from "react"
-import { FormControl, MenuItem, Select } from "@mui/material"
-import styled from "styled-components"
-import { useRouter } from "next/router"
+import React from 'react'
+import { FormControl, MenuItem, Select } from '@mui/material'
+import styled from 'styled-components'
+import { useRouter } from 'next/router'
+import { theme } from '../../../styles/theme'
 
 function HeaderLocalizationPopover() {
   const { pathname, push, asPath, locale } = useRouter()
 
   const onChangeLang = async (value) => {
-    typeof window !== "undefined" &&
-      window.localStorage.setItem("locale", value)
+    typeof window !== 'undefined' && window.localStorage.setItem('locale', value)
     const url = pathname === asPath ? pathname : asPath
     await push(url, url, { locale: value })
   }
@@ -18,11 +18,11 @@ function HeaderLocalizationPopover() {
       <LocalizationSelect
         value={locale}
         onChange={(e) => onChangeLang(e.target.value)}
-        className="HeaderLocalization"
+        className='HeaderLocalization'
       >
-        <MenuItem value={"ru"}>RU</MenuItem>
-        <MenuItem value={"kz"}>KZ</MenuItem>
-        <MenuItem value={"en"}>EN</MenuItem>
+        <MenuItem value={'ru'}>RU</MenuItem>
+        <MenuItem value={'kz'}>KZ</MenuItem>
+        <MenuItem value={'en'}>EN</MenuItem>
       </LocalizationSelect>
     </Localization>
   )
@@ -30,6 +30,9 @@ function HeaderLocalizationPopover() {
 
 const Localization = styled(FormControl)`
   min-width: 72px;
+  ${theme.mqMax('xl')} {
+    width: 100%;
+  }
 `
 
 const LocalizationSelect = styled(Select)`
