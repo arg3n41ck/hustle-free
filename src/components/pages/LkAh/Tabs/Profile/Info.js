@@ -15,7 +15,6 @@ import LkDefaultHeader from '../../../../ui/LKui/LKDefaultHeader'
 import { TitleHeader } from '../../../../ui/LKui/HeaderContent'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
-
 import { fetchCountries } from '../../../../../redux/components/countriesAndCities'
 import { useTranslation } from 'next-i18next'
 import ProfileAvaUploader from '../../../../ui/ProfileAvaUploader'
@@ -33,6 +32,7 @@ const Info = ({ onToggleSidebar }) => {
   const { t: tLkAh } = useTranslation('lkAh')
   const md = useMediaQuery('(max-width: 768px)')
   const sm = useMediaQuery('(max-width: 578px)')
+  const smAvatar = useMediaQuery('(max-width: 430px)')
 
   React.useEffect(() => {
     dispatch(fetchCountries())
@@ -49,10 +49,10 @@ const Info = ({ onToggleSidebar }) => {
             alt={`${user?.firstName} ${user?.lastName}`}
             src={user?.avatar}
             sx={{
-              maxWidth: 326,
-              width: sm ? '100%' : 112,
+              width: sm ? (smAvatar ? 265 : 326) : 112,
               height: sm ? 326 : 112,
               borderRadius: sm ? '12px' : '50%',
+              backgroundSize: 'cover',
             }}
             onSave={async (file) => {
               await formDataHttp({ avatar: file }, 'accounts/users/me/', 'patch')
@@ -134,6 +134,10 @@ const Info = ({ onToggleSidebar }) => {
 
 const Content = styled.div`
   margin: 32px 32px 0 32px;
+
+  @media screen and (max-width: 768px) {
+    margin: 16px 16px 0 16px;
+  }
 `
 const Center = styled.div`
   display: flex;

@@ -2,11 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { getRusBetweenDate } from '../../../../../../helpers/helpers'
 import { CalendarIcon, LocationIcon } from '../../../../Events/EventsSlider'
-import { Avatar, IconButton } from '@mui/material'
+import { Avatar, useMediaQuery } from '@mui/material'
 import { useRouter } from 'next/router'
 
 function FilterMyEvents({ data }) {
   const { push: routerPush } = useRouter()
+  const md = useMediaQuery('(max-width: 768px)')
 
   return (
     <EventContainer key={data?.id}>
@@ -14,7 +15,11 @@ function FilterMyEvents({ data }) {
         <Avatar
           alt={data?.event?.description?.banner}
           src={data?.event?.description?.banner}
-          sx={{ width: 112, height: 112 }}
+          sx={{
+            width: md ? '100%' : 112,
+            height: md ? 176 : 112,
+            borderRadius: md ? '4px' : '50%',
+          }}
         />
         <EventsInfo>
           <EventInfoHeadingText onClick={() => routerPush(`/events/${data?.event?.id}`)}>
@@ -43,9 +48,6 @@ function FilterMyEvents({ data }) {
         </EventsInfo>
 
         <EventRightInfo>
-          <IconButton sx={{ padding: 0 }}>
-            <ManyEllipseIcon />
-          </IconButton>
           <PaidInfo color={data?.isPaid ? '#27AE60' : '#828282'}>
             {data?.isPaid ? 'Оплачено' : 'Не оплачено'}
           </PaidInfo>
@@ -68,9 +70,13 @@ const EventContainer = styled.div`
 const EventRightInfo = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-end;
   height: 100%;
+
+  @media screen and (max-width: 768px) {
+    margin-top: -12px;
+  }
 `
 
 const PaidInfo = styled.p`
@@ -86,12 +92,20 @@ const EventItems = styled.div`
   display: grid;
   grid-template-columns: 112px auto auto;
   grid-column-gap: 32px;
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `
 const EventsInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   grid-gap: 16px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
+  }
 `
 
 const EventBottomInfo = styled.div`

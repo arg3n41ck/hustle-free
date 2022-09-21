@@ -3,23 +3,28 @@ import styled from 'styled-components'
 import Checkbox from '@mui/material/Checkbox'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
+import { useMediaQuery } from '@mui/material'
 
 function TournamentRules({ event, rules }) {
   const [checked, setChecked] = React.useState(false)
   const { t: tEventDetail } = useTranslation('eventDetail')
+  const md = useMediaQuery('(max-width: 850px)')
 
   return (
     <TournamentRulesContainer>
+      {md && <Line />}
       <TournamentRulesHeading>
         <TournamentRulesHeadingText>
           {tEventDetail('event.tournamentRules.tournamentRules')}
         </TournamentRulesHeadingText>
       </TournamentRulesHeading>
-      <Line />
+      {!md && <Line />}
       <TournamentRulesHeroInfo>
         {!!rules?.rules && (
           <TournamentRulesHeroInfoText dangerouslySetInnerHTML={{ __html: rules.rules }} />
         )}
+
+        {md && <Line />}
         <TournamentRulesHeroBottomInfo>
           <Checkbox checked={checked} onChange={() => setChecked(!checked)} />
           <TournamentRulesHeroBottomInfoText>
@@ -27,10 +32,10 @@ function TournamentRules({ event, rules }) {
           </TournamentRulesHeroBottomInfoText>
         </TournamentRulesHeroBottomInfo>
       </TournamentRulesHeroInfo>
-      <Line />
+      {!md && <Line />}
       <TournamentRulesBottomButtons>
         <Link href={`/events/${event?.id}/`}>
-          <TournamentRulesBottomButton>
+          <TournamentRulesBottomButton background={md && "none"} >
             {tEventDetail('event.tournamentRules.cancel')}
           </TournamentRulesBottomButton>
         </Link>
@@ -57,6 +62,10 @@ const TournamentRulesBottomButtons = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+
+  @media screen and (max-width: 850px) {
+    border: none;
+  }
 `
 
 const TournamentRulesBottomButton = styled.button`
@@ -76,6 +85,11 @@ const TournamentRulesBottomButton = styled.button`
   &:first-child {
     margin-left: 0;
   }
+
+  @media screen and (max-width: 850px) {
+    border-radius: 4px;
+    height: 40px;
+  }
 `
 
 const TournamentRulesContainer = styled.div`
@@ -83,15 +97,28 @@ const TournamentRulesContainer = styled.div`
   background-color: #1b1c22;
   border: 1px solid #333333;
   border-radius: 24px;
+
+  @media screen and (max-width: 850px) {
+    border: none;
+    background: none;
+  }
 `
 const TournamentRulesHeading = styled.div`
   height: 96px;
   display: flex;
   align-items: center;
   padding: 32px;
+
+  @media screen and (max-width: 850px) {
+    padding: 0;
+  }
 `
 const TournamentRulesHeroInfo = styled.div`
   padding: 32px;
+
+  @media screen and (max-width: 850px) {
+    padding: 0;
+  }
 `
 
 const TournamentRulesHeroBottomInfo = styled.div`
@@ -115,6 +142,10 @@ const TournamentRulesHeroInfoText = styled.div`
   font-size: 18px;
   line-height: 32px;
   color: #f2f2f2;
+
+  @media screen and (max-width: 850px) {
+    margin-bottom: 24px;
+  }
 `
 
 const TournamentRulesHeadingText = styled.p`

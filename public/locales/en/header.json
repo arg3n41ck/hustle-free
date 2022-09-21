@@ -10,7 +10,8 @@
       "events": "Events",
       "history": "History",
       "team": "My team",
-      "settings": "Settings"
+      "settings": "Settings",
+      "exit": "Exit"
     },
     "team": {
       "profile": "Profile",

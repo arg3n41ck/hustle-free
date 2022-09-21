@@ -2,8 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import AthleteUserInfo from './AthleteUserInfo'
 import AthleteEventInfo from './AthleteEventInfo'
+import { useMediaQuery } from '@mui/material'
 
 function AuthorizationAthleteToEvent({ event }) {
+  const md = useMediaQuery('(max-width: 768px)')
   return (
     <RegistrationAthleteToEventContainer>
       <RegistrationAthleteToEventHeading>
@@ -11,9 +13,9 @@ function AuthorizationAthleteToEvent({ event }) {
           Сведения о пользователе
         </RegistrationAthleteToEventHeadingText>
       </RegistrationAthleteToEventHeading>
-      <Line />
+      {!md && <Line />}
       <AthleteUserInfo />
-      <Line />
+      {!md && <Line />}
       <AthleteEventInfo eventRegistration={event?.registration} />
     </RegistrationAthleteToEventContainer>
   )
@@ -27,12 +29,21 @@ const RegistrationAthleteToEventContainer = styled.div`
   background-color: #1b1c22;
   border: 1px solid #333333;
   border-radius: 24px;
+
+  @media screen and (max-width: 768px) {
+    background: none;
+    border: none;
+  }
 `
 const RegistrationAthleteToEventHeading = styled.div`
   height: 96px;
   display: flex;
   align-items: center;
   padding: 32px;
+
+  @media screen and (max-width: 768px) {
+    padding: 0;
+  }
 `
 
 const RegistrationAthleteToEventHeadingText = styled.p`

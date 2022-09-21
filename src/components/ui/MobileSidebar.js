@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { exitUser } from '../../redux/components/user'
 import { useTranslation } from 'next-i18next'
+import { LogOutIcon } from '../../assets/svg/icons'
+import clearCookies from '../../utils/clearCookies'
 
 const variants = {
   open: { display: 'block', x: 0, pointerEvents: 'auto' },
@@ -21,15 +23,24 @@ const MobileSidebar = ({ open, onClose, array }) => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.user)
   const { t: tHeader } = useTranslation('header')
+  const adaptiveArray = [
+    ...array,
+    {
+      name: 'exit',
+      icon: <LogOutIcon />,
+      href: 'exit',
+    },
+  ]
 
-  const handleOnClickTab = (path) => {
-    if (path === 'exit') {
-      routerPush('/login').then(() => {
-        dispatch(exitUser())
-      })
-    }
+  const handleOnClickTab = async (path) => {
     onClose(false)
-    routerPush(path)
+    if (path === 'exit') {
+      dispatch(exitUser())
+      clearCookies()
+      await routerPush('/login')
+      return
+    }
+    await routerPush(path)
   }
 
   return (
@@ -41,7 +52,7 @@ const MobileSidebar = ({ open, onClose, array }) => {
             width: '100vw',
           }}
         >
-          {array.map((item, i) => {
+          {adaptiveArray.map((item, i) => {
             const active = !!item.children?.length
               ? item.children.includes(pathname) || item.href === pathname || item.href === asPath
               : pathname === item.href || item.href === asPath

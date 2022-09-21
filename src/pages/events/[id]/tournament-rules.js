@@ -9,7 +9,9 @@ function TournamentRules({ event, rules }) {
   return (
     <TournamentRulesContainer>
       <Tournamentrules event={event} rules={rules[0]} />
-      <AuthAthleteToEventAllAccordions event={event} />
+      <ContainerAccordions>
+        <AuthAthleteToEventAllAccordions event={event} />
+      </ContainerAccordions>
     </TournamentRulesContainer>
   )
 }
@@ -36,10 +38,20 @@ export async function getServerSideProps(context) {
   }
 }
 
+const ContainerAccordions = styled.div``
+
 const TournamentRulesContainer = styled.div`
   margin-top: 64px;
   width: 100%;
   display: grid;
   grid-template-columns: 8fr 2.5fr;
   grid-gap: 32px;
+
+  @media screen and (max-width: 850px) {
+    grid-template-columns: 1fr;
+
+    & > ${ContainerAccordions} {
+      grid-row: 1;
+    }
+  }
 `

@@ -3,7 +3,7 @@ import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 import styled from 'styled-components'
-import { Box, TextField, Autocomplete } from '@mui/material'
+import { Box, TextField, Autocomplete, useMediaQuery } from '@mui/material'
 import { ru } from 'date-fns/locale'
 import { DatePicker, LocalizationProvider, MobileDatePicker } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -46,6 +46,7 @@ const AthleteUserInfo = () => {
   const dispatch = useDispatch()
   const [currentCities, setCurrentCities] = useState([])
   const [, cities] = useSelector(selectCountriesAndCities)
+  const md = useMediaQuery('(max-width: 768px)')
 
   const formik = useFormik({
     initialValues: {
@@ -106,7 +107,7 @@ const AthleteUserInfo = () => {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: md ? '1fr' : '1fr 1fr',
             gridColumnGap: 24,
           }}
         >
@@ -168,10 +169,9 @@ const AthleteUserInfo = () => {
               display: 'flex',
             },
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: md ? '1fr' : '1fr 1fr',
             gridColumnGap: 24,
           }}
-          className='auth-wrapper__input'
         >
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>Дата рождения</p>
@@ -248,10 +248,9 @@ const AthleteUserInfo = () => {
               display: 'flex',
             },
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: md ? '1fr' : '1fr 1fr',
             gridColumnGap: 24,
           }}
-          className='auth-wrapper__input'
         >
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>Страна</p>
@@ -338,14 +337,14 @@ const AthleteUserInfo = () => {
             },
             margin: '0 !important',
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: md ? '1fr' : '1fr 1fr',
             gridColumnGap: 24,
           }}
           className='auth-wrapper__input'
         >
           <div style={{ margin: 0 }} className='auth-wrapper__input'>
             <p className='auth-title__input'>Пол</p>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex' }}>
               <RadioWrapper>
                 <Radio
                   text={'Женский'}
@@ -366,10 +365,15 @@ const AthleteUserInfo = () => {
             )}
           </div>
 
-          <div style={{ margin: 0 }} className='auth-wrapper__input'>
+          <div style={{ marginTop: 10 }} className='auth-wrapper__input'>
             {formik.dirty && (
               <ButtonWrapper>
-                <CustomButton type={'submit'} typeButton={'primary'}>
+                <CustomButton
+                  borderRadius={md ? '4px' : '16px'}
+                  height={md ? '40px' : '64px'}
+                  type={'submit'}
+                  typeButton={'primary'}
+                >
                   Сохранить
                 </CustomButton>
               </ButtonWrapper>
@@ -383,6 +387,10 @@ const AthleteUserInfo = () => {
 
 const FormWrapper = styled.div`
   padding: 32px;
+
+  @media screen and (max-width: 768px) {
+    padding: 0;
+  }
 `
 
 const RadioWrapper = styled.div`

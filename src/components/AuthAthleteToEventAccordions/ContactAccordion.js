@@ -127,6 +127,10 @@ const ContactAccordionCustom = styled(Accordion)`
   border-radius: 16px !important;
   padding: 24px 0 !important;
   margin: 0 !important;
+
+  @media screen and (max-width: 850px) {
+    padding: 20px 0 !important;
+  }
 `
 
 const ContactIcon = ({ social }) => {

@@ -9,7 +9,9 @@ function Registration({ data }) {
   return (
     <RegistrationContainer>
       <AuthorizationAthleteToEvent event={data} />
-      <AuthAthleteToEventAllAccordions event={data} />
+      <ContainerAccordions>
+        <AuthAthleteToEventAllAccordions event={data} />
+      </ContainerAccordions>
     </RegistrationContainer>
   )
 }
@@ -34,6 +36,11 @@ export async function getServerSideProps(context) {
     }, // will be passed to the page component as props
   }
 }
+const ContainerAccordions = styled.div`
+  @media screen and (max-width: 992px) {
+    display: none;
+  }
+`
 
 const RegistrationContainer = styled.div`
   margin-top: 64px;
@@ -41,4 +48,9 @@ const RegistrationContainer = styled.div`
   display: grid;
   grid-template-columns: 8fr 2.5fr;
   grid-gap: 32px;
+
+  @media screen and (max-width: 992px) {
+    grid-template-columns: 1fr;
+    margin: 0;
+  }
 `

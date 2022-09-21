@@ -10,7 +10,8 @@
       "events": "Мои турниры",
       "history": "Моя история",
       "team": "Мои команды",
-      "settings": "Настройки"
+      "settings": "Настройки",
+      "exit": "Выйти"
     },
     "team": {
       "profile": "Профиль",
@@ -23,7 +24,7 @@
       "events": "Мои турниры",
       "settings": "Настройки"
     },
-    "public": {  
+    "public": {
       "team": {
         "profile": "Профиль",
         "athletes": "Атлеты",

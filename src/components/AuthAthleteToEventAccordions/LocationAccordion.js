@@ -112,7 +112,6 @@ const LocationAccordionItems = styled.div`
   grid-template-columns: 24px auto;
   grid-column-gap: 12px;
   align-items: flex-start;
-  justify-items: center;
 `
 
 const Line = styled.div`
@@ -127,6 +126,10 @@ const LocationAccordionCustom = styled(Accordion)`
   border-radius: 16px !important;
   padding: 24px 0 !important;
   margin: 0 !important;
+
+  @media screen and (max-width: 850px) {
+    padding: 20px 0 !important;
+  }
 `
 
 const LocationPageIcon = ({ type }) => {

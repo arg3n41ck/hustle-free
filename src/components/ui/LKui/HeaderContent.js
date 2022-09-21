@@ -15,6 +15,10 @@ const Header = styled.div`
   width: 100%;
   padding: 32px;
   display: flex;
+
+  @media screen and (max-width: 768px){
+    padding: 16px;
+  }
 `
 export const TitleHeader = styled.h4`
   font-style: normal;

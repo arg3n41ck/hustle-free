@@ -43,16 +43,16 @@ const HorizontalTabsBorder = ({
               gridTemplateColumns: `repeat(${arrayTab.length}, 1fr)`,
               gridTemplateRows: `${height}`,
             },
-            [theme.mqMax("md")]: {
-              "& .MuiTabs-flexContainer":
-                arrayTab.length === 4
-                  ? {
-                      display: "grid",
-                      gridTemplateColumns: `repeat(${2}, 1fr)`,
-                      gridTemplateRows: `${height} ${height}`,
-                    }
-                  : {},
-            },
+            // [theme.mqMax("md")]: {
+            //   "& .MuiTabs-flexContainer":
+            //     arrayTab.length === 4
+            //       ? {
+            //           display: "grid",
+            //           gridTemplateColumns: `repeat(${2}, 1fr)`,
+            //           gridTemplateRows: `${height} ${height}`,
+            //         }
+            //       : {},
+            // },
           }}
         >
           {arrayTab.map((item) => (

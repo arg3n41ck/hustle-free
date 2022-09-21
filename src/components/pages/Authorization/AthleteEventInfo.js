@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { TextField, Autocomplete } from '@mui/material'
+import { TextField, Autocomplete, useMediaQuery } from '@mui/material'
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
@@ -83,6 +83,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   const [categories, levels] = useSelector(categoriesSelector)
   const [, teams] = useSelector(teamsSelector)
   const dispatch = useDispatch()
+  const md = useMediaQuery('(max-width: 768px)')
 
   const { current: validationSchema } = useRef(
     yup.object({
@@ -264,10 +265,10 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
           />
         </div>
       </RegistrationAthleteToEventHeroInfo>
-      <Line />
+      {!md && <Line />}
       <RegistrationAthleteToEventBottomButtons>
         <Link href={`/events/${eventId}/`}>
-          <RegistrationAthleteToEventBottomButton type='button'>
+          <RegistrationAthleteToEventBottomButton background={md && 'none'} type='button'>
             Отмена
           </RegistrationAthleteToEventBottomButton>
         </Link>
@@ -291,6 +292,11 @@ const RegistrationAthleteToEventBottomButtons = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    padding: 0;
+    height: auto;
+  }
 `
 
 const RegistrationAthleteToEventBottomButton = styled.button`
@@ -310,10 +316,24 @@ const RegistrationAthleteToEventBottomButton = styled.button`
   &:first-child {
     margin-left: 0;
   }
+
+  @media screen and (max-width: 768px) {
+    border-radius: 4px;
+    height: 40px;
+    max-width: auto;
+
+    &:last-child {
+      padding: 0 15px;
+    }
+  }
 `
 
 const RegistrationAthleteToEventHeroInfo = styled.div`
   padding: 32px;
+
+  @media screen and (max-width: 768px) {
+    padding: 0;
+  }
 `
 
 const Line = styled.div`
