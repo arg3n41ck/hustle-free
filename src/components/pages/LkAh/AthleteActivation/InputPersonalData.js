@@ -9,6 +9,7 @@ import {
   InputAdornment,
   OutlinedInput,
   TextField,
+  useMediaQuery,
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { AuthButton } from '../../Authorization/Authorization'
@@ -42,6 +43,7 @@ const InputPersonalData = () => {
   const [showPassword, setShowPassword] = useState(false)
   const { t: tAuth } = useTranslation('auth')
   const { t: tCommon } = useTranslation('common')
+  const sm = useMediaQuery('(max-width: 578px)')
   const router = useRouter()
   const formik = useFormik({
     initialValues: {
@@ -95,7 +97,7 @@ const InputPersonalData = () => {
           <Box
             sx={{
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
+              gridTemplateColumns: sm ? '1fr' : '1fr 1fr',
               gridColumnGap: 24,
             }}
           >

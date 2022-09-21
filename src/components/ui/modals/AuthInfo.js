@@ -2,17 +2,17 @@ import React from "react"
 import styled from "styled-components"
 
 const AuthInfo = ({ title, text, toggleShow }) => {
-  React.useEffect(() => {
-    if (toggleShow) {
-      toggleShow(true)
-      const timeOut = setTimeout(() => {
-        toggleShow(false)
-      }, 5000)
-      return () => {
-        clearInterval(timeOut)
-      }
-    }
-  }, [])
+  // React.useEffect(() => {
+  //   if (toggleShow) {
+  //     toggleShow(true)
+  //     const timeOut = setTimeout(() => {
+  //       toggleShow(false)
+  //     }, 5000)
+  //     return () => {
+  //       clearInterval(timeOut)
+  //     }
+  //   }
+  // }, [])
 
   return (
     <Container>
