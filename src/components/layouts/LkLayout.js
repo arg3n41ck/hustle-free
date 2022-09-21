@@ -22,7 +22,7 @@ function LkLayout({ tabs, children }) {
   })
 
   useEffect(() => {
-    document.querySelector('html').style.overflowY = xl && openSidebar ? 'hidden' : ''
+    document.querySelector('html').style.overflowY = openSidebar ? 'hidden' : ''
   }, [openSidebar])
 
   return (
@@ -33,7 +33,7 @@ function LkLayout({ tabs, children }) {
             <Sidebar open={openSidebar} array={tabs} />
           </SidebarWrapper>
         ) : (
-          openSidebar && <MobileSidebar open={openSidebar} array={tabs} />
+          openSidebar && <MobileSidebar open={openSidebar} onClose={setOpenSidebar} array={tabs} />
         )}
         <Content>{childrenWithProps}</Content>
       </Wrapper>

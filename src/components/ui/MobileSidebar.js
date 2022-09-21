@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { exitUser } from '../../redux/components/user'
 import { useTranslation } from 'next-i18next'
-import { useMediaQuery } from '@mui/material'
 
 const variants = {
   open: { display: 'block', x: 0, pointerEvents: 'auto' },
@@ -17,12 +16,11 @@ const contentVariants = {
   closed: { gridGap: '0px', justifyContent: 'center' },
 }
 
-const MobileSidebar = ({ open, array }) => {
+const MobileSidebar = ({ open, onClose, array }) => {
   const { push: routerPush, pathname, asPath } = useRouter()
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user.user)
   const { t: tHeader } = useTranslation('header')
-  const xl = useMediaQuery('(max-width: 1200px)')
 
   const handleOnClickTab = (path) => {
     if (path === 'exit') {
@@ -30,6 +28,7 @@ const MobileSidebar = ({ open, array }) => {
         dispatch(exitUser())
       })
     }
+    onClose(false)
     routerPush(path)
   }
 
@@ -71,16 +70,15 @@ const MobileSidebar = ({ open, array }) => {
 }
 
 const Popover = styled(motion.div)`
-  height: 100vh;
+  height: calc(100vh - 80px);
   background: #0f0f10;
-  position: absolute;
+  position: fixed;
   overflow: hidden;
-  top: 57px;
+  top: 80px;
   right: -16px;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 32px;
 `
 
@@ -108,7 +106,7 @@ const Item = styled.li`
   font-size: 18px;
   line-height: 32px;
   color: ${(p) => (p.active ? '#ffffff' : '#BDBDBD')};
-  background: ${(p) => (p.active ? 'rgba(109, 78, 234, 0.07)' : 'none')};
+  background: ${(p) => (p.active ? 'rgba(109, 78, 234, 0.07)' : '#141519')};
   border-radius: 16px;
   width: 100%;
   height: 72px;

@@ -33,6 +33,8 @@ function TeamsModalTemplate({ open, onClose }) {
   const onModSubmit = async () => {
     selectedTeam && (await applyToTeam({ team: selectedTeam?.id, athlete: user?.athleteId }))
     dispatch(fetchAthleteTeams({ athletes: user.athleteId }))
+    setSelectedTeam(null)
+    setModOpen(false)
   }
 
   return (
