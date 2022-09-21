@@ -3,7 +3,14 @@ import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 import styled from 'styled-components'
-import { Box, TextField, Autocomplete, InputAdornment, IconButton } from '@mui/material'
+import {
+  Box,
+  TextField,
+  Autocomplete,
+  InputAdornment,
+  IconButton,
+  useMediaQuery,
+} from '@mui/material'
 import { ru } from 'date-fns/locale'
 import { LocalizationProvider, MobileDatePicker } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -64,6 +71,7 @@ const Edits = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showPassword2, setShowPassword2] = useState(false)
   const { t: tCommon } = useTranslation('common')
+  const md = useMediaQuery('(max-width:768px)')
 
   const { current: validationSchema } = useRef(
     yup.object({
@@ -211,7 +219,7 @@ const Edits = () => {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: md ? '1fr' : '1fr 1fr',
             gridColumnGap: 24,
           }}
         >
@@ -273,10 +281,9 @@ const Edits = () => {
               display: 'flex',
             },
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: md ? '1fr' : '1fr 1fr',
             gridColumnGap: 24,
           }}
-          className='auth-wrapper__input'
         >
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>{tCommon('form.fieldsNames.birthDate')}</p>
@@ -361,7 +368,7 @@ const Edits = () => {
               display: 'flex',
             },
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: md ? '1fr' : '1fr 1fr',
             gridColumnGap: 24,
           }}
           className='auth-wrapper__input'
@@ -452,14 +459,14 @@ const Edits = () => {
               display: 'flex',
             },
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: md ? '1fr' : '1fr 1fr',
             gridColumnGap: 24,
           }}
           className='auth-wrapper__input'
         >
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>{tCommon('form.fieldsNames.gender.label')}</p>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex' }}>
               <RadioWrapper>
                 <Radio
                   text={tCommon('form.fieldsNames.gender.female')}
@@ -482,7 +489,7 @@ const Edits = () => {
 
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>{tCommon('form.fieldsNames.profileType')}</p>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex' }}>
               <RadioWrapper>
                 <Radio
                   text={tCommon('form.fieldsNames.open')}
@@ -741,7 +748,10 @@ const Content = styled.div`
 
 const RadioWrapper = styled.div`
   display: flex;
-  margin-right: 32px;
+
+  &:first-child {
+    margin-right: 32px;
+  }
 `
 
 const Footer = styled.div`

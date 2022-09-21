@@ -1,9 +1,12 @@
-import React, { useState } from "react"
-import styled from "styled-components"
-import Sidebar from "../ui/Sidebar"
+import { useMediaQuery } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import MobileSidebar from '../ui/MobileSidebar'
+import Sidebar from '../ui/Sidebar'
 
 function LkLayout({ tabs, children }) {
   const [openSidebar, setOpenSidebar] = useState(false)
+  const xl = useMediaQuery('(max-width: 1200px)')
 
   const toggleSidebarHandler = () => {
     setOpenSidebar((prev) => !prev)
@@ -18,12 +21,20 @@ function LkLayout({ tabs, children }) {
     return child
   })
 
+  useEffect(() => {
+    document.querySelector('html').style.overflowY = xl && openSidebar ? 'hidden' : ''
+  }, [openSidebar])
+
   return (
     <Container>
       <Wrapper>
-        <SidebarWrapper open={openSidebar}>
-          <Sidebar open={openSidebar} array={tabs} />
-        </SidebarWrapper>
+        {!xl ? (
+          <SidebarWrapper open={openSidebar}>
+            <Sidebar open={openSidebar} array={tabs} />
+          </SidebarWrapper>
+        ) : (
+          openSidebar && <MobileSidebar open={openSidebar} array={tabs} />
+        )}
         <Content>{childrenWithProps}</Content>
       </Wrapper>
     </Container>
@@ -45,7 +56,7 @@ const Wrapper = styled.div`
 `
 const SidebarWrapper = styled.div`
   border-right: 1px solid #333333;
-  padding: ${(p) => (p.open ? "32px" : "32px 8px")};
+  padding: ${(p) => (p.open ? '32px' : '32px 8px')};
 `
 const Content = styled.div`
   flex-grow: 1;

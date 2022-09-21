@@ -81,6 +81,7 @@ const Wrapper = styled(motion.ul)`
   flex-direction: column;
   grid-row-gap: 24px;
   overflow: hidden;
+  position: relative;
 `
 const Item = styled.li`
   display: flex;
