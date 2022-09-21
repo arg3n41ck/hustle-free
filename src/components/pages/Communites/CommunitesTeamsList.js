@@ -23,7 +23,7 @@ function CommunitesList({ data }) {
                 <div>
                   <ItemTitle
                     onClick={() => {
-                      routerPush(athleteId ? `/athlete/${athleteId}` : pathname)
+                      routerPush(`/team/${id}`)
                     }}
                   >
                     {fullNameCoach || ''}
