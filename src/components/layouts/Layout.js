@@ -78,8 +78,8 @@ const ChildrenWrapper = styled.div`
   justify-content: space-between;
 
   ${theme.mqMax('xl')} {
-    margin: 117px auto 160px auto;
-    padding: 0 20px;
+    margin: 80px auto 160px auto;
+    padding: 0 16px;
   }
 `
 

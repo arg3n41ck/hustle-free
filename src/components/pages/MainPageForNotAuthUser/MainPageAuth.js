@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { localStorageSetItem } from '../../../helpers/helpers'
 import { useDispatch } from 'react-redux'
 import { exitUser } from '../../../redux/components/user'
 import { useTranslation } from 'next-i18next'
+import { theme } from '../../../styles/theme'
 
 function MainPageAuth() {
   const router = useRouter()
@@ -15,26 +16,29 @@ function MainPageAuth() {
     router.push('/registration')
   }
 
-  const array = [
+  const { current: array } = useRef([
     {
       id: 1,
       value: 'organizer',
       heading: tMainPageFotNotAuthUser('mainPage.auth.forOrganizers'),
       description: tMainPageFotNotAuthUser('mainPage.auth.forOrganizersDesc'),
+      icon: orgIcon,
     },
     {
       id: 2,
       value: 'athlete',
       heading: tMainPageFotNotAuthUser('mainPage.auth.forAthletes'),
       description: tMainPageFotNotAuthUser('mainPage.auth.forAthletesDesc'),
+      icon: athIcon,
     },
     {
       id: 3,
       value: 'team',
       heading: tMainPageFotNotAuthUser('mainPage.auth.forTeams'),
       description: tMainPageFotNotAuthUser('mainPage.auth.forTeamsDesc'),
+      icon: teamIcon,
     },
-  ]
+  ])
 
   useEffect(() => {
     dispatch(exitUser())
@@ -44,22 +48,11 @@ function MainPageAuth() {
     <ContainerCards>
       {array.map((item) => (
         <Card key={item.id}>
-          <svg
-            width='128'
-            height='128'
-            viewBox='0 0 128 128'
-            fill='none'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <path
-              d='M112.889 95.1119C112.889 96.2906 112.421 97.4211 111.587 98.2546C110.754 99.0881 109.623 99.5564 108.445 99.5564H55.1111C53.9324 99.5564 52.8019 99.0881 51.9684 98.2546C51.1349 97.4211 50.6667 96.2906 50.6667 95.1119C50.6667 88.0395 53.4762 81.2567 58.4772 76.2557C63.4782 71.2548 70.2609 68.4453 77.3334 68.4453H86.2223C93.2947 68.4453 100.077 71.2548 105.078 76.2557C110.079 81.2567 112.889 88.0395 112.889 95.1119ZM81.7778 28.4453C78.2617 28.4453 74.8246 29.488 71.901 31.4414C68.9775 33.3948 66.6988 36.1714 65.3533 39.4198C64.0077 42.6683 63.6557 46.2428 64.3416 49.6913C65.0276 53.1399 66.7208 56.3076 69.207 58.7938C71.6933 61.2801 74.861 62.9733 78.3096 63.6592C81.7581 64.3452 85.3326 63.9931 88.5811 62.6476C91.8296 61.302 94.6061 59.0234 96.5595 56.0999C98.513 53.1763 99.5556 49.7392 99.5556 46.2231C99.5556 41.5081 97.6826 36.9863 94.3486 33.6523C91.0146 30.3183 86.4928 28.4453 81.7778 28.4453ZM41.7778 28.4453C38.2617 28.4453 34.8245 29.488 31.901 31.4414C28.9774 33.3948 26.6988 36.1714 25.3533 39.4198C24.0077 42.6683 23.6556 46.2428 24.3416 49.6913C25.0276 53.1399 26.7207 56.3076 29.207 58.7938C31.6933 61.2801 34.861 62.9733 38.3095 63.6592C41.7581 64.3452 45.3326 63.9931 48.5811 62.6476C51.8295 61.302 54.606 59.0234 56.5595 56.0999C58.5129 53.1763 59.5556 49.7392 59.5556 46.2231C59.5556 41.5081 57.6826 36.9863 54.3486 33.6523C51.0146 30.3183 46.4928 28.4453 41.7778 28.4453ZM41.7778 95.1119C41.7712 90.4435 42.6909 85.8202 44.4838 81.5098C46.2766 77.1994 48.9069 73.2875 52.2223 70.0008C49.5091 68.9765 46.6335 68.4495 43.7334 68.4453H39.8222C33.2721 68.457 26.9935 71.0643 22.3618 75.696C17.7301 80.3276 15.1229 86.6062 15.1111 93.1564V95.1119C15.1111 96.2906 15.5794 97.4211 16.4129 98.2546C17.2464 99.0881 18.3768 99.5564 19.5556 99.5564H42.5778C42.0604 98.1311 41.7898 96.6281 41.7778 95.1119Z'
-              fill='#6D4EEA'
-            />
-          </svg>
-          <div>
+          {item.icon}
+          <Texts>
             <CardTextHeading>{item.heading}</CardTextHeading>
             <CardTextDesc>{item.description}</CardTextDesc>
-          </div>
+          </Texts>
           <CardButton onClick={() => handleClick(item.value)}>
             {tMainPageFotNotAuthUser('mainPage.auth.signUp')}
           </CardButton>
@@ -73,6 +66,14 @@ const ContainerCards = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 32px;
+
+  ${theme.mqMax('xl')} {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+  }
 `
 
 const Card = styled.div`
@@ -86,6 +87,24 @@ const Card = styled.div`
   grid-template: 128px auto 48px / 1fr;
   grid-row-gap: 24px;
   justify-items: center;
+
+  ${theme.mqMin('xl')} {
+    & svg {
+      width: 128px;
+      height: 128px;
+    }
+  }
+
+  ${theme.mqMax('xl')} {
+    grid-template: 72px auto 48px / 1fr;
+    grid-row-gap: 16px;
+  }
+`
+
+const Texts = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 8px;
 `
 
 const CardTextHeading = styled.h3`
@@ -93,27 +112,33 @@ const CardTextHeading = styled.h3`
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
-  line-height: 32px;
   color: #f2f2f2;
   text-align: center;
   text-transform: uppercase;
+
+  ${theme.mqMax('md')} {
+    font-size: 20px;
+  }
 `
 
 const CardTextDesc = styled.p`
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-size: 21px;
-  line-height: 32px;
   color: #f2f2f2;
   text-align: center;
   text-transform: lowercase;
+
+  ${theme.mqMax('md')} {
+    font-size: 14px;
+    color: #737373;
+  }
 `
 
 const CardButton = styled.button`
   background: rgba(109, 78, 234, 0.07);
   border-radius: 8px;
   width: 100%;
-  padding: 0 24px;
   color: #6d4eea;
   font-family: 'Inter', sans-serif;
   font-style: normal;
@@ -123,3 +148,60 @@ const CardButton = styled.button`
 `
 
 export default MainPageAuth
+
+const orgIcon = (
+  <svg width='72' height='72' viewBox='0 0 72 72' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <g opacity='0.7' clip-path='url(#clip0_5273_39638)'>
+      <circle cx='36' cy='36' r='36' fill='#6D4EEA' fill-opacity='0.1' />
+      <path
+        d='M47.4767 48.6081C48.3059 48.4353 48.7997 47.5676 48.3877 46.8275C47.4793 45.196 46.0483 43.7623 44.2176 42.6698C41.8599 41.2627 38.9712 40.5 35.9994 40.5C33.0275 40.5 30.1388 41.2627 27.7811 42.6698C25.9504 43.7623 24.5194 45.196 23.611 46.8275C23.199 47.5675 23.6928 48.4353 24.522 48.6081C32.0923 50.1857 39.9064 50.1857 47.4767 48.6081Z'
+        fill='#6D4EEA'
+      />
+      <path
+        d='M43.4993 30C43.4993 34.1421 40.1415 37.5 35.9993 37.5C31.8572 37.5 28.4993 34.1421 28.4993 30C28.4993 25.8579 31.8572 22.5 35.9993 22.5C40.1415 22.5 43.4993 25.8579 43.4993 30Z'
+        fill='#6D4EEA'
+      />
+    </g>
+    <defs>
+      <clipPath id='clip0_5273_39638'>
+        <rect width='72' height='72' fill='white' />
+      </clipPath>
+    </defs>
+  </svg>
+)
+
+const teamIcon = (
+  <svg width='72' height='72' viewBox='0 0 72 72' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <g opacity='0.7' clip-path='url(#clip0_5274_39974)'>
+      <circle cx='36' cy='36' r='36' fill='#6D4EEA' fill-opacity='0.1' />
+      <path
+        d='M49.75 44.75C49.75 45.0815 49.6183 45.3994 49.3839 45.6339C49.1495 45.8683 48.8315 46 48.5 46H33.5C33.1685 46 32.8505 45.8683 32.6161 45.6339C32.3817 45.3994 32.25 45.0815 32.25 44.75C32.25 42.7609 33.0402 40.8532 34.4467 39.4467C35.8532 38.0402 37.7609 37.25 39.75 37.25H42.25C44.2391 37.25 46.1468 38.0402 47.5533 39.4467C48.9598 40.8532 49.75 42.7609 49.75 44.75ZM41 26C40.0111 26 39.0444 26.2932 38.2222 26.8427C37.3999 27.3921 36.759 28.173 36.3806 29.0866C36.0022 30.0002 35.9032 31.0055 36.0961 31.9754C36.289 32.9453 36.7652 33.8363 37.4645 34.5355C38.1637 35.2348 39.0547 35.711 40.0246 35.9039C40.9945 36.0968 41.9998 35.9978 42.9134 35.6194C43.8271 35.241 44.608 34.6001 45.1574 33.7778C45.7068 32.9556 46 31.9889 46 31C46 29.6739 45.4732 28.4021 44.5355 27.4645C43.5979 26.5268 42.3261 26 41 26ZM29.75 26C28.7611 26 27.7944 26.2932 26.9722 26.8427C26.1499 27.3921 25.509 28.173 25.1306 29.0866C24.7522 30.0002 24.6531 31.0055 24.8461 31.9754C25.039 32.9453 25.5152 33.8363 26.2145 34.5355C26.9137 35.2348 27.8046 35.711 28.7746 35.9039C29.7445 36.0968 30.7498 35.9978 31.6634 35.6194C32.5771 35.241 33.3579 34.6001 33.9074 33.7778C34.4568 32.9556 34.75 31.9889 34.75 31C34.75 29.6739 34.2232 28.4021 33.2855 27.4645C32.3479 26.5268 31.0761 26 29.75 26ZM29.75 44.75C29.7481 43.437 30.0068 42.1367 30.5111 40.9244C31.0153 39.7121 31.7551 38.6119 32.6875 37.6875C31.9244 37.3994 31.1157 37.2512 30.3 37.25H29.2C27.3578 37.2533 25.5919 37.9866 24.2893 39.2892C22.9866 40.5919 22.2533 42.3577 22.25 44.2V44.75C22.25 45.0815 22.3817 45.3994 22.6161 45.6339C22.8505 45.8683 23.1685 46 23.5 46H29.975C29.8295 45.5991 29.7534 45.1764 29.75 44.75Z'
+        fill='#6D4EEA'
+      />
+    </g>
+    <defs>
+      <clipPath id='clip0_5274_39974'>
+        <rect width='72' height='72' fill='white' />
+      </clipPath>
+    </defs>
+  </svg>
+)
+
+const athIcon = (
+  <svg width='72' height='72' viewBox='0 0 72 72' fill='none' xmlns='http://www.w3.org/2000/svg'>
+    <g opacity='0.7' clip-path='url(#clip0_5274_39918)'>
+      <circle cx='36' cy='36' r='36' fill='#6D4EEA' fill-opacity='0.1' />
+      <path
+        fill-rule='evenodd'
+        clip-rule='evenodd'
+        d='M24 31.6569C24 30.8394 24 30.4306 24.1522 30.0631C24.3045 29.6955 24.5935 29.4065 25.1716 28.8284L25.1716 28.8284L27.3284 26.6716C27.9065 26.0935 28.1955 25.8045 28.5631 25.6522C28.9306 25.5 29.3394 25.5 30.1569 25.5H41.8431C42.6606 25.5 43.0694 25.5 43.4369 25.6522C43.8045 25.8045 44.0935 26.0935 44.6716 26.6716L46.8284 28.8284C47.4065 29.4065 47.6955 29.6955 47.8478 30.0631C48 30.4306 48 30.8394 48 31.6569V33.5H24V31.6569ZM40.9998 35.5H48V44C48 45.8856 48 46.8284 47.4142 47.4142C46.8284 48 45.8856 48 44 48H28C26.1144 48 25.1716 48 24.5858 47.4142C24 46.8284 24 45.8856 24 44V35.5H30.9998V41.5C30.9998 42.6472 30.9998 43.2208 31.1481 43.5291C31.4793 44.2173 32.2747 44.5468 32.9956 44.2944C33.3185 44.1813 33.7241 43.7757 34.5353 42.9645L34.5353 42.9644C34.911 42.5887 35.0989 42.4009 35.2986 42.2953C35.7373 42.0633 36.2622 42.0633 36.7009 42.2953C36.9006 42.4009 37.0885 42.5888 37.4642 42.9645C38.2754 43.7757 38.681 44.1813 39.0039 44.2944C39.7248 44.5468 40.5202 44.2173 40.8514 43.5291C40.9998 43.2208 40.9998 42.6472 40.9998 41.5V35.5Z'
+        fill='#6D4EEA'
+      />
+    </g>
+    <defs>
+      <clipPath id='clip0_5274_39918'>
+        <rect width='72' height='72' fill='white' />
+      </clipPath>
+    </defs>
+  </svg>
+)

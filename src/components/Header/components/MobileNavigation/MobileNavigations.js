@@ -17,6 +17,7 @@ const MobileNavigations = () => {
 
   return (
     <MobileRightWrapper>
+      <MobilePopover open={open} setOpen={setOpen} />
       {userAuthenticated && <Notifications />}
       {!open && (
         <Menu onClick={() => setOpen(true)} style={{ width: 32, height: 32, cursor: 'pointer' }} />
@@ -27,7 +28,6 @@ const MobileNavigations = () => {
           onClick={() => setOpen(false)}
         />
       )}
-      <MobilePopover open={open} setOpen={setOpen} />
     </MobileRightWrapper>
   )
 }

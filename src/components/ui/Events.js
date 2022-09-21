@@ -2,51 +2,44 @@ import React from 'react'
 import { getEventStatus, getRusBetweenDate } from '../../helpers/helpers'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import { theme } from '../../styles/theme'
 
 function Events({ data }) {
   const { push: routerPush } = useRouter()
 
   return (
-    <div>
-      <EventsLWrapper>
-        {!!data?.length ? (
-          data.map(({ location, dateEnd, dateStart, id, description, name, getStatus }) => (
-            <EventCard onClick={() => routerPush(`/events/${id}`)} key={`mainPageEvents${id}`}>
-              <EventImg src={description?.banner} />
-              <Texts>
-                <h4>{name}</h4>
-                <Content>
-                  <ContentLeftSide>
-                    <ContentItems>
-                      <LocationIcon />
-                      <span>{`${location?.country}, ${location?.city}`}</span>
-                    </ContentItems>
-                    <ContentItems>
-                      <CalendarIcon />
-                      <span>{getRusBetweenDate(dateStart, dateEnd)}</span>
-                    </ContentItems>
-                  </ContentLeftSide>
-                  <ContentRightSide>{getEventStatus(getStatus)}</ContentRightSide>
-                </Content>
-              </Texts>
-            </EventCard>
-          ))
-        ) : (
-          <Empty>Турниров не найдено</Empty>
-        )}
-      </EventsLWrapper>
-    </div>
+    <EventsLWrapper>
+      {!!data?.length ? (
+        data.map(({ location, dateEnd, dateStart, id, description, name, getStatus }) => (
+          <EventCard onClick={() => routerPush(`/events/${id}`)} key={`mainPageEvents${id}`}>
+            <EventImg src={description?.banner} />
+            <Texts>
+              <h4>{name}</h4>
+              <Content>
+                <ContentLeftSide>
+                  <ContentItems>
+                    <LocationIcon />
+                    <span>{`${location?.country}, ${location?.city}`}</span>
+                  </ContentItems>
+                  <ContentItems>
+                    <CalendarIcon />
+                    <span>{getRusBetweenDate(dateStart, dateEnd)}</span>
+                  </ContentItems>
+                </ContentLeftSide>
+                <ContentRightSide>{getEventStatus(getStatus)}</ContentRightSide>
+              </Content>
+            </Texts>
+          </EventCard>
+        ))
+      ) : (
+        <Empty>Турниров не найдено</Empty>
+      )}
+    </EventsLWrapper>
   )
 }
 
 export default Events
 
-const EventsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  grid-gap: 32px;
-  margin-top: 32px;
-`
 const Empty = styled.h3`
   font-style: normal;
   font-weight: 600;
@@ -62,20 +55,22 @@ const EventImg = styled.div`
   width: 100%;
   background: no-repeat ${({ src }) => (src ? 'url("' + src + '")' : 'red')} center / cover;
   border-radius: 16px 16px 0 0;
-`
 
-const MainPageTitle = styled.h2`
-  font-style: normal;
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 40px;
-  color: #ffffff;
+  ${theme.mqMax('md')} {
+    height: 180px;
+    border-radius: 12px 12px 0 0;
+  }
 `
 
 const EventsLWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 32px;
+
+  ${theme.mqMax('md')} {
+    grid-template: repeat(3, 1fr) / 1fr;
+    grid-gap: 16px;
+  }
 `
 
 const EventCard = styled.div`
@@ -103,6 +98,14 @@ const ContentItems = styled.div`
     font-size: 16px;
     font-weight: 600;
     color: #f2f2f2;
+  }
+
+  ${theme.mqMax('md')} {
+    span {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f2f2f2;
+    }
   }
 `
 
@@ -135,6 +138,15 @@ const Texts = styled.div`
     font-weight: 600;
     font-size: 24px;
     color: #f2f2f2;
+  }
+
+  ${theme.mqMax('md')} {
+    padding: 0 16px 16px;
+    grid-gap: 8px;
+    h4 {
+      font-size: 20px;
+      line-height: 24px;
+    }
   }
 `
 

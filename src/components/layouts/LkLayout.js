@@ -1,6 +1,7 @@
 import { useMediaQuery } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { theme } from '../../styles/theme'
 import MobileSidebar from '../ui/MobileSidebar'
 import Sidebar from '../ui/Sidebar'
 
@@ -47,6 +48,10 @@ const Container = styled.div`
   max-width: 1489px;
   margin: 64px auto;
   overflow: hidden;
+
+  ${theme.mqMax('xl')} {
+    margin: 32px auto;
+  }
 `
 const Wrapper = styled.div`
   border: 1px solid #333333;

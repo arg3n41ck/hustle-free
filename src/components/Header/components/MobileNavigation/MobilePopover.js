@@ -25,7 +25,7 @@ const getPathByRole = (role) => {
 function MobilePopover({ open, setOpen }) {
   const { t: tHeader } = useTranslation('header')
   const { t: tCommon } = useTranslation('common')
-  const user = useSelector((state) => state.user.user)
+  const { user, userAuthenticated } = useSelector((state) => state.user)
   const { push: routerPush } = useRouter()
 
   return (
@@ -59,7 +59,7 @@ function MobilePopover({ open, setOpen }) {
                 </a>
               </Link>
             </Nav>
-            {!!user && (
+            {userAuthenticated && (
               <UserWrapper
                 onClick={() => {
                   routerPush(getPathByRole(user?.role))
@@ -104,7 +104,7 @@ const Popover = styled(motion.div)`
   position: absolute;
   overflow: hidden;
   top: 57px;
-  right: -16px;
+  right: -63px;
   padding: 16px;
 
   display: flex;

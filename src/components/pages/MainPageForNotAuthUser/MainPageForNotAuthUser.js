@@ -11,6 +11,7 @@ import { MainPageWrapper } from '../MainPage/MainPage'
 import { fetchUser, selectIsUserAuth } from '../../../redux/components/user'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
+import { theme } from '../../../styles/theme'
 
 const MainPageForNotAuthUser = () => {
   const [, events] = useSelector(selectEvents)
@@ -64,6 +65,11 @@ const MainPageForNotAuthUserWrapper = styled.div`
   display: grid;
   grid-template: calc(100vh - 76px) auto / 1fr;
   grid-row-gap: 80px;
+
+  ${theme.mqMax('md')} {
+    display: grid;
+    grid-template: auto auto / 1fr;
+  }
 `
 
 const MainPageTitle = styled.h2`
@@ -81,6 +87,11 @@ const MainPageTitle = styled.h2`
     line-height: 64px;
     text-align: center;
     text-transform: uppercase;
+  }
+
+  ${theme.mqMax('md')} {
+    font-size: 20px !important;
+    line-height: 32px !important;
   }
 `
 

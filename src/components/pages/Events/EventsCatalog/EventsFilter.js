@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Collapse, TextField } from '@mui/material'
+import { Collapse, TextField, useMediaQuery } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   fetchCountries,
@@ -16,12 +16,14 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { ru } from 'date-fns/locale'
 import { format } from 'date-fns'
 import { useTranslation } from 'next-i18next'
+import { theme } from '../../../../styles/theme'
 
 function EventsFilter() {
   const [isFiltersOpen, setFilter] = useState(false)
   const [countries] = useSelector(selectCountriesAndCities)
   const [sportTypes] = useSelector(selectSportTypes)
   const { t: tEvents } = useTranslation('events')
+  const md = useMediaQuery('(max-width:768px)')
   const dispatch = useDispatch()
   const query = useQuery()
   const { push: routerPush } = useRouter()
@@ -50,7 +52,9 @@ function EventsFilter() {
   )
 
   useEffect(() => {
-    dispatch(fetchEventsByParams({ ...query, status_publish: 'published' }))
+    query.set('status_publish', 'published')
+    dispatch(fetchEventsByParams(query))
+    query.delete('status_publish')
   }, [query])
 
   const sportTypesValue =
@@ -67,7 +71,7 @@ function EventsFilter() {
   const pastValue = query.get('status') === 'past' ? null : { name: 'past' }
 
   return (
-    <div>
+    <>
       <BtnsWrapper>
         <SoonBtn
           className={!futureValue ? 'active' : ''}
@@ -89,7 +93,7 @@ function EventsFilter() {
         </PastEventsBtn>
         <FilterBtn onClick={() => setFilter((s) => !s)}>
           <FilterIcon />
-          {tEvents('events.filter.filter')}
+          {!md && tEvents('events.filter.filter')}
         </FilterBtn>
       </BtnsWrapper>
 
@@ -194,37 +198,9 @@ function EventsFilter() {
               )}
             />
           </LocalizationProvider>
-          {/*<Autocomplete*/}
-          {/*  noOptionsText={tEvents("events.filter.nothingFound")}*/}
-          {/*  onChange={(e, value) => sortHandler(e, value)}*/}
-          {/*  options={countries.map((option) => option)}*/}
-          {/*  getOptionLabel={(option) => option.name}*/}
-          {/*  fullWidth*/}
-          {/*  renderInput={(params) => (*/}
-          {/*    <TextField*/}
-          {/*      {...params} sx={{
-            width: '100%',
-            '& .MuiOutlinedInput-root': {
-              '& > fieldset': {
-                borderColor:
-                  formik.touched.full_name_coach &&
-                  Boolean(formik.errors.full_name_coach) &&
-                  '#d32f2f !important',
-              },
-            },
-          }}*/}
-          {/*      fullWidth*/}
-          {/*      placeholder="Сортировать"*/}
-          {/*      InputProps={{*/}
-          {/*        ...params.InputProps,*/}
-          {/*        startAdornment: <FieldFilterIcon />,*/}
-          {/*      }}*/}
-          {/*    />*/}
-          {/*  )}*/}
-          {/*/>*/}
         </Filters>
       </Collapse>
-    </div>
+    </>
   )
 }
 
@@ -236,23 +212,34 @@ const BtnsWrapper = styled.div`
   color: #fff;
   grid-gap: 56px;
 
-  button {
-    height: 64px;
+  ${theme.mqMax('xl')} {
+    grid-gap: 5px;
+  }
+
+  ${theme.mqMax('md')} {
+    flex-wrap: wrap;
+    justify-content: space-around;
   }
 `
 
 const SoonBtn = styled.button`
-  width: 175px;
-  height: 64px;
   font-weight: 600;
   font-size: 18px;
   background: transparent;
   color: #886cf8;
   border-radius: 32px;
-
+  padding: 20px;
   &.active {
     background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
     color: #fff;
+  }
+
+  ${theme.mqMax('xl')} {
+    padding: 12px;
+    border-radius: 8px;
+
+    font-weight: 400;
+    font-size: 14px;
   }
 `
 
@@ -261,12 +248,20 @@ const LiveBtn = styled.button`
   font-size: 18px;
   font-weight: 600;
 
-  padding: 0 30px 0 24px;
+  padding: 20px 20px 20px 16px;
   border-radius: 32px;
 
   &.active {
     color: #fff;
     background: linear-gradient(90deg, #a12157 0%, #bd3c3c 100%);
+  }
+
+  ${theme.mqMax('xl')} {
+    padding: 12px;
+    border-radius: 8px;
+
+    font-weight: 400;
+    font-size: 14px;
   }
 `
 
@@ -275,30 +270,46 @@ const PastEventsBtn = styled.button`
   color: #bdbdbd;
   font-weight: 600;
   font-size: 18px;
-  padding: 0 24px;
+  padding: 20px;
   border-radius: 32px;
 
   &.active {
     color: #fff;
     background: linear-gradient(90deg, #5f5f5f 0%, #313131 100%);
   }
+
+  ${theme.mqMax('xl')} {
+    padding: 12px;
+    border-radius: 8px;
+
+    font-weight: 400;
+    font-size: 14px;
+  }
 `
 
 const FilterBtn = styled.button`
-  height: 64px;
-  left: 1257px;
   background: #333333;
   border: 1px solid #333333;
-  box-sizing: border-box;
+
   font-weight: 600;
   font-size: 20px;
   color: #f2f2f2;
+
   border-radius: 16px;
   display: flex;
   align-items: center;
   grid-gap: 15px;
   padding: 20px;
   margin: 0 0 0 auto;
+
+  ${theme.mqMax('xl')} {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  ${theme.mqMax('md')} {
+    margin: 0;
+  }
 `
 
 const FilterIcon = () => (
@@ -320,6 +331,14 @@ const Filters = styled.div`
   justify-content: space-between;
   grid-gap: 32px;
   margin: 34px 0 0;
+
+  ${theme.mqMax('xl')} {
+    grid-gap: 16px;
+  }
+
+  ${theme.mqMax('md')} {
+    flex-direction: column;
+  }
 `
 
 export const BoxIcon = () => (
