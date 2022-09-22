@@ -10,6 +10,7 @@ import {
   OutlinedInput,
   TextField,
   Autocomplete,
+  useMediaQuery,
 } from '@mui/material'
 import InputMask from 'react-input-mask'
 import { motion } from 'framer-motion'
@@ -30,6 +31,7 @@ const TeamContactInfo = ({ data, setData, setView }) => {
   const [showPassword, setShowPassword] = useState(false)
   const { t: tAuth } = useTranslation('auth')
   const { t: tCommon } = useTranslation('common')
+  const sm = useMediaQuery('(max-width: 578px)')
 
   const { current: validationSchema } = useRef(
     yup.object({
@@ -164,7 +166,7 @@ const TeamContactInfo = ({ data, setData, setView }) => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: sm ? '1fr' : '1fr 1fr',
           gridColumnGap: 24,
         }}
       >
@@ -290,7 +292,7 @@ const TeamContactInfo = ({ data, setData, setView }) => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: sm ? '1fr' : '1fr 1fr',
           gridColumnGap: 24,
         }}
       >

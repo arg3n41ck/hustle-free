@@ -10,6 +10,7 @@ import {
   OutlinedInput,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@mui/material'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
@@ -52,6 +53,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
 
   const { t: tAuth } = useTranslation('auth')
   const { t: tCommon } = useTranslation('common')
+  const sm = useMediaQuery('(max-width: 578px)')
 
   const { current: validationSchema } = useRef(
     yup.object({
@@ -139,7 +141,7 @@ const OrganizerPersonalData = ({ data, setData, setView }) => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: sm ? '1fr' : '1fr 1fr',
           gridColumnGap: 24,
         }}
       >

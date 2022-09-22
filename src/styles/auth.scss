@@ -3,6 +3,10 @@
     margin: 88px auto 0;
     width: 100%;
     max-width: 688px;
+
+    @media screen and (max-width: 578px){
+      margin: 32px auto 86px;
+    }
   }
   &-wrapper {
     padding: 64px 48px;
@@ -10,9 +14,13 @@
     box-sizing: border-box;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
     border-radius: 32px;
-
     &__independent {
       padding: 32px 0 0;
+    }
+
+    @media screen and (max-width: 578px){
+      padding: 0;
+      background: none;
     }
   }
   &-title {

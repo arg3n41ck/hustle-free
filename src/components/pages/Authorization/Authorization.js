@@ -278,6 +278,11 @@ export const AuthButton = styled.button`
   ${theme.mqMax('lg')} {
     margin-bottom: 20px;
   }
+
+  @media screen and (max-width: 578px){
+    border-radius: 4px;
+    height: 52px;
+  }
 `
 const ErrorMessage = styled.p`
   color: #eb5757;
