@@ -1,28 +1,11 @@
-import React from "react"
-import { makeStyles } from "@mui/styles"
-import styled from "styled-components"
-import { Tab, Tabs } from "@mui/material"
-import { theme } from "../../../styles/theme"
+import React from 'react'
+import { makeStyles } from '@mui/styles'
+import styled from 'styled-components'
+import { Tab, Tabs, useMediaQuery } from '@mui/material'
+import { theme } from '../../../styles/theme'
 
-const useStyle = makeStyles({
-  indicator: {
-    width: "115%",
-    height: 8,
-    borderRadius: "8px 8px 0px 0px",
-    [theme.mqMax("md")]: {
-      height: 0,
-    },
-  },
-})
-
-const HorizontalTabsBorder = ({
-  valueTab,
-  arrayTab,
-  onChangeHandler,
-  height,
-  children,
-}) => {
-  const classes = useStyle()
+const HorizontalTabsBorder = ({ valueTab, arrayTab, onChangeHandler, height, children }) => {
+  const md = useMediaQuery('(max-width: 768px)')
   const handleChange = (event, newValue) => {
     onChangeHandler(newValue)
   }
@@ -33,30 +16,27 @@ const HorizontalTabsBorder = ({
         <Tabs
           value={valueTab}
           onChange={handleChange}
-          aria-label="basic tabs example"
-          classes={{
-            indicator: classes.indicator,
-          }}
-          sx={{
-            "& .MuiTabs-flexContainer": {
-              display: "grid",
-              gridTemplateColumns: `repeat(${arrayTab.length}, 1fr)`,
-              gridTemplateRows: `${height}`,
-            },
-            // [theme.mqMax("md")]: {
-            //   "& .MuiTabs-flexContainer":
-            //     arrayTab.length === 4
-            //       ? {
-            //           display: "grid",
-            //           gridTemplateColumns: `repeat(${2}, 1fr)`,
-            //           gridTemplateRows: `${height} ${height}`,
-            //         }
-            //       : {},
-            // },
-          }}
+          scrollButtons='auto'
+          aria-label='basic tabs example'
+          variant={md ? 'scrollable' : 'standart'}
+          // classes={{
+          //   indicator: classes.indicator,
+          // }}
+          sx={
+            !md
+              ? {
+                  '& .MuiTabs-flexContainer': {
+                    display: 'grid',
+                    gridTemplateColumns: `repeat(${arrayTab.length}, 1fr)`,
+                    gridTemplateRows: `${height}`,
+                  },
+                }
+              : {}
+          }
         >
-          {arrayTab.map((item) => (
+          {arrayTab.map((item, i) => (
             <TabItem
+              key={`${item.value}-${item.name}-${i}`}
               active={item.value === valueTab}
               value={item.value}
               label={item.name}
@@ -73,6 +53,9 @@ const Wrapper = styled.div``
 const Header = styled.div`
   border-top: 1px solid #333333;
   border-bottom: 1px solid #333333;
+  @media screen and (max-width: 768px) {
+    padding: 0 16px;
+  }
 `
 const TabItem = styled(Tab)`
   font-style: normal;
@@ -92,10 +75,13 @@ const TabItem = styled(Tab)`
   &:last-child {
     border-right: none;
   }
-  ${theme.mqMax("md")} {
-    border-bottom: ${(p) =>
-      p.active ? "8px solid #6d4eea" : "1px solid #333333"};
-    transition: 0.4s;
+  border-bottom: ${(p) => (p.active ? '8px solid #6d4eea' : '8px solid #333333')};
+  transition: 0.4s;
+  ${theme.mqMax('md')} {
+    border-bottom: ${(p) => (p.active ? '1px solid #6d4eea' : '1px solid #333333')};
+    border-right: none;
+    min-width: initial !important;
+    width: min-content !important;
   }
 `
 const Content = styled.div``

@@ -1,13 +1,15 @@
 import styled from 'styled-components'
 import { AnimatePresence, motion } from 'framer-motion'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
 import { Avatar } from '@mui/material'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { truncateString } from '../../../../helpers/helpers'
 import { useRouter } from 'next/router'
 import HeaderLocalizationPopover from '../HeaderLocalizationPopover'
+import clearCookies from '../../../../utils/clearCookies'
+import { exitUser } from '../../../../redux/components/user'
 
 const getPathByRole = (role) => {
   switch (role) {
@@ -26,7 +28,18 @@ function MobilePopover({ open, setOpen }) {
   const { t: tHeader } = useTranslation('header')
   const { t: tCommon } = useTranslation('common')
   const { user, userAuthenticated } = useSelector((state) => state.user)
-  const { push: routerPush } = useRouter()
+  const { push: routerPush, pathname } = useRouter()
+  const dispatch = useDispatch()
+
+  const outHandler = async () => {
+    dispatch(exitUser())
+    clearCookies()
+    await routerPush('/login')
+  }
+
+  useEffect(() => {
+    setOpen(false)
+  }, [pathname])
 
   return (
     <MainWrapper>
@@ -59,29 +72,36 @@ function MobilePopover({ open, setOpen }) {
                 </a>
               </Link>
             </Nav>
-            {userAuthenticated && (
-              <UserWrapper
-                onClick={() => {
-                  routerPush(getPathByRole(user?.role))
-                  setOpen(false)
-                }}
-              >
-                <Avatar
-                  src={user?.avatar}
-                  sx={{ marginRight: 1.2, objectFit: 'cover' }}
-                  alt='userAva'
-                />
-                <UserInfo>
-                  <UserName>
-                    {user?.role !== 'team'
-                      ? `${truncateString(user?.lastName || '', 1, false)}. ${
-                          user?.firstName || ''
-                        }`
-                      : truncateString(user?.fullNameCoach || '', 15)}
-                  </UserName>
-                  <UserRole>{tCommon(`userRoles.${user?.role}`)}</UserRole>
-                </UserInfo>
-              </UserWrapper>
+            {userAuthenticated ? (
+              <>
+                <UserWrapper
+                  onClick={() => {
+                    routerPush(getPathByRole(user?.role))
+                    setOpen(false)
+                  }}
+                >
+                  <Avatar
+                    src={user?.avatar}
+                    sx={{ marginRight: 1.2, objectFit: 'cover' }}
+                    alt='userAva'
+                  />
+                  <UserInfo>
+                    <UserName>
+                      {user?.role !== 'team'
+                        ? `${truncateString(user?.lastName || '', 1, false)}. ${
+                            user?.firstName || ''
+                          }`
+                        : truncateString(user?.fullNameCoach || '', 15)}
+                    </UserName>
+                    <UserRole>{tCommon(`userRoles.${user?.role}`)}</UserRole>
+                  </UserInfo>
+                </UserWrapper>
+                <LoginButton style={{ color: '#828282' }} onClick={() => outHandler()}>
+                  {tHeader('userTabs.exit')}
+                </LoginButton>
+              </>
+            ) : (
+              <LoginButton onClick={() => outHandler()}>{tHeader('userTabs.login')}</LoginButton>
             )}
             <HeaderLocalizationPopover />
           </Popover>
@@ -101,10 +121,10 @@ const Popover = styled(motion.div)`
   height: calc(100vh - 80px);
   background: #0f0f10;
 
-  position: absolute;
+  position: fixed;
   overflow: hidden;
-  top: 57px;
-  right: -63px;
+  top: 80px;
+  right: 0;
   padding: 16px;
 
   display: flex;
@@ -162,4 +182,13 @@ const UserWrapper = styled.div`
 
   background: #141519;
   border-radius: 16px;
+`
+
+const LoginButton = styled.button`
+  width: min-content;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 32px;
+  text-align: left;
+  color: #f2f2f2;
 `

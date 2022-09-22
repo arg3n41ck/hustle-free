@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import HorizontalTabsBorder from '../../../../ui/tabs/HorizontalTabsBorder'
 import FilterMyEvents from './Events/FilterMyEvents'
 import { useTranslation } from 'next-i18next'
+import styled from 'styled-components'
 
 function MyEvents({ onToggleSidebar }) {
   const dispatch = useDispatch()
@@ -56,10 +57,16 @@ function MyEvents({ onToggleSidebar }) {
         onChangeHandler={viewHandler}
         height={'96px'}
       >
-        {!!athleteEvents?.length && athleteEvents.map((item) => <FilterMyEvents data={item} />)}
+        <MyEventsWrapper>
+          {!!athleteEvents?.length && athleteEvents.map((item) => <FilterMyEvents data={item} />)}
+        </MyEventsWrapper>
       </HorizontalTabsBorder>
     </div>
   )
 }
 
 export default MyEvents
+
+const MyEventsWrapper = styled.div`
+  min-height: 200px;
+`

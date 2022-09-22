@@ -17,8 +17,8 @@ const MobileNavigations = () => {
 
   return (
     <MobileRightWrapper>
-      <MobilePopover open={open} setOpen={setOpen} />
       {userAuthenticated && <Notifications />}
+      <MobilePopover open={open} setOpen={setOpen} />
       {!open && (
         <Menu onClick={() => setOpen(true)} style={{ width: 32, height: 32, cursor: 'pointer' }} />
       )}
@@ -39,7 +39,7 @@ const MobileRightWrapper = styled.div`
   ${theme.mqMax('xl')} {
     display: flex;
   }
-  grid-column-gap: 14px;
+  grid-column-gap: 8px;
 `
 
 const Menu = (props) => (

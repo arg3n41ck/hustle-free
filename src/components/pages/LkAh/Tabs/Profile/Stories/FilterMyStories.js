@@ -71,6 +71,10 @@ const EventContainer = styled.div`
   width: 100%;
   padding: 32px;
   border: 1px solid #333333;
+
+  &:last-child {
+    border-radius: 0 0 24px 24px;
+  }
 `
 
 const EventItems = styled.div`

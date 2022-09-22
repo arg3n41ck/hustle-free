@@ -64,7 +64,17 @@ export default FilterMyEvents
 const EventContainer = styled.div`
   width: 100%;
   padding: 32px;
-  border: 1px solid #333333;
+  border-left: 1px solid #333333;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+
+  &:last-child {
+    border-radius: 0 0 24px 24px;
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 16px;
+  }
 `
 
 const EventRightInfo = styled.div`
