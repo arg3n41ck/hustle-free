@@ -1,5 +1,5 @@
 import { Avatar, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { SearchIcon } from '../../../../../../assets/svg/icons'
@@ -16,15 +16,14 @@ const applyToTeam = async (body) => {
   await $api.post('/teams/athlete_requests/', body)
 }
 
-function TeamSearchContent({ onClose, selectedTeam, setSelectedTeam, setModOpen }) {
-  const [, teams] = useSelector(teamsSelector)
+function TeamSearchContent({ onClose, selectedTeam, setSelectedTeam, setModOpen, teamsRequests }) {
+  const [athleteTeams, teams] = useSelector(teamsSelector)
   const { user } = useSelector((state) => state.user)
-  const [] = useState(null)
   const [search, setSearch] = useState('')
   const debouncedSearch = useDebounce(search, 500)
   const dispatch = useDispatch()
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchTeams({ search: debouncedSearch }))
   }, [debouncedSearch])
 
@@ -37,6 +36,7 @@ function TeamSearchContent({ onClose, selectedTeam, setSelectedTeam, setModOpen 
     dispatch(fetchAthleteTeams({ athletes: user.athleteId }))
     onClose()
   }
+
   return (
     <>
       <Title>Вступить команду</Title>
@@ -63,7 +63,11 @@ function TeamSearchContent({ onClose, selectedTeam, setSelectedTeam, setModOpen 
         <Teams>
           {!!teams?.length &&
             teams
-              .filter(({ athletes }) => !athletes.find(({ id }) => id === user?.athleteId))
+              .filter(({ id }) => {
+                return !(
+                  (teamsRequests || []).includes(id) || athleteTeams.some((team) => team?.id == id)
+                )
+              })
               .map((item) => {
                 const { id, user, fullNameCoach, teamMembersCount, preliminaryModeration } = item
 
