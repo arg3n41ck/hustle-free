@@ -109,4 +109,5 @@ const ContactsSocials = styled.div`
   display: flex;
   align-items: center;
   grid-column-gap: 24px;
+  margin-top: 24px;
 `
