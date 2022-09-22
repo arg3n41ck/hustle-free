@@ -16,7 +16,7 @@ const HorizontalTabsBorder = ({ valueTab, arrayTab, onChangeHandler, height, chi
         <Tabs
           value={valueTab}
           onChange={handleChange}
-          scrollButtons='auto'
+          scrollButtons='false'
           aria-label='basic tabs example'
           variant={md ? 'scrollable' : 'standart'}
           // classes={{
