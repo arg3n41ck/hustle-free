@@ -772,7 +772,8 @@ const AvatarWrapper = styled.div`
   display: flex;
   ${theme.mqMax('md')} {
     flex-direction: column-reverse;
-    align-items: center;
+    grid-row-gap: 16px;
+    align-items: flex-start;
   }
 `
 

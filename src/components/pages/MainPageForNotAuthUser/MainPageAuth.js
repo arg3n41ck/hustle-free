@@ -6,11 +6,13 @@ import { useDispatch } from 'react-redux'
 import { exitUser } from '../../../redux/components/user'
 import { useTranslation } from 'next-i18next'
 import { theme } from '../../../styles/theme'
+import { useMediaQuery } from '@mui/material'
 
 function MainPageAuth() {
   const router = useRouter()
   const { t: tMainPageFotNotAuthUser } = useTranslation('mainPageForNotAuthUser')
   const dispatch = useDispatch()
+  const xl = useMediaQuery('max-width: 1200px')
   const handleClick = (role) => {
     localStorageSetItem('role', role)
     router.push('/registration')
@@ -18,7 +20,7 @@ function MainPageAuth() {
 
   const { current: array } = useRef([
     {
-      id: 1,
+      id: xl ? 1 : null,
       value: 'organizer',
       heading: tMainPageFotNotAuthUser('mainPage.auth.forOrganizers'),
       description: tMainPageFotNotAuthUser('mainPage.auth.forOrganizersDesc'),
@@ -32,7 +34,7 @@ function MainPageAuth() {
       icon: athIcon,
     },
     {
-      id: 3,
+      id: xl ? 3 : null,
       value: 'team',
       heading: tMainPageFotNotAuthUser('mainPage.auth.forTeams'),
       description: tMainPageFotNotAuthUser('mainPage.auth.forTeamsDesc'),
@@ -46,18 +48,20 @@ function MainPageAuth() {
 
   return (
     <ContainerCards>
-      {array.map((item) => (
-        <Card key={item.id}>
-          {item.icon}
-          <Texts>
-            <CardTextHeading>{item.heading}</CardTextHeading>
-            <CardTextDesc>{item.description}</CardTextDesc>
-          </Texts>
-          <CardButton onClick={() => handleClick(item.value)}>
-            {tMainPageFotNotAuthUser('mainPage.auth.signUp')}
-          </CardButton>
-        </Card>
-      ))}
+      {array
+        .filter(({ id }) => id)
+        .map((item) => (
+          <Card key={item.id}>
+            {item.icon}
+            <Texts>
+              <CardTextHeading>{item.heading}</CardTextHeading>
+              <CardTextDesc>{item.description}</CardTextDesc>
+            </Texts>
+            <CardButton onClick={() => handleClick(item.value)}>
+              {tMainPageFotNotAuthUser('mainPage.auth.signUp')}
+            </CardButton>
+          </Card>
+        ))}
     </ContainerCards>
   )
 }
