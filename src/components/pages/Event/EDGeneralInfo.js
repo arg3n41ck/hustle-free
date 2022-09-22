@@ -10,6 +10,9 @@ import ParticipantsAreFilledModal from './EventModal/ParticipantsAreFilledModal'
 import $api from '../../../services/axios'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'next-i18next'
+import { useMediaQuery } from '@mui/material'
+import RegistrationAccordion from '../../AuthAthleteToEventAccordions/RegistrationAccordion'
+import { theme } from '../../../styles/theme'
 
 const getIsUserInEvent = async (eventId) => {
   try {
@@ -93,6 +96,8 @@ function EdGeneralInfo({ event }) {
   const [ogEventsId] = useSelector(selectOgEvents)
   const [openFullPcModal, setOpenFullPcModal] = useState(false)
   const [userStatusInEvent, setUserStatusInTeam] = useState()
+  const lg = useMediaQuery('(max-width: 992px)')
+  const md = useMediaQuery('(max-width: 768px)')
 
   const regData = useMemo(() => regArray(event), [event])
 
@@ -178,7 +183,7 @@ function EdGeneralInfo({ event }) {
       {!ogAndIsMyEvent ? (
         <EventBanner src={event?.description.banner} />
       ) : (
-        <div style={{ height: '448px' }}>
+        <div style={{ height: md ? '281px' : '448px' }}>
           <FileUploaderBig
             defaultBanner={event?.description?.banner}
             onChange={async (file) => {
@@ -212,22 +217,26 @@ function EdGeneralInfo({ event }) {
           )
         )}
       </TitlePart>
-      <RegInfoUl>
-        {!!regData?.length &&
-          regData.map(({ id, label, value, icon }) =>
-            !!value ? (
-              <RegInfoLi key={`EdGeneralInfo_${id}`}>
-                {icon}
-                <div>
-                  <span>{tEventDetail(label)}</span>
-                  <p>{value}</p>
-                </div>
-              </RegInfoLi>
-            ) : (
-              ''
-            ),
-          )}
-      </RegInfoUl>
+      {lg ? (
+        <RegistrationAccordion event={event} />
+      ) : (
+        <RegInfoUl>
+          {!!regData?.length &&
+            regData.map(({ id, label, value, icon }) =>
+              !!value ? (
+                <RegInfoLi key={`EdGeneralInfo_${id}`}>
+                  {icon}
+                  <div>
+                    <span>{tEventDetail(label)}</span>
+                    <p>{value}</p>
+                  </div>
+                </RegInfoLi>
+              ) : (
+                ''
+              ),
+            )}
+        </RegInfoUl>
+      )}
     </>
   )
 }
@@ -241,19 +250,35 @@ const EventBanner = styled.div`
   border: 1px solid #333333;
   box-sizing: border-box;
   border-radius: 20px;
+
+  ${theme.mqMax('md')} {
+    height: 240px;
+    width: calc(100% + 32px);
+    margin: 0 -16px;
+    border-radius: 0;
+  }
 `
 
 const TitlePart = styled.div`
   display: grid;
   grid-template-columns: 2.2fr 1fr;
-  grid-column-gap: 32px;
+  grid-gap: 32px;
+
+  ${theme.mqMax('lg')} {
+    grid-template: auto 1fr / 1fr;
+    grid-gap: 16px;
+  }
 
   h1 {
     font-weight: 800;
     font-size: 48px;
-    line-height: 150%;
     color: #f2f2f2;
     word-break: break-word;
+
+    ${theme.mqMax('md')} {
+      font-size: 24px;
+      line-height: 32px;
+    }
   }
 `
 
@@ -269,6 +294,11 @@ const ERegBtn = styled.button`
   align-items: center;
   justify-content: center;
   grid-column-gap: 20px;
+
+  ${theme.mqMax('md')} {
+    padding: 16px 20px;
+    font-size: 16px;
+  }
 `
 
 const RegInfoUl = styled.ul`

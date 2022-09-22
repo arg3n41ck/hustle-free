@@ -1,108 +1,60 @@
-import React from 'react'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
-import Typography from '@mui/material/Typography'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
 import { getRusBetweenDate } from '../../helpers/helpers'
+import ULAccordion from '../ui/ULAccordion'
 
 function RegistrationAccordion({ event }) {
+  const { current: registrations } = useRef([
+    {
+      id: 'early',
+      title: 'Ранняя регистрация',
+      dateContent: event?.registration?.earlyRegStart
+        ? getRusBetweenDate(event?.registration?.earlyRegStart, event?.registration?.earlyRegEnd)
+        : null,
+    },
+    {
+      id: 'standart',
+      title: 'Стандартная регистрация',
+      dateContent: event?.registration?.standartRegStart
+        ? getRusBetweenDate(
+            event?.registration?.standartRegStart,
+            event?.registration?.standartRegEnd,
+          )
+        : null,
+    },
+    {
+      id: 'late',
+      title: 'Поздняя регистрация',
+      dateContent: event?.registration?.lateRegStart
+        ? getRusBetweenDate(event?.registration?.lateRegStart, event?.registration?.lateRegEnd)
+        : null,
+    },
+    {
+      id: 'period',
+      title: 'Длительность турнира',
+      dateContent: event?.dateStart ? getRusBetweenDate(event?.dateStart, event?.dateEnd) : null,
+    },
+  ])
+
   return (
-    <div>
-      <RegistrationAccordionCustom
-        sx={{
-          '& .MuiAccordionSummary-expandIconWrapper': {
-            transform: 'rotate(90deg)',
-          },
-          '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-            transform: 'rotate(-90deg)',
-          },
-          '& .MuiSvgIcon-root': {
-            color: '#828282',
-          },
-        }}
-        defaultExpanded
-      >
-        <AccordionSummary
-          expandIcon={<ArrowForwardIosSharpIcon />}
-          aria-controls='panel1a-content'
-          id='panel1a-header'
-          sx={{ padding: '0 24px' }}
-        >
-          <RegistrationAccordionCustomHeadingText>
-            Регистрация
-          </RegistrationAccordionCustomHeadingText>
-        </AccordionSummary>
-        <Line />
-        <AccordionDetails sx={{ padding: '24px 24px 0' }}>
-          {!!event?.registration?.earlyRegActive && (
-            <>
-              <RegistrationAccordionItems>
-                <RegistrationIcon period='early' />
-                <div>
-                  <RegistrationAccordionItemTopText>
-                    Ранняя регистрация
-                  </RegistrationAccordionItemTopText>
-                  <RegistrationAccordionItemBottomText>
-                    {getRusBetweenDate(
-                      event?.registration?.earlyRegStart,
-                      event?.registration?.earlyRegEnd,
-                    )}
-                  </RegistrationAccordionItemBottomText>
-                </div>
-              </RegistrationAccordionItems>
-              <Line margin={'24px 0'} />
-            </>
-          )}
-          <RegistrationAccordionItems>
-            <RegistrationIcon period='standart' />
-            <div>
-              <RegistrationAccordionItemTopText>
-                Стандартная регистрация
-              </RegistrationAccordionItemTopText>
-              <RegistrationAccordionItemBottomText>
-                {getRusBetweenDate(
-                  event?.registration?.standartRegStart,
-                  event?.registration?.standartRegEnd,
-                )}
-              </RegistrationAccordionItemBottomText>
-            </div>
-          </RegistrationAccordionItems>
-          <Line margin={'24px 0'} />
-          {event?.registration?.late_reg_active && (
-            <>
-              <RegistrationAccordionItems>
-                <RegistrationIcon period='late' />
-                <div>
-                  <RegistrationAccordionItemTopText>
-                    Поздняя регистрация
-                  </RegistrationAccordionItemTopText>
-                  <RegistrationAccordionItemBottomText>
-                    {getRusBetweenDate(
-                      event?.registration?.lateRegStart,
-                      event?.registration?.lateRegEnd,
-                    )}
-                  </RegistrationAccordionItemBottomText>
-                </div>
-              </RegistrationAccordionItems>
-              <Line margin={'24px 0'} />
-            </>
-          )}
-          <RegistrationAccordionItems>
-            <RegistrationIcon period='period' />
-            <div>
-              <RegistrationAccordionItemTopText>
-                Длительность турнира
-              </RegistrationAccordionItemTopText>
-              <RegistrationAccordionItemBottomText>
-                {getRusBetweenDate(event?.dateStart, event?.dateEnd)}
-              </RegistrationAccordionItemBottomText>
-            </div>
-          </RegistrationAccordionItems>
-        </AccordionDetails>
-      </RegistrationAccordionCustom>
-    </div>
+    <ULAccordion title='Регистрация'>
+      {registrations
+        .filter(({ dateContent }) => dateContent)
+        .map(({ id, title, dateContent }) => (
+          <>
+            <RegistrationAccordionItems>
+              <RegistrationIcon period={id} />
+              <div>
+                <RegistrationAccordionItemTopText>{title}</RegistrationAccordionItemTopText>
+                <RegistrationAccordionItemBottomText>
+                  {dateContent}
+                </RegistrationAccordionItemBottomText>
+              </div>
+            </RegistrationAccordionItems>
+            <Line />
+          </>
+        ))}
+    </ULAccordion>
   )
 }
 
@@ -124,26 +76,6 @@ const RegistrationAccordionItemTopText = styled.p`
   color: #828282;
 `
 
-const RegistrationAccordionCustomHeadingText = styled(Typography)`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 32px;
-  color: #f2f2f2;
-`
-
-const RegistrationAccordionCustom = styled(Accordion)`
-  background-color: #1b1c22 !important ;
-  border: 1px solid #333333 !important;
-  border-radius: 16px !important;
-  padding: 24px 0 !important;
-  margin: 0 !important;
-
-  @media screen and (max-width: 850px) {
-    padding: 20px 0 !important;
-  }
-`
-
 const RegistrationAccordionItems = styled.div`
   display: grid;
   grid-template-columns: 40px auto;
@@ -155,6 +87,10 @@ const Line = styled.div`
   border-bottom: 1px solid #333333;
   width: 100%;
   margin: ${({ margin }) => (!!margin ? margin : 0)};
+
+  &:last-child {
+    display: none;
+  }
 `
 
 const RegistrationIcon = ({ period }) => {

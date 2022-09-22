@@ -1,11 +1,9 @@
 import React from 'react'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import styled from 'styled-components'
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
 import dynamic from 'next/dynamic'
+import ULAccordion from '../ui/ULAccordion'
+
 const MapFiledLeafLet = dynamic(() => import('../ui/Map/FieldLeaflet'), {
   ssr: false,
 })
@@ -20,62 +18,31 @@ function LocationAccordion({ event }) {
       : null
 
   return (
-    <div>
-      <LocationAccordionCustom
-        sx={{
-          '& .MuiAccordionSummary-expandIconWrapper': {
-            transform: 'rotate(90deg)',
-          },
-          '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-            transform: 'rotate(-90deg)',
-          },
-          '& .MuiSvgIcon-root': {
-            color: '#828282',
-          },
-        }}
-        defaultExpanded
-      >
-        <AccordionSummary
-          expandIcon={<ArrowForwardIosSharpIcon />}
-          aria-controls='panel1a-content'
-          id='panel1a-header'
-          sx={{ padding: '0 24px' }}
-        >
-          <LocationAccordionCustomHeadingText>Локация</LocationAccordionCustomHeadingText>
-        </AccordionSummary>
-        <Line />
-        <AccordionDetails
-          sx={{
-            padding: '24px 24px 0',
-            display: 'flex',
-            flexDirection: 'column',
-            gridRowGap: '24px',
-          }}
-        >
-          <LocationAccordionItems>
-            <LocationPageIcon type={'location'} />
-            <div>
-              <LocationItemsText>
-                {event?.location?.country}, {event?.location?.city}, {event?.location?.address}
-              </LocationItemsText>
-            </div>
-          </LocationAccordionItems>
+    <ULAccordion title='Локация'>
+      <>
+        <LocationAccordionItems>
+          <LocationPageIcon type={'location'} />
+          <div>
+            <LocationItemsText>
+              {event?.location?.country}, {event?.location?.city}, {event?.location?.address}
+            </LocationItemsText>
+          </div>
+        </LocationAccordionItems>
 
-          <LocationAccordionItems>
-            <LocationPageIcon type={'address'} />
-            <div>
-              <LocationItemsText>
-                {event?.location?.placeName}, {event?.location?.weighingPlace}
-              </LocationItemsText>
-            </div>
-          </LocationAccordionItems>
+        <LocationAccordionItems>
+          <LocationPageIcon type={'address'} />
+          <div>
+            <LocationItemsText>
+              {event?.location?.placeName}, {event?.location?.weighingPlace}
+            </LocationItemsText>
+          </div>
+        </LocationAccordionItems>
 
-          <Map active={!!mapPoints}>
-            {mapPoints && <MapFiledLeafLet points={mapPoints} disabled />}
-          </Map>
-        </AccordionDetails>
-      </LocationAccordionCustom>
-    </div>
+        <Map active={!!mapPoints}>
+          {mapPoints && <MapFiledLeafLet points={mapPoints} disabled />}
+        </Map>
+      </>
+    </ULAccordion>
   )
 }
 
@@ -88,14 +55,6 @@ const Map = styled.div`
   background: no-repeat
     url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1700&q=80')
     center / cover;
-`
-
-const LocationAccordionCustomHeadingText = styled(Typography)`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 32px;
-  color: #f2f2f2;
 `
 
 const LocationItemsText = styled(Typography)`
@@ -112,24 +71,6 @@ const LocationAccordionItems = styled.div`
   grid-template-columns: 24px auto;
   grid-column-gap: 12px;
   align-items: flex-start;
-`
-
-const Line = styled.div`
-  border-bottom: 1px solid #333333;
-  width: 100%;
-  margin: ${({ margin }) => (!!margin ? margin : 0)};
-`
-
-const LocationAccordionCustom = styled(Accordion)`
-  background-color: #1b1c22 !important ;
-  border: 1px solid #333333 !important;
-  border-radius: 16px !important;
-  padding: 24px 0 !important;
-  margin: 0 !important;
-
-  @media screen and (max-width: 850px) {
-    padding: 20px 0 !important;
-  }
 `
 
 const LocationPageIcon = ({ type }) => {

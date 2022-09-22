@@ -1,90 +1,54 @@
 import React from 'react'
-import Accordion from '@mui/material/Accordion'
-import AccordionSummary from '@mui/material/AccordionSummary'
-import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import styled from 'styled-components'
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
 import Link from 'next/link'
 import { phoneFormatter } from '../../helpers/phoneFormatter'
+import ULAccordion from '../ui/ULAccordion'
 
 function ContactAccordion({ event }) {
   return (
-    <div>
-      <ContactAccordionCustom
-        sx={{
-          '& .MuiAccordionSummary-expandIconWrapper': {
-            transform: 'rotate(90deg)',
-          },
-          '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-            transform: 'rotate(-90deg)',
-          },
-          '& .MuiSvgIcon-root': {
-            color: '#828282',
-          },
-        }}
-        defaultExpanded
-      >
-        <AccordionSummary
-          expandIcon={<ArrowForwardIosSharpIcon />}
-          aria-controls='panel1a-content'
-          id='panel1a-header'
-          sx={{ padding: '0 24px' }}
-        >
-          <ContactAccordionCustomHeadingText>Контакты</ContactAccordionCustomHeadingText>
-        </AccordionSummary>
-        <Line />
-        <AccordionDetails
-          sx={{
-            padding: '24px',
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gridGap: '24px',
-          }}
-        >
-          <ContactAccordionItems>
-            <ContactIcon social={'kub'} />
-            <ContactItemsText>
-              {event?.contacts?.nameOrganization || 'Не известно'} {event?.typeSport}
-            </ContactItemsText>
-          </ContactAccordionItems>
+    <ULAccordion title='Контакты'>
+      <ContactAccordionItems>
+        <ContactIcon social={'kub'} />
+        <ContactItemsText>
+          {event?.contacts?.nameOrganization || 'Не известно'} {event?.typeSport}
+        </ContactItemsText>
+      </ContactAccordionItems>
 
-          <ContactAccordionItems>
-            <ContactIcon social={'user'} />
-            <ContactItemsText>
-              {event?.contacts?.firstName || event?.contacts?.lastName
-                ? `${event?.contacts?.firstName || ''} ${event?.contacts?.lastName || ''}`
-                : 'Не известно'}
-            </ContactItemsText>
-          </ContactAccordionItems>
+      <ContactAccordionItems>
+        <ContactIcon social={'user'} />
+        <ContactItemsText>
+          {event?.contacts?.firstName || event?.contacts?.lastName
+            ? `${event?.contacts?.firstName || ''} ${event?.contacts?.lastName || ''}`
+            : 'Не известно'}
+        </ContactItemsText>
+      </ContactAccordionItems>
 
-          <ContactAccordionItems>
-            <ContactIcon social={'email'} />
-            <ContactItemsText>{event?.contacts?.email || 'Не известно'}</ContactItemsText>
-          </ContactAccordionItems>
+      <ContactAccordionItems>
+        <ContactIcon social={'email'} />
+        <ContactItemsText>{event?.contacts?.email || 'Не известно'}</ContactItemsText>
+      </ContactAccordionItems>
 
-          {!!event?.contacts?.phoneNumber1 && (
-            <ContactAccordionItems>
-              <ContactIcon social={'phone'} />
-              <ContactItemsText>
-                {phoneFormatter(event?.contacts?.phoneNumber1 || 'Не известно')}
-              </ContactItemsText>
-            </ContactAccordionItems>
-          )}
+      {!!event?.contacts?.phoneNumber1 && (
+        <ContactAccordionItems>
+          <ContactIcon social={'phone'} />
+          <ContactItemsText>
+            {phoneFormatter(event?.contacts?.phoneNumber1 || 'Не известно')}
+          </ContactItemsText>
+        </ContactAccordionItems>
+      )}
 
-          {!!event?.contacts?.facebook && (
-            <ContactAccordionItems>
-              <ContactIcon social={'facebook'} />
-              <ContactItemsText>
-                <Link href={`${event?.contacts?.facebook}`} target={'_blank'}>
-                  Facebook
-                </Link>
-              </ContactItemsText>
-            </ContactAccordionItems>
-          )}
-        </AccordionDetails>
-      </ContactAccordionCustom>
-    </div>
+      {!!event?.contacts?.facebook && (
+        <ContactAccordionItems>
+          <ContactIcon social={'facebook'} />
+          <ContactItemsText>
+            <Link href={`${event?.contacts?.facebook}`} target={'_blank'}>
+              Facebook
+            </Link>
+          </ContactItemsText>
+        </ContactAccordionItems>
+      )}
+    </ULAccordion>
   )
 }
 
@@ -105,32 +69,6 @@ const ContactAccordionItems = styled.div`
   justify-items: center;
   grid-column-gap: 12px;
   align-items: flex-start;
-`
-
-const ContactAccordionCustomHeadingText = styled(Typography)`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 32px;
-  color: #f2f2f2;
-`
-
-const Line = styled.div`
-  border-bottom: 1px solid #333333;
-  width: 100%;
-  margin: ${({ margin }) => (!!margin ? margin : 0)};
-`
-
-const ContactAccordionCustom = styled(Accordion)`
-  background-color: #1b1c22 !important;
-  border: 1px solid #333333 !important;
-  border-radius: 16px !important;
-  padding: 24px 0 !important;
-  margin: 0 !important;
-
-  @media screen and (max-width: 850px) {
-    padding: 20px 0 !important;
-  }
 `
 
 const ContactIcon = ({ social }) => {

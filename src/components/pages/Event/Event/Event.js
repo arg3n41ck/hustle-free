@@ -2,6 +2,7 @@ import React from 'react'
 import EventMainInfo from './EventMainInfo'
 import styled from 'styled-components'
 import { useTranslation } from 'next-i18next'
+import { theme } from '../../../../styles/theme'
 
 function Event({ event }) {
   const { t: tEventDetail } = useTranslation('eventDetail')
@@ -30,6 +31,10 @@ const Columns = styled.div`
   display: grid;
   grid-template: 1fr / 2fr 1fr;
   grid-column-gap: 32px;
+
+  ${theme.mqMax('md')} {
+    grid-template: 1fr / 1fr;
+  }
 `
 
 const Column = styled.div`
@@ -40,6 +45,10 @@ const Column = styled.div`
 
   &:first-child {
     padding: 0 32px 0 0;
+    ${theme.mqMax('md')} {
+      border: none;
+      padding: 0;
+    }
   }
 
   &:last-child {
@@ -51,6 +60,10 @@ const Column = styled.div`
       font-size: 20px;
       line-height: 32px;
       color: #828282;
+    }
+
+    ${theme.mqMax('md')} {
+      display: none;
     }
   }
 
