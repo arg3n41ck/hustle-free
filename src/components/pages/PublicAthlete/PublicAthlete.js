@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import AthleteUserData from './AthleteUserData'
 import { useDispatch } from 'react-redux'
@@ -8,15 +8,46 @@ import Participations from './Participations'
 import HorizontalTabsBorder from '../../ui/tabs/HorizontalTabsBorder'
 import { useTranslation } from 'next-i18next'
 import Awards from '../LkTm/Tabs/Statistics/Awards'
+import $api from '../../../services/axios'
+
+const getAthParticipations = async (query) => {
+  try {
+    const { data: participations } = await $api.get(`/events/participant_athletes/`, {
+      params: query,
+    })
+    return participations
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const getAthTeams = async (query) => {
+  try {
+    const { data: teams } = await $api.get(`/teams/teams/`, {
+      params: query,
+    })
+    return teams
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 function PublicAthlete({ athleteData }) {
-  const { user, teams, participations, isVisible } = athleteData
+  const { id: athleteId, user, isVisible } = athleteData
+  const [participations, setParticipations] = useState(null)
+  const [teams, setTeams] = useState(null)
   const [view, setView] = React.useState('all') // all | wins | draws | defeats
   const dispatch = useDispatch()
   const { t: tLkAh } = useTranslation('lkAh')
+
   useEffect(() => {
     dispatch(fetchCountries())
-  }, [])
+    athleteId && getAthTeams({ athletes: athleteId }).then(setTeams)
+  }, [athleteData])
+
+  useEffect(() => {
+    athleteId && getAthParticipations({ athlete: athleteId, result: view }).then(setParticipations)
+  }, [athleteData, view])
 
   const { current: tabs } = useRef([
     {
@@ -44,7 +75,7 @@ function PublicAthlete({ athleteData }) {
   return (
     <MainWrapper>
       {user && <AthleteUserData user={user} isVisible={isVisible} />}
-      {!!teams && !!participations && isVisible ? (
+      {(!!teams || !!participations) && isVisible ? (
         <TeamsAndPartWrapper>
           <Teams teams={teams} />
           <Awards places={athleteData?.medals} />

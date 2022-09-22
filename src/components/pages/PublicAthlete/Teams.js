@@ -36,6 +36,9 @@ const TeamsWrapper = styled.div`
   border-bottom: 1px solid #333;
 
   ul {
+    display: flex;
+    flex-direction: column;
+    grid-row-gap: 16px;
     li {
       display: flex;
       align-items: center;

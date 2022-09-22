@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAthleteStories, storiesSelector } from '../../../../../redux/components/stories'
 import FilterMyStories from './Stories/FilterMyStories'
 import { useTranslation } from 'next-i18next'
+import styled from 'styled-components'
 
 function MyStories({ onToggleSidebar }) {
   const [view, setView] = React.useState('all') // all | wins | draws | defeats
@@ -56,10 +57,17 @@ function MyStories({ onToggleSidebar }) {
         onChangeHandler={viewHandler}
         height={'96px'}
       >
-        {!!athleteStories?.length && athleteStories.map((item) => <FilterMyStories data={item} />)}
+        <MyStoriesWrapper>
+          {!!athleteStories?.length &&
+            athleteStories.map((item) => <FilterMyStories data={item} />)}
+        </MyStoriesWrapper>
       </HorizontalTabsBorder>
     </div>
   )
 }
 
 export default MyStories
+
+const MyStoriesWrapper = styled.div`
+  min-height: 200px;
+`

@@ -2,10 +2,10 @@ import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import $api from '../../services/axios'
 
 export const fetchAthleteTeams = createAsyncThunk(
-  'teams/my_teams',
+  'teams/teams',
   async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/teams/my_teams/`, { params })
+      const { data } = await $api.get(`/teams/teams/`, { params })
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
