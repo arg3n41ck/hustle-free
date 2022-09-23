@@ -17,12 +17,14 @@
       "profile": "Profile",
       "athletes": "Athletes",
       "statistic": "Statistic",
-      "settings": "Settings"
+      "settings": "Settings",
+      "exit": "Выйти"
     },
     "organizer": {
       "profile": "Profile",
       "events": "My events",
-      "settings": "Settings"
+      "settings": "Settings",
+      "exit": "Выйти"
     },
     "public": {
       "team": {

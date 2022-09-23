@@ -69,6 +69,10 @@
   "tournamentRules": {
     "tournamentRules": "Правила турнира"
   },
+  "brackets": {
+    "brackets_creation": "Создание шаблона для сетки",
+    "createNewLabel": "Создать новый шаблон"
+  },
   "categoriesOfParticipants": {
     "categoriesOfParticipants": "Категории участников",
     "selectCategories": "Выберите категории",

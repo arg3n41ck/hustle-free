@@ -13,6 +13,8 @@ import { useTranslation } from 'next-i18next'
 import { useMediaQuery } from '@mui/material'
 import RegistrationAccordion from '../../AuthAthleteToEventAccordions/RegistrationAccordion'
 import { theme } from '../../../styles/theme'
+import EventEditDropdown from './EventEditDropdown'
+import { createEventEditingSteps } from '../../layouts/EventsCreateLayout'
 
 const getIsUserInEvent = async (eventId) => {
   try {
@@ -98,6 +100,8 @@ function EdGeneralInfo({ event }) {
   const [userStatusInEvent, setUserStatusInTeam] = useState()
   const lg = useMediaQuery('(max-width: 992px)')
   const md = useMediaQuery('(max-width: 768px)')
+  const { t: tLkOg } = useTranslation('lkOg')
+  const [openLkOgEDDropdown, setOpenLkOgEDDropdown] = useState(false)
 
   const regData = useMemo(() => regArray(event), [event])
 
@@ -207,13 +211,19 @@ function EdGeneralInfo({ event }) {
           </>
         ) : (
           ogAndIsMyEvent && (
-            <ERegBtn
-              active
-              onClick={() => eventId && routerPush(`/lk-og/profile/events/edit/${eventId}`)}
+            <EventEditDropdown
+              open={openLkOgEDDropdown}
+              onClose={() => setOpenLkOgEDDropdown(false)}
+              items={createEventEditingSteps({ eventId, tLkOg }).map(({ title, ctxKey, path }) => ({
+                title: title,
+                onClick: () => (path ? routerPush(path) : null),
+              }))}
             >
-              <EditIcon />
-              <span>{tEventDetail('event.EDGeneralInfo.editEvent')}</span>
-            </ERegBtn>
+              <ERegBtn active onClick={() => setOpenLkOgEDDropdown((s) => !s)}>
+                <EditIcon />
+                <span>{tEventDetail('event.EDGeneralInfo.editEvent')}</span>
+              </ERegBtn>
+            </EventEditDropdown>
           )
         )}
       </TitlePart>
@@ -284,6 +294,7 @@ const TitlePart = styled.div`
 
 const ERegBtn = styled.button`
   height: min-content;
+  width: 100%;
   background: ${({ active }) =>
     active ? 'linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%)' : '#333'};
   border-radius: 16px;

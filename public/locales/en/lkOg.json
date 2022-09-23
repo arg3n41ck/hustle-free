@@ -69,6 +69,10 @@
   "tournamentRules": {
     "tournamentRules": "Tournament rules"
   },
+  "brackets": {
+    "brackets_creation": "Creation of brackets",
+    "createNewLabel": "Create a new label"
+  },
   "categoriesOfParticipants": {
     "categoriesOfParticipants": "Categories of participants",
     "selectCategories": "Select categories",

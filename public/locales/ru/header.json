@@ -17,12 +17,14 @@
       "profile": "Профиль",
       "athletes": "Атлеты",
       "statistic": "Статистика",
-      "settings": "Настройки"
+      "settings": "Настройки",
+      "exit": "Выйти"
     },
     "organizer": {
       "profile": "Профиль",
       "events": "Мои турниры",
-      "settings": "Настройки"
+      "settings": "Настройки",
+      "exit": "Выйти"
     },
     "public": {
       "team": {

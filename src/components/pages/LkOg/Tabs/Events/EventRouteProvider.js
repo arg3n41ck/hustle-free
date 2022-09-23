@@ -12,15 +12,17 @@ const steps = [
   'description',
   'rules',
   'participantCategories',
+  'brackets',
   'contacts',
 ]
 
-const eventProfileFormPaths = [
+export const eventProfileFormPaths = [
   '/lk-og/profile/events/edit/[id]',
   '/lk-og/profile/events/edit/[id]/location',
   '/lk-og/profile/events/edit/[id]/contacts',
   '/lk-og/profile/events/edit/[id]/description',
   '/lk-og/profile/events/edit/[id]/participant-categories',
+  '/lk-og/profile/events/edit/[id]/brackets',
   '/lk-og/profile/events/edit/[id]/periods',
   '/lk-og/profile/events/edit/[id]/rules',
   '/lk-og/profile/events/edit/[id]',
@@ -34,6 +36,7 @@ const pageNames = {
   description: 'description',
   rules: 'rules',
   participantCategories: 'participant-categories',
+  brackets: 'brackets',
   contacts: 'contacts',
 }
 

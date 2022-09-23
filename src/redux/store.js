@@ -1,12 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit"
-import user from "./components/user"
-import events from "./components/events"
-import countries from "./components/countriesAndCities"
-import sportTypes from "./components/sportTypes"
-import teams from "./components/teams"
-import stories from "./components/stories"
-import categories from "./components/categories"
-import athletes from "./components/athletes"
+import { configureStore } from '@reduxjs/toolkit'
+import user from './components/user'
+import events from './components/events'
+import countries from './components/countriesAndCities'
+import sportTypes from './components/sportTypes'
+import teams from './components/teams'
+import stories from './components/stories'
+import categories from './components/categories'
+import athletes from './components/athletes'
+import brackets from './components/eventBrackets'
 
 export function makeStore() {
   return configureStore({
@@ -20,6 +21,7 @@ export function makeStore() {
       stories,
       athletes,
       categories,
+      brackets,
     },
   })
 }
