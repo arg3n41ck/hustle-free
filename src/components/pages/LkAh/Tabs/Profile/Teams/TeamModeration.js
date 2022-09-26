@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../../styles/theme'
 
-function TeamModeration({ selectedTeam, onClose, onSubmit }) {
+function TeamModeration({ selectedTeam, onClose, onSubmit, text = 'Далее' }) {
   return (
     <>
       <Title>Вступить в команду</Title>
@@ -13,7 +13,7 @@ function TeamModeration({ selectedTeam, onClose, onSubmit }) {
       <Footer>
         <Cancel onClick={onClose}>Назад</Cancel>
         <Submit variant='filled' onClick={onSubmit}>
-          Далее
+          {text}
         </Submit>
       </Footer>
     </>
