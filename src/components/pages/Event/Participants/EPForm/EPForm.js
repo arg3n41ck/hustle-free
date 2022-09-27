@@ -10,7 +10,6 @@ import * as yup from 'yup'
 import { useTranslation } from 'next-i18next'
 
 function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCIDS }) {
-  const [selectedBracket, setSelectedBracket] = useState(null)
   const { t: tCommon } = useTranslation('common')
 
   const { current: validationSchema } = useRef(
