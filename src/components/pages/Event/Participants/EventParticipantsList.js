@@ -61,15 +61,17 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
             : tEventDetail('event.participants.eventParticipantsList.otherCategories')}
         </Title>
       )}
-      <ChekboxWrapper>
-        <Checkbox
-          checked={(eventParticipants?.length || 0) == (selectedEPC?.length || 0)}
-          onChange={({ target: { checked } }) =>
-            checked ? handleOnSelectedAll() : setSelectedEPC([])
-          }
-        />
-        <p>Выбрать всех</p>
-      </ChekboxWrapper>
+      {user.role === 'organizer' && (
+        <ChekboxWrapper>
+          <Checkbox
+            checked={(eventParticipants?.length || 0) == (selectedEPC?.length || 0)}
+            onChange={({ target: { checked } }) =>
+              checked ? handleOnSelectedAll() : setSelectedEPC([])
+            }
+          />
+          <p>Выбрать всех</p>
+        </ChekboxWrapper>
+      )}
       {eventParticipants.map((eventParticipant) => (
         <EventParticipantsItem
           key={eventParticipant.id}
@@ -81,20 +83,24 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
         />
       ))}
 
-      <EPHeader
-        open={showEPHeader && !openEPForm}
-        checked={(eventParticipants?.length || 0) == (selectedEPC?.length || 0)}
-        onChange={({ target: { checked } }) =>
-          checked ? handleOnSelectedAll() : setSelectedEPC([])
-        }
-        setOpenEPForm={setOpenEPForm}
-      />
-      <EPForm
-        open={openEPForm}
-        selectedEPCDetailed={selectedEPCDetailed}
-        selectedEPC={selectedEPC}
-        onClose={() => setOpenEPForm(false)}
-      />
+      {user.role === 'organizer' && (
+        <>
+          <EPHeader
+            open={showEPHeader && !openEPForm}
+            checked={(eventParticipants?.length || 0) == (selectedEPC?.length || 0)}
+            onChange={({ target: { checked } }) =>
+              checked ? handleOnSelectedAll() : setSelectedEPC([])
+            }
+            setOpenEPForm={setOpenEPForm}
+          />
+          <EPForm
+            open={openEPForm}
+            selectedEPCDetailed={selectedEPCDetailed}
+            selectedEPC={selectedEPC}
+            onClose={() => setOpenEPForm(false)}
+          />
+        </>
+      )}
       <div ref={EPEndBlock} />
     </>
   )

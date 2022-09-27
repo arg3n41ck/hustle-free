@@ -1,9 +1,16 @@
 import { Checkbox } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import React, { useMemo, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import DropdownData from '../../../ui/DropdownData'
 import ParticipantsList from './ParticipantsList'
+
+const organizerTitleStyles = {
+  width: 'calc(100% + 48px)',
+  transform: 'translateX(16px)',
+  padding: '0 48px 0 0',
+}
 
 const EventParticipantsItem = ({
   eventParticipant,
@@ -14,6 +21,7 @@ const EventParticipantsItem = ({
 }) => {
   const { eventParticipantsCategory, level } = eventParticipant
   const { t: tEventDetail } = useTranslation('eventDetail')
+  const { user } = useSelector((state) => state.user)
   const participantsValues = useMemo(() => {
     if (isOrganizer) {
       const isPaid = eventParticipant?.participants.filter((participant) => participant.isPaid)
@@ -66,18 +74,23 @@ const EventParticipantsItem = ({
 
   const header = (
     <HeaderWrapper>
-      <ChekboxWrapper>
-        <Checkbox
-          checked={!!selectedEPC?.length && selectedEPC.includes(eventParticipant?.id)}
-          onChange={({ target: { checked } }) =>
-            checked
-              ? setSelectedEPC((s) => [...(s || []), eventParticipant?.id])
-              : setSelectedEPC((s) => s.filter((id) => id !== eventParticipant?.id))
-          }
-        />
-      </ChekboxWrapper>
+      {user.role === 'organizer' && (
+        <ChekboxWrapper>
+          <Checkbox
+            checked={!!selectedEPC?.length && selectedEPC.includes(eventParticipant?.id)}
+            onChange={({ target: { checked } }) =>
+              checked
+                ? setSelectedEPC((s) => [...(s || []), eventParticipant?.id])
+                : setSelectedEPC((s) => s.filter((id) => id !== eventParticipant?.id))
+            }
+          />
+        </ChekboxWrapper>
+      )}
 
-      <p onClick={() => setOpen(!open)}>
+      <p
+        style={user.role === 'organizer' ? organizerTitleStyles : {}}
+        onClick={() => user.role === 'organizer' && setOpen(!open)}
+      >
         {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
         ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
       </p>
@@ -88,6 +101,7 @@ const EventParticipantsItem = ({
     <Item>
       <DropdownData
         isAthletes={isAthletes}
+        setActive={user.role !== 'organizer' ? setOpen : null}
         active={open}
         heightWrapper={'184px'}
         additionalData={info}
@@ -140,9 +154,6 @@ const HeaderWrapper = styled.div`
   justify-content: flex-start;
 
   p {
-    width: calc(100% + 48px);
-    transform: translateX(16px);
-    padding: 0 48px 0 0;
     z-index: 1;
   }
 `
