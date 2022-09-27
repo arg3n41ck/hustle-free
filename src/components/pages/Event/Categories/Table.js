@@ -156,8 +156,8 @@ function Table({ pc }) {
 export default Table
 
 const Wrapper = styled.div`
-  overflow: hidden;
-  margin: -32px;
+  border: 1px solid #333;
+  border-radius: 16px;
 `
 
 const Scrollbar = styled.div`

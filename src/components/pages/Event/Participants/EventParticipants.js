@@ -19,7 +19,6 @@ const EventParticipants = () => {
     query: { id: eventId },
   } = useRouter()
   const [eventParticipants, setEventParticipants] = useState([])
-  const [athletePCState, setAthletePCState] = useState([])
   const [levels, setLevels] = useState([])
   const { user } = useSelector((state) => state.user)
   const [filter, setFilter] = useState({
@@ -56,22 +55,17 @@ const EventParticipants = () => {
       team: teamValue,
     }
     const othersPC = await getEventParticipants(`/directories/participant_category/`, params)
-    const athletePC = await getEventParticipants(
-      `/directories/participant_category/`,
-      params,
-      // participants__athlete__user__id: user?.role === 'athlete' ? `${user?.athleteId || ''}` : '',
-    )
     othersPC?.length && setLevels(getEnabledLevels(othersPC))
     setEventParticipants(othersPC)
-    user?.role === 'athlete' && setAthletePCState(athletePC)
   }, [user, searchValue, levelValue, genderValue, weightValue, countryValue, teamValue])
   return (
     <>
       <Filters levels={levels} onFilter={filterHandler} />
-      {!!athletePCState.length && (
-        <EventParticipantsList eventParticipants={athletePCState} isAthletes />
-      )}
-      <EventParticipantsList eventParticipants={eventParticipants} />
+      <EventParticipantsList
+        eventParticipants={eventParticipants}
+        isAthletes={!!user?.role === 'athlete'}
+      />
+      {/* <EventParticipantsList eventParticipants={eventParticipants} />/ */}
     </>
   )
 }

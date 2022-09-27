@@ -1,10 +1,17 @@
+import { Checkbox } from '@mui/material'
 import { useTranslation } from 'next-i18next'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import DropdownData from '../../../ui/DropdownData'
 import ParticipantsList from './ParticipantsList'
 
-const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) => {
+const EventParticipantsItem = ({
+  eventParticipant,
+  isOrganizer,
+  isAthletes,
+  selectedEPC,
+  setSelectedEPC,
+}) => {
   const { eventParticipantsCategory, level } = eventParticipant
   const { t: tEventDetail } = useTranslation('eventDetail')
   const participantsValues = useMemo(() => {
@@ -31,7 +38,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) =>
     Object.keys(participantsValues).some((key) => !!participantsValues[key]?.length),
   )
 
-  const info = (
+  const { current: info } = useRef(
     <Info>
       <InfoText>
         {tEventDetail('event.participants.eventParticipantsItem.total')}:{' '}
@@ -54,7 +61,27 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) =>
         {tEventDetail('event.participants.eventParticipantsItem.unconfirmed')}:{' '}
         {eventParticipant?.isNotAcceptParticipants}
       </InfoText>
-    </Info>
+    </Info>,
+  )
+
+  const header = (
+    <HeaderWrapper>
+      <ChekboxWrapper>
+        <Checkbox
+          checked={!!selectedEPC?.length && selectedEPC.includes(eventParticipant?.id)}
+          onChange={({ target: { checked } }) =>
+            checked
+              ? setSelectedEPC((s) => [...(s || []), eventParticipant?.id])
+              : setSelectedEPC((s) => s.filter((id) => id !== eventParticipant?.id))
+          }
+        />
+      </ChekboxWrapper>
+
+      <p onClick={() => setOpen(!open)}>
+        {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
+        ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
+      </p>
+    </HeaderWrapper>
   )
 
   return (
@@ -62,10 +89,9 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) =>
       <DropdownData
         isAthletes={isAthletes}
         active={open}
-        setActive={setOpen}
         heightWrapper={'184px'}
         additionalData={info}
-        title={`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} - ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
+        title={header}
       >
         {isOrganizer ? (
           <>
@@ -107,12 +133,36 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, isAthletes }) =>
   )
 }
 
+const HeaderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  p {
+    width: calc(100% + 48px);
+    transform: translateX(16px);
+    padding: 0 48px 0 0;
+    z-index: 1;
+  }
+`
+
+const ChekboxWrapper = styled.div`
+  width: min-content;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  & .MuiCheckbox-root {
+    padding: 0 !important;
+  }
+`
+
 const Item = styled.div`
   margin-bottom: 32px;
 `
 const Info = styled.div`
-  padding: 0 32px;
-  border-top: 1px solid #333333;
+  padding-bottom: 32px;
   display: flex;
   align-items: center;
   height: 88px;
