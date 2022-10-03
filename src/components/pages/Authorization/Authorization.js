@@ -50,7 +50,11 @@ const Authorization = ({ onView }) => {
     },
     onSubmit: async (values) => {
       try {
-        const { data } = await formDataHttp(values, `accounts/auth/jwt/create/`, 'post')
+        const { data } = await formDataHttp(
+          { ...values, email: values?.email.toLocaleLowerCase() },
+          `accounts/auth/jwt/create/`,
+          'post',
+        )
         setCookie('token', data.access, 9999)
         setCookie('refresh', data.refresh, 999999)
         dispatch(fetchUser())
@@ -279,7 +283,7 @@ export const AuthButton = styled.button`
     margin-bottom: 20px;
   }
 
-  @media screen and (max-width: 578px){
+  @media screen and (max-width: 578px) {
     border-radius: 4px;
     height: 52px;
   }

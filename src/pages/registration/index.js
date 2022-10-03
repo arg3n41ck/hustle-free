@@ -51,12 +51,11 @@ const Index = () => {
       language: locale,
     },
     onSubmit: async (values) => {
-      console.log('submit: ', values)
       setLoading(true)
       if (agreement && formik.values.email && !Boolean(formik.errors.email)) {
         try {
           await $api
-            .post('/accounts/auth/users/', { ...values })
+            .post('/accounts/auth/users/', { ...values, email: values?.email.toLocaleLowerCase() })
             .then(() => setToggleInfoModal(true))
         } catch (e) {
           setErrorMessage(tAuth('toast.emailExists'))
