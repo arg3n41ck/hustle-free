@@ -23,7 +23,7 @@ function EventsGlobalSearch() {
 
   const { data } = useFetch(
     `${API_URL}events/events/`,
-    { params: { search: debouncedValue } },
+    { params: { search: debouncedValue, status_publish: 'published' } },
     debouncedValue,
   )
 

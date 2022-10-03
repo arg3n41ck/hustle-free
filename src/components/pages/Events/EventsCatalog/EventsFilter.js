@@ -30,6 +30,7 @@ function EventsFilter() {
 
   useEffect(() => {
     query.delete('ordering')
+    query.set('status_publish', 'published')
     dispatch(fetchEventsByParams({ ...query, status_publish: 'published' }))
     dispatch(fetchCountries())
     dispatch(fetchSportTypes())
@@ -52,9 +53,7 @@ function EventsFilter() {
   )
 
   useEffect(() => {
-    query.set('status_publish', 'published')
     dispatch(fetchEventsByParams(query))
-    query.delete('status_publish')
   }, [query])
 
   const sportTypesValue =
