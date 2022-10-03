@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { localStorageSetItem } from '../../../helpers/helpers'
@@ -12,36 +12,39 @@ function MainPageAuth() {
   const router = useRouter()
   const { t: tMainPageFotNotAuthUser } = useTranslation('mainPageForNotAuthUser')
   const dispatch = useDispatch()
-  const xl = useMediaQuery('max-width: 1200px')
+  const xl = useMediaQuery('(min-width: 768px)')
   const handleClick = (role) => {
     localStorageSetItem('role', role)
     router.push('/registration')
   }
 
-  const { current: array } = useRef([
-    {
-      id: xl ? 1 : null,
-      value: 'organizer',
-      heading: tMainPageFotNotAuthUser('mainPage.auth.forOrganizers'),
-      description: tMainPageFotNotAuthUser('mainPage.auth.forOrganizersDesc'),
-      icon: orgIcon,
-    },
-    {
-      id: 2,
-      value: 'athlete',
-      heading: tMainPageFotNotAuthUser('mainPage.auth.forAthletes'),
-      description: tMainPageFotNotAuthUser('mainPage.auth.forAthletesDesc'),
-      icon: athIcon,
-    },
-    {
-      id: xl ? 3 : null,
-      value: 'team',
-      heading: tMainPageFotNotAuthUser('mainPage.auth.forTeams'),
-      description: tMainPageFotNotAuthUser('mainPage.auth.forTeamsDesc'),
-      icon: teamIcon,
-    },
-  ])
-
+  const array = useMemo(
+    () => [
+      {
+        id: xl ? 1 : null,
+        value: 'organizer',
+        heading: tMainPageFotNotAuthUser('mainPage.auth.forOrganizers'),
+        description: tMainPageFotNotAuthUser('mainPage.auth.forOrganizersDesc'),
+        icon: orgIcon,
+      },
+      {
+        id: 2,
+        value: 'athlete',
+        heading: tMainPageFotNotAuthUser('mainPage.auth.forAthletes'),
+        description: tMainPageFotNotAuthUser('mainPage.auth.forAthletesDesc'),
+        icon: athIcon,
+      },
+      {
+        id: xl ? 3 : null,
+        value: 'team',
+        heading: tMainPageFotNotAuthUser('mainPage.auth.forTeams'),
+        description: tMainPageFotNotAuthUser('mainPage.auth.forTeamsDesc'),
+        icon: teamIcon,
+      },
+    ],
+    [xl],
+  )
+  console.log(array)
   useEffect(() => {
     dispatch(exitUser())
   }, [])

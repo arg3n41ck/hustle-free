@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { FormControl, FormHelperText, TextField } from '@mui/material'
@@ -18,6 +18,7 @@ const MapFiledLeafLet = dynamic(() => import('../../../../ui/Map/FieldLeaflet'),
   ssr: false,
 })
 import { useTranslation } from 'next-i18next'
+import PlacesField from './PlacesField'
 
 const emptyInitialValues = {
   placeName: '',
@@ -65,6 +66,12 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId, locationId
   const [countries, cities] = useSelector(selectCountriesAndCities)
 
   const dispatch = useDispatch()
+
+  const MemoizedMap = useCallback(
+    (props) => <MapFiledLeafLet {...props} />,
+    [values?.lat, values?.long],
+  )
+
   useEffect(() => {
     dispatch(fetchCountries())
   }, [])
@@ -92,7 +99,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId, locationId
             <Autocomplete
               noOptionsText={tLkOg('editEvent.generalInformation.nothingFound')}
               onChange={(_, value) => {
-                setFieldValue('country', value.id)
+                setFieldValue('country', value?.id || null)
                 setFieldValue('city', null)
               }}
               options={countries.map((option) => option)}
@@ -130,7 +137,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId, locationId
           {!!cities?.length && (
             <Autocomplete
               noOptionsText={tLkOg('editEvent.generalInformation.nothingFound')}
-              onChange={(_, value) => setFieldValue('city', value.id)}
+              onChange={(_, value) => setFieldValue('city', value?.id || null)}
               options={
                 countries
                   ?.find(({ id }) => values.country === id)
@@ -167,15 +174,14 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId, locationId
 
       <Field>
         <p className='auth-title__input'>{tLkOg('location.addressOfTheTournament')}</p>
-        <TextField
-          name='address'
-          placeholder={tLkOg('location.addressOfTheTournament')}
-          variant='outlined'
-          fullWidth
-          error={touched.address && Boolean(errors.address)}
-          helperText={touched.address && errors.address}
-          onChange={handleChange}
-          value={values.address}
+
+        <PlacesField
+          defaultValue={values.address}
+          onSelectAddress={(address, latitude, longitude) => {
+            setFieldValue('address', address)
+            setFieldValue('lat', `${latitude || ''}`)
+            setFieldValue('long', `${longitude || ''}`)
+          }}
         />
       </Field>
 
@@ -186,11 +192,12 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId, locationId
         <Field>
           <p className='auth-title__input'>{tLkOg('location.tournamentAddressLocationMap')}</p>
           <MapWrapper style={{ height: 300 }}>
-            <MapFiledLeafLet
+            <MemoizedMap
               onPoint={({ lat, lng }) => {
                 setFieldValue('lat', `${lat}`)
                 setFieldValue('long', `${lng}`)
               }}
+              disabled
               points={values.lat && values.long ? { lat: +values.lat, lng: +values.long } : null}
             />
           </MapWrapper>

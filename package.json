@@ -50,6 +50,8 @@
     "sass": "^1.49.7",
     "styled-components": "^5.3.3",
     "swiper": "^8.1.0",
+    "use-google-maps-script": "^0.1.2",
+    "use-places-autocomplete": "^4.0.0",
     "vercel": "^24.1.0",
     "yup": "^0.32.11"
   },

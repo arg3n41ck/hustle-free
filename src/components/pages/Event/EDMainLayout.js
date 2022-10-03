@@ -37,7 +37,7 @@ function EdMainLayout({ event, children }) {
     {
       id: 'ed_grid',
       title: tEventDetail('event.EDMainLayout.grid'),
-      link: `/events/${event.id}/grid`,
+      link: `/events/${event.id}/brackets`,
       icon: <EDGridIcon />,
     },
     {

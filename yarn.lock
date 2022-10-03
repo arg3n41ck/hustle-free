@@ -3733,6 +3733,18 @@ url-parse-lax@^3.0.0:
   dependencies:
     prepend-http "^2.0.0"
 
+use-google-maps-script@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/use-google-maps-script/-/use-google-maps-script-0.1.2.tgz#f0677565f07f6032c1777f83c5e2dbca32bd8cdf"
+  integrity sha512-7GQGb8nFrZ3QixGHI34kyTV1NLy5mifUvDl7wnqw3GXGK+KPucD5jtDgpgi/CAqTXwzymw2QIZrQYXmMJOcxCw==
+  dependencies:
+    invariant "^2.2.4"
+
+use-places-autocomplete@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/use-places-autocomplete/-/use-places-autocomplete-4.0.0.tgz#3865636e7fb6e28dbbddc95a780528b84f94bb86"
+  integrity sha512-w8jdm1iT3WXN0DPXtgyccJoBlAk/UetCMg466B2pBiWNBfvAIxdRoU6Gt4CzW11rWWuzpqnMG5hLxUOKSZBSgw==
+
 use-subscription@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/use-subscription/-/use-subscription-1.5.1.tgz#73501107f02fad84c6dd57965beb0b75c68c42d1"

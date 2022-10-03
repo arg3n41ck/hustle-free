@@ -7,10 +7,10 @@ const DropdownData = ({
   active,
   setActive,
   additionalData = null,
-  isAthletes,
   heightWrapper = 96,
   children,
   onClickRedirect,
+  arrow,
 }) => {
   const variants = useRef({
     open: { height: '100%' },
@@ -22,7 +22,6 @@ const DropdownData = ({
       animate={children && active ? 'open' : 'closed'}
       transition={children && { transition: 0.2 }}
       variants={variants.current}
-      isAthletes={isAthletes}
     >
       <Header
         onClick={() =>
@@ -30,9 +29,11 @@ const DropdownData = ({
         }
       >
         <Title>{title}</Title>
-        <ArrowIconS open={children && active} right={!children}>
-          <ArrowIcon />
-        </ArrowIconS>
+        {arrow ?? (
+          <ArrowIconS open={children && active} right={!children}>
+            <ArrowIcon />
+          </ArrowIconS>
+        )}
       </Header>
       {additionalData && additionalData}
       {children && <Content>{children}</Content>}
@@ -41,7 +42,6 @@ const DropdownData = ({
 }
 
 const Wrapper = styled(motion.div)`
-  background: ${({ isAthletes }) => (isAthletes ? '#1b1c22' : 'transparent')};
   box-sizing: border-box;
   width: 100%;
   height: ${(p) => p.height};

@@ -26,7 +26,6 @@ const defaultPoints = {
 
 const MapFieldLeafLet = ({ onPoint, points, disabled }) => {
   const mapRef = useRef()
-
   const LocationMarker = useCallback(() => {
     useMapEvents({
       click(e) {
@@ -34,7 +33,6 @@ const MapFieldLeafLet = ({ onPoint, points, disabled }) => {
           lat: e.latlng?.lat,
           lng: e.latlng?.lng,
         }
-
         onPoint && !disabled && onPoint(newPoint)
       },
     })
@@ -43,7 +41,7 @@ const MapFieldLeafLet = ({ onPoint, points, disabled }) => {
 
   return (
     <MapContainer
-      center={points || defaultPoints}
+      center={points ?? defaultPoints}
       zoom={13}
       style={{ height: '100%', width: '100%', zIndex: 1 }}
       ref={mapRef}

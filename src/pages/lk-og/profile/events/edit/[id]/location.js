@@ -44,7 +44,6 @@ function Location() {
         }
       })
   }, [eventId])
-  console.log(eventDefaultValues)
 
   return (
     <LkLayout tabs={lkOgTabs}>

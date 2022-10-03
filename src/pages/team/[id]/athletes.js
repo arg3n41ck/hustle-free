@@ -54,6 +54,8 @@ function Athletes({ onToggleSidebar }) {
     checkUserStatus()
   }, [teamId])
 
+  console.log(athletes, athletes?.length)
+
   return (
     <LkLayout tabs={tabs}>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>

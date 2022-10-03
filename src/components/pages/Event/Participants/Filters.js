@@ -13,14 +13,17 @@ import $api from '../../../../services/axios'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { removeDuplicateObjectFromArray } from '../../../../helpers/helpers'
+import useDebounce from '../../../../hooks/useDebounce'
 
 const Filters = ({ levels, onFilter }) => {
   const { t: tEventDetail } = useTranslation('eventDetail')
   const [weights, setWeights] = useState([])
   const [countries] = useSelector(selectCountriesAndCities)
   const [teams, setTeams] = useState([])
+  const [search, setSearch] = useState('')
   const router = useRouter()
   const dispatch = useDispatch()
+  const debouncedSearch = useDebounce(search, 500)
 
   useEffect(async () => {
     const { data } = await $api.get(`/events/team_events/`)
@@ -36,18 +39,18 @@ const Filters = ({ levels, onFilter }) => {
     }
   }, [])
 
+  useEffect(() => {
+    onFilter({
+      target: {
+        name: 'search',
+        value: search || '',
+      },
+    })
+  }, [debouncedSearch])
+
   return (
     <>
-      <EDContentFilter
-        onSearch={(value) =>
-          onFilter({
-            target: {
-              name: 'search',
-              value: value || '',
-            },
-          })
-        }
-      >
+      <EDContentFilter onSearch={(value) => setSearch(value)}>
         <Fields>
           <Field>
             <p className='auth-title__input'>{tEventDetail('event.participants.filters.team')}</p>
@@ -64,7 +67,7 @@ const Filters = ({ levels, onFilter }) => {
               onChange={(_, value) =>
                 onFilter({
                   target: {
-                    name: 'teamId',
+                    name: 'team',
                     value: value?.id || '',
                   },
                 })
@@ -136,14 +139,18 @@ const Filters = ({ levels, onFilter }) => {
                 onFilter({
                   target: {
                     name: 'gender',
-                    value,
+                    value: value?.value || '',
                   },
                 })
               }
               options={[
-                tEventDetail('event.participants.eventParticipants.male'),
-                tEventDetail('event.participants.eventParticipants.female'),
+                { value: 'male', title: tEventDetail('event.participants.eventParticipants.male') },
+                {
+                  value: 'female',
+                  title: tEventDetail('event.participants.eventParticipants.female'),
+                },
               ].map((option) => option)}
+              getOptionLabel={(option) => option.title}
               fullWidth
               renderInput={(params) => (
                 <TextField
@@ -170,14 +177,20 @@ const Filters = ({ levels, onFilter }) => {
                 },
               }}
               noOptionsText={tEventDetail('event.participants.filters.nothingFound')}
-              onChange={(_, value) =>
-                onFilter({
+              onChange={async (_, value) => {
+                await onFilter({
                   target: {
-                    name: 'weight',
-                    value,
+                    name: 'event_participants_category__from_weight',
+                    value: value?.fromWeight || '',
                   },
                 })
-              }
+                await onFilter({
+                  target: {
+                    name: 'event_participants_category__to_weight',
+                    value: value?.toWeight || '',
+                  },
+                })
+              }}
               options={weights.map((option) => option)}
               getOptionLabel={(option) => `${option.fromWeight} - ${option.toWeight}`}
               fullWidth
@@ -211,7 +224,7 @@ const Filters = ({ levels, onFilter }) => {
               onChange={(_, value) =>
                 onFilter({
                   target: {
-                    name: 'countryId',
+                    name: 'country',
                     value: countries.find((country) => country.name === value)?.id || '',
                   },
                 })

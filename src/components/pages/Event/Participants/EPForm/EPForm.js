@@ -8,10 +8,29 @@ import EPFormPCField from './EPFormPCField'
 import EPFrormFooter from './EPFrormFooter'
 import * as yup from 'yup'
 import { useTranslation } from 'next-i18next'
+import { toast } from 'react-toastify'
+import $api from '../../../../../services/axios'
+import { useRouter } from 'next/router'
+
+const createBracket = async ({ eventId, pcID, bracketType }) => {
+  try {
+    console.log({ eventId, pcID, bracketType })
+    await $api.post('/brackets/brackets/', {
+      event: eventId,
+      participationCategory: pcID,
+      bracketType,
+    })
+  } catch (e) {
+    console.log(e)
+    toast.error('Походу что-то пошло не так!')
+  }
+}
 
 function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCIDS }) {
   const { t: tCommon } = useTranslation('common')
-
+  const {
+    query: { id: eventId },
+  } = useRouter()
   const { current: validationSchema } = useRef(
     yup.object({
       epc: yup.array().test({
@@ -28,7 +47,13 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
       brackets: null,
     },
     validationSchema,
-    onSubmit: () => {},
+    onSubmit: async (values) => {
+      const { epc, brackets } = values
+      await Promise.all(
+        epc.map((id) => createBracket({ eventId, pcID: id, bracketType: brackets })),
+      )
+      toast.info('Создается сетка!')
+    },
   })
 
   return (
@@ -80,11 +105,4 @@ const ContentWrapper = styled.div`
 
   padding: 16px 16px 40px;
   margin: 0 auto;
-`
-
-const Content = styled.div`
-  height: 120vh;
-  width: 100%;
-  border-radius: 16px;
-  background: #141519;
 `

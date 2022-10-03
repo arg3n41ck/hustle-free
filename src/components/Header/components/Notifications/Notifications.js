@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import NotificationModal from './NotificationModal'
 import $api from '../../../../services/axios'
 import { useInterval } from '../../../../hooks/useInterval'
-import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 
 const getNotifications = async (params) => {
@@ -21,7 +20,6 @@ const Notifications = () => {
   const {
     user: { user },
   } = useSelector((state) => state)
-  const route = useRouter()
 
   useInterval(async () => {
     user && getNotifications({ recipient: user?.id }).then(setNotifications)
@@ -29,7 +27,7 @@ const Notifications = () => {
 
   useEffect(() => {
     user && getNotifications({ recipient: user?.id }).then(setNotifications)
-  }, [route, user])
+  }, [user])
 
   return (
     <NotificationWrapper>

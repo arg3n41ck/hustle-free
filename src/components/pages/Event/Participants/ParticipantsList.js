@@ -5,6 +5,7 @@ import $api from '../../../../services/axios'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUser, selectOgEvents } from '../../../../redux/components/user'
+import { theme } from '../../../../styles/theme'
 
 const ParticipantsList = ({ participants, active = true }) => {
   const {
@@ -62,9 +63,25 @@ const ParticipantsList = ({ participants, active = true }) => {
 }
 
 const ParticipantsListUl = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 24px;
+
+  ${theme.mqMax('xl')} {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  ${theme.mqMax('md')} {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  ${theme.mqMax('sm')} {
+    grid-template-columns: 1fr;
+    grid-gap: 16px;
+  }
   p {
     color: ${(p) => (p.active ? '#BDBDBD' : '#828282')};
   }

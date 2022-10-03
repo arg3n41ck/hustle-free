@@ -83,13 +83,13 @@ export const OgParticipantsItem = ({
             height={'32px'}
             borderRadius={'4px'}
             onClick={() => onDelete(participant.id)}
-            style={{ fontSize: 14, color: '#fff', background: 'none' }}
+            style={{ fontSize: 12, color: '#fff', background: 'none' }}
           >
             {tEventDetail('event.participants.participantsItem.reject')}
           </CustomButton>
 
           <CustomButton
-            style={{ fontSize: 14, color: '#fff' }}
+            style={{ fontSize: 12, color: '#fff' }}
             height={'32px'}
             borderRadius={'4px'}
             onClick={() => onAccept(participant.id)}
@@ -130,7 +130,6 @@ const RegisteredBtnProfile = styled.a`
 const BtnWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-column-gap: 24px;
 `
 const Line = styled.div`
   margin-top: 24px;
@@ -177,7 +176,6 @@ export const ParticipantsItem = ({ participant }) => {
 }
 
 const Wrapper = styled.div`
-  max-width: 318px;
   width: 100%;
   padding: 24px;
   overflow: hidden;

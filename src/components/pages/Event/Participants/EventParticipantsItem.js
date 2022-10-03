@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next'
 import React, { useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { theme } from '../../../../styles/theme'
 import DropdownData from '../../../ui/DropdownData'
 import ParticipantsList from './ParticipantsList'
 
@@ -12,40 +13,23 @@ const organizerTitleStyles = {
   padding: '0 48px 0 0',
 }
 
-const EventParticipantsItem = ({
-  eventParticipant,
-  isOrganizer,
-  isAthletes,
-  selectedEPC,
-  setSelectedEPC,
-}) => {
+const EventParticipantsItem = ({ eventParticipant, isOrganizer, selectedEPC, setSelectedEPC }) => {
   const { eventParticipantsCategory, level } = eventParticipant
   const { t: tEventDetail } = useTranslation('eventDetail')
   const { user } = useSelector((state) => state.user)
   const participantsValues = useMemo(() => {
-    if (isOrganizer) {
-      const isPaid = eventParticipant?.participants.filter((participant) => participant.isPaid)
-      const isNotPaid = eventParticipant?.participants.filter((participant) => !participant.isPaid)
-      const registered = eventParticipant?.participants.filter(
-        (participant) => participant.proposal === 'add_event',
-      )
-
-      return { isPaid, isNotPaid, registered }
-    } else {
-      const registered = eventParticipant?.participants.filter(
-        (participant) => participant.proposal === 'add_event',
-      )
-      const unconfirmed = eventParticipant?.participants.filter(
-        (participant) => participant.proposal === 'waiting_list',
-      )
-      return { registered, unconfirmed }
-    }
+    const registered = eventParticipant?.participants.filter(
+      (participant) => participant.proposal === 'add_event',
+    )
+    const unconfirmed = eventParticipant?.participants.filter(
+      (participant) => participant.proposal === 'waiting_list',
+    )
+    return { registered, unconfirmed }
   }, [eventParticipant])
 
   const [open, setOpen] = useState(
     Object.keys(participantsValues).some((key) => !!participantsValues[key]?.length),
   )
-
   const { current: info } = useRef(
     <Info>
       <InfoText>
@@ -74,7 +58,7 @@ const EventParticipantsItem = ({
 
   const header = (
     <HeaderWrapper>
-      {user.role === 'organizer' && (
+      {user?.role === 'organizer' && (
         <ChekboxWrapper>
           <Checkbox
             checked={!!selectedEPC?.length && selectedEPC.includes(eventParticipant?.id)}
@@ -88,8 +72,8 @@ const EventParticipantsItem = ({
       )}
 
       <p
-        style={user.role === 'organizer' ? organizerTitleStyles : {}}
-        onClick={() => user.role === 'organizer' && setOpen(!open)}
+        style={user?.role === 'organizer' ? organizerTitleStyles : {}}
+        onClick={() => user?.role === 'organizer' && setOpen(!open)}
       >
         {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
         ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
@@ -100,48 +84,26 @@ const EventParticipantsItem = ({
   return (
     <Item>
       <DropdownData
-        isAthletes={isAthletes}
-        setActive={user.role !== 'organizer' ? setOpen : null}
+        setActive={user?.role !== 'organizer' ? setOpen : null}
         active={open}
         heightWrapper={'184px'}
         additionalData={info}
         title={header}
       >
-        {isOrganizer ? (
-          <>
-            {!!participantsValues?.isPaid?.length && (
-              <TitleList>{tEventDetail('event.participants.eventParticipantsItem.paid')}</TitleList>
-            )}
-            <ParticipantsList active={true} participants={participantsValues.isPaid} />
-            {!!participantsValues?.isNotPaid?.length && (
-              <TitleList>
-                {tEventDetail('event.participants.eventParticipantsItem.notPaid')}
-              </TitleList>
-            )}
-            <ParticipantsList active={false} participants={participantsValues.isNotPaid} />
-            {!!participantsValues?.registered?.length && (
-              <TitleList>
-                {tEventDetail('event.participants.eventParticipantsItem.confirmed')}
-              </TitleList>
-            )}
-            <ParticipantsList active={true} participants={participantsValues.registered} />
-          </>
-        ) : (
-          <>
-            {!!participantsValues?.registered?.length && (
-              <TitleList>
-                {tEventDetail('event.participants.eventParticipantsItem.registers')}
-              </TitleList>
-            )}
-            <ParticipantsList active={true} participants={participantsValues.registered} />
-            {!!participantsValues?.unconfirmed?.length && (
-              <TitleList>
-                {tEventDetail('event.participants.eventParticipantsItem.unconfirmeds')}
-              </TitleList>
-            )}
-            <ParticipantsList active={false} participants={participantsValues.unconfirmed} />
-          </>
-        )}
+        <>
+          {!!participantsValues?.registered?.length && (
+            <TitleList>
+              {tEventDetail('event.participants.eventParticipantsItem.registers')}
+            </TitleList>
+          )}
+          <ParticipantsList active={true} participants={participantsValues.registered} />
+          {!!participantsValues?.unconfirmed?.length && (
+            <TitleList>
+              {tEventDetail('event.participants.eventParticipantsItem.unconfirmeds')}
+            </TitleList>
+          )}
+          <ParticipantsList active={false} participants={participantsValues.unconfirmed} />
+        </>
       </DropdownData>
     </Item>
   )
@@ -191,8 +153,12 @@ const InfoText = styled.p`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-  line-height: 24px;
   color: ${(p) => (p.color ? p.color : '#f2f2f2')};
+
+  ${theme.mqMax('md')} {
+    font-size: 14px;
+    margin-right: 8px;
+  }
 `
 
 export default EventParticipantsItem

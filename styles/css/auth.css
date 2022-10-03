@@ -4,16 +4,29 @@
   max-width: 688px;
 }
 
+@media screen and (max-width: 578px) {
+  .auth-container {
+    margin: 32px auto 86px;
+  }
+}
+
 .auth-wrapper {
   padding: 64px 48px;
+  background-color: #1b1c22;
   box-sizing: border-box;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
   border-radius: 32px;
-  background-color: white;
 }
 
 .auth-wrapper__independent {
   padding: 32px 0 0;
+}
+
+@media screen and (max-width: 578px) {
+  .auth-wrapper {
+    padding: 0;
+    background: none;
+  }
 }
 
 .auth-title {

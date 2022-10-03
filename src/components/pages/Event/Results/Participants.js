@@ -7,6 +7,7 @@ import Filter from './Filter'
 import $api from '../../../../services/axios'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
+import { theme } from '../../../../styles/theme'
 
 const Participants = ({ onloadPC }) => {
   const [participants, setParticipants] = useState([])
@@ -72,7 +73,12 @@ export const TitleBlock = styled(Box)`
 export const Fields = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-column-gap: 32px;
+  grid-gap: 32px;
+
+  ${theme.mqMax('md')} {
+    grid-template: repeat(5, 1fr) / 1fr;
+    grid-gap: 16px;
+  }
 `
 const EventResults = styled.ul``
 

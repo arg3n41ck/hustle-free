@@ -12,7 +12,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
   const [showEPHeader, setShowEPHeader] = useState(null)
   const [openEPForm, setOpenEPForm] = useState(false)
   const [selectedEPC, setSelectedEPC] = useState([])
-  const EPEndBlock = useRef(null)
+  const EPBlock = useRef(null)
   const { t: tEventDetail } = useTranslation('eventDetail')
 
   const selectedEPCDetailed = useMemo(() => {
@@ -38,30 +38,28 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
   }, [openEPForm])
 
   useEffect(() => {
-    if (EPEndBlock) {
+    if (EPBlock) {
       window.addEventListener('scroll', () => {
-        setShowEPHeader(window.scrollY + window.innerHeight >= EPEndBlock?.current?.offsetTop)
+        setShowEPHeader(window.scrollY >= EPBlock?.current?.offsetTop)
       })
     }
     return () => {
-      if (EPEndBlock) {
+      if (EPBlock) {
         window.addEventListener('srcoll', () => {
-          setShowEPHeader(window.scrollY + window.innerHeight >= EPEndBlock?.current?.offsetTop)
+          setShowEPHeader(window.scrollY >= EPBlock?.current?.offsetTop)
         })
       }
     }
-  }, [EPEndBlock])
+  }, [EPBlock])
 
   return (
     <>
-      {user?.role !== 'organizer' && (
+      {isAthletes && (
         <Title>
-          {isAthletes
-            ? tEventDetail('event.participants.eventParticipantsList.categoriesBasedProfile')
-            : tEventDetail('event.participants.eventParticipantsList.otherCategories')}
+          {tEventDetail('event.participants.eventParticipantsList.categoriesBasedProfile')}
         </Title>
       )}
-      {user.role === 'organizer' && (
+      {user?.role === 'organizer' && (
         <ChekboxWrapper>
           <Checkbox
             checked={(eventParticipants?.length || 0) == (selectedEPC?.length || 0)}
@@ -72,10 +70,10 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
           <p>Выбрать всех</p>
         </ChekboxWrapper>
       )}
+      <div ref={EPBlock} />
       {eventParticipants.map((eventParticipant) => (
         <EventParticipantsItem
           key={eventParticipant.id}
-          isAthletes={isAthletes}
           isOrganizer={user?.role === 'organizer'}
           eventParticipant={eventParticipant}
           selectedEPC={selectedEPC}
@@ -83,7 +81,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
         />
       ))}
 
-      {user.role === 'organizer' && (
+      {user?.role === 'organizer' && (
         <>
           <EPHeader
             open={showEPHeader && !openEPForm}
@@ -101,7 +99,6 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
           />
         </>
       )}
-      <div ref={EPEndBlock} />
     </>
   )
 }
