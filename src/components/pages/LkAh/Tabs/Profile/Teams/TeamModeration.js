@@ -2,14 +2,16 @@ import React from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../../styles/theme'
 
-function TeamModeration({ selectedTeam, onClose, onSubmit, text = 'Далее' }) {
+function TeamModeration({ onClose, onSubmit, isTeamWithModeration, text = 'Далее' }) {
   return (
     <>
       <Title>Вступить в команду</Title>
-      <Desc>
-        У команды предварительная модерация атлетов, только после подтверждения вы вступите в
-        команду
-      </Desc>
+      {!!isTeamWithModeration && (
+        <Desc>
+          У команды предварительная модерация атлетов, только после подтверждения вы вступите в
+          команду
+        </Desc>
+      )}
       <Footer>
         <Cancel onClick={onClose}>Назад</Cancel>
         <Submit variant='filled' onClick={onSubmit}>

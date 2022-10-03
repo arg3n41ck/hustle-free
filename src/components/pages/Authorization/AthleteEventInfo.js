@@ -42,6 +42,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   maxWidth: '688px',
+  width: '100%',
   bgcolor: '#1B1C22',
   border: '1px solid #333333;',
   boxShadow: '0px 0px 60px rgba(0, 0, 0, 0.5);',
@@ -76,14 +77,8 @@ const checkIsUserInfoFull = (user) => {
   return ['firstName', 'lastName', 'gender', 'country', 'city'].some((key) => !user[key])
 }
 
-function getWeights(fromWeight, toWeight) {
-  const weightsArr = []
-
-  for (let i = fromWeight; i <= toWeight; i++) {
-    weightsArr.push(i)
-  }
-
-  return weightsArr
+const wadeInTeam = async (body) => {
+  await $api.post('/teams/athlete_requests/', body)
 }
 
 function RegistrationAthleteToEvent({ eventRegistration }) {
@@ -137,11 +132,6 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
     },
   })
 
-  const wadeInTeam = (id) => {
-    formik.setFieldValue('team', id)
-    setModalWadeInTeam(null)
-  }
-
   useEffect(() => {
     user && dispatch(fetchTeams())
     user && dispatch(fetchLevel({ event: eventId, gender: user?.gender }))
@@ -162,12 +152,17 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
 
   return (
     <>
-      {modalWadeInTeam && (
+      {!!modalWadeInTeam?.id && (
         <Modal open={modalWadeInTeam} onClose={() => setModalWadeInTeam(null)}>
           <Box sx={style}>
             <TeamModeration
               onClose={() => setModalWadeInTeam(null)}
-              onSubmit={() => wadeInTeam(modalWadeInTeam)}
+              onSubmit={async () => {
+                await wadeInTeam({ team: modalWadeInTeam?.id, athlete: user?.athleteId })
+                formik.setFieldValue('team', modalWadeInTeam?.id)
+                setModalWadeInTeam(null)
+              }}
+              isTeamWithModeration={!!modalWadeInTeam?.preliminaryModeration}
               text={'Вступить'}
             />
           </Box>
@@ -178,18 +173,18 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>Выберите команду</p>
             <Autocomplete
-              noOptionsText={'Необходимо вступить в определённую команду в разделе "Сообщество"'}
-              onChange={(_, value) =>
-                !value?.preliminaryModeration
-                  ? setModalWadeInTeam(value?.id)
+              noOptionsText={'Не найдено'}
+              onChange={(_, value) => {
+                !user?.teams?.includes(value?.id)
+                  ? setModalWadeInTeam({
+                      id: value?.id,
+                      preliminaryModeration: value?.preliminaryModeration,
+                    })
                   : formik.setFieldValue('team', value?.id)
-              }
+              }}
               options={(teams?.length && teams?.map((option) => option)) || []}
               getOptionLabel={(option) => option?.name || 'Выберите команду'}
-              value={
-                teams?.length &&
-                teams?.find(({ id }) => id === formik?.values?.team)
-              }
+              value={teams?.length && teams?.find(({ id }) => id === formik?.values?.team)}
               fullWidth
               renderInput={(params) => (
                 <TextField
