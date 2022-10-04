@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete'
 import { useGoogleMapsScript } from 'use-google-maps-script'
 import { TextField } from '@mui/material'
@@ -9,8 +9,8 @@ const libraries = ['places']
 
 export default function PlacesField({ defaultValue, onSelectAddress }) {
   const { isLoaded, loadError } = useGoogleMapsScript({
-    googleMapsApiKey: 'AIzaSyAnwR8BbWkIyD9kHGA1HMZ0bWVrIwpOojw',
     // googleMapsApiKey: 'AIzaSyDkLDZEjqTyMbLuWm6ApG4ggfNh1YKk6oU',
+    googleMapsApiKey: 'AIzaSyAnwR8BbWkIyD9kHGA1HMZ0bWVrIwpOojw',
     libraries,
   })
 
@@ -29,13 +29,14 @@ export default function PlacesField({ defaultValue, onSelectAddress }) {
 
 const SearchBox = ({ defaultValue, onSelectAddress }) => {
   const [canBeVisible, setCanBeVisible] = useState(false)
+  const [searchValue, setSearchValue] = useState(defaultValue)
   const {
     ready,
     value,
     setValue,
     suggestions: { data },
     clearSuggestions,
-  } = usePlacesAutocomplete({ debounce: 500, defaultValue })
+  } = usePlacesAutocomplete({ debounce: 300, searchValue })
   const wrapperRef = useRef()
   useClickOutside(wrapperRef, () => setCanBeVisible(false))
 
@@ -46,15 +47,21 @@ const SearchBox = ({ defaultValue, onSelectAddress }) => {
     try {
       const results = await getGeocode({ address })
       const { lat, lng } = await getLatLng(results[0])
+      setSearchValue(address)
       onSelectAddress(address, lat, lng)
     } catch (error) {
       console.error(`😱 Error:`, error)
     }
   }
 
+  useEffect(() => {
+    setSearchValue(defaultValue)
+  }, [defaultValue])
+
   const handleChange = (e) => {
-    setValue(e.target.value)
-    if (e.target.value === '') {
+    setSearchValue(e?.target?.value)
+    setValue(e?.target?.value)
+    if (e?.target?.value === '') {
       onSelectAddress('', null, null)
     }
   }
@@ -67,7 +74,7 @@ const SearchBox = ({ defaultValue, onSelectAddress }) => {
         fullWidth
         placeholder='Введите адрес'
         disabled={!ready}
-        value={value ?? defaultValue}
+        value={searchValue}
       />
       {!!data?.length && !!canBeVisible && (
         <Options>

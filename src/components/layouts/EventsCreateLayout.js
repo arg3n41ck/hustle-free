@@ -47,12 +47,12 @@ export const createEventEditingSteps = ({ eventId, tLkOg }) => {
       ctxKey: 'participantCategories',
       path: eventId ? `/lk-og/profile/events/edit/${eventId}/participant-categories` : null,
     },
-    {
-      title: tLkOg('brackets.brackets_creation'),
-      href: `/lk-og/profile/events/edit/[id]/brackets`,
-      ctxKey: 'brackets',
-      path: eventId ? `/lk-og/profile/events/edit/${eventId}/brackets` : null,
-    },
+    // {
+    //   title: tLkOg('brackets.brackets_creation'),
+    //   href: `/lk-og/profile/events/edit/[id]/brackets`,
+    //   ctxKey: 'brackets',
+    //   path: eventId ? `/lk-og/profile/events/edit/${eventId}/brackets` : null,
+    // },
     {
       title: tLkOg('contacts.contacts'),
       href: `/lk-og/profile/events/edit/[id]/contacts`,
