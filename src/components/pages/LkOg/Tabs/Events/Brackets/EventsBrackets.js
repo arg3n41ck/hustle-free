@@ -1,13 +1,10 @@
 import { Add } from '@mui/icons-material'
 import { useTranslation } from 'next-i18next'
 import React from 'react'
-import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { selectBrackets } from '../../../../../../redux/components/eventBrackets'
 import EventCreateForm from './EventCreateForm'
 
 function EventsBrackets({ eventId }) {
-  const [brackets] = useSelector(selectBrackets)
   const { t: tLkOg } = useTranslation('lkOg')
 
   return (

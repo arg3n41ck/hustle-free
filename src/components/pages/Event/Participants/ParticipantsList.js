@@ -85,9 +85,6 @@ const ParticipantsListUl = styled.ul`
   p {
     color: ${(p) => (p.active ? '#BDBDBD' : '#828282')};
   }
-  h4 {
-    color: ${(p) => (p.active ? '#fff' : '#828282')};
-  }
 `
 
 export default ParticipantsList

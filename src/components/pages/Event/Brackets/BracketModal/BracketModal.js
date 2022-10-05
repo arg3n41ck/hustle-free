@@ -1,9 +1,51 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
+import BracketHeaderInfo from './BracketHeaderInfo'
+import BracketsSingleEl from './BracketsSingleEl'
+
+export const bracketTypes = {
+  1: {
+    id: 1,
+    name: 'SEWithoutBF',
+    title: 'Single elimination bracket (without bronze fight)',
+    component: (props) => <BracketsSingleEl {...props} />,
+  },
+  2: {
+    id: 2,
+    name: 'SEWithBF',
+    title: 'Single elimination bracket (with bronze fight)',
+    component: (props) => <BracketsSingleEl {...props} />,
+  },
+  3: {
+    id: 3,
+    name: 'DEWithoutBZ',
+    title: 'Double elimination bracket (without bronze fight)',
+    component: (props) => <BracketsSingleEl {...props} />,
+  },
+  4: {
+    id: 4,
+    name: 'DEWithBZ',
+    title: 'Double elimination bracket (with bronze fight)',
+    component: (props) => <BracketsSingleEl {...props} />,
+  },
+}
 
 export default function BracketModal({ selectedBracket, onClose }) {
+  const { typeTitle, allParticipants, BracketWrapperByType } = useMemo(() => {
+    const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
+    return {
+      typeTitle: selectedBrType && selectedBrType?.title,
+      allParticipants: selectedBracket && selectedBracket?.participationCategory?.allParticipants,
+      BracketWrapperByType: (props) => selectedBrType && selectedBrType?.component(props),
+    }
+  }, [selectedBracket])
+
+  useEffect(() => {
+    document.querySelector('html').style.overflowY = !!selectedBracket?.id ? 'hidden' : ''
+  }, [selectedBracket])
+
   return (
     <AnimatePresence>
       {!!selectedBracket?.id && (
@@ -23,6 +65,8 @@ export default function BracketModal({ selectedBracket, onClose }) {
               </Back>
               <Title>{selectedBracket?.title}</Title>
             </HeaderWrapper>
+            <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
+            {BracketWrapperByType && <BracketWrapperByType />}
           </ContentWrapper>
         </BracketsModalWrapper>
       )}
@@ -45,11 +89,12 @@ const BracketsModalWrapper = styled(motion.div)`
 `
 
 const ContentWrapper = styled.div`
+  min-height: 100vh;
   max-width: 1489px;
   width: 100%;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template: min-content min-content auto / 1fr;
   gap: 16px;
 
   padding: 16px 16px 40px;

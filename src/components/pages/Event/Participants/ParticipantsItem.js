@@ -209,7 +209,10 @@ const ItemTitle = styled.h4`
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
-  color: #f2f2f2;
+  color: #ffffff;
+  &:hover {
+    text-decoration: underline;
+  }
 `
 const ItemDescription = styled.p`
   font-style: normal;
