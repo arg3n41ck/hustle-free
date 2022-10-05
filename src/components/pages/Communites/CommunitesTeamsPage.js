@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchTeams, teamsSelector } from '../../../redux/components/teams'
 import styled from 'styled-components'
 import CommunitesList from './CommunitesTeamsList'
-import { Autocomplete, Collapse, TextField, useMediaQuery } from '@mui/material'
+import { Autocomplete, Collapse, Pagination, TextField, useMediaQuery } from '@mui/material'
 import {
   selectCountriesAndCities,
   fetchCountries,
@@ -21,7 +21,7 @@ import { fetchAthletesByParams } from '../../../redux/components/athletes'
 
 function CommunitesPage() {
   const dispatch = useDispatch()
-  const [, teams] = useSelector(teamsSelector)
+  const [, teams, count] = useSelector(teamsSelector)
   const [countries] = useSelector(selectCountriesAndCities)
   const [isFiltersOpen, setFilter] = useState(false)
   const [sportTypes] = useSelector(selectSportTypes)
@@ -161,12 +161,29 @@ function CommunitesPage() {
         </Collapse>
 
         <CommunitesList data={teams} />
+
+        <PaginationWrapper>
+          <Pagination
+            onChange={(_, value) => {
+              query.set('page', value)
+              routerPush(`/communities/teams/?${query}`)
+            }}
+            count={Math.ceil(count / 20)}
+            variant='outlined'
+            shape='rounded'
+          />
+        </PaginationWrapper>
       </CommunitesItems>
     </CommunitesContainer>
   )
 }
 
 export default CommunitesPage
+
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 const CommunitiesHeadBtnsWrapper = styled.div`
   display: flex;

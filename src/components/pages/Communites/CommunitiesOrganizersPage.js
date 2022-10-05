@@ -2,12 +2,11 @@ import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTeams } from '../../../redux/components/teams'
 import styled from 'styled-components'
-import { Autocomplete, TextField } from '@mui/material'
+import { Autocomplete, Pagination, TextField } from '@mui/material'
 import {
   selectCountriesAndCities,
   fetchCountries,
 } from '../../../redux/components/countriesAndCities'
-import { selectSportTypes, fetchSportTypes } from '../../../redux/components/sportTypes'
 import useQuery from '../../../hooks/useQuery'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
@@ -19,18 +18,15 @@ import { fetchAthletesByParams } from '../../../redux/components/athletes'
 
 function CommunitesPage() {
   const dispatch = useDispatch()
-  const [organizers] = useSelector(organizersSelector)
+  const [organizers, count] = useSelector(organizersSelector)
   const [countries] = useSelector(selectCountriesAndCities)
-  const [sportTypes] = useSelector(selectSportTypes)
   const query = useQuery()
   const searchValue = query.get('search')
   const [search, setSearch] = useState(searchValue)
   const { push: routerPush } = useRouter()
   const debouncedSearch = useDebounce(search, 400)
   const { t: tCommunities } = useTranslation('communities')
-
-  const sportTypesValue =
-    sportTypes.length && sportTypes.find((type) => `${type.id}` === query.get('sports'))
+  console.log(count)
 
   const countriesValue =
     countries.length && countries.find((type) => `${type.id}` === query.get('country'))
@@ -38,14 +34,6 @@ function CommunitesPage() {
   const handleCountriesFilter = useCallback(
     (_, value) => {
       value ? query.set('country', value.id) : query.delete('country')
-      routerPush(`/communities/organizers/?${query}`)
-    },
-    [query],
-  )
-
-  const handleSportTypesFilter = useCallback(
-    (_, value) => {
-      value ? query.set('sports', value.id) : query.delete('sports')
       routerPush(`/communities/organizers/?${query}`)
     },
     [query],
@@ -65,7 +53,6 @@ function CommunitesPage() {
     dispatch(fetchTeams())
     dispatch(fetchAthletesByParams())
     dispatch(fetchCountries())
-    dispatch(fetchSportTypes())
   }, [])
 
   const handleSubmit = (e, value) => {
@@ -86,9 +73,7 @@ function CommunitesPage() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder={tCommunities('communities.search')}
             />
-            <CommunitesHeadingButton
-              type='submit'
-            >
+            <CommunitesHeadingButton type='submit'>
               <SearchIcon />
               {tCommunities('communities.find')}
             </CommunitesHeadingButton>
@@ -120,33 +105,21 @@ function CommunitesPage() {
               )}
             />
           )}
-          {!!sportTypes?.length && (
-            <Autocomplete
-              noOptionsText={tCommunities('communities.nothingFound')}
-              onChange={(e, value) => handleSportTypesFilter(e, value)}
-              options={sportTypes.map((option) => option)}
-              getOptionLabel={(option) => option.name}
-              fullWidth
-              value={sportTypesValue}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{
-                    width: '100%',
-                  }}
-                  fullWidth
-                  placeholder={tCommunities('communities.kindOfSport')}
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: <UsersIcon />,
-                  }}
-                />
-              )}
-            />
-          )}
         </CommunitesAutoCompletes>
 
         <CommunitiesOrganizersList data={organizers} />
+
+        <PaginationWrapper>
+          <Pagination
+            onChange={(_, value) => {
+              query.set('page', value)
+              routerPush(`/communities/organizers/?${query}`)
+            }}
+            count={Math.ceil(count / 20)}
+            variant='outlined'
+            shape='rounded'
+          />
+        </PaginationWrapper>
       </CommunitesItems>
     </CommunitesContainer>
   )
@@ -154,12 +127,13 @@ function CommunitesPage() {
 
 export default CommunitesPage
 
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
 const CommunitesAutoCompletes = styled.div`
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  grid-gap: 35px;
 `
 
 const CommunitesHeadingText = styled.h2`
