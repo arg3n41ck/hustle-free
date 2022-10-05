@@ -8,6 +8,7 @@ import stories from './components/stories'
 import categories from './components/categories'
 import athletes from './components/athletes'
 import brackets from './components/eventBrackets'
+import organizers from './components/organizers'
 
 export function makeStore() {
   return configureStore({
@@ -22,6 +23,7 @@ export function makeStore() {
       athletes,
       categories,
       brackets,
+      organizers,
     },
   })
 }

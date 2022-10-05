@@ -74,7 +74,8 @@ export const teamsSlice = createSlice({
 export const teamsSelector = createSelector(
   (state) => state.teams.teams.athleteTeams,
   (state) => state.teams.teams.teams,
-  (athleteTeams, teams) => [athleteTeams, teams],
+  (state) => state.teams.teams.count,
+  (athleteTeams, teams, count) => [athleteTeams, teams, count],
 )
 
 export default teamsSlice.reducer

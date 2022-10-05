@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchTeams, teamsSelector } from '../../../redux/components/teams'
 import styled from 'styled-components'
-import { Autocomplete, Pagination, TextField } from '@mui/material'
+import { Autocomplete, Collapse, Pagination, TextField, useMediaQuery } from '@mui/material'
 import {
   selectCountriesAndCities,
   fetchCountries,
@@ -15,10 +15,16 @@ import CommunitesAthletesList from './CommunitiesAthleteList'
 import { useTranslation } from 'next-i18next'
 import { SearchIcon } from '../../../assets/svg/icons'
 import useDebounce from '../../../hooks/useDebounce'
+import CommunitiesHead from './CommunitiesHead'
+import { FilterIcon } from '../Events/EventsCatalog/EventsFilter'
+import { theme } from '../../../styles/theme'
+import { fetchOrganizers } from '../../../redux/components/organizers'
 
 function CommunitesAthletesPage() {
   const dispatch = useDispatch()
+  const [isFiltersOpen, setFilter] = useState(false)
   const [, teams] = useSelector(teamsSelector)
+  const md = useMediaQuery('(max-width: 768px)')
   const [countries] = useSelector(selectCountriesAndCities)
   const query = useQuery()
   const searchValue = query.get('search')
@@ -27,6 +33,7 @@ function CommunitesAthletesPage() {
   const [, athletes, count] = useSelector(selectAthletes)
   const { push: routerPush } = useRouter()
   const { t: tCommon } = useTranslation('common')
+  const { t: tEvents } = useTranslation('events')
   const { t: tCommunities } = useTranslation('communities')
 
   const gender = [
@@ -86,6 +93,7 @@ function CommunitesAthletesPage() {
     dispatch(fetchTeams())
     dispatch(fetchCountries())
     dispatch(fetchSportTypes())
+    dispatch(fetchOrganizers())
     dispatch(fetchAthletesByParams(query))
 
     return () => {
@@ -101,99 +109,106 @@ function CommunitesAthletesPage() {
 
   return (
     <CommunitesContainer>
+      <CommunitiesHead />
+      <CommunitesHeadingText>{tCommunities('communities.search')}</CommunitesHeadingText>
       <CommunitesItems>
         <form onSubmit={(e) => handleSubmit(e, search)}>
-          <CommunitesHeadingInputAndButton>
-            <CommunitesHeadingInput
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={tCommunities('communities.search')}
-            />
-            <CommunitesHeadingButton type='submit'>
-              <SearchIcon />
-              {tCommunities('communities.find')}
-            </CommunitesHeadingButton>
-          </CommunitesHeadingInputAndButton>
+          <CommunitiesHeadBtnsWrapper>
+            <CommunitesHeadingInputAndButton>
+              <CommunitesHeadingInput
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={tCommunities('communities.search')}
+              />
+              <CommunitesHeadingButton type='submit'>
+                <SearchIcon />
+                {tCommunities('communities.find')}
+              </CommunitesHeadingButton>
+            </CommunitesHeadingInputAndButton>
+            <FilterBtn onClick={() => setFilter((s) => !s)}>
+              <FilterIcon />
+              {!md && tEvents('events.filter.filter')}
+            </FilterBtn>
+          </CommunitiesHeadBtnsWrapper>
         </form>
 
-        <CommunitesAutoCompletes>
-          {!!teams?.length && (
-            <Autocomplete
-              noOptionsText={tCommunities('communities.nothingFound')}
-              onChange={(e, value) => handleTeamsTypesFilter(e, value)}
-              options={teams?.map((option) => option)}
-              getOptionLabel={(option) => option.name}
-              fullWidth
-              value={teaamsValue}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{
-                    width: '100%',
-                  }}
-                  fullWidth
-                  placeholder={tCommunities('communities.team')}
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: <UsersIcon />,
-                  }}
-                />
-              )}
-            />
-          )}
-          {!!countries?.length && (
-            <Autocomplete
-              noOptionsText={tCommunities('communities.nothingFound')}
-              onChange={(e, value) => handleCountriesFilter(e, value)}
-              options={countries.map((option) => option)}
-              getOptionLabel={(option) => option.name}
-              value={countriesValue}
-              fullWidth
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{
-                    width: '100%',
-                  }}
-                  fullWidth
-                  placeholder={tCommunities('communities.country')}
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: <LocationIcon />,
-                  }}
-                />
-              )}
-            />
-          )}
-          {!!gender?.length && (
-            <Autocomplete
-              noOptionsText={tCommunities('communities.nothingFound')}
-              onChange={(e, value) => handleGendersFilter(e, value)}
-              options={gender.map((option) => option)}
-              getOptionLabel={(option) => option.name}
-              value={gendersValue}
-              fullWidth
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{
-                    width: '100%',
-                  }}
-                  fullWidth
-                  placeholder={tCommon('form.fieldsNames.gender.label')}
-                  InputProps={{
-                    ...params.InputProps,
-                    startAdornment: <GenderIcon />,
-                  }}
-                />
-              )}
-            />
-          )}
-        </CommunitesAutoCompletes>
+        <Collapse in={isFiltersOpen}>
+          <CommunitesAutoCompletes>
+            {!!teams?.length && (
+              <Autocomplete
+                noOptionsText={tCommunities('communities.nothingFound')}
+                onChange={(e, value) => handleTeamsTypesFilter(e, value)}
+                options={teams?.map((option) => option)}
+                getOptionLabel={(option) => option.name}
+                fullWidth
+                value={teaamsValue}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    sx={{
+                      width: '100%',
+                    }}
+                    fullWidth
+                    placeholder={tCommunities('communities.team')}
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: <UsersIcon />,
+                    }}
+                  />
+                )}
+              />
+            )}
+            {!!countries?.length && (
+              <Autocomplete
+                noOptionsText={tCommunities('communities.nothingFound')}
+                onChange={(e, value) => handleCountriesFilter(e, value)}
+                options={countries.map((option) => option)}
+                getOptionLabel={(option) => option.name}
+                value={countriesValue}
+                fullWidth
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    sx={{
+                      width: '100%',
+                    }}
+                    fullWidth
+                    placeholder={tCommunities('communities.country')}
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: <LocationIcon />,
+                    }}
+                  />
+                )}
+              />
+            )}
+            {!!gender?.length && (
+              <Autocomplete
+                noOptionsText={tCommunities('communities.nothingFound')}
+                onChange={(e, value) => handleGendersFilter(e, value)}
+                options={gender.map((option) => option)}
+                getOptionLabel={(option) => option.name}
+                value={gendersValue}
+                fullWidth
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    sx={{
+                      width: '100%',
+                    }}
+                    fullWidth
+                    placeholder={tCommon('form.fieldsNames.gender.label')}
+                    InputProps={{
+                      ...params.InputProps,
+                      startAdornment: <GenderIcon />,
+                    }}
+                  />
+                )}
+              />
+            )}
+          </CommunitesAutoCompletes>
+        </Collapse>
 
-        <CommunitesItem>
-          <CommunitesHeadingText>{tCommunities('communities.participants')}</CommunitesHeadingText>
-        </CommunitesItem>
         <CommunitesAthletesList data={athletes} />
         <PaginationWrapper>
           <Pagination
@@ -213,6 +228,36 @@ function CommunitesAthletesPage() {
 
 export default CommunitesAthletesPage
 
+const CommunitiesHeadBtnsWrapper = styled.div`
+  display: flex;
+  gap: 32px;
+`
+
+const FilterBtn = styled.button`
+  background: #333333;
+  border: 1px solid #333333;
+  /* margin-left: 20px; */
+  font-weight: 600;
+  font-size: 20px;
+  color: #f2f2f2;
+
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  grid-gap: 15px;
+  padding: 20px;
+  margin: 0 0 0 auto;
+
+  ${theme.mqMax('xl')} {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  ${theme.mqMax('md')} {
+    margin: 0;
+  }
+`
+
 const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -227,11 +272,13 @@ const CommunitesAutoCompletes = styled.div`
 `
 
 const CommunitesHeadingText = styled.h2`
+  font-family: 'Inter';
   font-style: normal;
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 40px;
-  color: #ffffff;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  color: #f2f2f2;
+  margin: 0 0 16px 0;
 `
 
 const CommunitesItems = styled.div`
@@ -259,6 +306,7 @@ const CommunitesHeadingInputAndButton = styled.div`
   border-radius: 16px;
   padding: 0;
   height: 64px;
+  width: 100%;
 `
 
 const CommunitesHeadingInput = styled.input`
@@ -275,6 +323,7 @@ const CommunitesHeadingInput = styled.input`
 `
 
 const CommunitesHeadingButton = styled.button`
+  background: #333333;
   border: 1.5px solid #333333;
   border-radius: 0 16px 16px 0;
   height: 100%;

@@ -4,13 +4,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../styles/theme'
 
-function CommunitesList({ data }) {
+function CommunitiesOrganizersList({ data }) {
   const { push: routerPush } = useRouter()
   return (
     <CommunitesListItems>
       {!!data?.length &&
         data.map((item) => {
-          const { id, user, name, teamMembersCount } = item
+          const { id, user } = item
 
           return (
             <ItemWrapper key={`comm-teams-${id}`}>
@@ -23,13 +23,13 @@ function CommunitesList({ data }) {
                 <div>
                   <ItemTitle
                     onClick={() => {
-                      routerPush(`/team/${id}`)
+                      routerPush(`/organizer/${id}`)
                     }}
                   >
-                    {name || ''}
+                    {`${user?.firstName} ${user?.lastName}`}
                   </ItemTitle>
                   <Results>8287 wins / 8294 losses</Results>
-                  <MembersCount>{teamMembersCount || 0} Атлет</MembersCount>
+                  <MembersCount>{0} Атлет</MembersCount>
                 </div>
               </Item>
             </ItemWrapper>
@@ -39,7 +39,7 @@ function CommunitesList({ data }) {
   )
 }
 
-export default CommunitesList
+export default CommunitiesOrganizersList
 
 const CommunitesListItems = styled.div`
   display: grid;

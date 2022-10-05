@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTeams, teamsSelector } from '../../../redux/components/teams'
+import { fetchTeams } from '../../../redux/components/teams'
 import styled from 'styled-components'
-import CommunitesList from './CommunitesTeamsList'
-import { Autocomplete, Collapse, TextField, useMediaQuery } from '@mui/material'
+import { Autocomplete, TextField } from '@mui/material'
 import {
   selectCountriesAndCities,
   fetchCountries,
@@ -14,25 +13,21 @@ import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import useDebounce from '../../../hooks/useDebounce'
 import CommunitiesHead from './CommunitiesHead'
-import { theme } from '../../../styles/theme'
-import { FilterIcon } from '../Events/EventsCatalog/EventsFilter'
-import { fetchOrganizers } from '../../../redux/components/organizers'
+import { fetchOrganizers, organizersSelector } from '../../../redux/components/organizers'
+import CommunitiesOrganizersList from './CommunitiesOrganizersList'
 import { fetchAthletesByParams } from '../../../redux/components/athletes'
 
 function CommunitesPage() {
   const dispatch = useDispatch()
-  const [, teams] = useSelector(teamsSelector)
+  const [organizers] = useSelector(organizersSelector)
   const [countries] = useSelector(selectCountriesAndCities)
-  const [isFiltersOpen, setFilter] = useState(false)
   const [sportTypes] = useSelector(selectSportTypes)
   const query = useQuery()
   const searchValue = query.get('search')
-  const md = useMediaQuery('(max-width: 768px)')
   const [search, setSearch] = useState(searchValue)
   const { push: routerPush } = useRouter()
   const debouncedSearch = useDebounce(search, 400)
   const { t: tCommunities } = useTranslation('communities')
-  const { t: tEvents } = useTranslation('events')
 
   const sportTypesValue =
     sportTypes.length && sportTypes.find((type) => `${type.id}` === query.get('sports'))
@@ -43,7 +38,7 @@ function CommunitesPage() {
   const handleCountriesFilter = useCallback(
     (_, value) => {
       value ? query.set('country', value.id) : query.delete('country')
-      routerPush(`/communities/teams/?${query}`)
+      routerPush(`/communities/organizers/?${query}`)
     },
     [query],
   )
@@ -51,32 +46,32 @@ function CommunitesPage() {
   const handleSportTypesFilter = useCallback(
     (_, value) => {
       value ? query.set('sports', value.id) : query.delete('sports')
-      routerPush(`/communities/teams/?${query}`)
+      routerPush(`/communities/organizers/?${query}`)
     },
     [query],
   )
 
   React.useEffect(() => {
     query.set('search', debouncedSearch || '')
-    routerPush(`/communities/teams/?${query}`)
+    routerPush(`/communities/organizers/?${query}`)
   }, [debouncedSearch])
 
   React.useEffect(() => {
-    dispatch(fetchTeams(query))
+    dispatch(fetchOrganizers(query))
   }, [query])
 
   React.useEffect(() => {
-    dispatch(fetchTeams(query))
+    dispatch(fetchOrganizers(query))
+    dispatch(fetchTeams())
+    dispatch(fetchAthletesByParams())
     dispatch(fetchCountries())
     dispatch(fetchSportTypes())
-    dispatch(fetchOrganizers())
-    dispatch(fetchAthletesByParams())
   }, [])
 
   const handleSubmit = (e, value) => {
     e.preventDefault()
     value ? query.set('search', value) : query.delete('search')
-    routerPush(`/communities/teams/?${query}`)
+    routerPush(`/communities/organizers/?${query}`)
   }
 
   return (
@@ -85,118 +80,79 @@ function CommunitesPage() {
       <CommunitesHeadingText>{tCommunities('communities.search')}</CommunitesHeadingText>
       <CommunitesItems>
         <form onSubmit={(e) => handleSubmit(e, search)}>
-          <CommunitiesHeadBtnsWrapper>
-            <CommunitesHeadingInputAndButton>
-              <CommunitesHeadingInput
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder={tCommunities('communities.search')}
-              />
-              <CommunitesHeadingButton
-                type='submit'
-                // searchIcon={searchIcon}
-              >
-                <SearchIcon />
-                {tCommunities('communities.find')}
-              </CommunitesHeadingButton>
-            </CommunitesHeadingInputAndButton>
-            <FilterBtn onClick={() => setFilter((s) => !s)}>
-              <FilterIcon />
-              {!md && tEvents('events.filter.filter')}
-            </FilterBtn>
-          </CommunitiesHeadBtnsWrapper>
+          <CommunitesHeadingInputAndButton>
+            <CommunitesHeadingInput
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={tCommunities('communities.search')}
+            />
+            <CommunitesHeadingButton
+              type='submit'
+            >
+              <SearchIcon />
+              {tCommunities('communities.find')}
+            </CommunitesHeadingButton>
+          </CommunitesHeadingInputAndButton>
         </form>
 
-        <Collapse in={isFiltersOpen}>
-          <CommunitesAutoCompletes>
-            {!!sportTypes?.length && (
-              <Autocomplete
-                noOptionsText={tCommunities('communities.nothingFound')}
-                onChange={(e, value) => handleSportTypesFilter(e, value)}
-                options={sportTypes.map((option) => option)}
-                getOptionLabel={(option) => option.name}
-                fullWidth
-                value={sportTypesValue}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    sx={{
-                      width: '100%',
-                    }}
-                    fullWidth
-                    placeholder={tCommunities('communities.kindOfSport')}
-                    InputProps={{
-                      ...params.InputProps,
-                      startAdornment: <UsersIcon />,
-                    }}
-                  />
-                )}
-              />
-            )}
-            {!!countries?.length && (
-              <Autocomplete
-                noOptionsText={tCommunities('communities.nothingFound')}
-                onChange={(e, value) => handleCountriesFilter(e, value)}
-                options={countries.map((option) => option)}
-                getOptionLabel={(option) => option.name}
-                value={countriesValue}
-                fullWidth
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    sx={{
-                      width: '100%',
-                    }}
-                    fullWidth
-                    placeholder={tCommunities('communities.country')}
-                    InputProps={{
-                      ...params.InputProps,
-                      startAdornment: <LocationIcon />,
-                    }}
-                  />
-                )}
-              />
-            )}
-          </CommunitesAutoCompletes>
-        </Collapse>
+        <CommunitesAutoCompletes>
+          {!!countries?.length && (
+            <Autocomplete
+              noOptionsText={tCommunities('communities.nothingFound')}
+              onChange={(e, value) => handleCountriesFilter(e, value)}
+              options={countries.map((option) => option)}
+              getOptionLabel={(option) => option.name}
+              value={countriesValue}
+              fullWidth
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  sx={{
+                    width: '100%',
+                  }}
+                  fullWidth
+                  placeholder={tCommunities('communities.country')}
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: <LocationIcon />,
+                  }}
+                />
+              )}
+            />
+          )}
+          {!!sportTypes?.length && (
+            <Autocomplete
+              noOptionsText={tCommunities('communities.nothingFound')}
+              onChange={(e, value) => handleSportTypesFilter(e, value)}
+              options={sportTypes.map((option) => option)}
+              getOptionLabel={(option) => option.name}
+              fullWidth
+              value={sportTypesValue}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  sx={{
+                    width: '100%',
+                  }}
+                  fullWidth
+                  placeholder={tCommunities('communities.kindOfSport')}
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: <UsersIcon />,
+                  }}
+                />
+              )}
+            />
+          )}
+        </CommunitesAutoCompletes>
 
-        <CommunitesList data={teams} />
+        <CommunitiesOrganizersList data={organizers} />
       </CommunitesItems>
     </CommunitesContainer>
   )
 }
 
 export default CommunitesPage
-
-const CommunitiesHeadBtnsWrapper = styled.div`
-  display: flex;
-  gap: 32px;
-`
-
-const FilterBtn = styled.button`
-  background: #333333;
-  border: 1px solid #333333;
-  /* margin-left: 20px; */
-  font-weight: 600;
-  font-size: 20px;
-  color: #f2f2f2;
-
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  grid-gap: 15px;
-  padding: 20px;
-  margin: 0 0 0 auto;
-
-  ${theme.mqMax('xl')} {
-    padding: 12px;
-    border-radius: 8px;
-  }
-
-  ${theme.mqMax('md')} {
-    margin: 0;
-  }
-`
 
 const CommunitesAutoCompletes = styled.div`
   width: 100%;
@@ -220,13 +176,6 @@ const CommunitesItems = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 48px;
-`
-
-const CommunitesItem = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `
 
 const CommunitesContainer = styled.div`
@@ -263,7 +212,6 @@ const CommunitesHeadingButton = styled.button`
   border-radius: 0 16px 16px 0;
   height: 100%;
   color: #ffffff;
-  //background-image: url(${({ searchIcon }) => searchIcon});
   font-style: normal;
   font-weight: 600;
   font-size: 20px;

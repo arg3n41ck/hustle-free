@@ -1,14 +1,16 @@
-import React from 'react'
-import CommunitiesAthletesPage from '../../components/pages/Communites/CommunitiesAthletesPage'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import React from 'react'
+import CommunitiesOrganizersPage from '../../components/pages/Communites/CommunitiesOrganizersPage'
 
-function Athletes() {
+const organizers = () => {
   return (
     <div>
-      <CommunitiesAthletesPage />
+      <CommunitiesOrganizersPage />
     </div>
   )
 }
+
+export default organizers
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
@@ -21,5 +23,3 @@ export const getStaticProps = async ({ locale }) => ({
     ])),
   },
 })
-
-export default Athletes

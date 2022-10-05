@@ -30,6 +30,10 @@ const HorizontalTabsBorder = ({ valueTab, arrayTab, onChangeHandler, height, chi
                     gridTemplateColumns: `repeat(${arrayTab.length}, 1fr)`,
                     gridTemplateRows: `${height}`,
                   },
+                  '& .MuiTabs-indicator': {
+                    height: '8px',
+                    borderRadius: '8px 8px 0 0',
+                  },
                 }
               : {}
           }
@@ -75,10 +79,10 @@ const TabItem = styled(Tab)`
   &:last-child {
     border-right: none;
   }
-  border-bottom: ${(p) => (p.active ? '8px solid #6d4eea' : '8px solid #333333')};
+  /* border-bottom: ${(p) => (p.active ? '8px solid #6d4eea' : '1px solid #333333')}; */
   transition: 0.4s;
   ${theme.mqMax('md')} {
-    border-bottom: ${(p) => (p.active ? '1px solid #6d4eea' : '1px solid #333333')};
+    /* border-bottom: ${(p) => (p.active ? '1px solid #6d4eea' : '1px solid #333333')}; */
     border-right: none;
     min-width: initial !important;
     width: min-content !important;

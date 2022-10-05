@@ -11,6 +11,8 @@
         "male": "Male",
         "female": "Female",
         "notSpecified": "Not specified",
-        "team": "Team"
+        "team": "Team",
+        "athletes": "Athletes",
+        "organizers": "Organizers"
     }
 }
