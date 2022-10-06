@@ -158,7 +158,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
     dispatch(
       fetchParticipantCategories({
         level: values?.level?.name || '',
-        age: +getAge(user?.dateBirthday),
+        age: user?.dateBirthday ? +getAge(user?.dateBirthday) : '',
         weight: values?.weight || '',
         gender: user?.gender || '',
         event: eventId,
