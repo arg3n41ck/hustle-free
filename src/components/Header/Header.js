@@ -77,7 +77,7 @@ const Header = () => {
                 <NavbarText>{tHeader('navLinks.more')}</NavbarText>
               </a>
             </Link>
-            <Link href={'/communities'} passHref>
+            <Link href={'/communities/athletes'} passHref>
               <a>
                 <NavbarText>{tHeader('navLinks.community')}</NavbarText>
               </a>

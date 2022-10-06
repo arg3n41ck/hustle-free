@@ -19,7 +19,7 @@ function CommunitesAthletesList({ data }) {
               team={teams[0]}
               user={user}
             >
-              <AthletesBottomInfo>
+              {/* <AthletesBottomInfo>
                 <AthletesBottomItem>
                   <AthletesBottomItemTextHeading>
                     {tCommunities('communities.country')}
@@ -40,7 +40,7 @@ function CommunitesAthletesList({ data }) {
                       : tCommunities('communities.notSpecified')}
                   </AthletesBottomItemText>
                 </AthletesBottomItem>
-              </AthletesBottomInfo>
+              </AthletesBottomInfo> */}
             </Athlete>
           )
         })}
@@ -81,6 +81,6 @@ const AthletesBottomItemText = styled.p`
 
 const CommunitesAthletesListItems = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 32px;
 `

@@ -9,6 +9,7 @@ import categories from './components/categories'
 import athletes from './components/athletes'
 import brackets from './components/eventBrackets'
 import participantCategories from './components/participantsCategories'
+import organizers from './components/organizers'
 
 export function makeStore() {
   return configureStore({
@@ -24,6 +25,7 @@ export function makeStore() {
       categories,
       brackets,
       participantCategories,
+      organizers,
     },
   })
 }
