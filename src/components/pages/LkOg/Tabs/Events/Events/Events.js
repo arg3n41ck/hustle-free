@@ -32,9 +32,11 @@ function EventsContent({ onToggleSidebar }) {
           </CreateEventBTN>
         </HeaderWrapper>
       </LkDefaultHeader>
-      <TableWrapper>
-        <EventsTable events={ogEvents} />
-      </TableWrapper>
+      {!!ogEvents?.length && (
+        <TableWrapper>
+          <EventsTable events={ogEvents} />
+        </TableWrapper>
+      )}
     </div>
   )
 }
