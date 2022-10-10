@@ -66,5 +66,4 @@ const TableWrapper = styled.div`
   display: grid;
   grid-template: 1fr / 1fr;
   border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
 `
