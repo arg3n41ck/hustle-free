@@ -12,6 +12,7 @@ import InputMask from 'react-input-mask'
 import { PhoneIcon } from '../../../../../assets/svg/icons'
 import { formDataHttp } from '../../../../../helpers/formDataHttp'
 import { useTranslation } from 'next-i18next'
+import { useEventRouteContext } from './EventRouteProvider'
 
 const emptyInitialValues = {
   nameOrganization: '',
@@ -32,6 +33,7 @@ const emptyInitialValues = {
 
 function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId }) {
   const { t: tLkOg } = useTranslation('lkOg')
+  const { ctxStep } = useEventRouteContext()
 
   const { current: validationSchema } = useRef(
     yup.object({
@@ -244,7 +246,9 @@ function EventContacts({ defaultValue = emptyInitialValues, eventId, contactsId 
           {tLkOg('editEvent.cancel')}
         </Cancel>
         <Submit disabled={!isValid} type='submit'>
-          {tLkOg('editEvent.sendToModeration')}
+          {ctxStep?.contacts?.allFieldsFilled
+            ? tLkOg('myEvents.save')
+            : tLkOg('editEvent.sendToModeration')}
         </Submit>
       </EventFormFooter>
     </Form>

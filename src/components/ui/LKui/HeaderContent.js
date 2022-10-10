@@ -1,5 +1,5 @@
-import React from "react"
-import styled from "styled-components"
+import React from 'react'
+import styled from 'styled-components'
 
 const HeaderContent = ({ onToggle, children }) => {
   return (
@@ -16,7 +16,7 @@ const Header = styled.div`
   padding: 32px;
   display: flex;
 
-  @media screen and (max-width: 768px){
+  @media screen and (max-width: 1200px) {
     padding: 16px;
   }
 `
@@ -39,15 +39,15 @@ export default HeaderContent
 
 const BurgerIcon = (props) => (
   <svg
-    width="32"
-    height="32"
-    viewBox="0 0 32 32"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
+    width='32'
+    height='32'
+    viewBox='0 0 32 32'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
     {...props}
   >
-    <path d="M6 8H26" stroke="#6D4EEA" strokeWidth="3" strokeLinecap="round" />
-    <path d="M6 16H26" stroke="#6D4EEA" strokeWidth="3" strokeLinecap="round" />
-    <path d="M6 24H26" stroke="#6D4EEA" strokeWidth="3" strokeLinecap="round" />
+    <path d='M6 8H26' stroke='#6D4EEA' strokeWidth='3' strokeLinecap='round' />
+    <path d='M6 16H26' stroke='#6D4EEA' strokeWidth='3' strokeLinecap='round' />
+    <path d='M6 24H26' stroke='#6D4EEA' strokeWidth='3' strokeLinecap='round' />
   </svg>
 )

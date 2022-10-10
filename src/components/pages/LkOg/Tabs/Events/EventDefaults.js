@@ -35,7 +35,7 @@ function EventDefaults({ formik }) {
           error={touched.name && Boolean(errors.name)}
           helperText={touched.name && errors.name}
           onChange={handleChange}
-          value={values.name}
+          value={values?.name}
         />
       </Field>
 
@@ -43,7 +43,7 @@ function EventDefaults({ formik }) {
         <p className='auth-title__input'>{tLkOg('editEvent.generalInformation.typeSport')}</p>
         {!!sportTypes?.length && (
           <Autocomplete
-            value={sportTypes.find(({ id }) => id === values.typeSport) || null}
+            value={sportTypes.find(({ id }) => id === values?.typeSport) || null}
             noOptionsText={tLkOg('editEvent.generalInformation.nothingFound')}
             onChange={(_, value) => setFieldValue('typeSport', value?.id || null)}
             options={sportTypes.map((option) => option)}
@@ -51,7 +51,7 @@ function EventDefaults({ formik }) {
             fullWidth
             isOptionEqualToValue={() =>
               sportTypes.some(({ id }) => {
-                return id === values.typeSport
+                return id === values?.typeSport
               })
             }
             renderInput={(params) => (
@@ -88,7 +88,7 @@ function EventDefaults({ formik }) {
           <DatePicker
             toolbarTitle={tLkOg('editEvent.generalInformation.tournamentStartDate')}
             cancelText={tLkOg('editEvent.cancel')}
-            value={values.dateStart}
+            value={values?.dateStart}
             onChange={(value) => value && setFieldValue('dateStart', value)}
             shouldDisableDate={(date) =>
               date.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
@@ -127,7 +127,7 @@ function EventDefaults({ formik }) {
           <DatePicker
             toolbarTitle={tLkOg('editEvent.generalInformation.tournamentEndDate')}
             cancelText={tLkOg('editEvent.cancel')}
-            value={values.dateEnd}
+            value={values?.dateEnd}
             onChange={(value) => value && setFieldValue('dateEnd', value)}
             inputFormat='dd/MM/yyyy'
             disableCloseOnSelect={false}
@@ -170,8 +170,8 @@ function EventDefaults({ formik }) {
           options={asiaTimezone.map((option) => option)}
           getOptionLabel={(option) => `${option.country} ${option.tz}`}
           fullWidth
-          value={asiaTimezone.find(({ tz }) => tz === values.timezone) || null}
-          isOptionEqualToValue={() => asiaTimezone.some(({ tz }) => tz === values.timezone)}
+          value={asiaTimezone.find(({ tz }) => tz === values?.timezone) || null}
+          isOptionEqualToValue={() => asiaTimezone.some(({ tz }) => tz === values?.timezone)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -201,7 +201,7 @@ function EventDefaults({ formik }) {
       {/* <Field>
         <p className='auth-title__input'>{tLkOg('editEvent.generalInformation.format')}</p>
         <FormControl error={touched.formatEvent && Boolean(errors.formatEvent)} variant='standard'>
-          <RadioGroup row name='formatEvent' value={values.formatEvent} onChange={handleChange}>
+          <RadioGroup row name='formatEvent' value={values?.formatEvent} onChange={handleChange}>
             <FormControlLabel
               value='olympic'
               control={<Radio />}
