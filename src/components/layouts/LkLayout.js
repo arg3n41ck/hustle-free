@@ -58,6 +58,10 @@ const Wrapper = styled.div`
   border-radius: 24px;
   background: #1b1c22;
   display: flex;
+
+  ${theme.mqMax('md')} {
+    border: none;
+  }
 `
 const SidebarWrapper = styled.div`
   border-right: 1px solid #333333;

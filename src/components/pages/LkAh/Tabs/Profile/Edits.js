@@ -716,6 +716,10 @@ const DeleteProfileContent = styled.div`
   border-top: 1px solid #333333;
   padding: 32px;
 
+  ${theme.mqMax('md')} {
+    padding: 16px;
+  }
+
   font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
@@ -740,10 +744,18 @@ const ImageS = styled.img`
 const Header = styled.div`
   padding: 32px;
   border-bottom: 1px solid #333333;
+
+  ${theme.mqMax('md')} {
+    padding: 16px;
+  }
 `
 
 const Content = styled.div`
   padding: 32px;
+
+  ${theme.mqMax('md')} {
+    padding: 16px;
+  }
 `
 
 const RadioWrapper = styled.div`
@@ -759,6 +771,10 @@ const Footer = styled.div`
   padding: 32px;
   display: flex;
   justify-content: flex-end;
+
+  ${theme.mqMax('md')} {
+    padding: 16px;
+  }
 `
 const ButtonWrapper = styled.div`
   max-width: ${({ width }) => (width ? width : '256px')};

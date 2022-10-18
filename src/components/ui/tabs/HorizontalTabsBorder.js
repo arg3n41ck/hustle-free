@@ -1,12 +1,11 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
 import styled from 'styled-components'
 import { Tab, Tabs, useMediaQuery } from '@mui/material'
 import { theme } from '../../../styles/theme'
 
 const HorizontalTabsBorder = ({ valueTab, arrayTab, onChangeHandler, height, children }) => {
   const md = useMediaQuery('(max-width: 768px)')
-  const handleChange = (event, newValue) => {
+  const handleChange = (_, newValue) => {
     onChangeHandler(newValue)
   }
 
@@ -19,9 +18,6 @@ const HorizontalTabsBorder = ({ valueTab, arrayTab, onChangeHandler, height, chi
           scrollButtons='false'
           aria-label='basic tabs example'
           variant={md ? 'scrollable' : 'standart'}
-          // classes={{
-          //   indicator: classes.indicator,
-          // }}
           sx={
             !md
               ? {
@@ -59,6 +55,8 @@ const Header = styled.div`
   border-bottom: 1px solid #333333;
   @media screen and (max-width: 768px) {
     padding: 0 16px;
+    border: none;
+    background-color: #0f0f10;
   }
 `
 const TabItem = styled(Tab)`
@@ -85,7 +83,7 @@ const TabItem = styled(Tab)`
     /* border-bottom: ${(p) => (p.active ? '1px solid #6d4eea' : '1px solid #333333')}; */
     border-right: none;
     min-width: initial !important;
-    width: min-content !important;
+    width: fit-content !important;
   }
 `
 const Content = styled.div``

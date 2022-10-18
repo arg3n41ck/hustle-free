@@ -41,12 +41,13 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
       // toast.info(tCommon('form.status.waitForServer'))
       const _data = {
         ...dataPersonal,
-        sports: [values.sports],
-        description: values.description,
-        avatar: values.avatar,
+        sports: [values?.sports],
+        description: values?.description,
+        avatar: values?.avatar,
+        preliminaryModeration: values?.preliminaryModeration,
       }
       setDataInfo(_data)
-      await onSubmit({ ...dataPersonal, ..._data })
+      await onSubmit(_data)
     },
     validationSchema,
   })
@@ -56,7 +57,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
       setImageUrl(URL.createObjectURL(event.target.files[0]))
     }
   }
-  console.log(formik.values)
+
   return (
     <Form onSubmit={formik.handleSubmit}>
       <div className='auth-wrapper__input'>

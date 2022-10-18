@@ -1,15 +1,18 @@
 import { Close } from '@mui/icons-material'
+// import { Avatar } from '@mui/material'
+// import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { selectIsUserAuth } from '../../../../redux/components/user'
 import { theme } from '../../../../styles/theme'
 import Notifications from '../Notifications/Notifications'
-import MobilePopover from './MobilePopover'
+import MobilePopover, { getPathByRole } from './MobilePopover'
 
 const MobileNavigations = () => {
   const [open, setOpen] = useState(false)
   const [userAuthenticated] = useSelector(selectIsUserAuth)
+  // const { user } = useSelector((state) => state.user)
 
   useEffect(() => {
     document.querySelector('html').style.overflowY = open ? 'hidden' : ''
@@ -17,6 +20,24 @@ const MobileNavigations = () => {
 
   return (
     <MobileRightWrapper>
+      {/* {!!user?.id && (
+        <Link href={getPathByRole(user?.role)} passHref>
+          <a onClick={() => setOpen(false)}>
+            <Avatar
+              src={user?.avatar}
+              sx={{
+                height: 38,
+                width: 38,
+                objectFit: 'cover',
+                borderRadius: '50%',
+                border: '1px solid #828282',
+                margin: '0 8px',
+              }}
+              alt='userAva'
+            />
+          </a>
+        </Link>
+      )} */}
       {userAuthenticated && <Notifications />}
       <MobilePopover open={open} setOpen={setOpen} />
       {!open && (

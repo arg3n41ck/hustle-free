@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Collapse } from '@mui/material'
 import StoryCollapse from './StoryCollapse'
+import { theme } from '../../../../../../styles/theme'
 
 function FilterMyStories({ data }) {
   const [open, setOpen] = React.useState(false)
@@ -75,11 +76,17 @@ const EventContainer = styled.div`
   &:last-child {
     border-radius: 0 0 24px 24px;
   }
+
+  ${theme.mqMax('md')} {
+    padding: 16px;
+    border: none;
+  }
 `
 
 const EventItems = styled.div`
   display: grid;
-  grid-template-columns: 1.5fr 10fr;
+  grid-template-columns: 104px auto;
+  grid-gap: 16px;
 `
 
 const EventsInfo = styled.div`

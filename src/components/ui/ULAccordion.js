@@ -28,7 +28,7 @@ function ULAccordion({ title, children, defaultExpanded = true }) {
         expandIcon={<ArrowForwardIosSharpIcon />}
         aria-controls='panel1a-content'
         id='panel1a-header'
-        sx={{ padding: lg ? '0 16px' : '8px 16px' }}
+        sx={{ padding: lg ? '8px 16px' : '8px 16px' }}
       >
         <AccordionCustomHeadingText>{title}</AccordionCustomHeadingText>
       </AccordionSummary>
@@ -51,9 +51,8 @@ export default ULAccordion
 
 const AccordionCustomHeadingText = styled(Typography)`
   font-style: normal;
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 32px;
+  font-weight: 600;
+  font-size: 18px;
   color: #f2f2f2;
 `
 

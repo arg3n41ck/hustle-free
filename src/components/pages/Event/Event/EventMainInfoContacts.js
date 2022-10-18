@@ -54,37 +54,42 @@ function EventMainInfoContacts({ event }) {
       <div>
         <h3 className='hide-on-mob'>{tEventDetail('eventMainInfo.contacts')}</h3>
         <ul>
-          {contacts.map(({ id, label, value, icon }) => (
-            <li key={`EventMainInfoContacts_${id}`}>
-              {icon}
-              <div>
-                <span>{tEventDetail(label)}</span>
-                <p>{value}</p>
-              </div>
-            </li>
-          ))}
+          {contacts.map(
+            ({ id, label, value, icon }) =>
+              value && (
+                <li key={`EventMainInfoContacts_${id}`}>
+                  {icon}
+                  <div>
+                    <span>{tEventDetail(label)}</span>
+                    <p>{value}</p>
+                  </div>
+                </li>
+              ),
+          )}
         </ul>
       </div>
-      <div>
-        <h3>{tEventDetail('eventMainInfo.socialNetworks')}</h3>
-        <ContactsSocials>
-          {event?.contacts?.facebook && (
-            <a href={event?.contacts?.facebook} rel='noreferrer noopener' target='_blank'>
-              <EventFacebook />
-            </a>
-          )}
-          {event?.contacts?.linkedin && (
-            <a href={event?.contacts?.linkedin} rel='noreferrer noopener' target='_blank'>
-              <EventLinkedin />
-            </a>
-          )}
-          {event?.contacts?.vk && (
-            <a href={event?.contacts?.vk} rel='noreferrer noopener' target='_blank'>
-              <EventVK />
-            </a>
-          )}
-        </ContactsSocials>
-      </div>
+      {(!!event?.contacts?.facebook || !!event?.contacts?.linkedin || !!event?.contacts?.vk) && (
+        <div>
+          <h3>{tEventDetail('eventMainInfo.socialNetworks')}</h3>
+          <ContactsSocials>
+            {event?.contacts?.facebook && (
+              <a href={event?.contacts?.facebook} rel='noreferrer noopener' target='_blank'>
+                <EventFacebook />
+              </a>
+            )}
+            {event?.contacts?.linkedin && (
+              <a href={event?.contacts?.linkedin} rel='noreferrer noopener' target='_blank'>
+                <EventLinkedin />
+              </a>
+            )}
+            {event?.contacts?.vk && (
+              <a href={event?.contacts?.vk} rel='noreferrer noopener' target='_blank'>
+                <EventVK />
+              </a>
+            )}
+          </ContactsSocials>
+        </div>
+      )}
     </ContactsWrapper>
   )
 }

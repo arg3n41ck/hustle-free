@@ -36,7 +36,6 @@ const EventParticipants = () => {
   useEffect(async () => {
     query.set('event', eventId)
     dispatch(fetchParticipantCategories(query))
-    query.delete('event')
   }, [query])
 
   return (

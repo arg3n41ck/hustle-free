@@ -42,7 +42,7 @@ function PublicAthlete({ athleteData }) {
 
   useEffect(() => {
     dispatch(fetchCountries())
-    athleteId && getAthTeams({ athletes: athleteId }).then(setTeams)
+    athleteId && getAthTeams({ athlete: athleteId }).then(setTeams)
   }, [athleteData])
 
   useEffect(() => {

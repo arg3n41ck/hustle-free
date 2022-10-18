@@ -65,7 +65,7 @@ function EventsFilter() {
   const fromDate = query.get('date_start') || null
   const toDate = query.get('date_end') || null
 
-  const futureValue = query.get('status') === 'future' ? null : { name: 'future' }
+  const futureValue = query.get('status') === 'soon' ? null : { name: 'soon' }
   const liveValue = query.get('status') === 'continue' ? null : { name: 'continue' }
   const pastValue = query.get('status') === 'past' ? null : { name: 'past' }
 

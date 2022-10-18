@@ -44,7 +44,7 @@ function MainPageAuth() {
     ],
     [xl],
   )
-  console.log(array)
+
   useEffect(() => {
     dispatch(exitUser())
   }, [])

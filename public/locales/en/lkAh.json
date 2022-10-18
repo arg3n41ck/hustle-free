@@ -1,43 +1,48 @@
 {
-    "userProfile": {
-        "edit": "Edit",
-        "birthDay": "Date of birth",
-        "gender": "Gender",
-        "countryAndCity": "Country, city",
-        "contacts": "Contacts",
-        "email": "Email"
-    },
-    "myEvents": {
-        "myEvents": "My tournaments",
-        "tabs": {
-            "all": "All",
-            "past": "Past",
-            "now": "Now",
-            "coming": "Future"
-        }
-    },
-    "myHistory": {
-        "myHistory": "My history",
-        "tabs": {
-            "all": "All",
-            "wins": "Wins",
-            "draws": "Draws",
-            "defeats": "Defeats"
-        }
-    },
-    "myTeams": {
-        "myTeams": "My team"
-    },
-    "closedProfile": "This is a private profile",
-    "place": "place",
-    "years": "years old",
-    "kg": "kg",
-    "won": "Won",
-    "wonOnPoints": "Won on points",
-    "lost": "Lost",
-    "outcome": "Outcome",
-    "gold": "Gold",
-    "silver": "Silver",
-    "bronze": "Bronze",
-    "teams": "Teams"
+  "userProfile": {
+    "edit": "Edit",
+    "birthDay": "Date of birth",
+    "gender": "Gender",
+    "countryAndCity": "Country, city",
+    "contacts": "Contacts",
+    "email": "Email"
+  },
+  "myEvents": {
+    "myEvents": "My tournaments",
+    "tabs": {
+      "all": "All",
+      "past": "Past",
+      "now": "Now",
+      "coming": "Future"
+    }
+  },
+  "myHistory": {
+    "myHistory": "My history",
+    "tabs": {
+      "all": "All",
+      "wins": "Wins",
+      "draws": "Draws",
+      "defeats": "Defeats"
+    }
+  },
+  "myTeams": {
+    "myTeams": "My team",
+    "tabs": {
+      "all": "All",
+      "approved": "Approved",
+      "panding": "Moderation"
+    }
+  },
+  "closedProfile": "This is a private profile",
+  "place": "place",
+  "years": "years old",
+  "kg": "kg",
+  "won": "Won",
+  "wonOnPoints": "Won on points",
+  "lost": "Lost",
+  "outcome": "Outcome",
+  "gold": "Gold",
+  "silver": "Silver",
+  "bronze": "Bronze",
+  "teams": "Teams"
 }

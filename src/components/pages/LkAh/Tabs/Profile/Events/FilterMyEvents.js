@@ -74,6 +74,8 @@ const EventContainer = styled.div`
 
   @media screen and (max-width: 768px) {
     padding: 16px;
+    border-left: none;
+    border-right: none;
   }
 `
 

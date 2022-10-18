@@ -43,13 +43,13 @@ function TeamsModalTemplate({ open, onClose }) {
   useEffect(() => {
     if (user?.athleteId) {
       getTeamsRequest({ athlete: user.athleteId }).then(setTeamsRequests)
-      dispatch(fetchAthleteTeams({ athletes: user.athleteId }))
+      dispatch(fetchAthleteTeams({ athlete: user.athleteId }))
     }
   }, [user])
 
   const onModSubmit = async () => {
     selectedTeam && (await applyToTeam({ team: selectedTeam?.id, athlete: user?.athleteId }))
-    dispatch(fetchAthleteTeams({ athletes: user.athleteId }))
+    dispatch(fetchAthleteTeams({ athlete: user.athleteId }))
     getTeamsRequest({ athlete: user.athleteId }).then(setTeamsRequests)
     setSelectedTeam(null)
     setModOpen(false)
@@ -69,6 +69,7 @@ function TeamsModalTemplate({ open, onClose }) {
         ) : (
           <TeamModeration
             selectedTeam={selectedTeam}
+            isTeamWithModeration={!!selectedTeam?.preliminaryModeration}
             onClose={() => setModOpen(false)}
             onSubmit={onModSubmit}
           />

@@ -314,7 +314,9 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
           </Link>
           <RegistrationAthleteToEventBottomButton
             type={'submit'}
-            background={'linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)'}
+            background={
+              !formik?.dirty ? '#828282' : 'linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)'
+            }
           >
             Зарегистрироваться
           </RegistrationAthleteToEventBottomButton>

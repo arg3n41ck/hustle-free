@@ -39,7 +39,7 @@ const Recover = ({ onView }) => {
     onSubmit: async (values) => {
       try {
         await $api.post('/accounts/auth/users/reset_password/', {
-          ...values,
+          email: (values?.email || '').toLocaleLowerCase(),
           language: locale,
         })
         setToggleInfoModal(true)

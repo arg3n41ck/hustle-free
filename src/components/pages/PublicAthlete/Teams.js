@@ -15,12 +15,13 @@ function Teams({ teams }) {
       <PubAthTitles>{tLkAh('teams')}</PubAthTitles>
 
       <ul>
-        {teams.map(({ user: { avatar }, name, id }, i) => (
-          <li key={`ATH-Teams-${i}`} onClick={() => routerPush(`/team/${id}`)}>
-            <Avatar src={avatar} alt={`${avatar}`} sx={{ width: 64, height: 64 }} />
-            <p>{name}</p>
-          </li>
-        ))}
+        {!!teams?.length &&
+          teams.map(({ user: { avatar }, name, id }, i) => (
+            <li key={`ATH-Teams-${i}`} onClick={() => routerPush(`/team/${id}`)}>
+              <Avatar src={avatar} alt={`${avatar}`} sx={{ width: 64, height: 64 }} />
+              <p>{name}</p>
+            </li>
+          ))}
       </ul>
     </TeamsWrapper>
   )

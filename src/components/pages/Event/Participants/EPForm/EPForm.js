@@ -14,7 +14,6 @@ import { useRouter } from 'next/router'
 
 const createBracket = async ({ eventId, pcID, bracketType }) => {
   try {
-    console.log({ eventId, pcID, bracketType })
     await $api.post('/brackets/brackets/', {
       event: eventId,
       participationCategory: pcID,

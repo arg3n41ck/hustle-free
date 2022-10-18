@@ -227,7 +227,7 @@ const InputPersonalData = () => {
             }
             type='submit'
           >
-            {tAuth('common.next')}
+            {tAuth('common.signIn')}
           </AuthButton>
         </div>
       </Box>

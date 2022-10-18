@@ -76,7 +76,7 @@ const Edits = ({ onView }) => {
       description: user?.description || '',
       emailCoach: user?.emailCoach || '',
       avatar: user?.avatar || '',
-      preliminaryModeration: false,
+      preliminaryModeration: user?.preliminaryModeration || false,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -363,7 +363,6 @@ const Edits = ({ onView }) => {
             value={'none'}
             onChange={(e) => {
               if (e.target.value) {
-                console.log(e.target.value)
                 const obj = sportTypes.find((sportType) => sportType.name === e.target.value)
                 setCurrentSportTypes((prev) => [...prev, obj])
               }

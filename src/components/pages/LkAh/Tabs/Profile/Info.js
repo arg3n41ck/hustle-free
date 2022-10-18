@@ -25,9 +25,6 @@ const Info = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const { push: routerPush } = useRouter()
-  const {
-    countries: { data: countries },
-  } = useSelector((state) => state.countries)
   const { t: tHeader } = useTranslation('header')
   const { t: tLkAh } = useTranslation('lkAh')
   const md = useMediaQuery('(max-width: 768px)')
@@ -49,7 +46,7 @@ const Info = ({ onToggleSidebar }) => {
             alt={`${user?.firstName} ${user?.lastName}`}
             src={user?.avatar}
             sx={{
-              width: sm ? (smAvatar ? 265 : 326) : 112,
+              width: sm ? '100%' : 112,
               height: sm ? 326 : 112,
               borderRadius: sm ? '12px' : '50%',
               backgroundSize: 'cover',
@@ -140,20 +137,22 @@ const Content = styled.div`
   }
 `
 const Center = styled.div`
-  display: flex;
+  display: grid;
+  grid-template: 1fr / min-content auto;
+  grid-gap: 35px;
   @media screen and (max-width: 578px) {
+    display: flex;
     flex-direction: column;
     align-items: center;
   }
 `
 const CenterRight = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-left: 35px;
   width: 100%;
+  justify-content: space-between;
 
   @media screen and (max-width: 578px) {
+    flex-direction: column;
     align-items: center;
     margin-left: 0;
   }

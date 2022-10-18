@@ -151,7 +151,8 @@ const Content = styled.div`
   margin: 32px 32px 0 32px;
 `
 const Center = styled.div`
-  display: flex;
+  display: grid;
+  grid-template: 1fr/ 112px auto min-content;
 `
 const CenterText = styled.div`
   display: flex;

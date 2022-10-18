@@ -44,8 +44,6 @@ function MyStories({ onToggleSidebar }) {
     user && dispatch(fetchAthleteStories({ period: 'all', athlete: user?.athleteId }))
   }, [])
 
-  const viewHandler = (value) => setView(value)
-
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
@@ -54,7 +52,7 @@ function MyStories({ onToggleSidebar }) {
       <HorizontalTabsBorder
         arrayTab={tabs}
         valueTab={view}
-        onChangeHandler={viewHandler}
+        onChangeHandler={(value) => setView(value)}
         height={'96px'}
       >
         <MyStoriesWrapper>

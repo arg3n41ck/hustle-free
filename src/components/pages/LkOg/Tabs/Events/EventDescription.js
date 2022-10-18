@@ -39,7 +39,7 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
         (typeof values.banner || '') !== 'string'
           ? { ...values, allFieldsFilled: true, event: eventId }
           : { ...rest, allFieldsFilled: true, event: eventId }
-
+      console.log(body)
       await formDataHttp(body, path, method)
       routerPush(`/lk-og/profile/events/edit/${eventId}/rules/`)
     },
@@ -52,6 +52,10 @@ function EventForm({ defaultValues = emptyInitialValues, eventId, descriptionId 
   useEffect(() => {
     dispatch(fetchSportTypes())
   }, [])
+
+  console.log('====================================')
+  console.log(values)
+  console.log('====================================')
 
   return (
     <Form onSubmit={handleSubmit}>

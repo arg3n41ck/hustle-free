@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
 import { Avatar } from '@mui/material'
@@ -11,7 +11,7 @@ import HeaderLocalizationPopover from '../HeaderLocalizationPopover'
 import clearCookies from '../../../../utils/clearCookies'
 import { exitUser } from '../../../../redux/components/user'
 
-const getPathByRole = (role) => {
+export const getPathByRole = (role) => {
   switch (role) {
     case 'organizer':
       return '/lk-og/profile'
@@ -28,18 +28,15 @@ function MobilePopover({ open, setOpen }) {
   const { t: tHeader } = useTranslation('header')
   const { t: tCommon } = useTranslation('common')
   const { user, userAuthenticated } = useSelector((state) => state.user)
-  const { push: routerPush, pathname } = useRouter()
+  const { push: routerPush } = useRouter()
   const dispatch = useDispatch()
 
   const outHandler = async () => {
     dispatch(exitUser())
     clearCookies()
+    setOpen(false)
     await routerPush('/login')
   }
-
-  useEffect(() => {
-    setOpen(false)
-  }, [pathname])
 
   return (
     <MainWrapper>
@@ -57,17 +54,17 @@ function MobilePopover({ open, setOpen }) {
           >
             <Nav>
               <Link href={'/events'} passHref>
-                <a>
+                <a onClick={() => setOpen(false)}>
                   <NavbarText>{tHeader('navLinks.events')}</NavbarText>
                 </a>
               </Link>
               <Link href={'/'} passHref>
-                <a>
+                <a onClick={() => setOpen(false)}>
                   <NavbarText>{tHeader('navLinks.more')}</NavbarText>
                 </a>
               </Link>
-              <Link href={'/communities'} passHref>
-                <a>
+              <Link href={'/communities/athletes/'} passHref>
+                <a onClick={() => setOpen(false)}>
                   <NavbarText>{tHeader('navLinks.community')}</NavbarText>
                 </a>
               </Link>
@@ -91,7 +88,7 @@ function MobilePopover({ open, setOpen }) {
                         ? `${truncateString(user?.lastName || '', 1, false)}. ${
                             user?.firstName || ''
                           }`
-                        : truncateString(user?.fullNameCoach || '', 15)}
+                        : truncateString(user?.fullNameCoach || '', 15, false)}
                     </UserName>
                     <UserRole>{tCommon(`userRoles.${user?.role}`)}</UserRole>
                   </UserInfo>

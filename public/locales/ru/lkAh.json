@@ -1,45 +1,50 @@
 {
-    "userProfile": {
-        "edit": "Редактировать",
-        "birthDay": "День рождения",
-        "gender": "Пол",
-        "countryAndCity": "Страна, город",
-        "contacts": "Контакты",
-        "email": "Email",
-        "male": "Мужской",
-        "female": "Женский"
-    },
-    "myEvents": {
-        "myEvents": "Мои турниры",
-        "tabs": {
-            "all": "Все",
-            "past": "Прошедшие",
-            "now": "Сейчас",
-            "coming": "Предстоящие"
-        }
-    },
-    "myHistory": {
-        "myHistory": "Моя история",
-        "tabs": {
-            "all": "Все",
-            "wins": "Победы",
-            "draws": "Ничьи",
-            "defeats": "Поражений"
-        }
-    },
-    "myTeams": {
-        "myTeams": "Мои команды"
-    },
-    "closedProfile": "Это закрытый профиль",
-    "place": "место",
-    "years": "лет",
-    "kg": "кг",
-    "won": "Выйграл",
-    "wonOnPoints": "Выйграл по очкам",
-    "lost": "Проиграл",
-    "outcome": "Итог",
-    "gold": "Золото",
-    "silver": "Сеоебро",
-    "bronze": "Бронза",
-    "teams": "Команды"
+  "userProfile": {
+    "edit": "Редактировать",
+    "birthDay": "День рождения",
+    "gender": "Пол",
+    "countryAndCity": "Страна, город",
+    "contacts": "Контакты",
+    "email": "Email",
+    "male": "Мужской",
+    "female": "Женский"
+  },
+  "myEvents": {
+    "myEvents": "Мои турниры",
+    "tabs": {
+      "all": "Все",
+      "past": "Прошедшие",
+      "now": "Сейчас",
+      "coming": "Предстоящие"
+    }
+  },
+  "myHistory": {
+    "myHistory": "Моя история",
+    "tabs": {
+      "all": "Все",
+      "wins": "Победы",
+      "draws": "Ничьи",
+      "defeats": "Поражений"
+    }
+  },
+  "myTeams": {
+    "myTeams": "Мои команды",
+    "tabs": {
+      "all": "Все",
+      "approved": "Участник команды",
+      "panding": "На модерации"
+    }
+  },
+  "closedProfile": "Это закрытый профиль",
+  "place": "место",
+  "years": "лет",
+  "kg": "кг",
+  "won": "Выйграл",
+  "wonOnPoints": "Выйграл по очкам",
+  "lost": "Проиграл",
+  "outcome": "Итог",
+  "gold": "Золото",
+  "silver": "Сеоебро",
+  "bronze": "Бронза",
+  "teams": "Команды"
 }

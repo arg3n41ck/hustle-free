@@ -28,8 +28,8 @@ function CommunitiesOrganizersList({ data }) {
                   >
                     {`${user?.firstName} ${user?.lastName}`}
                   </ItemTitle>
-                  <Results>8287 wins / 8294 losses</Results>
-                  <MembersCount>{0} Атлет</MembersCount>
+                  {/* <Results>8287 wins / 8294 losses</Results>
+                  <MembersCount>{0} Атлет</MembersCount> */}
                 </div>
               </Item>
             </ItemWrapper>
