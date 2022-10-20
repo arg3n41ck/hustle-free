@@ -49,7 +49,9 @@ function MyEvents({ onToggleSidebar }) {
   return (
     <div>
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
-        <TitleHeader>{tLkAh('myEvents.myEvents')}</TitleHeader>
+        <TitleHeader>
+          {tLkAh('myEvents.myEvents')} <Nums>{athleteEvents?.length}</Nums>
+        </TitleHeader>
       </LkDefaultHeader>
       <HorizontalTabsBorder
         arrayTab={tabs}
@@ -69,4 +71,9 @@ export default MyEvents
 
 const MyEventsWrapper = styled.div`
   min-height: 200px;
+`
+
+const Nums = styled.div`
+  color: #828282;
+  margin: 0 0 0 10px;
 `
