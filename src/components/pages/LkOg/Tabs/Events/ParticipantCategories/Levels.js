@@ -173,7 +173,11 @@ const FormWrapper = styled.div`
   grid-gap: 24px;
 `
 
-const LevelsUl = styled.ul``
+const LevelsUl = styled.ul`
+  max-height: 300px;
+  overflow: auto;
+  padding: 0 20px 0 0;
+`
 
 const LevelClearIcon = styled.div`
   display: none;

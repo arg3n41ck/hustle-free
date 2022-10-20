@@ -38,22 +38,24 @@ function RegistrationAccordion({ event }) {
 
   return (
     <ULAccordion title='Регистрация'>
-      {registrations
-        .filter(({ dateContent }) => dateContent)
-        .map(({ id, title, dateContent }) => (
-          <>
-            <RegistrationAccordionItems>
-              <RegistrationIcon period={id} />
-              <div>
-                <RegistrationAccordionItemTopText>{title}</RegistrationAccordionItemTopText>
-                <RegistrationAccordionItemBottomText>
-                  {dateContent}
-                </RegistrationAccordionItemBottomText>
-              </div>
-            </RegistrationAccordionItems>
-            <Line />
-          </>
-        ))}
+      <Wrapper>
+        {registrations
+          .filter(({ dateContent }) => dateContent)
+          .map(({ id, title, dateContent }) => (
+            <>
+              <RegistrationAccordionItems>
+                <RegistrationIcon period={id} />
+                <div>
+                  <RegistrationAccordionItemTopText>{title}</RegistrationAccordionItemTopText>
+                  <RegistrationAccordionItemBottomText>
+                    {dateContent}
+                  </RegistrationAccordionItemBottomText>
+                </div>
+              </RegistrationAccordionItems>
+              <Line />
+            </>
+          ))}
+      </Wrapper>
     </ULAccordion>
   )
 }
@@ -91,6 +93,14 @@ const Line = styled.div`
   &:last-child {
     display: none;
   }
+`
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 16px;
+
+  padding: 16px 8px !important;
 `
 
 const RegistrationIcon = ({ period }) => {

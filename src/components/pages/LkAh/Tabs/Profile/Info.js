@@ -29,7 +29,6 @@ const Info = ({ onToggleSidebar }) => {
   const { t: tLkAh } = useTranslation('lkAh')
   const md = useMediaQuery('(max-width: 768px)')
   const sm = useMediaQuery('(max-width: 578px)')
-  const smAvatar = useMediaQuery('(max-width: 430px)')
 
   React.useEffect(() => {
     dispatch(fetchCountries())

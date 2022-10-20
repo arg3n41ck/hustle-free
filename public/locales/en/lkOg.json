@@ -12,7 +12,8 @@
     "save": "Save",
     "soon": "Soon",
     "nowGoes": "Now goes",
-    "draft": "Draft"
+    "draft": "Moderation",
+    "published": "Published"
   },
   "editEvent": {
     "cancel": "Cancel",

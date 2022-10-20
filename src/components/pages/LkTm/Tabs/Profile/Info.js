@@ -153,6 +153,11 @@ const Content = styled.div`
 const Center = styled.div`
   display: grid;
   grid-template: 1fr/ 112px auto min-content;
+  @media screen and (max-width: 578px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
 const CenterText = styled.div`
   display: flex;

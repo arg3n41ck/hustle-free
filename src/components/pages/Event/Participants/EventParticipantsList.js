@@ -6,9 +6,16 @@ import { useTranslation } from 'next-i18next'
 import { Checkbox } from '@mui/material'
 import EPHeader from './EPHeader'
 import EPForm from './EPForm/EPForm'
+import { selectOgEvents } from '../../../../redux/components/user'
+import { useRouter } from 'next/router'
 
 const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
   const { user } = useSelector((state) => state.user)
+  const [ogEventsId] = useSelector(selectOgEvents)
+  const {
+    query: { id: eventId },
+  } = useRouter()
+  const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
   const [showEPHeader, setShowEPHeader] = useState(null)
   const [openEPForm, setOpenEPForm] = useState(false)
   const [selectedEPC, setSelectedEPC] = useState([])
@@ -59,7 +66,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
           {tEventDetail('event.participants.eventParticipantsList.categoriesBasedProfile')}
         </Title>
       )}
-      {user?.role === 'organizer' && (
+      {/* {!!ogAndIsMyEvent && (
         <ChekboxWrapper>
           <Checkbox
             checked={(eventParticipants?.length || 0) == (selectedEPC?.length || 0)}
@@ -69,19 +76,19 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
           />
           <p>Выбрать всех</p>
         </ChekboxWrapper>
-      )}
+      )} */}
       <div ref={EPBlock} />
       {eventParticipants.map((eventParticipant) => (
         <EventParticipantsItem
           key={eventParticipant.id}
-          isOrganizer={user?.role === 'organizer'}
+          isOrganizer={!!ogAndIsMyEvent}
           eventParticipant={eventParticipant}
           selectedEPC={selectedEPC}
           setSelectedEPC={setSelectedEPC}
         />
       ))}
 
-      {user?.role === 'organizer' && (
+      {/* {!!ogAndIsMyEvent && (
         <>
           <EPHeader
             open={showEPHeader && !openEPForm}
@@ -98,7 +105,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
             onClose={() => setOpenEPForm(false)}
           />
         </>
-      )}
+      )} */}
     </>
   )
 }

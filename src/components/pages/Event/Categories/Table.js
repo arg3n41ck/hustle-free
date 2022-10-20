@@ -1,129 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { getGender } from '../../LkOg/Tabs/Events/EventParticipantCategories'
-import { useTranslation } from 'next-i18next'
-import Tooltip from '@mui/material/Tooltip'
-import { useRouter } from 'next/router'
-import $api from '../../../../services/axios'
 
-const getEventRegistrationPeriods = async (eventId) => {
-  try {
-    const { data } = await $api.get(`/events/event_registr_periods/?event=${eventId}`)
-    return data?.length ? data[0] : null
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-const dateKeys = [
-  {
-    start: 'earlyRegStart',
-    end: 'earlyRegEnd',
-    priceKey: 'earlyPrice',
-  },
-  {
-    start: 'lateRegStart',
-    end: 'lateRegEnd',
-    priceKey: 'latePrice',
-  },
-  {
-    start: 'standartRegStart',
-    end: 'standartRegEnd',
-    priceKey: 'standartPrice',
-  },
-]
-const getRegDates = (start, end) => {
-  const startDate = new Date(start).setHours(0, 0, 0, 0)
-  const endDate = new Date(end).setHours(0, 0, 0, 0)
-  const today = new Date().setHours(0, 0, 0, 0)
-  return { startDate, endDate, today }
-}
-
-const getPriceByRegistration = (registration) => {
-  return dateKeys.find(({ start, end }) => {
-    if (registration[start] && registration[end]) {
-      const { today, endDate, startDate } = getRegDates(registration[start], registration[end])
-      return startDate <= today && today <= endDate
-    }
-  })
-}
-
-const createDataForTable = (pc = [], crp) => {
-  const { id, fromAge, toAge, fromWeight, levels, toWeight, gender, price } = pc
-  const { standartPrice, currency, latePrice } = price
-  return levels
-    .map(({ id: lId, name: lName }, i) => {
-      return {
-        id: `${id}-${lId}-${i}`,
-        gender: getGender(gender, true),
-        age: `${fromAge} - ${toAge} лет`,
-        price: `${Math.round(price[crp] || standartPrice || latePrice)} ${currency.toLowerCase()}`,
-        weight: `${fromWeight} - ${toWeight} кг`,
-        name: lName,
-      }
-    })
-    .flat(Infinity)
-}
-
-function Table({ pc }) {
-  const [rewrittenData, setRewrittenData] = useState([])
-  const [eventReg, setEventReg] = useState(null)
-  const [currentRegPeriod, setCurrentRegPeriod] = useState(null)
-  const {
-    query: { id: eventId },
-  } = useRouter()
-  const { t: tEventDetail } = useTranslation('eventDetail')
-
-  const columns = useMemo(() => {
-    return [
-      {
-        column: tEventDetail('event.categories.table.levels'),
-        accessor: 'name',
-      },
-      {
-        column: tEventDetail('event.categories.table.gender'),
-        accessor: 'gender',
-      },
-      {
-        column: tEventDetail('event.categories.table.age'),
-        accessor: 'age',
-      },
-      {
-        column: tEventDetail('event.categories.table.weight'),
-        accessor: 'weight',
-      },
-      {
-        column: (
-          <Tooltip
-            style={{ cursor: 'pointer' }}
-            title={tEventDetail('event.categories.table.priceForStandardRegistrationPeriod')}
-          >
-            <PriceHead>
-              <span>{tEventDetail('event.categories.table.price')}</span>
-              <Info />
-            </PriceHead>
-          </Tooltip>
-        ),
-        accessor: 'price',
-      },
-    ]
-  }, [])
-
-  useEffect(() => {
-    setRewrittenData(createDataForTable(pc, currentRegPeriod))
-  }, [pc, currentRegPeriod])
-
-  useEffect(() => {
-    eventId && getEventRegistrationPeriods(eventId).then(setEventReg)
-  }, [eventId])
-
-  useEffect(() => {
-    if (eventReg) {
-      const crp = getPriceByRegistration(eventReg)?.priceKey || null
-      setCurrentRegPeriod(crp)
-    }
-  }, [eventReg])
-
+function Table({ rewrittenData, columns }) {
   return (
     <Wrapper>
       <Scrollbar>
@@ -158,6 +36,7 @@ export default Table
 const Wrapper = styled.div`
   border: 1px solid #333;
   border-radius: 16px;
+  overflow: hidden;
 `
 
 const Scrollbar = styled.div`
@@ -187,7 +66,8 @@ const Tr = styled.tr`
   }
 
   &:hover {
-    background: #0f0f10;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+      linear-gradient(0deg, rgba(109, 78, 234, 0.2), rgba(109, 78, 234, 0.2)), #191a1f;
   }
 
   &:last-child {
@@ -224,21 +104,3 @@ const Td = styled.td`
     border-right: none;
   }
 `
-
-const PriceHead = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
-const Info = () => (
-  <svg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'>
-    <path
-      d='M11.4467 18.2066C12.5245 18.0165 13.5542 17.6161 14.4772 17.0281C15.4001 16.4401 16.1982 15.6761 16.8259 14.7796C17.4536 13.8832 17.8986 12.8719 18.1355 11.8035C18.3723 10.7351 18.3964 9.63049 18.2064 8.55277C18.0164 7.47505 17.6159 6.4453 17.0279 5.52234C16.4399 4.59938 15.6759 3.80126 14.7795 3.17357C13.883 2.54588 12.8717 2.1009 11.8033 1.86404C10.7349 1.62718 9.63033 1.60307 8.5526 1.79311C7.47488 1.98314 6.44514 2.38358 5.52218 2.97158C4.59921 3.55957 3.8011 4.3236 3.17341 5.22004C2.54571 6.11647 2.10073 7.12777 1.86387 8.19618C1.62701 9.26458 1.60291 10.3692 1.79294 11.4469C1.98297 12.5246 2.38342 13.5544 2.97141 14.4773C3.55941 15.4003 4.32343 16.1984 5.21987 16.8261C6.11631 17.4538 7.1276 17.8988 8.19601 18.1356C9.26442 18.3725 10.369 18.3966 11.4467 18.2066L11.4467 18.2066Z'
-      stroke='#828282'
-      strokeWidth='2'
-    />
-    <path d='M10 10L10 15' stroke='#828282' strokeWidth='2' strokeLinecap='round' />
-    <path d='M10 5.8335L10 5.00016' stroke='#828282' strokeWidth='2' strokeLinecap='round' />
-  </svg>
-)

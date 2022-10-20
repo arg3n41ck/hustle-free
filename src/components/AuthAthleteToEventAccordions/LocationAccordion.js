@@ -19,7 +19,7 @@ function LocationAccordion({ event }) {
 
   return (
     <ULAccordion title='Локация'>
-      <>
+      <Wrapper>
         <LocationAccordionItems>
           <LocationPageIcon type={'location'} />
           <div>
@@ -41,7 +41,7 @@ function LocationAccordion({ event }) {
         <Map active={!!mapPoints}>
           {mapPoints && <MapFiledLeafLet points={mapPoints} disabled />}
         </Map>
-      </>
+      </Wrapper>
     </ULAccordion>
   )
 }
@@ -71,6 +71,14 @@ const LocationAccordionItems = styled.div`
   grid-template-columns: 24px auto;
   grid-column-gap: 12px;
   align-items: flex-start;
+`
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 16px;
+
+  padding: 16px 8px !important;
 `
 
 const LocationPageIcon = ({ type }) => {

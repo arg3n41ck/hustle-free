@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { getRusBetweenDate } from '../../../../../../helpers/helpers'
 import { IconButton } from '@mui/material'
@@ -15,7 +15,7 @@ function EventsTable({ events }) {
     switch (status) {
       case 'published':
         return {
-          name: tLkOg('myEvents.soon'),
+          name: tLkOg('myEvents.published'),
           value: status,
         }
       case 'in_proccessing':

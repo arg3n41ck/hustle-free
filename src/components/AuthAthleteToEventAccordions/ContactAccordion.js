@@ -8,46 +8,48 @@ import ULAccordion from '../ui/ULAccordion'
 function ContactAccordion({ event }) {
   return (
     <ULAccordion title='Контакты'>
-      <ContactAccordionItems>
-        <ContactIcon social={'kub'} />
-        <ContactItemsText>
-          {event?.contacts?.nameOrganization || 'Не известно'} {event?.typeSport}
-        </ContactItemsText>
-      </ContactAccordionItems>
-
-      <ContactAccordionItems>
-        <ContactIcon social={'user'} />
-        <ContactItemsText>
-          {event?.contacts?.firstName || event?.contacts?.lastName
-            ? `${event?.contacts?.firstName || ''} ${event?.contacts?.lastName || ''}`
-            : 'Не известно'}
-        </ContactItemsText>
-      </ContactAccordionItems>
-
-      <ContactAccordionItems>
-        <ContactIcon social={'email'} />
-        <ContactItemsText>{event?.contacts?.email || 'Не известно'}</ContactItemsText>
-      </ContactAccordionItems>
-
-      {!!event?.contacts?.phoneNumber1 && (
+      <Wrapper>
         <ContactAccordionItems>
-          <ContactIcon social={'phone'} />
+          <ContactIcon social={'kub'} />
           <ContactItemsText>
-            {phoneFormatter(event?.contacts?.phoneNumber1 || 'Не известно')}
+            {event?.contacts?.nameOrganization || 'Не известно'} {event?.typeSport}
           </ContactItemsText>
         </ContactAccordionItems>
-      )}
 
-      {!!event?.contacts?.facebook && (
         <ContactAccordionItems>
-          <ContactIcon social={'facebook'} />
+          <ContactIcon social={'user'} />
           <ContactItemsText>
-            <Link href={`${event?.contacts?.facebook}`} target={'_blank'}>
-              Facebook
-            </Link>
+            {event?.contacts?.firstName || event?.contacts?.lastName
+              ? `${event?.contacts?.firstName || ''} ${event?.contacts?.lastName || ''}`
+              : 'Не известно'}
           </ContactItemsText>
         </ContactAccordionItems>
-      )}
+
+        <ContactAccordionItems>
+          <ContactIcon social={'email'} />
+          <ContactItemsText>{event?.contacts?.email || 'Не известно'}</ContactItemsText>
+        </ContactAccordionItems>
+
+        {!!event?.contacts?.phoneNumber1 && (
+          <ContactAccordionItems>
+            <ContactIcon social={'phone'} />
+            <ContactItemsText>
+              {phoneFormatter(event?.contacts?.phoneNumber1 || 'Не известно')}
+            </ContactItemsText>
+          </ContactAccordionItems>
+        )}
+
+        {!!event?.contacts?.facebook && (
+          <ContactAccordionItems>
+            <ContactIcon social={'facebook'} />
+            <ContactItemsText>
+              <Link href={`${event?.contacts?.facebook}`} target={'_blank'}>
+                Facebook
+              </Link>
+            </ContactItemsText>
+          </ContactAccordionItems>
+        )}
+      </Wrapper>
     </ULAccordion>
   )
 }
@@ -69,6 +71,14 @@ const ContactAccordionItems = styled.div`
   justify-items: center;
   grid-column-gap: 12px;
   align-items: flex-start;
+`
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 16px;
+
+  padding: 16px 8px !important;
 `
 
 const ContactIcon = ({ social }) => {

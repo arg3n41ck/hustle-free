@@ -8,9 +8,14 @@ import $api from '../../../../services/axios'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'next-i18next'
+import { selectOgEvents } from '../../../../redux/components/user'
 
-const changeParticipantPlace = async (eventId, data) => {
-  await $api.patch(`/events/events/${eventId}/participant_place/`, data)
+export const changeParticipantPlace = async (eventId, data) => {
+  try {
+    await $api.patch(`/events/events/${eventId}/participant_place/`, data)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 function EventResultParticipant({ participant, updatePC }) {
@@ -20,6 +25,8 @@ function EventResultParticipant({ participant, updatePC }) {
   const {
     query: { id: eventId },
   } = useRouter()
+  const [ogEventsId] = useSelector(selectOgEvents)
+  const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
 
   const onChange = (pcId, count) => {
     setPlace(count)
@@ -57,7 +64,7 @@ function EventResultParticipant({ participant, updatePC }) {
             <InfoItemDescription>{participant.athlete.user?.country}</InfoItemDescription>
           </InfoItem>
         )}
-        {user?.role === 'organizer' && (
+        {!!ogAndIsMyEvent && (
           <PlaceField
             defaultCount={place || 0}
             onChange={(count) => onChange(participant.id, count)}

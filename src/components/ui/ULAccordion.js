@@ -12,6 +12,7 @@ function ULAccordion({ title, children, defaultExpanded = true }) {
   return (
     <AccordionCustom
       sx={{
+        '&.MuiAccordion-root': { overflow: 'hidden' },
         '& .MuiAccordionSummary-expandIconWrapper': {
           transform: 'rotate(90deg)',
         },
@@ -33,16 +34,7 @@ function ULAccordion({ title, children, defaultExpanded = true }) {
         <AccordionCustomHeadingText>{title}</AccordionCustomHeadingText>
       </AccordionSummary>
       <Line />
-      <AccordionDetails
-        sx={{
-          padding: '16px 0',
-          display: 'flex',
-          flexDirection: 'column',
-          gridRowGap: '24px',
-        }}
-      >
-        {children}
-      </AccordionDetails>
+      <AccordionDetailsCustom>{children}</AccordionDetailsCustom>
     </AccordionCustom>
   )
 }
@@ -64,12 +56,15 @@ const Line = styled.div`
 
 const AccordionCustom = styled(Accordion)`
   background-color: #1b1c22 !important ;
-  border: 1px solid #333333 !important;
   border-radius: 16px !important;
-  padding: 8px 16px !important;
+  padding: 8px 0 !important;
   margin: 0 !important;
 
   @media screen and (max-width: 850px) {
-    padding: 0px 8px !important;
+    padding: 0px 0 !important;
   }
+`
+
+const AccordionDetailsCustom = styled(AccordionDetails)`
+  padding: 0;
 `

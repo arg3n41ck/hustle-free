@@ -22,6 +22,7 @@ import { useTranslation } from 'next-i18next'
 import ProfileAvaUploader from '../../../../ui/ProfileAvaUploader'
 import { formDataHttp } from '../../../../../helpers/formDataHttp'
 import { fetchUser } from '../../../../../redux/components/user'
+import { useMediaQuery } from '@mui/material'
 
 const Info = ({ onToggleSidebar }) => {
   const { user } = useSelector((state) => state.user)
@@ -34,6 +35,7 @@ const Info = ({ onToggleSidebar }) => {
   const dispatch = useDispatch()
   const { t: tHeader } = useTranslation('header')
   const { t: tCommon } = useTranslation('common')
+  const sm = useMediaQuery('(max-width: 578px)')
 
   useEffect(() => {
     dispatch(fetchCountries())
@@ -60,7 +62,12 @@ const Info = ({ onToggleSidebar }) => {
           <ProfileAvaUploader
             alt={`${user?.firstName} ${user?.lastName}`}
             src={user?.avatar}
-            sx={{ width: 112, height: 112 }}
+            sx={{
+              width: sm ? '100%' : 112,
+              height: sm ? 326 : 112,
+              borderRadius: sm ? '12px' : '50%',
+              backgroundSize: 'cover',
+            }}
             onSave={async (file) => {
               await formDataHttp({ avatar: file }, 'accounts/users/me/', 'patch')
               dispatch(fetchUser())
@@ -144,16 +151,29 @@ const Info = ({ onToggleSidebar }) => {
 
 const Content = styled.div`
   margin: 32px 32px 0 32px;
+
+  @media screen and (max-width: 768px) {
+    margin: 16px 16px 0 16px;
+  }
 `
 const Center = styled.div`
-  display: flex;
+  display: grid;
+  grid-template: 1fr / min-content auto;
+  grid-gap: 35px;
+  @media screen and (max-width: 578px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
 const CenterRight = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-left: 35px;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  @media screen and (max-width: 578px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 const FullName = styled.p`
   font-style: normal;

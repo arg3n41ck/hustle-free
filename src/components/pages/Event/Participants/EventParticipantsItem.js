@@ -58,7 +58,7 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, selectedEPC, set
 
   const header = (
     <HeaderWrapper>
-      {user?.role === 'organizer' && (
+      {/* {!!isOrganizer && (
         <ChekboxWrapper>
           <Checkbox
             checked={!!selectedEPC?.length && selectedEPC.includes(eventParticipant?.id)}
@@ -69,11 +69,11 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, selectedEPC, set
             }
           />
         </ChekboxWrapper>
-      )}
+      )} */}
 
       <p
-        style={user?.role === 'organizer' ? organizerTitleStyles : {}}
-        onClick={() => user?.role === 'organizer' && setOpen(!open)}
+        // style={!!isOrganizer ? organizerTitleStyles : {}}
+        onClick={() => setOpen(!open)}
       >
         {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
         ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
