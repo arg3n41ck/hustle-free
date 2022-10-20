@@ -66,5 +66,5 @@ const AccordionCustom = styled(Accordion)`
 `
 
 const AccordionDetailsCustom = styled(AccordionDetails)`
-  padding: 0;
+  padding: 0 !important;
 `
