@@ -39,6 +39,7 @@ const Edits = ({ onView }) => {
     city: yup.mixed().required(tCommon('validation.required')),
     webSite: yup.string(),
     fullNameCoach: yup.string().required(tCommon('validation.required')),
+    description: yup.string().required(tCommon('validation.required')),
     phoneCoach: yup
       .string()
       .nullable()
@@ -81,7 +82,7 @@ const Edits = ({ onView }) => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const { country, avatar, city, ...rstValues } = values,
+        const { country, avatar, city, phoneCoach, ...rstValues } = values,
           currentCountry = countries.find((countryItem) => countryItem.name === country),
           currentCity = currentCountry?.cityCountry.find((cityItem) => cityItem.name === city)
         const newValues = {
@@ -90,6 +91,7 @@ const Edits = ({ onView }) => {
             sports: currentSportTypes.map((CSportItem) => CSportItem.id),
             country: currentCountry.id,
             city: currentCity.id,
+            phoneCoach: !!normalizePhone(phoneCoach || '') ? phoneCoach : '',
           }),
           avatar,
         }
@@ -413,6 +415,9 @@ const Edits = ({ onView }) => {
             placeholder={tCommon('form.fieldsNames.description')}
             error={formik.touched.description && Boolean(formik.errors.description)}
           />
+          {formik.touched.description && Boolean(formik.errors.description) && (
+            <Error>{tCommon('validation.required')}</Error>
+          )}
         </div>
 
         <Gallery>
@@ -501,7 +506,11 @@ const Edits = ({ onView }) => {
           </CustomButton>
         </ButtonWrapper>
         <ButtonWrapper>
-          <CustomButton type={'submit'} typeButton={'primary'}>
+          <CustomButton
+            type={'submit'}
+            disabled={!formik.dirty}
+            typeButton={formik?.dirty && 'primary'}
+          >
             {tCommon('form.fieldsNames.save')}
           </CustomButton>
         </ButtonWrapper>
@@ -580,11 +589,25 @@ const SportItem = styled.div`
     color: #f2f2f2;
   }
 `
+
+const Error = styled.p`
+  color: #d32f2f;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.66;
+  letter-spacing: 0.03333em;
+  text-align: left;
+  margin-top: 3px;
+  margin-right: 14px;
+  margin-bottom: 0;
+  margin-left: 14px;
+`
+
 const Textarea = styled.textarea`
   background: #1b1c22;
   box-sizing: border-box;
   padding: 20px;
-  border: 1.5px solid #333333;
+  border: 1.5px solid ${({ error }) => (error ? '#d32f2f' : '#333333')};
   border-radius: 16px;
   height: 160px;
   width: 100%;
