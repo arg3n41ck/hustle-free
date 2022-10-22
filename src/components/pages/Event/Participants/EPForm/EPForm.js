@@ -51,6 +51,7 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
       await Promise.all(
         epc.map((id) => createBracket({ eventId, pcID: id, bracketType: brackets })),
       )
+      onClose()
       toast.info('Создается сетка!')
     },
   })

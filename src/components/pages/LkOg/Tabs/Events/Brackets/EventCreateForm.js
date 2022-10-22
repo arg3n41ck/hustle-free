@@ -1,6 +1,6 @@
 import React from 'react'
 
-function EventCreateForm({ eventId }) {
+function EventCreateForm() {
   return <div></div>
 }
 
