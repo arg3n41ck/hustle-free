@@ -4,6 +4,17 @@ import { Avatar, useMediaQuery } from '@mui/material'
 import { useRouter } from 'next/router'
 import { theme } from '../../../../../../styles/theme'
 
+const getStatus = (status) => {
+  switch (status) {
+    case 'in_panding':
+      return 'На модерации'
+    case 'approved':
+      return 'Участник'
+    default:
+      return ''
+  }
+}
+
 function Teams({ athleteTeams, column }) {
   const { push: routerPush } = useRouter()
   const xl = useMediaQuery('(max-width:1200px)')
@@ -12,7 +23,7 @@ function Teams({ athleteTeams, column }) {
     <>
       <TeamsWrapper>
         {!!athleteTeams?.length &&
-          athleteTeams.map(({ id, team }) => (
+          athleteTeams.map(({ id, team, status }) => (
             <TeamsContainer key={id} column={column}>
               <Avatar
                 alt={`${team?.user?.avatar || ''}`}
@@ -25,6 +36,7 @@ function Teams({ athleteTeams, column }) {
                 </TeamsHeadingText>
                 <p>8287 wins / 8294 losses</p>
                 <p>{team?.teamMembersCount || 0} Athletes</p>
+                <p style={{ color: 'rgba(130, 130, 130, .5)' }}>{getStatus(status)}</p>
               </Texts>
             </TeamsContainer>
           ))}

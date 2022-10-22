@@ -5,6 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import EventBrackets from '../../../components/pages/Event/Brackets/EventBrackets'
 
 function Brackets({ event }) {
+  console.log(event)
   return (
     <EdMainLayout event={event}>
       <EventBrackets />

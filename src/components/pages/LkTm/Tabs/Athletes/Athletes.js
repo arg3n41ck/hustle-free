@@ -7,10 +7,11 @@ import HorizontalTabsBorder from '../../../../ui/tabs/HorizontalTabsBorder'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'next-i18next'
 
-const fetchMyRequests = async () => {
+const fetchMyRequests = async (team) => {
   const { data: requests } = await $api.get(`/teams/athlete_requests/`, {
     params: {
       status: 'in_panding',
+      team,
     },
   })
   return requests
@@ -52,8 +53,8 @@ const Athletes = ({ onToggleSidebar }) => {
   useEffect(async () => {
     if (user?.id) {
       try {
-        setApplications(await fetchMyRequests())
-        setTeams(await fetchTeams(user?.teamId))
+        await fetchMyRequests(user?.teamId).then(setApplications)
+        await fetchTeams(user?.teamId).then(setTeams)
       } catch (e) {
         throw e
       }

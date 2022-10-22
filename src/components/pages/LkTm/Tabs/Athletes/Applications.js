@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Avatar } from '@mui/material'
-import { Skeleton } from '@mui/lab'
-import $api from '../../../../../services/axios'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import CustomButton from '../../../../ui/CustomButton'
 import { theme } from '../../../../../styles/theme'
 import Athlete from '../../../../ui/Ahtletes/Athlete'
-import { fetchCountries } from '../../../../../redux/components/countriesAndCities'
 import { useTranslation } from 'next-i18next'
 
 const Applications = ({ applications, onAcceptOrReject }) => {

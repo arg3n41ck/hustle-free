@@ -5,6 +5,31 @@ import { CalendarIcon, LocationIcon } from '../../../../Events/EventsSlider'
 import { Avatar, useMediaQuery } from '@mui/material'
 import { useRouter } from 'next/router'
 
+const getStatus = (status) => {
+  switch (status) {
+    case 'is paid':
+      return {
+        text: 'Оплачено',
+        color: '#27AE60',
+      }
+    case 'not paid':
+      return {
+        text: 'Не оплачено',
+        color: '#EB5757',
+      }
+    case 'moderated by the team':
+      return {
+        text: 'На модерации',
+        color: '#F2994A',
+      }
+    default:
+      return {
+        text: '',
+        color: '#333',
+      }
+  }
+}
+
 function FilterMyEvents({ data }) {
   const { push: routerPush } = useRouter()
   const md = useMediaQuery('(max-width: 768px)')
@@ -48,8 +73,8 @@ function FilterMyEvents({ data }) {
         </EventsInfo>
 
         <EventRightInfo>
-          <PaidInfo color={data?.isPaid ? '#27AE60' : '#828282'}>
-            {data?.isPaid ? 'Оплачено' : 'Не оплачено'}
+          <PaidInfo color={getStatus(data?.athleteStatus).color}>
+            {getStatus(data?.athleteStatus).text}
           </PaidInfo>
         </EventRightInfo>
       </EventItems>
