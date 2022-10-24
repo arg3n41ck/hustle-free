@@ -3,6 +3,7 @@ import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
 import BracketHeaderInfo from './BracketHeaderInfo'
+import BracketsDoubleEl from './BracketsDoubleEl'
 import BracketsSingleEl from './BracketsSingleEl'
 
 export const bracketTypes = {
@@ -10,25 +11,25 @@ export const bracketTypes = {
     id: 1,
     name: 'SEWithoutBF',
     title: 'Single elimination bracket (without bronze fight)',
-    component: (props) => <BracketsSingleEl {...props} />,
+    component: (props) => <BracketsSingleEl brType={'SEWithoutBF'} {...props} />,
   },
   2: {
     id: 2,
     name: 'SEWithBF',
     title: 'Single elimination bracket (with bronze fight)',
-    component: (props) => <BracketsSingleEl {...props} />,
+    component: (props) => <BracketsSingleEl brType={'SEWithBF'} {...props} />,
   },
   3: {
     id: 3,
     name: 'DEWithoutBZ',
     title: 'Double elimination bracket (without bronze fight)',
-    component: (props) => <BracketsSingleEl {...props} />,
+    component: (props) => <BracketsSingleEl brType={'DEWithoutBZ'} {...props} />,
   },
   4: {
     id: 4,
     name: 'DEWithBZ',
     title: 'Double elimination bracket (with bronze fight)',
-    component: (props) => <BracketsSingleEl {...props} />,
+    component: (props) => <BracketsDoubleEl brType={'DEWithBZ'} {...props} />,
   },
 }
 

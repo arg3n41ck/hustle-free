@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function BracketCell({ cell, gridTemplateAreas, borderDirection }) {
+export default function BracketCell({ cell, gridTemplateAreas, borderDirection, classes }) {
   const { id, fighters, fightNumber, parents, children } = cell
   return (
     <CellWrapper
-      className={`${parents?.length ? 'parents' : ''} ${borderDirection}`}
+      className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
       style={gridTemplateAreas ? { gridArea: `cell-${id}` } : {}}
     >
       <Self>
@@ -42,7 +42,6 @@ const FighterWrapper = styled.div`
 
 const CellWrapper = styled.div`
   position: relative;
-  height: 100%;
   display: grid;
   grid-template: min-content min-content / 1fr;
   align-content: center;
@@ -51,7 +50,6 @@ const CellWrapper = styled.div`
   &::after,
   &::before {
     content: '';
-    width: 240px;
     height: 50%;
     position: absolute;
   }
@@ -65,21 +63,12 @@ const CellWrapper = styled.div`
     border-top: 2px solid #333;
   }
 
-  &.parents.lineDown,
-  &.parents.lineUp {
-    &::after,
-    &::before {
-      width: calc(100% + 32px);
-      left: -16px;
-    }
-  }
-
   &.lineDown,
   &.lineUp,
   &.straight {
     &::after,
     &::before {
-      width: calc(100% + 16px);
+      width: calc(100% + 32px);
     }
   }
 
@@ -87,7 +76,17 @@ const CellWrapper = styled.div`
     &::after,
     &::before {
       width: 224px;
-      left: -16px;
+      left: -32px;
+    }
+
+    &.lineDown,
+    &.lineUp,
+    &.straight {
+      &::after,
+      &::before {
+        width: calc(100% + 64px);
+        left: -32px;
+      }
     }
   }
 
@@ -100,6 +99,13 @@ const CellWrapper = styled.div`
     &::before {
       border-right: 2px solid #333;
     }
+  }
+
+  &.noBorder::after,
+  &.noBorder::before {
+    width: 208px;
+    height: 50%;
+    left: 0;
   }
 `
 
