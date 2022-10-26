@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { FormControl, MenuItem, Select } from '@mui/material'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
@@ -7,11 +7,11 @@ import { theme } from '../../../styles/theme'
 function HeaderLocalizationPopover() {
   const { pathname, push, asPath, locale } = useRouter()
 
-  const onChangeLang = async (value) => {
+  const { current: onChangeLang } = useRef(async (value) => {
     typeof window !== 'undefined' && window.localStorage.setItem('locale', value)
     const url = pathname === asPath ? pathname : asPath
     await push(url, url, { locale: value })
-  }
+  })
 
   return (
     <Localization>

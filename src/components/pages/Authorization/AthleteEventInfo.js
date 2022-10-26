@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { useFormik } from 'formik'
 import { LocationIcon } from '../Events/EventsSlider'
-import { fetchTeams, teamsSelector } from '../../../redux/components/teams'
+import { fetchAthleteTeams, fetchTeams, teamsSelector } from '../../../redux/components/teams'
 import {
   categoriesSelector,
   fetchCategories,
@@ -89,6 +89,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   const {
     user: { user },
   } = useSelector((state) => state)
+  const [athleteTeams] = useSelector(teamsSelector)
   const [categories, levels] = useSelector(categoriesSelector)
   const [, teams] = useSelector(teamsSelector)
   const dispatch = useDispatch()
@@ -133,8 +134,11 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   })
 
   useEffect(() => {
-    user && dispatch(fetchTeams())
-    user && dispatch(fetchLevel({ event: eventId, gender: user?.gender }))
+    if (user) {
+      dispatch(fetchTeams())
+      dispatch(fetchAthleteTeams({ athlete: user?.athleteId }))
+      dispatch(fetchLevel({ event: eventId, gender: user?.gender }))
+    }
     dispatch(fetchCountries())
   }, [user])
 
@@ -175,7 +179,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
             <Autocomplete
               noOptionsText={'Не найдено'}
               onChange={(_, value) => {
-                !user?.teams?.includes(value?.id)
+                !(athleteTeams || [])?.some((req) => req?.team?.id == value?.id)
                   ? setModalWadeInTeam({
                       id: value?.id,
                       preliminaryModeration: value?.preliminaryModeration,

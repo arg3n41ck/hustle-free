@@ -11,6 +11,7 @@ import { selectCountriesAndCities } from '../../../../redux/components/countries
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { removeDuplicateObjectFromArray } from '../../../../helpers/helpers'
+import { theme } from '../../../../styles/theme'
 
 const Filter = ({ onFilter }) => {
   const [teams, setTeams] = useState([])
@@ -158,6 +159,11 @@ export const Fields = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 32px;
+
+  ${theme.mqMax('sm')} {
+    grid-template: repeat(3, 1fr) / 1fr;
+    grid-gap: 16px;
+  }
 `
 
 export default Filter

@@ -54,7 +54,7 @@ function ApplyToTeam({ checkUserStatus, userStatusInTeam }) {
           <PlusIcon /> Вступить в команду
         </>
       ) : userStatusInTeam?.message === 'User in pending' ? (
-        'Запрошено'
+        'На модерации'
       ) : (
         'Вы уже в команде'
       )}

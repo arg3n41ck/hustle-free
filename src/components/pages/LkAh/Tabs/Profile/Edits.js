@@ -3,14 +3,7 @@ import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 import styled from 'styled-components'
-import {
-  Box,
-  TextField,
-  Autocomplete,
-  InputAdornment,
-  IconButton,
-  useMediaQuery,
-} from '@mui/material'
+import { Box, TextField, Autocomplete, useMediaQuery } from '@mui/material'
 import { ru } from 'date-fns/locale'
 import { LocalizationProvider, MobileDatePicker } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -30,9 +23,6 @@ import { LocationIcon } from '../../../Events/EventsCatalog/EventsFilter'
 import { formDataHttp } from '../../../../../helpers/formDataHttp'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
-import { hide, show } from '../../../../../pages/auth/password/reset/confirm'
-import $api from '../../../../../services/axios'
-import { toast } from 'react-toastify'
 import { normalizePhone } from '../../../../../helpers/phoneFormatter'
 
 const emptyInitialValues = {
@@ -52,11 +42,6 @@ const emptyInitialValues = {
   isVisible: false,
 }
 
-const ChangePasswordValues = {
-  currentPassword: '',
-  newPassword: '',
-}
-
 const Edits = () => {
   const {
     user: { user },
@@ -68,8 +53,6 @@ const Edits = () => {
   const { push: routerPush } = useRouter()
   const [currentCities, setCurrentCities] = useState([])
   const [imageUrl, setImageUrl] = useState(null)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showPassword2, setShowPassword2] = useState(false)
   const { t: tCommon } = useTranslation('common')
   const md = useMediaQuery('(max-width:768px)')
 
@@ -94,40 +77,6 @@ const Edits = () => {
       city: yup.object().required(tCommon('validation.required')).nullable(),
     }),
   )
-
-  const { current: validationSchemaChangePassword } = useRef(
-    yup.object({
-      currentPassword: yup
-        .string()
-        .test('', 'Заполните поле', (value) => !!(value || ' ').replace(/\s/g, ''))
-        .required('Заполните поле почты'),
-      newPassword: yup
-        .string()
-        .test('', 'Заполните поле', (value) => !!(value || ' ').replace(/\s/g, ''))
-        .required('Заполните поле почты')
-        .min(8, 'Пароль должен содержать больше 8-ми символов'),
-    }),
-  )
-
-  const formikForChangePassword = useFormik({
-    initialValues: ChangePasswordValues,
-    validationSchema: validationSchemaChangePassword,
-    onSubmit: async (values, { resetForm }) => {
-      try {
-        await $api.patch('/accounts/users/me/', values)
-        resetForm()
-        toast.success(`Вы успешно изменили пароль!`)
-      } catch (e) {
-        if (!!e.response.data.current_password) {
-          toast.error('Неверный старый пароль')
-        } else if (!!e.response.data.new_password) {
-          toast.warning('Этот пароль слишком распространен')
-        } else {
-          toast.error('Что-то пошло не так')
-        }
-      }
-    },
-  })
 
   const formik = useFormik({
     initialValues: emptyInitialValues,
@@ -508,8 +457,6 @@ const Edits = () => {
           </div>
         </Box>
 
-        <Line />
-
         <div className='auth-wrapper__input'>
           <p className='auth-title__input'>{tCommon('form.fieldsNames.email')}</p>
           <TextField
@@ -533,94 +480,15 @@ const Edits = () => {
             }}
           />
         </div>
-
-        <form>
-          <div className='auth-wrapper__input'>
-            <p className='auth-title__input'>{tCommon('form.fieldsNames.oldPassword')}</p>
-            <TextField
-              placeholder={tCommon('form.fieldsNames.enterOldPassword')}
-              type={showPassword ? 'text' : 'password'}
-              value={formikForChangePassword.values.currentPassword}
-              name='currentPassword'
-              fullWidth
-              error={
-                formikForChangePassword.touched.currentPassword &&
-                Boolean(formikForChangePassword.errors.currentPassword)
-              }
-              helperText={
-                formikForChangePassword.touched.currentPassword &&
-                formikForChangePassword.errors.currentPassword
-              }
-              onChange={formikForChangePassword.handleChange}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <IconButton
-                      aria-label='toggle password visibility'
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      onMouseDown={(e) => e.preventDefault()}
-                      edge='end'
-                    >
-                      {showPassword ? show : hide}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-
-          <div className='auth-wrapper__input'>
-            <p className='auth-title__input'>{tCommon('form.fieldsNames.newPassword')}</p>
-            <TextField
-              placeholder={tCommon('form.fieldsNames.enterNewPassword')}
-              type={showPassword2 ? 'text' : 'password'}
-              fullWidth
-              value={formikForChangePassword.values.newPassword}
-              name='newPassword'
-              onChange={formikForChangePassword.handleChange}
-              error={
-                formikForChangePassword.touched.newPassword &&
-                Boolean(formikForChangePassword.errors.newPassword)
-              }
-              helperText={
-                formikForChangePassword.touched.newPassword &&
-                formikForChangePassword.errors.newPassword
-              }
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <IconButton
-                      aria-label='toggle password visibility'
-                      onClick={() => setShowPassword2((prev) => !prev)}
-                      onMouseDown={(e) => e.preventDefault()}
-                      edge='end'
-                    >
-                      {showPassword2 ? show : hide}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-
-          <ButtonWrapper width={'100%'} onClick={formikForChangePassword.handleSubmit}>
-            <CustomButton
-              disabled={
-                !formikForChangePassword.values.newPassword.length ||
-                !formikForChangePassword.values.currentPassword.length
-              }
-              typeButton={
-                !!formikForChangePassword.values.newPassword.length &&
-                !!formikForChangePassword.values.currentPassword.length
-                  ? 'primary'
-                  : 'secondary'
-              }
-            >
-              {tCommon('form.fieldsNames.save')}
-            </CustomButton>
-          </ButtonWrapper>
-        </form>
       </Content>
+
+      <ChangePassWrapper>
+        <Link href={'/auth/auth-reset-password'}>
+          <a>
+            <p className='auth-link'>{tCommon('form.fieldsNames.changePassword')}</p>
+          </a>
+        </Link>
+      </ChangePassWrapper>
 
       <Footer>
         <div className='auth-wrapper__input'>
@@ -763,6 +631,17 @@ const RadioWrapper = styled.div`
 
   &:first-child {
     margin-right: 32px;
+  }
+`
+
+const ChangePassWrapper = styled.div`
+  border-top: 1px solid #333333;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+
+  ${theme.mqMax('md')} {
+    padding: 16px;
   }
 `
 

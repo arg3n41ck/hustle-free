@@ -1,11 +1,9 @@
 import { Avatar } from '@mui/material'
-import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../styles/theme'
 
 function CommunitiesOrganizersList({ data }) {
-  const { push: routerPush } = useRouter()
   return (
     <CommunitesListItems>
       {!!data?.length &&
@@ -26,7 +24,7 @@ function CommunitiesOrganizersList({ data }) {
                       // routerPush(`/organizer/${id}`)
                     }}
                   >
-                    {`${user?.firstName} ${user?.lastName}`}
+                    {`${user?.nameOrganization}`}
                   </ItemTitle>
                   {/* <Results>8287 wins / 8294 losses</Results>
                   <MembersCount>{0} Атлет</MembersCount> */}
@@ -45,6 +43,15 @@ const CommunitesListItems = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 32px;
+
+  ${theme.mqMax('lg')} {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 16px;
+  }
+
+  ${theme.mqMax('md')} {
+    grid-template-columns: 1fr;
+  }
 `
 
 const ItemWrapper = styled.div`

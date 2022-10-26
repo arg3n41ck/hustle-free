@@ -1,40 +1,46 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Collapse } from '@mui/material'
+import { Collapse, useMediaQuery } from '@mui/material'
 import StoryCollapse from './StoryCollapse'
 import { theme } from '../../../../../../styles/theme'
 
 function FilterMyStories({ data }) {
   const [open, setOpen] = React.useState(false)
   const { id, place, event, participationCategory } = data
+  const md = useMediaQuery('(max-width:767px)')
 
   return (
     <>
       <EventContainer onClick={() => setOpen(!open)} key={id}>
-        <EventItems>
-          {place <= 3 && place > 0 ? (
-            <PlaceIcon place={place} />
-          ) : (
-            <MedalContainer>
-              <MedalInfoPlace>{place}</MedalInfoPlace>
-              <MedalInfoPlaceText>место</MedalInfoPlaceText>
-            </MedalContainer>
-          )}
-          <EventsInfo>
-            <EventInfoHeadingText>{event?.name}</EventInfoHeadingText>
-            <EventInfoParticipantsInfo>
-              {participationCategory?.eventParticipantsCategory?.name} /{' '}
-              {participationCategory?.level?.name} /{' '}
-              {participationCategory?.eventParticipantsCategory?.fromAge}-
-              {participationCategory?.eventParticipantsCategory?.toAge} лет /{' '}
-              {participationCategory?.eventParticipantsCategory?.fromWeight} кг -{' '}
-              {participationCategory?.eventParticipantsCategory?.toWeight} кг{' '}
-            </EventInfoParticipantsInfo>
-          </EventsInfo>
-        </EventItems>
-        <Collapse in={open} timeout='auto' unmountOnExit>
+        <BorderWrapper>
+          <EventItems>
+            <MedalWrapper>
+              {place <= 3 && place > 0 ? (
+                <PlaceIcon place={place} />
+              ) : (
+                <MedalContainer>
+                  <MedalInfoPlace>{place}</MedalInfoPlace>
+                  {!md && <MedalInfoPlaceText>место</MedalInfoPlaceText>}
+                </MedalContainer>
+              )}
+              {md && <EventInfoHeadingText>{event?.name}</EventInfoHeadingText>}
+            </MedalWrapper>
+            <EventsInfo>
+              {!md && <EventInfoHeadingText>{event?.name}</EventInfoHeadingText>}
+              <EventInfoParticipantsInfo>
+                {participationCategory?.eventParticipantsCategory?.name} /{' '}
+                {participationCategory?.level?.name} /{' '}
+                {participationCategory?.eventParticipantsCategory?.fromAge}-
+                {participationCategory?.eventParticipantsCategory?.toAge} лет /{' '}
+                {participationCategory?.eventParticipantsCategory?.fromWeight} кг -{' '}
+                {participationCategory?.eventParticipantsCategory?.toWeight} кг{' '}
+              </EventInfoParticipantsInfo>
+            </EventsInfo>
+          </EventItems>
+          {/* <Collapse in={open} timeout='auto' unmountOnExit>
           <StoryCollapse />
-        </Collapse>
+        </Collapse> */}
+        </BorderWrapper>
       </EventContainer>
     </>
   )
@@ -42,12 +48,27 @@ function FilterMyStories({ data }) {
 
 export default FilterMyStories
 
+const MedalWrapper = styled.div`
+  ${theme.mqMax('md')} {
+    display: grid;
+    grid-template: 1fr / 48px 1fr;
+    grid-gap: 16px;
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+  }
+`
+
 const MedalInfoPlace = styled.p`
   font-style: normal;
   font-weight: 700;
   font-size: 40px;
-  line-height: 48px;
   color: #fbfbfb;
+
+  ${theme.mqMax('md')} {
+    font-size: 18px;
+  }
 `
 
 const MedalInfoPlaceText = styled.p`
@@ -59,18 +80,32 @@ const MedalInfoPlaceText = styled.p`
 `
 
 const MedalContainer = styled.div`
-  max-width: 104px;
+  width: 104px;
   height: 104px;
   border: 1px solid #333333;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 12px 20px;
+
+  ${theme.mqMax('md')} {
+    padding: 0;
+    max-width: 48px;
+    height: 48px;
+  }
 `
 const EventContainer = styled.div`
-  width: 100%;
   padding: 32px;
+
+  ${theme.mqMax('md')} {
+    padding: 16px;
+    border-radius: 12px;
+  }
+`
+
+const BorderWrapper = styled.div`
   border: 1px solid #333333;
 
   &:last-child {
@@ -78,8 +113,13 @@ const EventContainer = styled.div`
   }
 
   ${theme.mqMax('md')} {
-    padding: 16px;
-    border: none;
+    padding: 12px;
+    border: 1px solid #333;
+    border-radius: 12px;
+
+    &:last-child {
+      border-radius: 12px;
+    }
   }
 `
 
@@ -87,6 +127,10 @@ const EventItems = styled.div`
   display: grid;
   grid-template-columns: 104px auto;
   grid-gap: 16px;
+
+  ${theme.mqMax('md')} {
+    grid-template: 1fr min-content / 1fr;
+  }
 `
 
 const EventsInfo = styled.div`
@@ -110,6 +154,12 @@ const EventInfoParticipantsInfo = styled.p`
   font-size: 20px;
   line-height: 32px;
   color: #f2f2f2;
+
+  ${theme.mqMax('md')} {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
 `
 
 const UnknownMedal = styled.div`
@@ -123,6 +173,11 @@ const UnknownMedal = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${theme.mqMax('md')} {
+    width: 48px;
+    height: 48px;
+  }
 `
 
 export const PlaceIcon = ({ place }) => {
