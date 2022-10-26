@@ -78,6 +78,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   grid-gap: 16px;
 
+  background: #141519;
   padding: 16px 8px !important;
 `
 
