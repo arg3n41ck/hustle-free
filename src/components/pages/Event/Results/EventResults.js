@@ -107,6 +107,11 @@ const Medal = styled.div`
 
   ${theme.mqMax('md')} {
     flex-direction: column;
+
+    & svg {
+      width: 88px;
+      height: 88px;
+    }
   }
 `
 
@@ -139,6 +144,8 @@ const MedalText = styled.p`
 
   ${theme.mqMax('md')} {
     text-align: center;
+    font-size: 16px;
+    line-height: 24px;
   }
 `
 
