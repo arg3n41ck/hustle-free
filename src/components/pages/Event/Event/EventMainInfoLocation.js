@@ -78,11 +78,12 @@ const LocationsWrapper = styled.div`
   display: grid;
   grid-template: 1fr / 1fr 1fr;
   grid-gap: 16px;
-  background: #141519;
   padding: 16px 8px !important;
+  background: #141519;
 
   ${theme.mqMin('xl')} {
     grid-template: 1fr 1fr / 1fr;
+    background: none;
   }
 
   ${theme.mqMax('sm')} {
