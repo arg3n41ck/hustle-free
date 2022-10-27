@@ -19,10 +19,14 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, selectedEPC, set
   const { user } = useSelector((state) => state.user)
   const participantsValues = useMemo(() => {
     const registered = eventParticipant?.participants.filter(
-      (participant) => participant.proposal === 'add_event',
+      (participant) =>
+        participant?.proposal === 'add_event' &&
+        participant?.athleteStatus !== 'moderated by the team',
     )
     const unconfirmed = eventParticipant?.participants.filter(
-      (participant) => participant.proposal === 'waiting_list',
+      (participant) =>
+        participant.proposal === 'waiting_list' &&
+        participant?.athleteStatus !== 'moderated by the team',
     )
     return { registered, unconfirmed }
   }, [eventParticipant])

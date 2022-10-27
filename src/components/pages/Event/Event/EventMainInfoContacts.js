@@ -69,7 +69,7 @@ function EventMainInfoContacts({ event }) {
         </ul>
       </div>
       {(!!event?.contacts?.facebook || !!event?.contacts?.linkedin || !!event?.contacts?.vk) && (
-        <div>
+        <ExtraWrapper>
           <h3>{tEventDetail('eventMainInfo.socialNetworks')}</h3>
           <ContactsSocials>
             {event?.contacts?.facebook && (
@@ -88,7 +88,7 @@ function EventMainInfoContacts({ event }) {
               </a>
             )}
           </ContactsSocials>
-        </div>
+        </ExtraWrapper>
       )}
     </ContactsWrapper>
   )
@@ -100,6 +100,8 @@ const ContactsWrapper = styled.div`
   display: grid;
   grid-template: 1fr / 1fr 1fr;
   grid-gap: 16px;
+  background: #141519;
+  padding: 16px 8px !important;
 
   ${theme.mqMin('xl')} {
     grid-template: 1fr 1fr / 1fr;
@@ -108,6 +110,10 @@ const ContactsWrapper = styled.div`
   ${theme.mqMax('sm')} {
     grid-template: auto auto / 1fr;
   }
+`
+
+const ExtraWrapper = styled.div`
+  padding: 16px 8px 8px;
 `
 
 const ContactsSocials = styled.div`

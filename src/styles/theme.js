@@ -11,6 +11,7 @@ export const themeMui = createTheme({
 
 // styled components
 const breakpoints = {
+  xs: 350,
   sm: 576,
   md: 768,
   lg: 992,

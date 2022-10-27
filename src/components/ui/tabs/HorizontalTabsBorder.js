@@ -25,13 +25,18 @@ const HorizontalTabsBorder = ({ valueTab, arrayTab, onChangeHandler, height, chi
                     display: 'grid',
                     gridTemplateColumns: `repeat(${arrayTab.length}, 1fr)`,
                     gridTemplateRows: `${height}`,
+                    gridGap: '16px',
                   },
                   '& .MuiTabs-indicator': {
                     height: '8px',
                     borderRadius: '8px 8px 0 0',
                   },
                 }
-              : {}
+              : {
+                  '& .MuiTabs-flexContainer': {
+                    padding: '0 !important',
+                  },
+                }
           }
         >
           {arrayTab.map((item, i) => (
@@ -54,7 +59,6 @@ const Header = styled.div`
   border-top: 1px solid #333333;
   border-bottom: 1px solid #333333;
   @media screen and (max-width: 768px) {
-    padding: 0 16px;
     border: none;
     background-color: #0f0f10;
   }
@@ -79,11 +83,14 @@ const TabItem = styled(Tab)`
   }
   /* border-bottom: ${(p) => (p.active ? '8px solid #6d4eea' : '1px solid #333333')}; */
   transition: 0.4s;
+
   ${theme.mqMax('md')} {
     /* border-bottom: ${(p) => (p.active ? '1px solid #6d4eea' : '1px solid #333333')}; */
     border-right: none;
     min-width: initial !important;
+    font-size: 24px !important;
     width: fit-content !important;
+    /* padding: 8px 0 !important; */
   }
 `
 const Content = styled.div``

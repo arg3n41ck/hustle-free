@@ -87,62 +87,72 @@ const Info = ({ onToggleSidebar }) => {
         </Center>
         <List>
           <Item>
-            <WrapperIcon>
-              <CompanyIcon />
-            </WrapperIcon>
-            {tCommon('form.fieldsNames.organizationName')}
+            <InfoTitle>
+              <WrapperIcon>
+                <CompanyIcon />
+              </WrapperIcon>
+              {tCommon('form.fieldsNames.organizationName')}
+            </InfoTitle>
+            <InfoResult>{user?.nameOrganization}</InfoResult>
           </Item>
-          <Item>{user?.nameOrganization}</Item>
           {!!user?.dateBirthday && (
-            <>
-              <Item>
+            <Item>
+              <InfoTitle>
                 <WrapperIcon>
                   <CalendarIcon />
                 </WrapperIcon>
                 {tCommon('form.fieldsNames.birthDate')}
-              </Item>
-              <Item>
+              </InfoTitle>
+              <InfoResult>
                 {format(parseISO(user?.dateBirthday), 'dd MMMM yyyy г.', {
                   locale: ru,
                 })}
-              </Item>
-            </>
+              </InfoResult>
+            </Item>
           )}
           <Item>
-            <WrapperIcon>
-              <GenderIcon />
-            </WrapperIcon>
-            {tCommon('form.fieldsNames.gender.label')}
+            <InfoTitle>
+              <WrapperIcon>
+                <GenderIcon />
+              </WrapperIcon>
+              {tCommon('form.fieldsNames.gender.label')}
+            </InfoTitle>
+            <InfoResult>
+              {user?.gender === 'male'
+                ? tCommon('form.fieldsNames.gender.male')
+                : tCommon('form.fieldsNames.gender.female')}
+            </InfoResult>
           </Item>
           <Item>
-            {user?.gender === 'male'
-              ? tCommon('form.fieldsNames.gender.male')
-              : tCommon('form.fieldsNames.gender.female')}
+            <InfoTitle>
+              <WrapperIcon>
+                <LocationIcon />
+              </WrapperIcon>
+              {tCommon('form.fieldsNames.country')}, {tCommon('form.fieldsNames.city')}
+            </InfoTitle>
+            <InfoResult>
+              {currentLocations.country || ''}
+              {currentLocations.city ? `, ${currentLocations.city}` : ''}
+            </InfoResult>
           </Item>
           <Item>
-            <WrapperIcon>
-              <LocationIcon />
-            </WrapperIcon>
-            {tCommon('form.fieldsNames.country')}, {tCommon('form.fieldsNames.city')}
+            <InfoTitle>
+              <WrapperIcon>
+                <DefaultPhoneIcon />
+              </WrapperIcon>
+              {tCommon('form.fieldsNames.contacts')}
+            </InfoTitle>
+            <InfoResult>{phoneFormatter(user?.phoneNumber)}</InfoResult>
           </Item>
           <Item>
-            {currentLocations.country || ''}
-            {currentLocations.city ? `, ${currentLocations.city}` : ''}
+            <InfoTitle>
+              <WrapperIcon>
+                <DefaultEmailIcon />
+              </WrapperIcon>
+              {tCommon('form.fieldsNames.email')}
+            </InfoTitle>
+            <InfoResult>{user?.email}</InfoResult>
           </Item>
-          <Item>
-            <WrapperIcon>
-              <DefaultPhoneIcon />
-            </WrapperIcon>
-            {tCommon('form.fieldsNames.contacts')}
-          </Item>
-          <Item>{phoneFormatter(user?.phoneNumber)}</Item>
-          <Item>
-            <WrapperIcon>
-              <DefaultEmailIcon />
-            </WrapperIcon>
-            {tCommon('form.fieldsNames.email')}
-          </Item>
-          <Item>{user?.email}</Item>
         </List>
       </Content>
     </>
@@ -206,37 +216,39 @@ const IconWrapper = styled.div`
   margin-right: 10px;
   margin-top: 3px;
 `
+
 const List = styled.ul`
   margin-top: 32px;
-  display: grid;
-  grid-template: repeat(6, 96px) / 1fr 1fr;
-  ${theme.mqMax('md')} {
-    grid-template: repeat(11, 66px) / 1fr;
-  }
+  display: flex;
+  flex-direction: column;
 `
 const Item = styled.li`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   border-top: 1px solid #333333;
+  padding: 24px 0;
+`
+
+const InfoTitle = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  &:nth-child(odd) {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 32px;
-    color: #828282;
-  }
-  &:nth-child(even) {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 24px;
-    color: #bdbdbd;
-  }
-  ${theme.mqMax('md')} {
-    &:last-child {
-      border-top: 0 solid #333333;
-    }
-  }
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: #bdbdbd;
+`
+
+const InfoResult = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 32px;
+  color: #828282;
 `
 const WrapperIcon = styled.span`
   width: 24px;

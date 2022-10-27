@@ -30,8 +30,6 @@ const Teams = () => {
     }
   }, [searchValue])
 
-  if (!teams) return null
-
   return (
     <>
       <TitleBlock sx={{ margin: '32px 0 16px 0' }} component={'h4'}>
@@ -57,9 +55,8 @@ const Teams = () => {
         {tEventDetail('event.results.teams.allTeams')}
       </TitleBlock>
       <List>
-        {teams.map((team, i) => (
-          <TeamItem team={team} key={team.id} index={i + 1} />
-        ))}
+        {!!teams?.length &&
+          teams.map((team, i) => <TeamItem team={team} key={team.id} index={i + 1} />)}
       </List>
     </>
   )

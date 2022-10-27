@@ -10,7 +10,6 @@ import HorizontalTabsBorder from '../../../../ui/tabs/HorizontalTabsBorder'
 import { useEffect } from 'react'
 import styled from 'styled-components'
 import TeamsModalTemplate from './Teams/TeamsModalTemplate'
-import { theme } from '../../../../../styles/theme'
 
 function MyTeams({ onToggleSidebar }) {
   const { user } = useSelector((state) => state.user)
@@ -69,11 +68,7 @@ function MyTeams({ onToggleSidebar }) {
       >
         <TeamsModalTemplate open={open} onClose={() => setOpen(false)} />
         <TeamsWrapper>
-          {!!teams?.length && <Teams athleteTeams={teams} />}
-          <JoinToTeam onClick={() => setOpen(true)}>
-            <Plus />
-            <p>Вступить в команду</p>
-          </JoinToTeam>
+          {!!teams?.length && <Teams setOpenTeamsModal={setOpen} athleteTeams={teams} />}
         </TeamsWrapper>
       </HorizontalTabsBorder>
     </div>
@@ -85,49 +80,3 @@ export default MyTeams
 const TeamsWrapper = styled.div`
   min-height: 200px;
 `
-
-const JoinToTeam = styled.button`
-  height: 205px;
-
-  border: 1px dashed #828282;
-  border-radius: 8px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  grid-gap: 10px;
-
-  margin: 32px;
-  padding: 16px;
-
-  ${theme.mqMax('sm')} {
-    height: 148px;
-    margin: 16px;
-    width: 100%;
-  }
-
-  ${theme.mqMax('xl')} {
-    margin: 16px;
-  }
-
-  p {
-    font-weight: 400;
-    font-size: 18px;
-    color: #bdbdbd;
-  }
-`
-
-const Plus = (props) => (
-  <svg
-    {...props}
-    width='80'
-    height='80'
-    viewBox='0 0 80 80'
-    fill='none'
-    xmlns='http://www.w3.org/2000/svg'
-  >
-    <path d='M40 20L40 60' stroke='#6D4EEA' stroke-width='4' stroke-linecap='round' />
-    <path d='M60 40L20 40' stroke='#6D4EEA' stroke-width='4' stroke-linecap='round' />
-  </svg>
-)

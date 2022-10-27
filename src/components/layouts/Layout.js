@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import Header from '../Header/Header'
 import { useMediaQuery } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
@@ -11,13 +11,16 @@ import { fetchCountries } from '../../redux/components/countriesAndCities'
 import { fetchSportTypes } from '../../redux/components/sportTypes'
 import { getCookie } from '../../services/JWTService'
 import Footer from '../Footer/Footer'
+import { useRef } from 'react'
+import { useRouter } from 'next/router'
 
 const Layout = ({ children }) => {
   const lg = useMediaQuery('(max-width:992px)')
   const dispatch = useDispatch()
   const [cookies] = useCookies(['token', 'refresh'])
   const [userAuthenticated] = useSelector(selectIsUserAuth)
-  const ref = useRef(null)
+  const topRef = useRef(null)
+  const router = useRouter()
 
   useEffect(() => {
     if (getCookie('token')) {
@@ -27,17 +30,15 @@ const Layout = ({ children }) => {
     }
   }, [cookies?.token, userAuthenticated])
 
-  const [loaded, setLoaded] = useState(false)
-
   useEffect(() => {
-    setLoaded(true)
-  }, [])
-
-  useEffect(() => {
-    if (loaded) {
-      ref.current = document.querySelectorAll('.ytp-play-button')
+    if (topRef) {
+      const handleRouteChange = () => {
+        const topScroll = document.getElementById('topScroll')
+        topScroll?.scrollIntoView()
+      }
+      router.events.on('routeChangeComplete', handleRouteChange)
     }
-  }, [loaded])
+  }, [topRef, router])
 
   return (
     <>
@@ -52,13 +53,9 @@ const Layout = ({ children }) => {
           rel='stylesheet'
         />
       </Head>
+      <div id='topScroll' ref={topRef} />
       <Header />
       <ChildrenWrapper lg={lg}>
-        {/* <iframe
-          width="0"
-          height="0"
-          src="https://www.youtube.com/watch?v=5H4ekRWiW6U&list=RD5H4ekRWiW6U&start_radio=1&autoplay=1&mute=1"
-        /> */}
         <div style={{ height: '100%' }}>{children}</div>
 
         <Footer />

@@ -2,9 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
+import { useMediaQuery } from '@mui/material'
+import { theme } from '../../../../styles/theme'
 
 const TeamItem = ({ team, index }) => {
   const { t: tEventDetail } = useTranslation('eventDetail')
+  const mxMd = useMediaQuery('(max-width: 767px)')
+
   return (
     <Item>
       <Link href={`/team/${team.id}`} passHref>
@@ -15,17 +19,28 @@ const TeamItem = ({ team, index }) => {
               <ItemTitle>{team.name}</ItemTitle>
               <ItemDescription>{team.country.name}</ItemDescription>
             </ItemText>
-          </ItemLeft>
-          <ItemRight>
-            <Info>
-              <InfoItem color={'#828282'}>
-                <p>{team.teamMembersCount}</p>
-                <div>{tEventDetail('event.results.teamItem.participant')}</div>
-              </InfoItem>
-              <InfoItem color={'#2E79DD'}>
+            {mxMd && (
+              <InfoItem color={'#2E79DD'} style={{ margin: '0 0 0 auto' }}>
                 <p>0</p>
                 <div>{tEventDetail('event.results.teamItem.points')}</div>
               </InfoItem>
+            )}
+          </ItemLeft>
+          <ItemRight>
+            <Info>
+              {!mxMd && (
+                <>
+                  <InfoItem color={'#828282'}>
+                    <p>{team.teamMembersCount}</p>
+                    <div>{tEventDetail('event.results.teamItem.participant')}</div>
+                  </InfoItem>
+
+                  <InfoItem color={'#2E79DD'}>
+                    <p>0</p>
+                    <div>{tEventDetail('event.results.teamItem.points')}</div>
+                  </InfoItem>
+                </>
+              )}
               <InfoItem color={'#27AE60'}>
                 <p>0</p>
                 <div>{tEventDetail('event.results.teamItem.wins')}</div>
@@ -61,6 +76,11 @@ const A = styled.a`
   justify-content: space-between;
   border-bottom: 1px solid #333333;
   padding-bottom: 32px;
+  grid-gap: 16px;
+
+  ${theme.mqMax('xl')} {
+    flex-direction: column;
+  }
 `
 const ItemLeft = styled.div`
   display: flex;
@@ -69,6 +89,8 @@ const ItemLeft = styled.div`
 const ItemRight = styled.div`
   display: flex;
   align-items: center;
+  grid-gap: 20px;
+  flex-wrap: wrap;
 `
 const ItemNumber = styled.p`
   font-style: normal;
@@ -99,27 +121,35 @@ const ItemDescription = styled.p`
 `
 const Info = styled.div`
   display: flex;
-  padding: 0 24px;
+  grid-gap: 20px;
   border-right: 1px solid #333333;
   border-left: 1px solid #333333;
+  padding: 0 20px;
+
+  ${theme.mqMax('xl')} {
+    padding: 0;
+    border: none;
+  }
 `
+
+const Medal = styled.div`
+  display: flex;
+  grid-gap: 20px;
+  @media screen and (max-width: 450px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`
+
 const InfoItem = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: ${(p) => p.color};
-  margin-right: 32px;
-  &:last-child {
-    margin: 0;
-  }
   p {
     margin-bottom: 4px;
   }
-`
-const Medal = styled.div`
-  display: flex;
-  padding-left: 24px;
 `
 
 export default TeamItem

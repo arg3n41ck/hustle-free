@@ -6,6 +6,7 @@ import { selectCountriesAndCities } from '../../../../redux/components/countries
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { useTranslation } from 'next-i18next'
+import { theme } from '../../../../styles/theme'
 
 function Autocompletes({ levelOptions }) {
   const { t: tEventDetail } = useTranslation('eventDetail')
@@ -158,7 +159,12 @@ function Autocompletes({ levelOptions }) {
 export default Autocompletes
 
 const ACWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  grid-column-gap: 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 32px;
+
+  ${theme.mqMax('md')} {
+    grid-template: repeat(4, 1fr) / 1fr;
+    grid-gap: 16px;
+  }
 `

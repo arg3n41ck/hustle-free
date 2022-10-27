@@ -69,59 +69,63 @@ const Info = ({ onToggleSidebar }) => {
         </Center>
         <List>
           {!!user?.dateBirthday && (
-            <>
-              <Item>
+            <Item>
+              <InfoTitle>
                 <WrapperIcon>
                   <CalendarIcon />
                 </WrapperIcon>
                 {tLkAh('userProfile.birthDay')}:
-              </Item>
-              <Item borderNone={md}>
+              </InfoTitle>
+              <InfoResult>
                 {format(parseISO(user?.dateBirthday), 'dd MMMM yyyy г.', {
                   locale: ru,
                 })}
-              </Item>
-            </>
+              </InfoResult>
+            </Item>
           )}
           <Item>
-            <WrapperIcon>
-              <GenderIcon />
-            </WrapperIcon>
-            {tLkAh('userProfile.gender')}
+            <InfoTitle>
+              <WrapperIcon>
+                <GenderIcon />
+              </WrapperIcon>
+              {tLkAh('userProfile.gender')}
+            </InfoTitle>
+            <InfoResult>{user?.gender === 'male' ? 'Мужской' : 'Женский'}</InfoResult>
           </Item>
-          <Item borderNone={md}>{user?.gender === 'male' ? 'Мужской' : 'Женский'}</Item>
           {(!!user?.country || !!user?.city) && (
-            <>
-              <Item>
+            <Item>
+              <InfoTitle>
                 <WrapperIcon>
                   <LocationIcon />
                 </WrapperIcon>
                 {tLkAh('userProfile.countryAndCity')}
-              </Item>
-              <Item borderNone={md}>
+              </InfoTitle>
+              <InfoResult>
                 {!!user?.country?.name && `${user.country?.name},`}
                 {!!user?.city?.name && ` г. ${user.city?.name}`}
-              </Item>
-            </>
+              </InfoResult>
+            </Item>
           )}
           {!!normalizePhone(user?.phoneNumber) && (
-            <>
-              <Item>
+            <Item>
+              <InfoTitle>
                 <WrapperIcon>
                   <DefaultPhoneIcon />
                 </WrapperIcon>
                 {tLkAh('userProfile.contacts')}
-              </Item>
-              <Item>{phoneFormatter(user?.phoneNumber)}</Item>
-            </>
+              </InfoTitle>
+              <InfoResult>{phoneFormatter(user?.phoneNumber)}</InfoResult>
+            </Item>
           )}
           <Item>
-            <WrapperIcon>
-              <DefaultEmailIcon />
-            </WrapperIcon>
-            {tLkAh('userProfile.email')}
+            <InfoTitle>
+              <WrapperIcon>
+                <DefaultEmailIcon />
+              </WrapperIcon>
+              {tLkAh('userProfile.email')}
+            </InfoTitle>
+            <InfoResult>{user?.email}</InfoResult>
           </Item>
-          <Item>{user?.email}</Item>
         </List>
       </Content>
     </>
@@ -196,36 +200,38 @@ const IconWrapper = styled.div`
 `
 const List = styled.ul`
   margin-top: 32px;
-  display: grid;
-  grid-template: repeat(6, 96px) / 1fr 1fr;
-  ${theme.mqMax('md')} {
-    grid-template: repeat(11, 46px) / 1fr;
-  }
+  display: flex;
+  flex-direction: column;
 `
 const Item = styled.li`
-  border-top: ${({ borderNone }) => (borderNone ? 'none' : '1px solid #333333')};
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid #333333;
+  padding: 24px 0;
+`
+
+const InfoTitle = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  &:nth-child(odd) {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 32px;
-    color: #828282;
-  }
-  &:nth-child(even) {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 24px;
-    color: #bdbdbd;
-  }
-  ${theme.mqMax('md')} {
-    &:last-child {
-      border-top: 0 solid #333333;
-    }
-  }
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: #bdbdbd;
 `
+
+const InfoResult = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 32px;
+  color: #828282;
+`
+
 const WrapperIcon = styled.span`
   width: 24px;
   height: 24px;

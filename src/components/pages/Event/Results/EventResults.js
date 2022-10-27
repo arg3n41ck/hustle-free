@@ -7,6 +7,7 @@ import { BronzeMedalIcon } from '../../../../assets/svg/icons'
 import Teams from './Teams'
 import Participants from './Participants'
 import { useTranslation } from 'next-i18next'
+import { theme } from '../../../../styles/theme'
 
 const EventResults = () => {
   const [view, setView] = useState('participants') // participants | teams
@@ -53,25 +54,27 @@ const EventResults = () => {
             <MedalText color={'#FFC107'}>
               {tEventDetail('event.results.eventResults.gold')}:
             </MedalText>
-            <MedalText color={'#FFC107'}>{first}</MedalText>
+            <MedalText color={'#FFC107'}>{first || 0}</MedalText>
           </MedalInfo>
         </Medal>
+        <MedalBorder />
         <Medal>
           <SilverMedalIcon />
           <MedalInfo>
             <MedalText color={'#E0E0E0'}>
               {tEventDetail('event.results.eventResults.silver')}:
             </MedalText>
-            <MedalText color={'#E0E0E0'}>{second}</MedalText>
+            <MedalText color={'#E0E0E0'}>{second || 0}</MedalText>
           </MedalInfo>
         </Medal>
+        <MedalBorder />
         <Medal>
           <BronzeMedalIcon />
           <MedalInfo>
             <MedalText color={'#D7832D'}>
               {tEventDetail('event.results.eventResults.bronze')}:
             </MedalText>
-            <MedalText color={'#D7832D'}>{third}</MedalText>
+            <MedalText color={'#D7832D'}>{third || 0}</MedalText>
           </MedalInfo>
         </Medal>
       </Medals>
@@ -89,9 +92,29 @@ const EventResults = () => {
 
 const Medals = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, auto);
+  grid-gap: 16px;
   margin-bottom: 48px;
+  justify-items: center;
+  ${theme.mqMax('md')} {
+    grid-gap: 5px;
+  }
 `
+const Medal = styled.div`
+  display: flex;
+  align-items: center;
+  grid-gap: 32px;
+
+  ${theme.mqMax('md')} {
+    flex-direction: column;
+
+    & svg {
+      width: 88px;
+      height: 88px;
+    }
+  }
+`
+
 const MedalsTitle = styled.h3`
   font-style: normal;
   font-weight: 600;
@@ -100,26 +123,36 @@ const MedalsTitle = styled.h3`
   color: #f2f2f2;
   margin-bottom: 32px;
 `
-const Medal = styled.div`
-  display: flex;
-  padding: 0 16px;
-  &:nth-child(2) {
-    border-left: 1px solid #333333;
-    border-right: 1px solid #333333;
-  }
-`
+
 const MedalInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin-left: 32px;
 `
 const MedalText = styled.p`
   font-style: normal;
   font-weight: 900;
   font-size: 24px;
+  text-transform: uppercase;
   line-height: 32px;
   color: ${(p) => p.color};
+  &:last-child {
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  ${theme.mqMax('md')} {
+    text-align: center;
+    font-size: 16px;
+    line-height: 24px;
+  }
+`
+
+const MedalBorder = styled.div`
+  width: 0;
+  height: 100%;
+  border-right: 1px solid #333333;
 `
 
 export default EventResults

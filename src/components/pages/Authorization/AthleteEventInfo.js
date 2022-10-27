@@ -6,12 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { useFormik } from 'formik'
 import { LocationIcon } from '../Events/EventsSlider'
-import { fetchTeams, teamsSelector } from '../../../redux/components/teams'
-import {
-  categoriesSelector,
-  fetchCategories,
-  fetchLevel,
-} from '../../../redux/components/categories'
+import { fetchAthleteTeams, fetchTeams, teamsSelector } from '../../../redux/components/teams'
+import { categoriesSelector, fetchLevel } from '../../../redux/components/categories'
 import $api from '../../../services/axios'
 import * as yup from 'yup'
 import { toast } from 'react-toastify'
@@ -96,7 +92,8 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   const {
     user: { user },
   } = useSelector((state) => state)
-  const [, levels] = useSelector(categoriesSelector)
+  const [athleteTeams] = useSelector(teamsSelector)
+  const [categories, levels] = useSelector(categoriesSelector)
   const [, teams] = useSelector(teamsSelector)
   const { data: eventParticipants } = useSelector(
     (state) => state.participantCategories.participantCategories,
@@ -114,7 +111,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
     }),
   )
 
-  const { values, touched, errors, setFieldValue, handleChange, handleSubmit } = useFormik({
+  const { values, touched, errors, setFieldValue, handleChange, handleSubmit, dirty } = useFormik({
     initialValues: emptyInitialValues,
     validationSchema,
     onSubmit: async (values) => {
@@ -143,7 +140,11 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   })
 
   useEffect(() => {
-    dispatch(fetchTeams())
+    if (user) {
+      dispatch(fetchTeams())
+      dispatch(fetchAthleteTeams({ athlete: user?.athleteId }))
+      dispatch(fetchLevel({ event: eventId, gender: user?.gender }))
+    }
     dispatch(fetchCountries())
   }, [])
 
@@ -197,7 +198,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
             <Autocomplete
               noOptionsText={'Не найдено'}
               onChange={(_, value) => {
-                !!value && !user?.teams?.includes(value?.id)
+                !(athleteTeams || [])?.some((req) => req?.team?.id == value?.id)
                   ? setModalWadeInTeam({
                       id: value?.id,
                       preliminaryModeration: value?.preliminaryModeration,
@@ -330,9 +331,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
           </Link>
           <RegistrationAthleteToEventBottomButton
             type={'submit'}
-            background={
-              !formik?.dirty ? '#828282' : 'linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)'
-            }
+            background={!dirty ? '#828282' : 'linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)'}
           >
             Зарегистрироваться
           </RegistrationAthleteToEventBottomButton>

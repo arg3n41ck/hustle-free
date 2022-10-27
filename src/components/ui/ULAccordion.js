@@ -43,7 +43,7 @@ export default ULAccordion
 
 const AccordionCustomHeadingText = styled(Typography)`
   font-style: normal;
-  font-weight: 600;
+  font-weight: 600 !important;
   font-size: 18px;
   color: #f2f2f2;
 `

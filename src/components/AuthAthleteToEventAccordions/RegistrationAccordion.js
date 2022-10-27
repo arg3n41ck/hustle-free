@@ -99,7 +99,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   grid-gap: 16px;
-
+  background: #141519;
   padding: 16px 8px !important;
 `
 

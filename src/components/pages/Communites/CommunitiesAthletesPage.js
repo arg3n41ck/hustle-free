@@ -120,10 +120,12 @@ function CommunitesAthletesPage() {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={tCommunities('communities.search')}
               />
-              <CommunitesHeadingButton type='submit'>
-                <SearchIcon />
-                {tCommunities('communities.find')}
-              </CommunitesHeadingButton>
+              {!md && (
+                <CommunitesHeadingButton type='submit'>
+                  <SearchIcon />
+                  {tCommunities('communities.find')}
+                </CommunitesHeadingButton>
+              )}
             </CommunitesHeadingInputAndButton>
             <FilterBtn onClick={() => setFilter((s) => !s)}>
               <FilterIcon />
@@ -231,6 +233,10 @@ export default CommunitesAthletesPage
 const CommunitiesHeadBtnsWrapper = styled.div`
   display: flex;
   gap: 32px;
+
+  ${theme.mqMax('md')} {
+    grid-gap: 16px;
+  }
 `
 
 const FilterBtn = styled.button`
@@ -249,7 +255,7 @@ const FilterBtn = styled.button`
   margin: 0 0 0 auto;
 
   ${theme.mqMax('xl')} {
-    padding: 12px;
+    padding: 20px;
     border-radius: 8px;
   }
 
@@ -287,13 +293,6 @@ const CommunitesItems = styled.div`
   grid-gap: 48px;
 `
 
-const CommunitesItem = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
 const CommunitesContainer = styled.div`
   margin-top: 48px;
   width: 100%;
@@ -305,7 +304,7 @@ const CommunitesHeadingInputAndButton = styled.div`
   border: 1.5px solid #333333;
   border-radius: 16px;
   padding: 0;
-  height: 64px;
+  height: 66px;
   width: 100%;
 `
 

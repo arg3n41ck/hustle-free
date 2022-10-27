@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Collapse, TextField } from '@mui/material'
+import { Collapse, TextField, useMediaQuery } from '@mui/material'
 import styled from 'styled-components'
 import { useTranslation } from 'next-i18next'
 import { theme } from '../../../styles/theme'
@@ -7,6 +7,7 @@ import { theme } from '../../../styles/theme'
 function EDContentFilter({ label, onSearch, children, isFilterOpen, searchPlaceholder = 'Поиск' }) {
   const [search, setSearch] = useState('')
   const [openChildren, setOpenChildren] = useState(false)
+  const mxMd = useMediaQuery('(max-width: 767px)')
   const { t: tLkTm } = useTranslation('lkTm')
 
   return (
@@ -26,7 +27,7 @@ function EDContentFilter({ label, onSearch, children, isFilterOpen, searchPlaceh
             }}
             sx={{
               '& >.MuiOutlinedInput-root': {
-                borderRadius: '16px 0 0 16px !important',
+                borderRadius: mxMd ? '16px !important' : '16px 0 0 16px !important',
               },
             }}
           />
@@ -38,7 +39,7 @@ function EDContentFilter({ label, onSearch, children, isFilterOpen, searchPlaceh
         {children && (
           <FilterButton onClick={() => children && setOpenChildren((s) => !s)}>
             <FilterIcon />
-            <span>{tLkTm('statistics.filter')}</span>
+            {!mxMd && <span>{tLkTm('statistics.filter')}</span>}
           </FilterButton>
         )}
       </Search>
@@ -75,8 +76,6 @@ const Search = styled.div`
   gap: 32px;
 
   ${theme.mqMax('md')} {
-    flex-direction: column;
-    align-items: flex-end;
     gap: 16px;
   }
 `
@@ -103,6 +102,10 @@ const SearchButton = styled.button`
     line-height: 48px;
     color: #ffffff;
   }
+
+  ${theme.mqMax('md')} {
+    display: none;
+  }
 `
 
 const FilterButton = styled.button`
@@ -127,6 +130,14 @@ const FilterButton = styled.button`
 
   .submit {
     margin: 0 0 0 auto;
+  }
+
+  ${theme.mqMax('md')} {
+    width: min-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
   }
 `
 

@@ -93,7 +93,7 @@ const InputPersonalData = () => {
       >
         <div className='auth-wrapper'>
           <h3 className='auth-title'>{tAuth('organizer.welcome')}</h3>
-          <p className='auth-description'>{tAuth('regorganizerP')}</p>
+          <p className='auth-description'>{tAuth('regathleteP')}</p>
           <Box
             sx={{
               display: 'grid',

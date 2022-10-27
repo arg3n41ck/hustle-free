@@ -73,7 +73,7 @@ function EventMainInfoPC({ event }) {
     event?.id && setCategories(getParticipantCategories(event))
   }, [event])
   return (
-    <>
+    <EMWrapper>
       <h3 className='hide-on-mob'>{tEventDetail('eventMainInfo.participantsCategories')}</h3>
 
       <ul>
@@ -92,7 +92,7 @@ function EventMainInfoPC({ event }) {
       {!xl && <EventMainInfoShare event={event} />}
 
       {!!event?.qrCode && (
-        <>
+        <ExtraWrapper>
           <QRTitle>Ваш QR-Код:</QRTitle>
           <QrImageWrapper>
             <Qr
@@ -107,19 +107,29 @@ function EventMainInfoPC({ event }) {
               {qrIcon} Скачать QR код
             </QrDownloadLink>
           </QrImageWrapper>
-        </>
+        </ExtraWrapper>
       )}
-    </>
+    </EMWrapper>
   )
 }
 
 export default EventMainInfoPC
+
+const EMWrapper = styled.div`
+  background: #141519;
+  padding: 16px 8px !important;
+`
+
+const ExtraWrapper = styled.div`
+  padding: 16px 8px 8px;
+`
 
 const QRTitle = styled.h3`
   font-weight: 600;
   font-size: 24px;
   line-height: 32px;
   color: #f2f2f2;
+  margin: 0 0 24px 0;
 `
 
 const QrImageWrapper = styled.div`
