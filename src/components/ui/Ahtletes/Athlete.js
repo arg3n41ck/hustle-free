@@ -25,7 +25,7 @@ function Athlete({ children, user, athleteId, team }) {
                 {user?.firstName || ''} {user?.lastName || ''}
               </ItemTitle>
               {!!team?.name && <ItemDescription>{team?.name}</ItemDescription>}
-              <WinsAndDefeats>14 побед / 100 поражений</WinsAndDefeats>
+              {/* <WinsAndDefeats>14 побед / 100 поражений</WinsAndDefeats> */}
             </div>
           </Item>
           {children}

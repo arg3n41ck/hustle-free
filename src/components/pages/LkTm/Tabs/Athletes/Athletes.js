@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Teams from './Teams'
 import Applications from './Applications'
 import HeaderContent, { TitleHeader } from '../../../../ui/LKui/HeaderContent'
@@ -61,7 +61,7 @@ const Athletes = ({ onToggleSidebar }) => {
     }
   }, [user])
 
-  const acceptOrRejectHandler = async (id, status = 'approved', athleteId) => {
+  const { current: acceptOrRejectHandler } = useRef(async (id, status = 'approved', athleteId) => {
     try {
       const indexCurrentElement = applications.findIndex((application) => application.id === id)
       setApplications((prev) => [
@@ -75,7 +75,7 @@ const Athletes = ({ onToggleSidebar }) => {
       })
       setTeams(await fetchTeams(user?.teamId))
     } catch (e) {}
-  }
+  })
 
   return (
     <>
