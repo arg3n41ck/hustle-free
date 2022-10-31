@@ -93,7 +93,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
     user: { user },
   } = useSelector((state) => state)
   const [athleteTeams] = useSelector(teamsSelector)
-  const [categories, levels] = useSelector(categoriesSelector)
+  const [, levels] = useSelector(categoriesSelector)
   const [, teams] = useSelector(teamsSelector)
   const { data: eventParticipants } = useSelector(
     (state) => state.participantCategories.participantCategories,

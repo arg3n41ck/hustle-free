@@ -36,23 +36,26 @@ export default function BracketsDoubleEl() {
   // const [, bracketsFights] = useSelector(selectBrackets)
 
   useEffect(async () => {
-    getLocalBrackets(27).then((res) => {
-      const topBrackets = res?.length && res.filter(({ isLoserBracket }) => !isLoserBracket)
-
-      const loserBrackets =
+    getLocalBrackets(35).then((res) => {
+      const { topBrackets, loserBrackets } =
         res?.length &&
-        res.reduce((prev, cur) => {
-          if (cur.isLoserBracket) {
-            const loserParents = cur.parents.filter((parent) =>
-              res.some((cell) => {
-                const { id, isLoserBracket } = cell
-                return id == parent && isLoserBracket
-              }),
-            )
-            prev.push({ ...cur, parents: loserParents })
-          }
-          return prev
-        }, [])
+        res.reduce(
+          (prev, cur) => {
+            if (cur.isLoserBracket) {
+              const loserParents = cur.parents.filter((parent) =>
+                res.some((cell) => {
+                  const { id, isLoserBracket } = cell
+                  return id == parent && isLoserBracket
+                }),
+              )
+              prev.loserBrackets.push({ ...cur, parents: loserParents })
+            } else if (!cur.isLoserBracket) {
+              prev.topBrackets.push(cur)
+            }
+            return prev
+          },
+          { topBrackets: [], loserBrackets: [] },
+        )
 
       topBrackets && getBracketsBySteps(topBrackets).then(setTopBracketsBySteps)
       loserBrackets && getBracketsBySteps(loserBrackets).then(setLoserBracketsBySteps)
@@ -61,6 +64,8 @@ export default function BracketsDoubleEl() {
     //   getBracketsBySteps(bracketsFights).then(setTopBracketsBySteps)
     // }
   }, [])
+
+  console.log(loserBracketsBySteps)
 
   return (
     <ColumnsWrapper>
