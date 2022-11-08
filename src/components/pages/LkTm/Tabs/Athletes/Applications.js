@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
 import CustomButton from '../../../../ui/CustomButton'
 import { theme } from '../../../../../styles/theme'
 import Athlete from '../../../../ui/Ahtletes/Athlete'
@@ -35,7 +34,6 @@ const List = styled.ul`
 export default Applications
 
 const ApplicationItem = ({ applicationItem, onAcceptOrReject }) => {
-  const dispatch = useDispatch()
   const { id, athlete } = applicationItem
   const { t: tLkTm } = useTranslation('lkTm')
 

@@ -29,7 +29,7 @@ const fetchTeams = async (id) => {
 }
 
 const Athletes = ({ onToggleSidebar }) => {
-  const { user } = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user.user)
   const [view, setView] = useState('teams') // teams | applicationsD
   const [teams, setTeams] = useState(null)
   const [applications, setApplications] = useState([])
@@ -68,6 +68,7 @@ const Athletes = ({ onToggleSidebar }) => {
         ...prev.slice(0, indexCurrentElement),
         ...prev.slice(indexCurrentElement + 1),
       ])
+
       await $api.put(`/teams/athlete_requests/${id}/`, {
         status,
         athlete: athleteId,

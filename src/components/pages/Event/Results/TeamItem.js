@@ -7,7 +7,7 @@ import { theme } from '../../../../styles/theme'
 
 const TeamItem = ({ team, index }) => {
   const { t: tEventDetail } = useTranslation('eventDetail')
-  const mxMd = useMediaQuery('(max-width: 767px)')
+  const mxMd = useMediaQuery('(max-width: 620px)')
 
   return (
     <Item>
@@ -90,7 +90,11 @@ const ItemRight = styled.div`
   display: flex;
   align-items: center;
   grid-gap: 20px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
+
+  ${theme.mqMax('md')} {
+    grid-gap: 16px;
+  }
 `
 const ItemNumber = styled.p`
   font-style: normal;
@@ -130,6 +134,10 @@ const Info = styled.div`
     padding: 0;
     border: none;
   }
+
+  ${theme.mqMax('md')} {
+    grid-gap: 16px;
+  }
 `
 
 const Medal = styled.div`
@@ -138,6 +146,7 @@ const Medal = styled.div`
   @media screen and (max-width: 450px) {
     width: 100%;
     justify-content: space-between;
+    grid-gap: 16px;
   }
 `
 
@@ -149,6 +158,15 @@ const InfoItem = styled.div`
   color: ${(p) => p.color};
   p {
     margin-bottom: 4px;
+  }
+
+  @media screen and (max-width: 450px) {
+    div,
+    p {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 20px;
+    }
   }
 `
 

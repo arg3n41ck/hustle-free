@@ -106,8 +106,6 @@ const EventContainer = styled.div`
 `
 
 const BorderWrapper = styled.div`
-  border: 1px solid #333333;
-
   &:last-child {
     border-radius: 0 0 24px 24px;
   }
@@ -115,6 +113,7 @@ const BorderWrapper = styled.div`
   ${theme.mqMax('md')} {
     padding: 12px;
     border: 1px solid #333;
+    background: #1b1c22;
     border-radius: 12px;
 
     &:last-child {

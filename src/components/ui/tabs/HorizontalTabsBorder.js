@@ -25,7 +25,6 @@ const HorizontalTabsBorder = ({ valueTab, arrayTab, onChangeHandler, height, chi
                     display: 'grid',
                     gridTemplateColumns: `repeat(${arrayTab.length}, 1fr)`,
                     gridTemplateRows: `${height}`,
-                    gridGap: '16px',
                   },
                   '& .MuiTabs-indicator': {
                     height: '8px',
@@ -88,7 +87,9 @@ const TabItem = styled(Tab)`
     /* border-bottom: ${(p) => (p.active ? '1px solid #6d4eea' : '1px solid #333333')}; */
     border-right: none;
     min-width: initial !important;
-    font-size: 24px !important;
+    font-weight: 400;
+    font-size: 16px !important;
+    line-height: 24px;
     width: fit-content !important;
     /* padding: 8px 0 !important; */
   }
