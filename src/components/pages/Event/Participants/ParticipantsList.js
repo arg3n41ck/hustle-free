@@ -6,11 +6,14 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUser, selectOgEvents } from '../../../../redux/components/user'
 import { theme } from '../../../../styles/theme'
+import useQuery from '../../../../hooks/useQuery'
+import { fetchParticipantCategories } from '../../../../redux/components/participantsCategories'
 
 const ParticipantsList = ({ participants, active = true }) => {
   const {
     query: { id: eventId },
   } = useRouter()
+  const query = useQuery()
   const { user } = useSelector((state) => state.user)
   const [ogEventsId] = useSelector(selectOgEvents)
   const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
@@ -22,7 +25,11 @@ const ParticipantsList = ({ participants, active = true }) => {
         participant: id,
         proposal: true,
       })
-      .then(() => dispatch(fetchUser()))
+      .then(() => {
+        query.set('event', eventId)
+        dispatch(fetchParticipantCategories(query))
+        dispatch(fetchUser())
+      })
   }
 
   const deleteHandler = async (id) => {
@@ -32,7 +39,11 @@ const ParticipantsList = ({ participants, active = true }) => {
         participant: id,
         proposal: false,
       })
-      .then(() => dispatch(fetchUser()))
+      .then(() => {
+        query.set('event', eventId)
+        dispatch(fetchParticipantCategories(query))
+        dispatch(fetchUser())
+      })
   }
 
   return (

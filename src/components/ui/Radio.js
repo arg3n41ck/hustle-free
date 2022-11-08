@@ -1,13 +1,20 @@
-import React from "react"
-import styled from "styled-components"
+import React from 'react'
+import styled from 'styled-components'
 
-const Radio = ({ text, ...props }) => {
+const Radio = ({ text, secondaryText, ...props }) => {
   return (
     <>
       <Label>
-        <Input type="radio" {...props} />
+        <Input type='radio' {...props} />
         <Checkmark />
-        <p className="auth-title__input">{text}</p>
+        <Texts>
+          <p className='auth-title__input'>{text}</p>
+          {secondaryText && (
+            <p className='auth-title__input'>
+              <span>{secondaryText}</span>
+            </p>
+          )}
+        </Texts>
       </Label>
     </>
   )
@@ -31,7 +38,7 @@ const Checkmark = styled.span`
   border: 2px solid #6d4eea;
   box-sizing: border-box;
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     display: none;
     top: 50%;
@@ -43,6 +50,15 @@ const Checkmark = styled.span`
     background: #6d4eea;
   }
 `
+
+const Texts = styled.div`
+  margin-left: 36px;
+
+  p {
+    margin: 0;
+  }
+`
+
 const Label = styled.label`
   display: block;
   //height: 20px;
@@ -53,9 +69,7 @@ const Label = styled.label`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  p {
-    margin-left: 36px;
-  }
+
   & ${Input}:checked ~ ${Checkmark}:after {
     display: block;
   }

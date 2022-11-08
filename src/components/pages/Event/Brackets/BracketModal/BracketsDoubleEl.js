@@ -9,7 +9,7 @@ import {
   getBordersDirections,
   getBordersDirectionsForLosers,
   getBracketsBySteps,
-  getLocalBrackets,
+  // getLocalBrackets,
 } from './bracketsUtils'
 
 const getWrapperStyles = (type) => {
@@ -30,49 +30,71 @@ const getWrapperStyles = (type) => {
   }
 }
 
+const divideTopLoaserBr = (brackets) => {
+  return (
+    brackets?.length &&
+    brackets.reduce(
+      (prev, cur) => {
+        if (cur.isLoserBracket) {
+          const loserParents = cur.parents.filter((parent) =>
+            brackets.some((cell) => {
+              const { id, isLoserBracket } = cell
+              return id == parent && isLoserBracket
+            }),
+          )
+          const loserChilds = cur.children.filter((child) =>
+            brackets.some((cell) => {
+              const { id, isLoserBracket } = cell
+              return id == child && isLoserBracket
+            }),
+          )
+          prev.loserBrackets.push({ ...cur, parents: loserParents, children: loserChilds })
+        } else if (!cur.isLoserBracket) {
+          const topParents = cur.parents.filter((parent) =>
+            brackets.some((cell) => {
+              const { id, isLoserBracket } = cell
+              return id == parent && !isLoserBracket
+            }),
+          )
+          const topChilds = cur.children.filter((child) =>
+            brackets.some((cell) => {
+              const { id, isLoserBracket } = cell
+              return id == child && !isLoserBracket
+            }),
+          )
+
+          prev.topBrackets.push({ ...cur, parents: topParents, children: topChilds })
+        }
+        return prev
+      },
+      { topBrackets: [], loserBrackets: [] },
+    )
+  )
+}
+
 export default function BracketsDoubleEl() {
   const [topBracketsBySteps, setTopBracketsBySteps] = useState(null)
   const [loserBracketsBySteps, setLoserBracketsBySteps] = useState(null)
-  // const [, bracketsFights] = useSelector(selectBrackets)
+  const [, bracketsFights] = useSelector(selectBrackets)
 
   useEffect(async () => {
-    getLocalBrackets(35).then((res) => {
-      const { topBrackets, loserBrackets } =
-        res?.length &&
-        res.reduce(
-          (prev, cur) => {
-            if (cur.isLoserBracket) {
-              const loserParents = cur.parents.filter((parent) =>
-                res.some((cell) => {
-                  const { id, isLoserBracket } = cell
-                  return id == parent && isLoserBracket
-                }),
-              )
-              prev.loserBrackets.push({ ...cur, parents: loserParents })
-            } else if (!cur.isLoserBracket) {
-              prev.topBrackets.push(cur)
-            }
-            return prev
-          },
-          { topBrackets: [], loserBrackets: [] },
-        )
-
+    // getLocalBrackets(60).then((res) => {
+    // })
+    if (bracketsFights.data?.length) {
+      const { topBrackets, loserBrackets } = divideTopLoaserBr(bracketsFights.data)
       topBrackets && getBracketsBySteps(topBrackets).then(setTopBracketsBySteps)
       loserBrackets && getBracketsBySteps(loserBrackets).then(setLoserBracketsBySteps)
-    })
-    // if (bracketsFights.data?.length) {
-    //   getBracketsBySteps(bracketsFights).then(setTopBracketsBySteps)
-    // }
-  }, [])
+    }
+  }, [bracketsFights])
 
-  console.log(loserBracketsBySteps)
+  console.log(topBracketsBySteps, loserBracketsBySteps)
 
   return (
     <ColumnsWrapper>
       <TopBrackets>
         {!!Object.keys(topBracketsBySteps || {})?.length &&
           Object.keys(topBracketsBySteps).map((key) => {
-            const { roundName, cells } = topBracketsBySteps[key]
+            const { cells, step } = topBracketsBySteps[key]
             const { cells: nextStepsCells } = topBracketsBySteps[+key + 1] || { cells: null }
             const cellsAreas =
               cells?.length >= (nextStepsCells?.length || 0)
@@ -81,8 +103,8 @@ export default function BracketsDoubleEl() {
 
             const gridTemplateAreas = cellsAreas?.length && `'${cellsAreas.join("' '")}'`
             return (
-              <Column key={`brackets_round_${roundName}`}>
-                <RoundName>{roundName}</RoundName>
+              <Column key={`brackets_round_${step}`}>
+                <RoundName>{step}</RoundName>
                 {cells?.length && (
                   <CellsWrapper
                     style={
@@ -96,7 +118,7 @@ export default function BracketsDoubleEl() {
                     }
                   >
                     {cells
-                      .sort((a, b) => a.fightNumber - b.fightNumber)
+                      .sort((a, b) => +a.fightNumber - +b.fightNumber)
                       .map((cell) => {
                         const borderDirection = cell.children.length
                           ? getBordersDirections(cell.id, cell.children, nextStepsCells)
@@ -119,7 +141,7 @@ export default function BracketsDoubleEl() {
       <LoserBrackets>
         {!!Object.keys(loserBracketsBySteps || {})?.length &&
           Object.keys(loserBracketsBySteps).map((key) => {
-            const { roundName, cells } = loserBracketsBySteps[key]
+            const { cells, step } = loserBracketsBySteps[key]
             const { cells: nextStepsCells } = loserBracketsBySteps[+key + 1] || { cells: null }
             const cellsAreas =
               cells?.length >= (nextStepsCells?.length || 0)
@@ -128,8 +150,8 @@ export default function BracketsDoubleEl() {
 
             const gridTemplateAreas = cellsAreas?.length && `'${cellsAreas.join("' '")}'`
             return (
-              <Column key={`brackets_round_${roundName}`}>
-                <RoundName>{roundName}</RoundName>
+              <Column key={`brackets_round_${step}`}>
+                <RoundName>{step}</RoundName>
                 {cells?.length && (
                   <CellsWrapper
                     style={
@@ -143,7 +165,7 @@ export default function BracketsDoubleEl() {
                     }
                   >
                     {cells
-                      .sort((a, b) => a.fightNumber - b.fightNumber)
+                      .sort((a, b) => +a.fightNumber - +b.fightNumber)
                       .map((cell) => {
                         const borderDirection = cell.children.length
                           ? getBordersDirectionsForLosers(cell.id, cell.children, nextStepsCells)

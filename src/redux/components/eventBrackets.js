@@ -85,6 +85,9 @@ export const bracketsSlice = createSlice({
     // BRACKETS FIGHTS BY PARAMS
     builder.addCase(fetchBracketsFightsByParams.pending, ({ bracketsFights }) => {
       bracketsFights.isLoading = true
+      bracketsFights.data = null
+      bracketsFights.count = 0
+      bracketsFights.error = null
     })
     builder.addCase(fetchBracketsFightsByParams.fulfilled, ({ bracketsFights }, action) => {
       bracketsFights.isLoading = false
@@ -95,7 +98,8 @@ export const bracketsSlice = createSlice({
     builder.addCase(fetchBracketsFightsByParams.rejected, ({ bracketsFights }, action) => {
       bracketsFights.isLoading = false
       bracketsFights.error = action.payload
-      bracketsFights.data = []
+      bracketsFights.count = 0
+      bracketsFights.data = null
     })
     // BRACKET DETAIL
     builder.addCase(fetchBracket.pending, ({ bracket }) => {

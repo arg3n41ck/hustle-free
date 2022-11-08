@@ -3,13 +3,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketCell from './BracketCell'
-import {
-  createAreaFromChilds,
-  createDefaultArea,
-  getBordersDirections,
-  getBracketsBySteps,
-  getLocalBrackets,
-} from './bracketsUtils'
+import { createAresJustFromIds, getBordersDirections, getBracketsBySteps } from './bracketsUtils'
 
 const getWrapperStyles = (type) => {
   switch (type) {
@@ -34,32 +28,23 @@ export default function BracketsRobin() {
   const [, bracketsFights] = useSelector(selectBrackets)
 
   useEffect(async () => {
-    getLocalBrackets(36).then((res) => {
-      getBracketsBySteps(res).then(setBracketsBySteps)
-    })
-    // if (bracketsFights.data?.length) {
-    //   getBracketsBySteps(bracketsFights?.data).then(setBracketsBySteps)
-    // }
-  }, [])
-
-  console.log(bracketsBySteps)
+    if (bracketsFights.data?.length) {
+      getBracketsBySteps(bracketsFights?.data).then(setBracketsBySteps)
+    }
+  }, [bracketsFights])
 
   return (
     <ColumnsWrapper>
       {!!Object.keys(bracketsBySteps || {})?.length &&
         Object.keys(bracketsBySteps).map((key) => {
-          const { roundName, cells } = bracketsBySteps[key]
+          const { step, cells } = bracketsBySteps[key]
           const { cells: nextStepsCells } = bracketsBySteps[+key + 1] || { cells: null }
-          const cellsAreas =
-            cells?.length >= nextStepsCells?.length
-              ? createDefaultArea(cells)
-              : createAreaFromChilds(bracketsBySteps[+key + 1]?.cells)
-
+          const cellsAreas = createAresJustFromIds(cells)
           const gridTemplateAreas = cellsAreas?.length && `'${cellsAreas.join("' '")}'`
 
           return (
-            <Column key={`brackets_round_${roundName}`}>
-              <RoundName>{roundName}</RoundName>
+            <Column key={`brackets_round_${step}`}>
+              <RoundName>ROUND {step}</RoundName>
               {cells?.length && (
                 <CellsWrapper
                   style={

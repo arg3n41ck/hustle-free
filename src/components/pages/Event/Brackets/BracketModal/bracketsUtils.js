@@ -23,6 +23,7 @@ export const getBracketsBySteps = async (bracketsFights) => {
         cells: [],
         childrens: [],
         parents: [],
+        step: step,
       }
     }
 
@@ -52,6 +53,45 @@ export const getBracketsBySteps = async (bracketsFights) => {
   return brSteps
 }
 
+export const getThreeManBracketsBySteps = async (bracketsFights) => {
+  const brSteps = await bracketsFights.reduce((prev, cur) => {
+    const { step } = cur
+    const rowName = `row-${step}`
+    const curKey = (cur?.parents?.length || 0) < 2 ? 1 : 2
+    const curParents = curKey == 1 ? [] : cur?.parents
+    const rewrittenCur = { ...cur, parents: curParents }
+    if (!prev[rowName]) {
+      prev[rowName] = {}
+      prev[rowName][curKey] = {
+        cells: [rewrittenCur],
+        childrens: [rewrittenCur.children[0]],
+        parents: [...rewrittenCur.parents],
+        step: curKey,
+      }
+    } else if (prev[rowName]) {
+      if (prev[rowName][curKey]) {
+        const { childrens, parents } = prev[rowName][curKey]
+        prev[rowName][curKey].cells.push(rewrittenCur)
+        prev[rowName][curKey].childrens = [...childrens, rewrittenCur.children[0]]
+        prev[rowName][curKey].parents = [...parents, ...rewrittenCur.parents]
+      } else if (!prev[rowName][curKey]) {
+        prev[rowName][curKey] = {
+          cells: [rewrittenCur],
+          childrens: [rewrittenCur.children[0]],
+          parents: [...rewrittenCur.parents],
+          step: curKey,
+        }
+      }
+    }
+    // const childrens = prev[rowName][curKey].childrens
+    // prev[rowName][curKey].childrens = childrens.filter((ch) => cur?.id !== ch)
+
+    return prev
+  }, {})
+
+  return brSteps
+}
+
 export const getLocalBrackets = async (id) => {
   try {
     const {
@@ -62,6 +102,8 @@ export const getLocalBrackets = async (id) => {
     console.log(e)
   }
 }
+
+export const createAresJustFromIds = (cells) => cells?.map(({ id }) => `cell-${id}`)
 
 export const createDefaultArea = (cells) => {
   const results = cells?.reduce((prev, cur) => {
@@ -111,7 +153,7 @@ export const getBordersDirectionsForLosers = (parentId, childId, cellsFromNextSt
   let borderDirection = 'noChild'
 
   if (cell) {
-    const parentIndex = (cell?.parents || [])?.indexOf(parentId)
+    const parentIndex = ((cell?.parents?.length && cell?.parents.sort()) || [])?.indexOf(parentId)
     borderDirection =
       cell?.parents?.length == 1
         ? 'straight'

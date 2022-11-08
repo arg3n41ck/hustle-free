@@ -34,13 +34,13 @@ export default function BracketsSingleEl() {
   const [, bracketsFights] = useSelector(selectBrackets)
 
   useEffect(async () => {
-    getLocalBrackets(31).then((res) => {
-      getBracketsBySteps(res).then(setBracketsBySteps)
-    })
-    // if (bracketsFights.data?.length) {
-    //   getBracketsBySteps(bracketsFights?.data).then(setBracketsBySteps)
-    // }
-  }, [])
+    // getLocalBrackets(31).then((res) => {
+    //   getBracketsBySteps(res).then(setBracketsBySteps)
+    // })
+    if (bracketsFights.data?.length) {
+      getBracketsBySteps(bracketsFights?.data).then(setBracketsBySteps)
+    }
+  }, [bracketsFights])
 
   return (
     <ColumnsWrapper>
