@@ -145,7 +145,6 @@ const Medal = styled.div`
   grid-gap: 20px;
   @media screen and (max-width: 450px) {
     width: 100%;
-    justify-content: space-between;
     grid-gap: 16px;
   }
 `
@@ -164,7 +163,7 @@ const InfoItem = styled.div`
     div,
     p {
       font-weight: 400;
-      font-size: 12px;
+      font-size: 13px;
       line-height: 20px;
     }
   }

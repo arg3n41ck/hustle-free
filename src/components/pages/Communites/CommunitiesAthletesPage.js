@@ -296,6 +296,10 @@ const CommunitesItems = styled.div`
 const CommunitesContainer = styled.div`
   margin-top: 48px;
   width: 100%;
+
+  ${theme.mqMax('md')} {
+    margin: 16px 0 0;
+  }
 `
 
 const CommunitesHeadingInputAndButton = styled.div`
