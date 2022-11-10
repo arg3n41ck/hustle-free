@@ -76,18 +76,23 @@ export default EventMainInfoLocation
 
 const LocationsWrapper = styled.div`
   display: grid;
-  grid-template: 1fr / 1fr 1fr;
   grid-gap: 16px;
-  padding: 16px 8px !important;
-  background: #141519;
+  grid-template: 1fr min-content / 1fr;
+  background: none;
+  padding: 0 8px 16px;
 
-  ${theme.mqMin('xl')} {
-    grid-template: 1fr 1fr / 1fr;
-    background: none;
+  ${theme.mqMax('xl')} {
+    grid-template: 1fr / 1fr 1fr;
+    padding: 16px 8px !important;
+    background: #141519;
   }
 
   ${theme.mqMax('sm')} {
     grid-template: auto auto / 1fr;
+  }
+
+  h3 {
+    margin-bottom: 23px;
   }
 `
 

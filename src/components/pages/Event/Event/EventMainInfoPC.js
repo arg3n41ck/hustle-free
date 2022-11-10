@@ -117,10 +117,15 @@ function EventMainInfoPC({ event }) {
 export default EventMainInfoPC
 
 const EMWrapper = styled.div`
-  padding: 16px 8px !important;
+  padding: 0 8px 16px;
 
   ${theme.mqMax('xl')} {
     background: #141519;
+    padding: 16px 8px !important;
+  }
+
+  h3 {
+    margin-bottom: 23px;
   }
 `
 

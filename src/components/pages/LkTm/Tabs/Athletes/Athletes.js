@@ -63,18 +63,21 @@ const Athletes = ({ onToggleSidebar }) => {
 
   const { current: acceptOrRejectHandler } = useRef(async (id, status = 'approved', athleteId) => {
     try {
-      const indexCurrentElement = applications.findIndex((application) => application.id === id)
-      setApplications((prev) => [
-        ...prev.slice(0, indexCurrentElement),
-        ...prev.slice(indexCurrentElement + 1),
-      ])
+      if (user?.id) {
+        const indexCurrentElement = applications.findIndex((application) => application.id === id)
+        setApplications((prev) => [
+          ...prev.slice(0, indexCurrentElement),
+          ...prev.slice(indexCurrentElement + 1),
+        ])
 
-      await $api.put(`/teams/athlete_requests/${id}/`, {
-        status,
-        athlete: athleteId,
-        team: user?.teamId,
-      })
-      setTeams(await fetchTeams(user?.teamId))
+        await $api.put(`/teams/athlete_requests/${id}/`, {
+          status,
+          athlete: athleteId,
+          team: user?.teamId,
+        })
+        setTeams(await fetchTeams(user?.teamId))
+        await fetchMyRequests(user?.teamId).then(setApplications)
+      }
     } catch (e) {}
   })
 
