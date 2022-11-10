@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
 import BracketHeaderInfo from './BracketHeaderInfo'
@@ -7,6 +7,8 @@ import BracketsDoubleEl from './BracketsDoubleEl'
 import BracketsSingleEl from './BracketsSingleEl'
 import BracketsRobin from './BracketsRobin'
 import BracketsThreeMan from './BracketsThreeMan'
+import { useDispatch } from 'react-redux'
+import { fetchBracketsFightsByParams } from '../../../../../redux/components/eventBrackets'
 
 export const bracketTypes = {
   1: {
@@ -54,6 +56,7 @@ export const bracketTypes = {
 }
 
 export default function BracketModal({ selectedBracket, onClose }) {
+  const dispatch = useDispatch()
   const { typeTitle, allParticipants, BracketWrapperByType } = useMemo(() => {
     const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
     return {
@@ -61,6 +64,10 @@ export default function BracketModal({ selectedBracket, onClose }) {
       allParticipants: selectedBracket && selectedBracket?.participationCategory?.allParticipants,
       BracketWrapperByType: (props) => selectedBrType && selectedBrType?.component(props),
     }
+  }, [selectedBracket])
+
+  const updateBF = useCallback(() => {
+    dispatch(fetchBracketsFightsByParams({ bracket: selectedBracket?.id }))
   }, [selectedBracket])
 
   useEffect(() => {
@@ -87,7 +94,7 @@ export default function BracketModal({ selectedBracket, onClose }) {
               <Title>{selectedBracket?.title}</Title>
             </HeaderWrapper>
             <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
-            {BracketWrapperByType && <BracketWrapperByType />}
+            {BracketWrapperByType && <BracketWrapperByType updateBF={updateBF} />}
           </ContentWrapper>
         </BracketsModalWrapper>
       )}

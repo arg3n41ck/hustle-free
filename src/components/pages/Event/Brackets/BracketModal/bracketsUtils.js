@@ -15,40 +15,43 @@ export const getBracketsRoundType = {
 }
 
 export const getBracketsBySteps = async (bracketsFights) => {
-  const brSteps = await bracketsFights.reduce((prev, cur) => {
-    const { step, fightRoundType } = cur
-    if (!prev[step]) {
-      prev[step] = {
-        roundName: getBracketsRoundType[fightRoundType],
-        cells: [],
-        childrens: [],
-        parents: [],
-        step: step,
-      }
-    }
-
-    const curWithCells = { ...cur }
-
-    if (step != 1) {
-      const parentsFrom1Step = prev[+step - 1]?.cells.reduce((prevParents, curParCell) => {
-        if (curParCell.children?.length && curParCell.children.includes(cur.id)) {
-          if (!!curParCell?.parentsFrom1Step) {
-            prevParents = prevParents + curParCell?.parentsFrom1Step
-          } else {
-            prevParents = prevParents + 1
-          }
+  const brSteps = await bracketsFights
+    .slice()
+    .sort((a, b) => a.step - b.step)
+    .reduce((prev, cur) => {
+      const { step, fightRoundType } = cur
+      if (!prev[step]) {
+        prev[step] = {
+          roundName: getBracketsRoundType[fightRoundType],
+          cells: [],
+          childrens: [],
+          parents: [],
+          step: step,
         }
-        return prevParents
-      }, 0)
+      }
 
-      curWithCells.parentsFrom1Step = parentsFrom1Step
-    }
+      const curWithCells = { ...cur }
 
-    prev[step].cells.push(curWithCells)
-    cur.children?.length && prev[step].childrens.push(cur.children[0])
-    prev[step].parents = [...prev[step].parents, ...cur.parents]
-    return prev
-  }, {})
+      if (+step > 1 && prev[+step - 1]) {
+        const parentsFrom1Step = prev[+step - 1].cells.reduce((prevParents, curParCell) => {
+          if (curParCell.children?.length && curParCell.children.includes(cur.id)) {
+            if (!!curParCell?.parentsFrom1Step) {
+              prevParents = prevParents + (+curParCell?.parentsFrom1Step || 0)
+            } else {
+              prevParents = prevParents + 1
+            }
+          }
+          return prevParents
+        }, 0)
+
+        curWithCells.parentsFrom1Step = parentsFrom1Step
+      }
+
+      prev[step].cells.push(curWithCells)
+      cur.children?.length && prev[step].childrens.push(cur.children[0])
+      prev[step].parents = [...prev[step].parents, ...cur.parents]
+      return prev
+    }, {})
 
   return brSteps
 }
@@ -134,7 +137,8 @@ export const getBordersDirections = (parentId, childId, cellsFromNextStep) => {
   let borderDirection = 'noChild'
 
   if (cell) {
-    const parentIndex = (cell?.parents || [])?.indexOf(parentId)
+    const parents = (cell?.parents || []).slice()
+    const parentIndex = parents?.sort().indexOf(parentId)
     borderDirection =
       cell?.parents?.length == 1
         ? 'straight'
@@ -153,7 +157,8 @@ export const getBordersDirectionsForLosers = (parentId, childId, cellsFromNextSt
   let borderDirection = 'noChild'
 
   if (cell) {
-    const parentIndex = ((cell?.parents?.length && cell?.parents.sort()) || [])?.indexOf(parentId)
+    const parents = (cell?.parents || []).slice()
+    const parentIndex = parents?.sort().indexOf(parentId)
     borderDirection =
       cell?.parents?.length == 1
         ? 'straight'
@@ -165,4 +170,13 @@ export const getBordersDirectionsForLosers = (parentId, childId, cellsFromNextSt
   }
 
   return borderDirection
+}
+
+export const createColumnsAreasByStepsCount = (bracketsCount) => {
+  const bracketsSteps = []
+
+  for (let step = 0; step < bracketsCount; step++) {
+    bracketsSteps.push(`step-${step + 1}`)
+  }
+  return `'${bracketsSteps.join(' ')}'`
 }

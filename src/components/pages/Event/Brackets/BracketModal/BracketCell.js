@@ -1,41 +1,155 @@
-import React from 'react'
+import React, { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { truncateString } from '../../../../../helpers/helpers'
+import { selectCountriesAndCities } from '../../../../../redux/components/countriesAndCities'
+import { selectBrackets } from '../../../../../redux/components/eventBrackets'
+import BracketWin from './BracketWin'
 
-export default function BracketCell({ cell, gridTemplateAreas, borderDirection, classes }) {
-  const { id, fighters, fightNumber, parents, children } = cell
+export default function BracketCell({
+  cell,
+  gridTemplateAreas,
+  borderDirection,
+  updateBF,
+  classes,
+}) {
+  const { id, fighters, fightNumber, parents, winner, children } = cell
+  const [, , participantAthletes] = useSelector(selectBrackets)
+  const [countries] = useSelector(selectCountriesAndCities)
+
+  const athletesInfo = useMemo(() => {
+    if (participantAthletes?.data?.length && fighters?.length) {
+      const firstParticipantCat =
+        fighters[0] &&
+        participantAthletes?.data?.find((pc) => {
+          return pc?.athlete?.id == fighters[0]?.athlete?.id
+        })
+      const secondParticipantCat =
+        fighters[1] &&
+        participantAthletes?.data?.find((pc) => {
+          return pc?.athlete?.id == fighters[1]?.athlete?.id
+        })
+
+      const firstaAthlete = firstParticipantCat?.athlete && {
+        athlete: firstParticipantCat?.athlete,
+        countryCode:
+          countries?.length &&
+          countries?.find(({ id }) => id == firstParticipantCat?.athlete?.user?.counrty),
+        team: firstParticipantCat?.team,
+      }
+
+      const secondAthlete = secondParticipantCat?.athlete && {
+        athlete: secondParticipantCat?.athlete,
+        countryCode:
+          countries?.length &&
+          countries?.find(({ id }) => id == secondParticipantCat?.athlete?.user?.counrty),
+        team: secondParticipantCat?.team,
+      }
+
+      return [firstaAthlete, secondAthlete]
+    }
+    return []
+  }, [participantAthletes])
+
   return (
     <CellWrapper
       className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
       style={gridTemplateAreas ? { gridArea: `cell-${id}` } : {}}
     >
-      <Self>
-        FN - {fightNumber} / ID - {id}
-      </Self>
-      <FighterWrapper className='first'>{fighters[0]?.name || '?'}</FighterWrapper>
-      <FighterWrapper className='second'>{fighters[1]?.name || '?'}</FighterWrapper>
-      {!!children?.length && <Children>{children[0]}</Children>}
+      <FightNum>
+        FN:{fightNumber}, ID: {id}, CH: {children[0]}
+      </FightNum>
+      <FighterWrapper className='first'>
+        <FighterAva />
+        <FighterTexts>
+          <NameFlagWrapper>
+            <CountryFlag src={`https://flagsapi.com/KG/flat/64.png`} />
+            <FighterName>
+              {athletesInfo[0]
+                ? truncateString(
+                    `${athletesInfo[0]?.athlete?.user?.firstName} ${athletesInfo[0]?.athlete?.user?.lastName}`,
+                    12,
+                    true,
+                  )
+                : '?'}
+            </FighterName>
+          </NameFlagWrapper>
+          {athletesInfo[0] && athletesInfo[0]?.team && (
+            <TeamName>{truncateString(athletesInfo[0]?.team?.name, 20, true)}</TeamName>
+          )}
+        </FighterTexts>
+        {!!athletesInfo[0] && +fighters[1]?.id !== +winner && (
+          <BracketWin
+            bfId={id}
+            fighter={fighters[0]?.id}
+            winner={winner}
+            onWin={() => {
+              updateBF()
+            }}
+          />
+        )}
+      </FighterWrapper>
+      <FighterWrapper className='second'>
+        <FighterAva />
+        <FighterTexts>
+          <NameFlagWrapper>
+            <CountryFlag src={`https://flagsapi.com/KG/flat/64.png`} />
+            <FighterName>
+              {athletesInfo[1]
+                ? truncateString(
+                    `${athletesInfo[1]?.athlete?.user?.firstName} ${athletesInfo[1]?.athlete?.user?.lastName}`,
+                    12,
+                    true,
+                  )
+                : '?'}
+            </FighterName>
+          </NameFlagWrapper>
+          {athletesInfo[1] && athletesInfo[1]?.team && (
+            <TeamName>{truncateString(athletesInfo[1]?.team?.name, 20, true)}</TeamName>
+          )}
+        </FighterTexts>
+        {!!athletesInfo[1] && +fighters[0]?.id !== +winner && (
+          <BracketWin
+            bfId={id}
+            fighter={fighters[1]?.id}
+            winner={winner}
+            onWin={() => {
+              updateBF()
+            }}
+          />
+        )}
+      </FighterWrapper>
+      {/* {!!children?.length && <Children>{children[0]}</Children>} */}
     </CellWrapper>
   )
 }
 
 const FighterWrapper = styled.div`
+  position: relative;
   min-height: 56px;
   width: 208px;
   background: #1b1c22;
   border: 1px solid #333333;
   display: flex;
-  justify-content: flex-end;
+  grid-gap: 8px;
   font-weight: 700;
+  padding: 10px;
+  z-index: 8;
+  cursor: pointer;
+  transform: translateY(-1px);
+
+  &:hover {
+    background-color: #0f0f10;
+  }
 
   &.first {
     border-radius: 8px 8px 0 0;
-    align-items: center;
-    border-bottom: none;
+    /* border-bottom: none; */
   }
 
   &.second {
     border-radius: 0 0 8px 8px;
-    border-top: none;
+    /* border-top: none; */
     border-bottom: 1px solid #333333;
   }
 `
@@ -109,17 +223,64 @@ const CellWrapper = styled.div`
   }
 `
 
-const Self = styled.div`
+const FightNum = styled.div`
+  /* width: 56px; */
   position: absolute;
   top: 50%;
-  left: 0;
+  left: -28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+
+  background: #0f0f10;
+  /* #333333 */
+
+  border: 1px solid #333333;
+  border-radius: 60px;
+
   transform: translateY(-50%);
   font-weight: 700;
   font-size: 18px;
   padding: 5px;
-  border-radius: 10px;
   background: #000;
-  z-index: 1;
+`
+
+const FighterAva = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+
+  background: ${({ img }) => (img ? `url('img')` : '#333333')};
+`
+
+const FighterTexts = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const FighterName = styled.p`
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #f2f2f2;
+`
+
+const NameFlagWrapper = styled.div`
+  display: flex;
+  grid-gap: 2px;
+`
+
+const TeamName = styled.p`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  color: #bdbdbd;
+`
+
+const CountryFlag = styled.img`
+  max-width: 20px;
+  object-fit: contain;
 `
 
 const Children = styled.div`

@@ -33,7 +33,19 @@ export const fetchBracket = createAsyncThunk(
   'brackets/fetchBracket',
   async ({ bracketId }, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/brackets/brackets/${bracketId}/`, {
+      const { data } = await $api.get(`/brackets/brackets/${bracketId}/`)
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  },
+)
+
+export const fetchParticipantAthletes = createAsyncThunk(
+  'brackets/fetchParticipantAthletes',
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/events/participant_athletes/`, {
         params,
       })
       return data
@@ -59,6 +71,12 @@ export const bracketsSlice = createSlice({
       data: [],
     },
     bracket: {
+      error: null,
+      isLoading: false,
+      data: null,
+      id: null,
+    },
+    participantAthletes: {
       error: null,
       isLoading: false,
       data: null,
@@ -116,6 +134,21 @@ export const bracketsSlice = createSlice({
       bracket.error = action.payload
       bracket.data = []
     })
+    // BRACKET PARTICIPANTS
+    builder.addCase(fetchParticipantAthletes.pending, ({ participantAthletes }) => {
+      participantAthletes.isLoading = true
+    })
+    builder.addCase(fetchParticipantAthletes.fulfilled, ({ participantAthletes }, action) => {
+      participantAthletes.isLoading = false
+      participantAthletes.data = action.payload
+      participantAthletes.id = action.payload?.id
+      participantAthletes.error = null
+    })
+    builder.addCase(fetchParticipantAthletes.rejected, ({ participantAthletes }, action) => {
+      participantAthletes.isLoading = false
+      participantAthletes.error = action.payload
+      participantAthletes.data = []
+    })
   },
 })
 
@@ -124,7 +157,12 @@ export const { setSearchValue, setSearchOpen, setCartLength } = bracketsSlice.ac
 export const selectBrackets = createSelector(
   (state) => state.brackets.brackets,
   (state) => state.brackets.bracketsFights,
-  (brackets, bracketsFights) => [brackets, bracketsFights],
+  (state) => state.brackets.participantAthletes,
+  (brackets, bracketsFights, participantAthletes) => [
+    brackets,
+    bracketsFights,
+    participantAthletes,
+  ],
 )
 
 export default bracketsSlice.reducer

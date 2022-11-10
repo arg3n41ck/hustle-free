@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketCell from './BracketCell'
+import BracketsBackground from './BracketsBackground'
 import {
   createAreaFromChilds,
+  createColumnsAreasByStepsCount,
   createDefaultArea,
   getBordersDirections,
   getBordersDirectionsForLosers,
   getBracketsBySteps,
-  // getLocalBrackets,
 } from './bracketsUtils'
 
 const getWrapperStyles = (type) => {
@@ -62,7 +64,7 @@ const divideTopLoaserBr = (brackets) => {
               return id == child && !isLoserBracket
             }),
           )
-
+          console.log(prev)
           prev.topBrackets.push({ ...cur, parents: topParents, children: topChilds })
         }
         return prev
@@ -72,14 +74,12 @@ const divideTopLoaserBr = (brackets) => {
   )
 }
 
-export default function BracketsDoubleEl() {
+export default function BracketsDoubleEl({ updateBF }) {
   const [topBracketsBySteps, setTopBracketsBySteps] = useState(null)
   const [loserBracketsBySteps, setLoserBracketsBySteps] = useState(null)
   const [, bracketsFights] = useSelector(selectBrackets)
 
   useEffect(async () => {
-    // getLocalBrackets(60).then((res) => {
-    // })
     if (bracketsFights.data?.length) {
       const { topBrackets, loserBrackets } = divideTopLoaserBr(bracketsFights.data)
       topBrackets && getBracketsBySteps(topBrackets).then(setTopBracketsBySteps)
@@ -87,14 +87,31 @@ export default function BracketsDoubleEl() {
     }
   }, [bracketsFights])
 
-  console.log(topBracketsBySteps, loserBracketsBySteps)
+  const topBracketsLastStep = useMemo(() => {
+    if (topBracketsBySteps) {
+      const topBrKeys = Object.keys(topBracketsBySteps)
+      return topBracketsBySteps[topBrKeys[topBrKeys.length - 1]].step
+    }
+  }, [topBracketsBySteps])
+
+  const loserBracketsLastStep = useMemo(() => {
+    if (loserBracketsBySteps) {
+      const loserBrKeys = Object.keys(loserBracketsBySteps)
+      return loserBracketsBySteps[loserBrKeys[loserBrKeys.length - 1]].step
+    }
+  }, [loserBracketsBySteps])
 
   return (
     <ColumnsWrapper>
-      <TopBrackets>
-        {!!Object.keys(topBracketsBySteps || {})?.length &&
+      <TopBrackets
+        style={{
+          gridTemplateColumns: topBracketsLastStep && `repeat(${topBracketsLastStep}, 340px)`,
+          gridTemplateAreas: createColumnsAreasByStepsCount(topBracketsLastStep),
+        }}
+      >
+        {!!topBracketsLastStep &&
           Object.keys(topBracketsBySteps).map((key) => {
-            const { cells, step } = topBracketsBySteps[key]
+            const { cells, step, roundName } = topBracketsBySteps[key]
             const { cells: nextStepsCells } = topBracketsBySteps[+key + 1] || { cells: null }
             const cellsAreas =
               cells?.length >= (nextStepsCells?.length || 0)
@@ -103,8 +120,8 @@ export default function BracketsDoubleEl() {
 
             const gridTemplateAreas = cellsAreas?.length && `'${cellsAreas.join("' '")}'`
             return (
-              <Column key={`brackets_round_${step}`}>
-                <RoundName>{step}</RoundName>
+              <Column key={`brackets_round_${step}`} style={{ gridArea: `step-${step}` }}>
+                <RoundName>{roundName}</RoundName>
                 {cells?.length && (
                   <CellsWrapper
                     style={
@@ -127,6 +144,7 @@ export default function BracketsDoubleEl() {
                           <BracketCell
                             key={`bracket_cell_${cell.id}`}
                             gridTemplateAreas={gridTemplateAreas}
+                            updateBF={updateBF}
                             borderDirection={borderDirection}
                             cell={cell}
                           />
@@ -138,7 +156,12 @@ export default function BracketsDoubleEl() {
             )
           })}
       </TopBrackets>
-      <LoserBrackets>
+      <LoserBrackets
+        style={{
+          gridTemplateColumns: loserBracketsLastStep && `repeat(${loserBracketsLastStep}, 340px)`,
+          gridTemplateAreas: createColumnsAreasByStepsCount(loserBracketsLastStep),
+        }}
+      >
         {!!Object.keys(loserBracketsBySteps || {})?.length &&
           Object.keys(loserBracketsBySteps).map((key) => {
             const { cells, step } = loserBracketsBySteps[key]
@@ -150,8 +173,7 @@ export default function BracketsDoubleEl() {
 
             const gridTemplateAreas = cellsAreas?.length && `'${cellsAreas.join("' '")}'`
             return (
-              <Column key={`brackets_round_${step}`}>
-                <RoundName>{step}</RoundName>
+              <Column key={`brackets_round_${step}`} style={{ gridArea: `step-${step}` }}>
                 {cells?.length && (
                   <CellsWrapper
                     style={
@@ -174,6 +196,7 @@ export default function BracketsDoubleEl() {
                           <BracketCell
                             key={`bracket_cell_${cell.id}`}
                             gridTemplateAreas={gridTemplateAreas}
+                            updateBF={updateBF}
                             borderDirection={borderDirection}
                             cell={cell}
                           />
@@ -185,11 +208,17 @@ export default function BracketsDoubleEl() {
             )
           })}
       </LoserBrackets>
+      <BracketsBackground
+        steps={
+          topBracketsLastStep > loserBracketsLastStep ? topBracketsLastStep : loserBracketsLastStep
+        }
+      />
     </ColumnsWrapper>
   )
 }
 
 const ColumnsWrapper = styled.div`
+  position: relative;
   width: 100%;
   overflow-x: auto;
   display: flex;
@@ -197,23 +226,21 @@ const ColumnsWrapper = styled.div`
 `
 
 const TopBrackets = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-rows: 1fr;
 `
 
 const LoserBrackets = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-rows: 1fr;
 `
 
 const Column = styled.div`
-  min-width: 360px;
+  min-width: 340px;
   height: 100%;
   display: flex;
   flex-direction: column;
   padding: 32px;
-
-  &:nth-child(odd) {
-    background: rgba(27, 28, 34, 0.25);
-  }
 `
 
 const CellsWrapper = styled.div`

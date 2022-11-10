@@ -2,9 +2,11 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useQuery from '../../../../hooks/useQuery'
+import { fetchCountries } from '../../../../redux/components/countriesAndCities'
 import {
   fetchBracketsByParams,
   fetchBracketsFightsByParams,
+  fetchParticipantAthletes,
 } from '../../../../redux/components/eventBrackets'
 import { fetchParticipantCategories } from '../../../../redux/components/participantsCategories'
 import { getEnabledLevels } from '../Categories/EventCategories'
@@ -35,6 +37,7 @@ function EventBrackets() {
 
   useEffect(() => {
     dispatch(fetchBracketsByParams(bracketsQuery))
+    dispatch(fetchCountries())
   }, [eventId])
 
   useEffect(() => {
@@ -83,6 +86,11 @@ function EventBrackets() {
               onSelectBracket={(value) => {
                 setSelectedBracket(value)
                 dispatch(fetchBracketsFightsByParams({ bracket: value?.id }))
+                dispatch(
+                  fetchParticipantAthletes({
+                    participation_category: value?.participationCategory?.id,
+                  }),
+                )
               }}
             />
           ))}

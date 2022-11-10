@@ -8,7 +8,6 @@ import {
   createDefaultArea,
   getBordersDirections,
   getBracketsBySteps,
-  getLocalBrackets,
 } from './bracketsUtils'
 
 const getWrapperStyles = (type) => {
@@ -29,18 +28,17 @@ const getWrapperStyles = (type) => {
   }
 }
 
-export default function BracketsSingleEl() {
+export default function BracketsSingleEl({ updateBF }) {
   const [bracketsBySteps, setBracketsBySteps] = useState(null)
   const [, bracketsFights] = useSelector(selectBrackets)
 
   useEffect(async () => {
-    // getLocalBrackets(31).then((res) => {
-    //   getBracketsBySteps(res).then(setBracketsBySteps)
-    // })
     if (bracketsFights.data?.length) {
       getBracketsBySteps(bracketsFights?.data).then(setBracketsBySteps)
     }
   }, [bracketsFights])
+
+  console.log(bracketsBySteps)
 
   return (
     <ColumnsWrapper>
@@ -81,6 +79,7 @@ export default function BracketsSingleEl() {
                           key={`bracket_cell_${cell.id}`}
                           gridTemplateAreas={gridTemplateAreas}
                           borderDirection={borderDirection}
+                          updateBF={updateBF}
                           classes={cell?.fightRoundType == 0 ? 'noBorder' : ''}
                           cell={cell}
                         />

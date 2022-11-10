@@ -26,7 +26,11 @@ export default function BracketsThreeMan() {
         <RoundName>FINAL</RoundName>
       </RoundNameWrapper>
       <ColumnsWrapper
-        style={{ gridTemplateRows: `repeat(${Object.keys(bracketsBySteps)?.length}, 1fr)` }}
+        style={{
+          gridTemplateRows: `repeat(${
+            bracketsBySteps && Object.keys(bracketsBySteps)?.length
+          }, 1fr)`,
+        }}
       >
         {!!Object.keys(bracketsBySteps || {})?.length &&
           Object.keys(bracketsBySteps).map((row) => {
