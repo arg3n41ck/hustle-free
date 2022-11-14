@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Teams from './Teams'
 import Applications from './Applications'
 import HeaderContent, { TitleHeader } from '../../../../ui/LKui/HeaderContent'
@@ -61,25 +61,27 @@ const Athletes = ({ onToggleSidebar }) => {
     }
   }, [user])
 
-  const { current: acceptOrRejectHandler } = useRef(async (id, status = 'approved', athleteId) => {
-    try {
-      if (user?.id) {
-        const indexCurrentElement = applications.findIndex((application) => application.id === id)
-        setApplications((prev) => [
-          ...prev.slice(0, indexCurrentElement),
-          ...prev.slice(indexCurrentElement + 1),
-        ])
-
-        await $api.put(`/teams/athlete_requests/${id}/`, {
-          status,
-          athlete: athleteId,
-          team: user?.teamId,
-        })
-        setTeams(await fetchTeams(user?.teamId))
-        await fetchMyRequests(user?.teamId).then(setApplications)
-      }
-    } catch (e) {}
-  })
+  const acceptOrRejectHandler = useCallback(
+    async (id, status = 'approved', athleteId) => {
+      try {
+        if (user?.id) {
+          const indexCurrentElement = applications.findIndex((application) => application.id === id)
+          setApplications((prev) => [
+            ...prev.slice(0, indexCurrentElement),
+            ...prev.slice(indexCurrentElement + 1),
+          ])
+          await $api.put(`/teams/athlete_requests/${id}/`, {
+            status,
+            athlete: athleteId,
+            team: user?.teamId,
+          })
+          setTeams(await fetchTeams(user?.teamId))
+          await fetchMyRequests(user?.teamId).then(setApplications)
+        }
+      } catch (e) {}
+    },
+    [user],
+  )
 
   return (
     <>
