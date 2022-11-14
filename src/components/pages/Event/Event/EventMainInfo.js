@@ -11,7 +11,7 @@ import EventMainInfoShare from './EventMainInfoShare'
 
 function EventMainInfo({ event }) {
   const { t: tEventDetail } = useTranslation('eventDetail')
-  const xl = useMediaQuery('(max-width: 1119px)')
+  const xl = useMediaQuery('(max-width: 1200px)')
 
   return (
     <MainWrapper>

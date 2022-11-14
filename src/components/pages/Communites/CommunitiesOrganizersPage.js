@@ -15,6 +15,7 @@ import CommunitiesHead from './CommunitiesHead'
 import { fetchOrganizers, organizersSelector } from '../../../redux/components/organizers'
 import CommunitiesOrganizersList from './CommunitiesOrganizersList'
 import { fetchAthletesByParams } from '../../../redux/components/athletes'
+import { theme } from '../../../styles/theme'
 
 function CommunitesPage() {
   const dispatch = useDispatch()
@@ -154,6 +155,10 @@ const CommunitesItems = styled.div`
 const CommunitesContainer = styled.div`
   margin-top: 48px;
   width: 100%;
+
+  ${theme.mqMax('md')} {
+    margin: 16px 0 0;
+  }
 `
 
 const CommunitesHeadingInputAndButton = styled.div`

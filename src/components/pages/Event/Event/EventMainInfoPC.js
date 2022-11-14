@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'next-i18next'
 import EventMainInfoShare from './EventMainInfoShare'
 import { useMediaQuery } from '@mui/material'
+import { theme } from '../../../../styles/theme'
 
 const getParticipantCategories = (event) => {
   const minPrice = event?.eventParticipantsCategory?.length
@@ -116,8 +117,16 @@ function EventMainInfoPC({ event }) {
 export default EventMainInfoPC
 
 const EMWrapper = styled.div`
-  background: #141519;
-  padding: 16px 8px !important;
+  padding: 0 8px 16px;
+
+  ${theme.mqMax('xl')} {
+    background: #141519;
+    padding: 16px 8px !important;
+  }
+
+  h3 {
+    margin-bottom: 23px;
+  }
 `
 
 const ExtraWrapper = styled.div`

@@ -188,6 +188,10 @@ const PaginationWrapper = styled.div`
 const CommunitiesHeadBtnsWrapper = styled.div`
   display: flex;
   gap: 32px;
+
+  ${theme.mqMax('md')} {
+    gap: 16px;
+  }
 `
 
 const FilterBtn = styled.button`
@@ -239,16 +243,13 @@ const CommunitesItems = styled.div`
   grid-gap: 48px;
 `
 
-const CommunitesItem = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`
-
 const CommunitesContainer = styled.div`
   margin-top: 48px;
   width: 100%;
+
+  ${theme.mqMax('md')} {
+    margin: 16px 0 0;
+  }
 `
 
 const CommunitesHeadingInputAndButton = styled.div`

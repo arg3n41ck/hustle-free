@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Teams from './Teams'
 import Applications from './Applications'
 import HeaderContent, { TitleHeader } from '../../../../ui/LKui/HeaderContent'
@@ -29,7 +29,7 @@ const fetchTeams = async (id) => {
 }
 
 const Athletes = ({ onToggleSidebar }) => {
-  const { user } = useSelector((state) => state.user)
+  const user = useSelector((state) => state.user.user)
   const [view, setView] = useState('teams') // teams | applicationsD
   const [teams, setTeams] = useState(null)
   const [applications, setApplications] = useState([])
@@ -61,21 +61,27 @@ const Athletes = ({ onToggleSidebar }) => {
     }
   }, [user])
 
-  const acceptOrRejectHandler = async (id, status = 'approved', athleteId) => {
-    try {
-      const indexCurrentElement = applications.findIndex((application) => application.id === id)
-      setApplications((prev) => [
-        ...prev.slice(0, indexCurrentElement),
-        ...prev.slice(indexCurrentElement + 1),
-      ])
-      await $api.put(`/teams/athlete_requests/${id}/`, {
-        status,
-        athlete: athleteId,
-        team: user?.teamId,
-      })
-      setTeams(await fetchTeams(user?.teamId))
-    } catch (e) {}
-  }
+  const acceptOrRejectHandler = useCallback(
+    async (id, status = 'approved', athleteId) => {
+      try {
+        if (user?.id) {
+          const indexCurrentElement = applications.findIndex((application) => application.id === id)
+          setApplications((prev) => [
+            ...prev.slice(0, indexCurrentElement),
+            ...prev.slice(indexCurrentElement + 1),
+          ])
+          await $api.put(`/teams/athlete_requests/${id}/`, {
+            status,
+            athlete: athleteId,
+            team: user?.teamId,
+          })
+          setTeams(await fetchTeams(user?.teamId))
+          await fetchMyRequests(user?.teamId).then(setApplications)
+        }
+      } catch (e) {}
+    },
+    [user],
+  )
 
   return (
     <>

@@ -53,6 +53,7 @@ function TeamsModalTemplate({ open, onClose }) {
     getTeamsRequest({ athlete: user.athleteId }).then(setTeamsRequests)
     setSelectedTeam(null)
     setModOpen(false)
+    onClose()
   }
 
   return (

@@ -25,7 +25,6 @@ const HorizontalTabsBorder = ({ valueTab, arrayTab, onChangeHandler, height, chi
                     display: 'grid',
                     gridTemplateColumns: `repeat(${arrayTab.length}, 1fr)`,
                     gridTemplateRows: `${height}`,
-                    gridGap: '16px',
                   },
                   '& .MuiTabs-indicator': {
                     height: '8px',
@@ -65,30 +64,32 @@ const Header = styled.div`
 `
 const TabItem = styled(Tab)`
   font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 32px;
+  font-weight: 400 !important;
+  font-size: 20px !important;
+  line-height: 32px !important;
   color: #828282 !important;
   min-width: 100% !important;
   width: 100% !important;
   height: 100% !important;
-  border-right: 1px solid #333;
+  border-right: 1px solid #333 !important;
 
   &.Mui-selected {
     color: #6d4eea !important;
   }
 
   &:last-child {
-    border-right: none;
+    border-right: none !important;
   }
   /* border-bottom: ${(p) => (p.active ? '8px solid #6d4eea' : '1px solid #333333')}; */
   transition: 0.4s;
 
   ${theme.mqMax('md')} {
     /* border-bottom: ${(p) => (p.active ? '1px solid #6d4eea' : '1px solid #333333')}; */
-    border-right: none;
+    border-right: none !important;
     min-width: initial !important;
-    font-size: 24px !important;
+    font-weight: 400;
+    font-size: 16px !important;
+    line-height: 24px !important;
     width: fit-content !important;
     /* padding: 8px 0 !important; */
   }
