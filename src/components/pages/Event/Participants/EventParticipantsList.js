@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import EventParticipantsItem from './EventParticipantsItem'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'next-i18next'
 import { Checkbox } from '@mui/material'
 import EPHeader from './EPHeader'
 import EPForm from './EPForm/EPForm'
 import { selectOgEvents } from '../../../../redux/components/user'
 import { useRouter } from 'next/router'
+import { fetchBracketsByParams, selectBrackets } from '../../../../redux/components/eventBrackets'
 
 const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
   const { user } = useSelector((state) => state.user)
@@ -17,28 +18,45 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
   } = useRouter()
   const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
   const [showEPHeader, setShowEPHeader] = useState(null)
+  const [brackets] = useSelector(selectBrackets)
   const [openEPForm, setOpenEPForm] = useState(false)
   const [selectedEPC, setSelectedEPC] = useState([])
   const EPBlock = useRef(null)
   const { t: tEventDetail } = useTranslation('eventDetail')
+  const dispatch = useDispatch()
+
+  const enabledToCreateBracketPC = useMemo(() => {
+    const bracketsIDs = brackets.data?.length
+      ? brackets.data.map(({ participationCategory }) => +participationCategory)
+      : []
+    return eventParticipants?.length
+      ? eventParticipants.filter(({ id }) => !bracketsIDs.includes(+id)).map(({ id }) => id)
+      : []
+  }, [brackets, eventParticipants])
+
+  useEffect(() => {
+    dispatch(fetchBracketsByParams({ event: eventId }))
+  }, [eventId])
 
   const selectedEPCDetailed = useMemo(() => {
     if (selectedEPC?.length && eventParticipants?.length) {
       return eventParticipants
         .filter(({ id }) => !!selectedEPC.includes(id))
-        .map(({ id, eventParticipantsCategory, level }) => ({
+        .map(({ id, eventParticipantsCategory, level, participants }) => ({
           id,
           title: `${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
         ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`,
+          participantsCount: participants?.length || 0,
         }))
+    } else if (!selectedEPC?.length) {
+      return []
     }
     return []
   }, [selectedEPC])
 
   const handleOnSelectedAll = useCallback(() => {
-    const ePIds = !!eventParticipants?.length ? eventParticipants.map(({ id }) => id) : []
-    setSelectedEPC(ePIds)
-  }, [selectedEPC, eventParticipants])
+    setSelectedEPC(enabledToCreateBracketPC)
+  }, [enabledToCreateBracketPC])
 
   useEffect(() => {
     document.querySelector('html').style.overflowY = openEPForm ? 'hidden' : ''
@@ -69,7 +87,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
       {/* {!!ogAndIsMyEvent && (
         <ChekboxWrapper>
           <Checkbox
-            checked={(eventParticipants?.length || 0) == (selectedEPC?.length || 0)}
+            checked={(enabledToCreateBracketPC?.length || 0) == (selectedEPC?.length || 0)}
             onChange={({ target: { checked } }) =>
               checked ? handleOnSelectedAll() : setSelectedEPC([])
             }
@@ -84,6 +102,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
           isOrganizer={!!ogAndIsMyEvent}
           eventParticipant={eventParticipant}
           selectedEPC={selectedEPC}
+          enabledToCreateBracketPC={enabledToCreateBracketPC}
           setSelectedEPC={setSelectedEPC}
         />
       ))}
@@ -91,7 +110,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
       {/* {!!ogAndIsMyEvent && (
         <>
           <EPHeader
-            open={showEPHeader && !openEPForm}
+            open={showEPHeader && !openEPForm && selectedEPCDetailed?.length}
             checked={(eventParticipants?.length || 0) == (selectedEPC?.length || 0)}
             onChange={({ target: { checked } }) =>
               checked ? handleOnSelectedAll() : setSelectedEPC([])
@@ -102,7 +121,10 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
             open={openEPForm}
             selectedEPCDetailed={selectedEPCDetailed}
             selectedEPC={selectedEPC}
-            onClose={() => setOpenEPForm(false)}
+            onClose={() => {
+              setOpenEPForm(false)
+              setSelectedEPC([])
+            }}
           />
         </>
       )} */}

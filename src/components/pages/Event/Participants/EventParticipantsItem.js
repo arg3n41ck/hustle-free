@@ -41,7 +41,11 @@ const EventParticipantsItem = ({
     return { registered, unconfirmed }
   }, [eventParticipant])
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(
+    !!(
+      (participantsValues?.registered?.length || 0) + (participantsValues?.unconfirmed?.length || 0)
+    ),
+  )
 
   const { current: info } = useRef(
     <Info>
@@ -69,7 +73,7 @@ const EventParticipantsItem = ({
 
   const header = (
     <HeaderWrapper>
-      {!!(isOrganizer && canCreateBracket) && (
+      {/* {!!(isOrganizer && canCreateBracket) && (
         <ChekboxWrapper>
           <Checkbox
             checked={!!selectedEPC?.length && selectedEPC.includes(eventParticipant?.id)}
@@ -80,10 +84,10 @@ const EventParticipantsItem = ({
             }
           />
         </ChekboxWrapper>
-      )}
+      )} */}
 
       <p
-        style={!!(isOrganizer && canCreateBracket) ? organizerTitleStyles : {}}
+        // style={!!(isOrganizer && canCreateBracket) ? organizerTitleStyles : {}}
         onClick={() => setOpen((s) => !s)}
       >
         {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
