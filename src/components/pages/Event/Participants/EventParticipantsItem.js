@@ -8,15 +8,25 @@ import DropdownData from '../../../ui/DropdownData'
 import ParticipantsList from './ParticipantsList'
 
 const organizerTitleStyles = {
-  width: 'calc(100% + 48px)',
-  transform: 'translateX(16px)',
-  padding: '0 48px 0 0',
+  transform: 'translateX(24px)',
+  padding: '0 56px 0 0',
 }
 
-const EventParticipantsItem = ({ eventParticipant, isOrganizer, selectedEPC, setSelectedEPC }) => {
+const EventParticipantsItem = ({
+  eventParticipant,
+  enabledToCreateBracketPC,
+  isOrganizer,
+  selectedEPC,
+  setSelectedEPC,
+}) => {
   const { eventParticipantsCategory, level } = eventParticipant
   const { t: tEventDetail } = useTranslation('eventDetail')
   const { user } = useSelector((state) => state.user)
+  const canCreateBracket = useMemo(
+    () => enabledToCreateBracketPC.some((id) => id == eventParticipant?.id),
+    [enabledToCreateBracketPC],
+  )
+
   const participantsValues = useMemo(() => {
     const registered = eventParticipant?.participants.filter(
       (participant) =>
@@ -31,38 +41,35 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, selectedEPC, set
     return { registered, unconfirmed }
   }, [eventParticipant])
 
-  const [open, setOpen] = useState(
-    Object.keys(participantsValues).some((key) => !!participantsValues[key]?.length),
-  )
+  const [open, setOpen] = useState(false)
+
   const { current: info } = useRef(
     <Info>
       <InfoText>
         {tEventDetail('event.participants.eventParticipantsItem.total')}:{' '}
-        {eventParticipant?.allParticipants}
+        {(participantsValues?.registered?.length || 0) +
+          (participantsValues?.unconfirmed?.length || 0)}
       </InfoText>
       {isOrganizer && (
         <InfoText color={'#6D4EEA'}>
           {tEventDetail('event.participants.eventParticipantsItem.confirmed')}:{' '}
-          {eventParticipant?.allParticipants
-            ? (+eventParticipant?.allParticipants || 0) -
-              (+eventParticipant?.isNotAcceptParticipants || 0)
-            : 0}
+          {participantsValues?.registered?.length || 0}
         </InfoText>
       )}
       <InfoText color='#27AE60'>
         {tEventDetail('event.participants.eventParticipantsItem.registrations')}:{' '}
-        {eventParticipant?.isAcceptParticipants}
+        {participantsValues?.registered?.length}
       </InfoText>
       <InfoText color='#F2994A'>
         {tEventDetail('event.participants.eventParticipantsItem.unconfirmed')}:{' '}
-        {eventParticipant?.isNotAcceptParticipants}
+        {participantsValues?.unconfirmed?.length}
       </InfoText>
     </Info>,
   )
 
   const header = (
     <HeaderWrapper>
-      {/* {!!isOrganizer && (
+      {!!(isOrganizer && canCreateBracket) && (
         <ChekboxWrapper>
           <Checkbox
             checked={!!selectedEPC?.length && selectedEPC.includes(eventParticipant?.id)}
@@ -73,11 +80,11 @@ const EventParticipantsItem = ({ eventParticipant, isOrganizer, selectedEPC, set
             }
           />
         </ChekboxWrapper>
-      )} */}
+      )}
 
       <p
-        // style={!!isOrganizer ? organizerTitleStyles : {}}
-        onClick={() => setOpen(!open)}
+        style={!!(isOrganizer && canCreateBracket) ? organizerTitleStyles : {}}
+        onClick={() => setOpen((s) => !s)}
       >
         {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
         ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
