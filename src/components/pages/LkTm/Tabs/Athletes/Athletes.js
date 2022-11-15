@@ -65,11 +65,6 @@ const Athletes = ({ onToggleSidebar }) => {
     async (id, status = 'approved', athleteId) => {
       try {
         if (user?.id) {
-          const indexCurrentElement = applications.findIndex((application) => application.id === id)
-          setApplications((prev) => [
-            ...prev.slice(0, indexCurrentElement),
-            ...prev.slice(indexCurrentElement + 1),
-          ])
           await $api.put(`/teams/athlete_requests/${id}/`, {
             status,
             athlete: athleteId,
