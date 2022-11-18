@@ -134,7 +134,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   })
 
   useEffect(() => {
-    if (user) {
+    if (user?.id) {
       dispatch(fetchTeams())
       dispatch(fetchAthleteTeams({ athlete: user?.athleteId }))
       dispatch(fetchLevel({ event: eventId, gender: user?.gender }))
@@ -179,12 +179,14 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
             <Autocomplete
               noOptionsText={'Не найдено'}
               onChange={(_, value) => {
-                !(athleteTeams || [])?.some((req) => req?.team?.id == value?.id)
-                  ? setModalWadeInTeam({
-                      id: value?.id,
-                      preliminaryModeration: value?.preliminaryModeration,
-                    })
-                  : formik.setFieldValue('team', value?.id)
+                if (!(athleteTeams || [])?.some((req) => req?.team?.id == value?.id)) {
+                  setModalWadeInTeam({
+                    id: value?.id,
+                    preliminaryModeration: value?.preliminaryModeration,
+                  })
+                } else {
+                  formik.setFieldValue('team', value?.id)
+                }
               }}
               options={(teams?.length && teams?.map((option) => option)) || []}
               getOptionLabel={(option) => option?.name || 'Выберите команду'}
