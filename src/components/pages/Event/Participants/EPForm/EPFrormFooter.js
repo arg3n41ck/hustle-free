@@ -1,12 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function EPFrormFooter({ onClose, formik }) {
+function EPFrormFooter({ onClose, formik, customError }) {
   return (
     <FooterWrapper>
       <Button onClick={onClose}>Назад</Button>
 
-      <Button className='active' onClick={formik.handleSubmit}>
+      <Button
+        className={formik?.isValid && formik?.dirty && !customError ? 'active' : 'disabled'}
+        disabled={customError}
+        onClick={formik.handleSubmit}
+      >
         Сохранить
       </Button>
     </FooterWrapper>
@@ -31,6 +35,11 @@ const Button = styled.button`
 
   font-size: 18px;
   color: #828282;
+
+  &.disabled {
+    background: #828282;
+    color: #fff;
+  }
 
   &.active {
     color: #fff;

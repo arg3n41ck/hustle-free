@@ -5,7 +5,7 @@ import { theme } from '../../../../styles/theme'
 import DropdownData from '../../../ui/DropdownData'
 import { ParticipantsItem } from '../Participants/ParticipantsItem'
 
-export default function BracketPCDropdown({ bracket, setSelectedBracket }) {
+export default function BracketPCDropdown({ bracket, onSelectBracket }) {
   const { participationCategory } = bracket
   const { eventParticipantsCategory, level, participants } = participationCategory
 
@@ -44,8 +44,8 @@ export default function BracketPCDropdown({ bracket, setSelectedBracket }) {
   const arrow = (
     <Arrow
       onClick={() =>
-        setSelectedBracket({
-          id: bracket?.id,
+        onSelectBracket({
+          ...bracket,
           title: header,
         })
       }
@@ -99,6 +99,7 @@ export default function BracketPCDropdown({ bracket, setSelectedBracket }) {
 const Info = styled.div`
   padding-bottom: 32px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   height: 88px;
 `
@@ -108,7 +109,6 @@ const InfoText = styled.p`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-  line-height: 24px;
   color: ${(p) => (p.color ? p.color : '#f2f2f2')};
 `
 

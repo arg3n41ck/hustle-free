@@ -2,7 +2,12 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useQuery from '../../../../hooks/useQuery'
-import { fetchBracketsByParams } from '../../../../redux/components/eventBrackets'
+import { fetchCountries } from '../../../../redux/components/countriesAndCities'
+import {
+  fetchBracketsByParams,
+  fetchBracketsFightsByParams,
+  fetchParticipantAthletes,
+} from '../../../../redux/components/eventBrackets'
 import { fetchParticipantCategories } from '../../../../redux/components/participantsCategories'
 import { getEnabledLevels } from '../Categories/EventCategories'
 import Filters from '../Participants/Filters'
@@ -32,6 +37,7 @@ function EventBrackets() {
 
   useEffect(() => {
     dispatch(fetchBracketsByParams(bracketsQuery))
+    dispatch(fetchCountries())
   }, [eventId])
 
   useEffect(() => {
@@ -77,7 +83,15 @@ function EventBrackets() {
             <BracketPCDropdown
               key={`bracket_${bracket.id}`}
               bracket={bracket}
-              setSelectedBracket={setSelectedBracket}
+              onSelectBracket={(value) => {
+                setSelectedBracket(value)
+                dispatch(fetchBracketsFightsByParams({ bracket: value?.id }))
+                dispatch(
+                  fetchParticipantAthletes({
+                    participation_category: value?.participationCategory?.id,
+                  }),
+                )
+              }}
             />
           ))}
 

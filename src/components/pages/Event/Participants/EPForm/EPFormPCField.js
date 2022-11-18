@@ -6,12 +6,12 @@ import { EPFieldMainWrapper } from './EPFormBrackets'
 function EPFormPCField({ formik, selectedEPCDetailed }) {
   const { values, errors, touched, setFieldValue } = formik
   return (
-    <EPFieldMainWrapper>
+    <EPFieldMainWrapper className={`${Boolean(touched?.epc) && errors?.epc ? 'error' : ''}`}>
       <EPFieldTitle>1. Выбраные категории</EPFieldTitle>
 
       <Checkboxes>
         {!!selectedEPCDetailed?.length &&
-          selectedEPCDetailed.map(({ id, title }) => (
+          selectedEPCDetailed.map(({ id, title, participantsCount }) => (
             <ChekboxWrapper key={`EP_creation_form_${id}`}>
               <Checkbox
                 checked={values.epc?.includes(id)}
@@ -24,7 +24,11 @@ function EPFormPCField({ formik, selectedEPCDetailed }) {
                       )
                 }
               />
-              <EPTitle>{title}</EPTitle>
+              <EPTitle>
+                {title}
+                {'->'}
+                {participantsCount}
+              </EPTitle>
             </ChekboxWrapper>
           ))}
         {Boolean(touched?.epc) && errors?.epc && <EPTitle className='error'>{errors.epc}</EPTitle>}

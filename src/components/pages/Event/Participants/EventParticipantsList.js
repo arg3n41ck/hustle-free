@@ -84,7 +84,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
           {tEventDetail('event.participants.eventParticipantsList.categoriesBasedProfile')}
         </Title>
       )}
-      {/* {!!ogAndIsMyEvent && (
+      {!!ogAndIsMyEvent && (
         <ChekboxWrapper>
           <Checkbox
             checked={(enabledToCreateBracketPC?.length || 0) == (selectedEPC?.length || 0)}
@@ -94,7 +94,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
           />
           <p>Выбрать всех</p>
         </ChekboxWrapper>
-      )} */}
+      )}
       <div ref={EPBlock} />
       {eventParticipants.map((eventParticipant) => (
         <EventParticipantsItem
@@ -107,7 +107,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
         />
       ))}
 
-      {/* {!!ogAndIsMyEvent && (
+      {!!ogAndIsMyEvent && (
         <>
           <EPHeader
             open={showEPHeader && !openEPForm && selectedEPCDetailed?.length}
@@ -127,7 +127,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
             }}
           />
         </>
-      )} */}
+      )}
     </>
   )
 }

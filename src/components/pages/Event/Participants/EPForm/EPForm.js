@@ -11,14 +11,12 @@ import { useTranslation } from 'next-i18next'
 import { toast } from 'react-toastify'
 import $api from '../../../../../services/axios'
 import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
+import { fetchBracketsByParams } from '../../../../../redux/components/eventBrackets'
 
-const createBracket = async ({ eventId, pcID, bracketType }) => {
+const createBracket = async (body) => {
   try {
-    await $api.post('/brackets/brackets/', {
-      event: eventId,
-      participationCategory: pcID,
-      bracketType,
-    })
+    await $api.post('/brackets/brackets/', body)
   } catch (e) {
     console.log(e)
     toast.error('Походу что-то пошло не так!')
@@ -30,6 +28,8 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
   const {
     query: { id: eventId },
   } = useRouter()
+  const [bracketError, setBracketError] = useState(null)
+  const dispatch = useDispatch()
   const { current: validationSchema } = useRef(
     yup.object({
       epc: yup.array().test({
@@ -48,12 +48,24 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
     validationSchema,
     onSubmit: async (values) => {
       const { epc, brackets } = values
-      await Promise.all(
-        epc.map((id) => createBracket({ eventId, pcID: id, bracketType: brackets })),
-      )
+      const reqBody = {
+        event: eventId,
+        bracketType: brackets,
+      }
+      if (!!values?.qualifyLoserBracketType) {
+        reqBody.qualifyLoserBracketType = values.qualifyLoserBracketType
+      }
+      await Promise.all(epc.map((id) => createBracket({ ...reqBody, participationCategory: id })))
+
+      dispatch(fetchBracketsByParams({ event: eventId }))
+      onClose()
       toast.info('Создается сетка!')
     },
   })
+
+  const onBracketError = ({ text }) => {
+    setBracketError(text)
+  }
 
   return (
     <AnimatePresence>
@@ -69,8 +81,13 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
           <ContentWrapper>
             <EPFormHeader onClose={onClose} formik={formik} />
             <EPFormPCField selectedEPCDetailed={selectedEPCDetailed} formik={formik} />
-            <EPFormBrackets formik={formik} />
-            <EPFrormFooter onClose={onClose} formik={formik} />
+            <EPFormBrackets
+              bracketError={bracketError}
+              onBracketError={onBracketError}
+              formik={formik}
+              selectedEPCDetailed={selectedEPCDetailed}
+            />
+            <EPFrormFooter onClose={onClose} formik={formik} customError={!!bracketError} />
           </ContentWrapper>
         </FormWrapper>
       )}

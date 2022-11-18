@@ -33,7 +33,19 @@ export const fetchBracket = createAsyncThunk(
   'brackets/fetchBracket',
   async ({ bracketId }, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/brackets/brackets/${bracketId}/`, {
+      const { data } = await $api.get(`/brackets/brackets/${bracketId}/`)
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  },
+)
+
+export const fetchParticipantAthletes = createAsyncThunk(
+  'brackets/fetchParticipantAthletes',
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/events/participant_athletes/`, {
         params,
       })
       return data
@@ -64,6 +76,12 @@ export const bracketsSlice = createSlice({
       data: null,
       id: null,
     },
+    participantAthletes: {
+      error: null,
+      isLoading: false,
+      data: null,
+      id: null,
+    },
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -85,6 +103,9 @@ export const bracketsSlice = createSlice({
     // BRACKETS FIGHTS BY PARAMS
     builder.addCase(fetchBracketsFightsByParams.pending, ({ bracketsFights }) => {
       bracketsFights.isLoading = true
+      bracketsFights.data = null
+      bracketsFights.count = 0
+      bracketsFights.error = null
     })
     builder.addCase(fetchBracketsFightsByParams.fulfilled, ({ bracketsFights }, action) => {
       bracketsFights.isLoading = false
@@ -95,7 +116,8 @@ export const bracketsSlice = createSlice({
     builder.addCase(fetchBracketsFightsByParams.rejected, ({ bracketsFights }, action) => {
       bracketsFights.isLoading = false
       bracketsFights.error = action.payload
-      bracketsFights.data = []
+      bracketsFights.count = 0
+      bracketsFights.data = null
     })
     // BRACKET DETAIL
     builder.addCase(fetchBracket.pending, ({ bracket }) => {
@@ -112,6 +134,21 @@ export const bracketsSlice = createSlice({
       bracket.error = action.payload
       bracket.data = []
     })
+    // BRACKET PARTICIPANTS
+    builder.addCase(fetchParticipantAthletes.pending, ({ participantAthletes }) => {
+      participantAthletes.isLoading = true
+    })
+    builder.addCase(fetchParticipantAthletes.fulfilled, ({ participantAthletes }, action) => {
+      participantAthletes.isLoading = false
+      participantAthletes.data = action.payload
+      participantAthletes.id = action.payload?.id
+      participantAthletes.error = null
+    })
+    builder.addCase(fetchParticipantAthletes.rejected, ({ participantAthletes }, action) => {
+      participantAthletes.isLoading = false
+      participantAthletes.error = action.payload
+      participantAthletes.data = []
+    })
   },
 })
 
@@ -120,7 +157,12 @@ export const { setSearchValue, setSearchOpen, setCartLength } = bracketsSlice.ac
 export const selectBrackets = createSelector(
   (state) => state.brackets.brackets,
   (state) => state.brackets.bracketsFights,
-  (brackets, bracketsFights) => [brackets, bracketsFights],
+  (state) => state.brackets.participantAthletes,
+  (brackets, bracketsFights, participantAthletes) => [
+    brackets,
+    bracketsFights,
+    participantAthletes,
+  ],
 )
 
 export default bracketsSlice.reducer

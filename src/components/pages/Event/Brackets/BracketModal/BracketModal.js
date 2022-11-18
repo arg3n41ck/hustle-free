@@ -1,9 +1,79 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
+import BracketHeaderInfo from './BracketHeaderInfo'
+import BracketsDoubleEl from './BracketsDoubleEl'
+import BracketsSingleEl from './BracketsSingleEl'
+import BracketsRobin from './BracketsRobin'
+import BracketsThreeMan from './BracketsThreeMan'
+import { useDispatch } from 'react-redux'
+import { fetchBracketsFightsByParams } from '../../../../../redux/components/eventBrackets'
+
+export const bracketTypes = {
+  1: {
+    id: 1,
+    name: 'SEWithoutBF',
+    title: 'Single elimination bracket (without bronze fight)',
+    component: (props) => <BracketsSingleEl brType={'SEWithoutBF'} {...props} />,
+  },
+  2: {
+    id: 2,
+    name: 'SEWithBF',
+    title: 'Single elimination bracket (with a bronze fight)',
+    component: (props) => <BracketsSingleEl brType={'SEWithBF'} {...props} />,
+  },
+  3: {
+    id: 3,
+    name: 'DEWithoutBZ',
+    title: 'Double elimination bracket (without bronze fight)',
+    component: (props) => <BracketsDoubleEl brType={'DEWithoutBZ'} {...props} />,
+  },
+  4: {
+    id: 4,
+    name: 'DEWithBZ',
+    title: 'Double elimination bracket (with a bronze fight)',
+    component: (props) => <BracketsDoubleEl brType={'DEWithBZ'} {...props} />,
+  },
+  5: {
+    id: 5,
+    name: 'TMC',
+    title: 'Three man bracket, comeback',
+    component: (props) => <BracketsThreeMan brType={'TMC'} {...props} />,
+  },
+  6: {
+    id: 6,
+    name: 'TMSW',
+    title: 'Three man bracket, shortcut winner',
+    component: (props) => <BracketsThreeMan brType={'TMSW'} {...props} />,
+  },
+  7: {
+    id: 7,
+    name: 'RR',
+    title: 'Round Robin brackets',
+    component: (props) => <BracketsRobin brType={'RR'} {...props} />,
+  },
+}
 
 export default function BracketModal({ selectedBracket, onClose }) {
+  const dispatch = useDispatch()
+  const { typeTitle, allParticipants, BracketWrapperByType } = useMemo(() => {
+    const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
+    return {
+      typeTitle: selectedBrType && selectedBrType?.title,
+      allParticipants: selectedBracket && selectedBracket?.participationCategory?.allParticipants,
+      BracketWrapperByType: (props) => selectedBrType && selectedBrType?.component(props),
+    }
+  }, [selectedBracket])
+
+  const updateBF = useCallback(() => {
+    dispatch(fetchBracketsFightsByParams({ bracket: selectedBracket?.id }))
+  }, [selectedBracket])
+
+  useEffect(() => {
+    document.querySelector('html').style.overflowY = !!selectedBracket?.id ? 'hidden' : ''
+  }, [selectedBracket])
+
   return (
     <AnimatePresence>
       {!!selectedBracket?.id && (
@@ -23,6 +93,8 @@ export default function BracketModal({ selectedBracket, onClose }) {
               </Back>
               <Title>{selectedBracket?.title}</Title>
             </HeaderWrapper>
+            <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
+            {BracketWrapperByType && <BracketWrapperByType updateBF={updateBF} />}
           </ContentWrapper>
         </BracketsModalWrapper>
       )}
@@ -45,11 +117,12 @@ const BracketsModalWrapper = styled(motion.div)`
 `
 
 const ContentWrapper = styled.div`
+  min-height: 100vh;
   max-width: 1489px;
   width: 100%;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template: min-content min-content auto / 1fr;
   gap: 16px;
 
   padding: 16px 16px 40px;
