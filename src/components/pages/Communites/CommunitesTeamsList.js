@@ -29,7 +29,7 @@ function CommunitesList({ data }) {
                     {name || ''}
                   </ItemTitle>
                   {/* <Results>8287 wins / 8294 losses</Results> */}
-                  <MembersCount>{teamMembersCount || 0} Атлет</MembersCount>
+                  {!!teamMembersCount && <MembersCount>{teamMembersCount} Атлетов</MembersCount>}
                 </div>
               </Item>
             </ItemWrapper>

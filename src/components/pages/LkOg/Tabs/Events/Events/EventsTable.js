@@ -111,9 +111,9 @@ function EventsTable({ events }) {
                       >
                         <div
                           className={`${
-                            accessor === 'status' && cell[accessor].value === 'in_proccessing'
+                            accessor === 'status' && cell[accessor]?.value === 'published'
                               ? 'green'
-                              : cell[accessor].value === 'published'
+                              : cell[accessor]?.value === 'draft'
                               ? 'draft'
                               : ''
                           }`}
@@ -241,7 +241,7 @@ const Td = styled.td`
   cursor: pointer;
 
   border-right: 1px solid #333;
-  & div {
+  & > div {
     width: 100%;
     min-height: 60px;
     display: flex;
@@ -255,6 +255,11 @@ const Td = styled.td`
       color: #828282;
     }
   }
+
+  &:first-child {
+    max-width: 350px;
+  }
+
   &:last-child {
     border-right: none;
 

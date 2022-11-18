@@ -17,6 +17,7 @@ import * as yup from 'yup'
 import { toast } from 'react-toastify'
 import { fetchCountries } from '../../../redux/components/countriesAndCities'
 import TeamModeration from '../LkAh/Tabs/Profile/Teams/TeamModeration'
+import { calculateAge, truncateString } from '../../../helpers/helpers'
 
 const dateKeys = [
   {
@@ -95,6 +96,8 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   const dispatch = useDispatch()
   const md = useMediaQuery('(max-width: 768px)')
   const [modalWadeInTeam, setModalWadeInTeam] = useState(null)
+  const [catAutoRefreshKey, setCatAutoRefreshKey] = useState('initital-event-reg-CARK')
+  const [teamAutoRefreshKey, setTeamAutoRefreshKey] = useState('initital-event-reg-TARK')
 
   const { current: validationSchema } = useRef(
     yup.object({
@@ -105,7 +108,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
     }),
   )
 
-  const formik = useFormik({
+  const { values, errors, touched, setFieldValue, handleSubmit, dirty, handleChange } = useFormik({
     initialValues: emptyInitialValues,
     validationSchema,
     onSubmit: async (values) => {
@@ -143,16 +146,23 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   }, [user])
 
   useEffect(() => {
-    user &&
+    setFieldValue('categoty', '')
+    if (user) {
       dispatch(
         fetchCategories({
           event: eventId,
-          level: formik.values.level || '',
-          weight: formik.values.weight || '',
+          level: values.level || '',
+          weight: values.weight || '',
           gender: user?.gender,
+          age: !!user?.dateBirthday ? calculateAge(user?.dateBirthday) : '',
         }),
       )
-  }, [eventId, formik.values, user])
+    }
+  }, [values?.weight, values?.level, user?.gender, user?.dateBirthday])
+
+  useEffect(() => {
+    setCatAutoRefreshKey(Math.random())
+  }, [categories])
 
   return (
     <>
@@ -160,10 +170,14 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
         <Modal open={modalWadeInTeam} onClose={() => setModalWadeInTeam(null)}>
           <Box sx={style}>
             <TeamModeration
-              onClose={() => setModalWadeInTeam(null)}
+              onClose={() => {
+                setModalWadeInTeam(null)
+                setFieldValue('team', '')
+                setTeamAutoRefreshKey(Math.random())
+              }}
               onSubmit={async () => {
                 await wadeInTeam({ team: modalWadeInTeam?.id, athlete: user?.athleteId })
-                formik.setFieldValue('team', modalWadeInTeam?.id)
+                setFieldValue('team', modalWadeInTeam?.id)
                 setModalWadeInTeam(null)
               }}
               isTeamWithModeration={!!modalWadeInTeam?.preliminaryModeration}
@@ -172,11 +186,12 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
           </Box>
         </Modal>
       )}
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <RegistrationAthleteToEventHeroInfo>
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>Выберите команду</p>
             <Autocomplete
+              key={`form_field_${teamAutoRefreshKey ?? 'initital-event-reg-TARK'}`}
               noOptionsText={'Не найдено'}
               onChange={(_, value) => {
                 if (!(athleteTeams || [])?.some((req) => req?.team?.id == value?.id)) {
@@ -185,12 +200,11 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
                     preliminaryModeration: value?.preliminaryModeration,
                   })
                 } else {
-                  formik.setFieldValue('team', value?.id)
+                  setFieldValue('team', value?.id)
                 }
               }}
               options={(teams?.length && teams?.map((option) => option)) || []}
               getOptionLabel={(option) => option?.name || 'Выберите команду'}
-              value={teams?.length && teams?.find(({ id }) => id === formik?.values?.team)}
               fullWidth
               renderInput={(params) => (
                 <TextField
@@ -199,17 +213,14 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
                     width: '100%',
                     '& .MuiOutlinedInput-root': {
                       '& > fieldset': {
-                        borderColor:
-                          formik.touched.team &&
-                          Boolean(formik.errors.team) &&
-                          '#d32f2f !important',
+                        borderColor: touched.team && Boolean(errors.team) && '#d32f2f !important',
                       },
                     },
                   }}
                   fullWidth
                   placeholder='Команды'
-                  error={formik.touched.team && Boolean(formik.errors.team)}
-                  helperText={formik.touched.team && formik.errors.team}
+                  error={touched.team && Boolean(errors.team)}
+                  helperText={touched.team && errors.team}
                   InputProps={{
                     ...params.InputProps,
                     endAdortment: <LocationIcon />,
@@ -223,11 +234,15 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
             <div className='auth-wrapper__input'>
               <p className='auth-title__input'>Уровень</p>
               <Autocomplete
+                key={'event-reg-level-autocomplete'}
                 noOptionsText={'Ничего не найдено'}
-                onChange={(_, value) => formik.setFieldValue('level', value?.id)}
+                onChange={(_, value) => {
+                  setFieldValue('level', value?.id)
+                  setFieldValue('weight', '')
+                }}
                 options={levels.map((option) => option)}
                 getOptionLabel={(option) => option?.name}
-                value={levels.find(({ id }) => id === formik?.values?.level) || null}
+                value={levels.find(({ id }) => id === values?.level) || null}
                 fullWidth
                 renderInput={(params) => (
                   <TextField
@@ -237,16 +252,14 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
                       '& .MuiOutlinedInput-root': {
                         '& > fieldset': {
                           borderColor:
-                            formik.touched.level &&
-                            Boolean(formik.errors.level) &&
-                            '#d32f2f !important',
+                            touched.level && Boolean(errors.level) && '#d32f2f !important',
                         },
                       },
                     }}
                     fullWidth
                     placeholder='Уровень'
-                    error={formik.touched.level && Boolean(formik.errors.level)}
-                    helperText={formik.touched.level && formik.errors.level}
+                    error={touched.level && Boolean(errors.level)}
+                    helperText={touched.level && errors.level}
                   />
                 )}
               />
@@ -264,54 +277,63 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
                   width: '100%',
                   '& .MuiOutlinedInput-root': {
                     '& > fieldset': {
-                      borderColor:
-                        formik.touched.weight &&
-                        Boolean(formik.errors.weight) &&
-                        '#d32f2f !important',
+                      borderColor: touched.weight && Boolean(errors.weight) && '#d32f2f !important',
                     },
                   },
                 }}
-                error={formik.touched.weight && Boolean(formik.errors.weight)}
-                helperText={formik.touched.weight && formik.errors.weight}
-                onChange={formik.handleChange}
-                value={formik.values.weight}
-              />
-            </div>
-
-            <div className='auth-wrapper__input'>
-              <p className='auth-title__input'>Выберите категорию</p>
-              <Autocomplete
-                noOptionsText={'Не найдено категорий по выбранным весу и уровню'}
-                onChange={(_, value) => formik.setFieldValue('category', value?.id)}
-                options={categories.map((option) => option) || []}
-                getOptionLabel={(option) => option?.name}
-                value={categories.find(({ id }) => id === formik?.values?.category)}
-                fullWidth
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    sx={{
-                      width: '100%',
-                      '& .MuiOutlinedInput-root': {
-                        '& > fieldset': {
-                          borderColor:
-                            formik.touched.category &&
-                            Boolean(formik.errors.category) &&
-                            '#d32f2f !important',
-                        },
-                      },
-                    }}
-                    fullWidth
-                    placeholder='Категории'
-                    error={formik.touched.category && Boolean(formik.errors.category)}
-                    helperText={formik.touched.category && formik.errors.category}
-                  />
-                )}
+                error={touched.weight && Boolean(errors.weight)}
+                helperText={touched.weight && errors.weight}
+                onChange={handleChange}
+                value={values.weight}
               />
             </div>
           </LevelWeightCategoryContainer>
+
+          <div className='auth-wrapper__input'>
+            <p className='auth-title__input'>Выберите категорию</p>
+            <Autocomplete
+              key={`form_field_${catAutoRefreshKey ?? 'initital-event-reg-CARK'}`}
+              noOptionsText={'Не найдено категорий по указанным возрасту, весу и уровню'}
+              onChange={(_, value) => setFieldValue('category', value?.id)}
+              options={
+                !!categories?.length && !!values?.level && !!values?.weight
+                  ? categories.map((opt) => opt)
+                  : []
+              }
+              getOptionLabel={(option) => {
+                const { name, fromAge, levels, toAge, fromWeight, toWeight } = option
+                const levelName = levels?.filter(({ id }) => id === values?.level)?.name ?? ''
+                return `${truncateString(name, 20)} / ${levelName ? levelName + ' / ' : ' '}${
+                  fromAge ? fromAge + ' - ' : ' '
+                }${toAge ? toAge + ' лет' : ''} / ${fromWeight ? fromWeight + ' кг ' : ' '} - ${
+                  toWeight ? toWeight + '  кг ' : ''
+                }`
+              }}
+              fullWidth
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  sx={{
+                    width: '100%',
+                    '& .MuiOutlinedInput-root': {
+                      '& > fieldset': {
+                        borderColor:
+                          touched.category && Boolean(errors.category) && '#d32f2f !important',
+                      },
+                    },
+                  }}
+                  fullWidth
+                  placeholder='Категории'
+                  error={touched.category && Boolean(errors.category)}
+                  helperText={touched.category && errors.category}
+                />
+              )}
+            />
+          </div>
         </RegistrationAthleteToEventHeroInfo>
+
         {!md && <Line />}
+
         <RegistrationAthleteToEventBottomButtons>
           <Link href={`/events/${eventId}/`}>
             <RegistrationAthleteToEventBottomButton background={md && 'none'} type='button'>
@@ -320,9 +342,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
           </Link>
           <RegistrationAthleteToEventBottomButton
             type={'submit'}
-            background={
-              !formik?.dirty ? '#828282' : 'linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)'
-            }
+            background={!dirty ? '#828282' : 'linear-gradient(90deg, #3F82E1 0%, #7A3FED 100%)'}
           >
             Зарегистрироваться
           </RegistrationAthleteToEventBottomButton>
@@ -336,7 +356,7 @@ export default RegistrationAthleteToEvent
 
 const LevelWeightCategoryContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 24px;
 
   @media screen and (max-width: 768px) {

@@ -86,3 +86,11 @@ export const removeDuplicateObjectFromArray = (array, key) => {
   const check = new Set()
   return array.filter((obj) => !check.has(obj[key]) && check.add(obj[key]))
 }
+
+export const calculateAge = (birthSTR) => {
+  const dob = new Date(birthSTR)
+  const diffMS = Date.now() - dob.getTime()
+  const ageDT = new Date(diffMS)
+
+  return Math.abs(ageDT.getUTCFullYear() - 1970)
+}

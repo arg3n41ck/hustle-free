@@ -7,7 +7,6 @@ import EDContentFilter from '../EDContentFilter'
 import Autocompletes from './Autocompletes'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'next-i18next'
-import { Tooltip } from '@mui/material'
 
 export const getEventPC = async (query) => {
   try {
@@ -90,17 +89,7 @@ function EventCategories() {
       accessor: 'weight',
     },
     {
-      column: (
-        <Tooltip
-          style={{ cursor: 'pointer' }}
-          title={tEventDetail('event.categories.table.priceForStandardRegistrationPeriod')}
-        >
-          <PriceHead>
-            <span>{tEventDetail('event.categories.table.price')}</span>
-            <Info />
-          </PriceHead>
-        </Tooltip>
-      ),
+      column: tEventDetail('event.categories.table.price'),
       accessor: 'price',
     },
   ])
