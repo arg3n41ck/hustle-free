@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import EventParticipantsItem from './EventParticipantsItem'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,11 +17,10 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
     query: { id: eventId },
   } = useRouter()
   const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
-  const [showEPHeader, setShowEPHeader] = useState(null)
+  const [showEPHeader, setShowEPHeader] = useState(false)
   const [brackets] = useSelector(selectBrackets)
   const [openEPForm, setOpenEPForm] = useState(false)
   const [selectedEPC, setSelectedEPC] = useState([])
-  const EPBlock = useRef(null)
   const { t: tEventDetail } = useTranslation('eventDetail')
   const dispatch = useDispatch()
 
@@ -40,6 +39,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
 
   const selectedEPCDetailed = useMemo(() => {
     if (selectedEPC?.length && eventParticipants?.length) {
+      setShowEPHeader(true)
       return eventParticipants
         .filter(({ id }) => !!selectedEPC.includes(id))
         .map(({ id, eventParticipantsCategory, level, participants }) => ({
@@ -62,21 +62,6 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
     document.querySelector('html').style.overflowY = openEPForm ? 'hidden' : ''
   }, [openEPForm])
 
-  useEffect(() => {
-    if (EPBlock) {
-      window.addEventListener('scroll', () => {
-        setShowEPHeader(window.scrollY >= EPBlock?.current?.offsetTop)
-      })
-    }
-    return () => {
-      if (EPBlock) {
-        window.addEventListener('srcoll', () => {
-          setShowEPHeader(window.scrollY >= EPBlock?.current?.offsetTop)
-        })
-      }
-    }
-  }, [EPBlock])
-
   return (
     <>
       {isAthletes && (
@@ -95,7 +80,6 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
           <p>Выбрать всех</p>
         </ChekboxWrapper>
       )}
-      <div ref={EPBlock} />
       {eventParticipants.map((eventParticipant) => (
         <EventParticipantsItem
           key={eventParticipant.id}
@@ -111,7 +95,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
         <>
           <EPHeader
             open={showEPHeader && !openEPForm && selectedEPCDetailed?.length}
-            checked={(eventParticipants?.length || 0) == (selectedEPC?.length || 0)}
+            checked={(enabledToCreateBracketPC?.length || 0) == (selectedEPC?.length || 0)}
             onChange={({ target: { checked } }) =>
               checked ? handleOnSelectedAll() : setSelectedEPC([])
             }

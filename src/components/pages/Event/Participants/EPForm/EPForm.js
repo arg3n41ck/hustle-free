@@ -1,6 +1,6 @@
 import { useFormik } from 'formik'
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import EPFormBrackets from './EPFormBrackets'
 import EPFormHeader from './EPFormHeader'
@@ -36,7 +36,7 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
         message: tCommon('validation.required'),
         test: (value) => !!value?.length,
       }),
-      brackets: yup.mixed().required(tCommon('validation.required')),
+      brackets: yup.string().required(tCommon('validation.required')).nullable(),
     }),
   )
 
@@ -61,11 +61,16 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
       onClose()
       toast.info('Создается сетка!')
     },
+    enableReinitialize: true,
   })
 
   const onBracketError = ({ text }) => {
     setBracketError(text)
   }
+
+  useEffect(() => {
+    formik.validateForm()
+  }, [formik.values])
 
   return (
     <AnimatePresence>

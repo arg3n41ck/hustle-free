@@ -174,7 +174,11 @@ function EPFormBrackets({ formik, selectedEPCDetailed, bracketError, onBracketEr
         ))}
       </BracketsWrapper>
       {(Boolean(touched?.brackets) && errors?.brackets) ||
-        (bracketError && <EPTitle className='error'>{errors.brackets || bracketError}</EPTitle>)}
+        (bracketError && (
+          <EPTitle className='error'>
+            {(touched?.brackets && errors.brackets) || bracketError}
+          </EPTitle>
+        ))}
     </EPFieldMainWrapper>
   )
 }
