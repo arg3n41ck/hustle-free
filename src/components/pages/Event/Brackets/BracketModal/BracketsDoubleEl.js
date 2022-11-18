@@ -64,7 +64,7 @@ const divideTopLoaserBr = (brackets) => {
               return id == child && !isLoserBracket
             }),
           )
-          console.log(prev)
+
           prev.topBrackets.push({ ...cur, parents: topParents, children: topChilds })
         }
         return prev

@@ -67,7 +67,13 @@ export default function BracketModal({ selectedBracket, onClose }) {
   }, [selectedBracket])
 
   const updateBF = useCallback(() => {
-    dispatch(fetchBracketsFightsByParams({ bracket: selectedBracket?.id }))
+    const handler = setTimeout(() => {
+      dispatch(fetchBracketsFightsByParams({ bracket: selectedBracket?.id }))
+    }, 700)
+
+    return () => {
+      clearTimeout(handler)
+    }
   }, [selectedBracket])
 
   useEffect(() => {

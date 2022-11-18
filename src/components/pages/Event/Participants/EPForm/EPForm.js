@@ -59,7 +59,6 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
 
       dispatch(fetchBracketsByParams({ event: eventId }))
       onClose()
-      toast.info('Создается сетка!')
     },
     enableReinitialize: true,
   })

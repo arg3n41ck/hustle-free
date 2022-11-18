@@ -1,9 +1,8 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import $api from '../../../../../services/axios'
 
 const setWinner = async (bfId, fighter) => {
-  console.log({ bfId })
   try {
     await $api.post(`/brackets/brackets_fights/${bfId}/winner_endpoint/`, {
       fighter,
@@ -18,7 +17,7 @@ export default function BracketWin({ bfId, winner, fighter, onWin }) {
   const [hideBtns, setHideBtns] = useState(false)
   const isWinner = useMemo(() => winner == fighter, [winner, fighter])
 
-  const { current: handleSetWinner } = useRef(async () => {
+  const handleSetWinner = useCallback(async () => {
     setHideBtns(true)
     await setWinner(bfId, fighter).then(() => {
       onWin()
@@ -26,11 +25,14 @@ export default function BracketWin({ bfId, winner, fighter, onWin }) {
       setOpenConf(false)
     })
   }, [])
-  console.log(openConf, winner)
+
   return !hideBtns ? (
     <MainWrapper onMouseLeave={() => setOpenConf(false)}>
-      {isWinner ?? !openConf ? (
-        <WinBtn className={`${isWinner ? 'win' : ''}`} onClick={() => !win && setOpenConf(true)}>
+      {isWinner || !openConf ? (
+        <WinBtn
+          className={`${isWinner ? 'win' : ''}`}
+          onClick={() => !isWinner && setOpenConf(true)}
+        >
           W
         </WinBtn>
       ) : (

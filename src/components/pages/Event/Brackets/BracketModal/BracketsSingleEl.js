@@ -38,8 +38,6 @@ export default function BracketsSingleEl({ updateBF }) {
     }
   }, [bracketsFights])
 
-  console.log(bracketsBySteps)
-
   return (
     <ColumnsWrapper>
       {!!Object.keys(bracketsBySteps || {})?.length &&

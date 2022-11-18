@@ -49,16 +49,16 @@ export default function BracketCell({
       return [firstaAthlete, secondAthlete]
     }
     return []
-  }, [participantAthletes])
+  }, [participantAthletes, fighters])
 
   return (
     <CellWrapper
       className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
       style={gridTemplateAreas ? { gridArea: `cell-${id}` } : {}}
     >
-      <FightNum>
+      {/* <FightNum>
         FN:{fightNumber}, ID: {id}, CH: {children[0]}
-      </FightNum>
+      </FightNum> */}
       <FighterWrapper className='first'>
         <FighterAva />
         <FighterTexts>
@@ -78,7 +78,7 @@ export default function BracketCell({
             <TeamName>{truncateString(athletesInfo[0]?.team?.name, 20, true)}</TeamName>
           )}
         </FighterTexts>
-        {!!athletesInfo[0] && +fighters[1]?.id !== +winner && (
+        {fighters?.length === 2 && +fighters[1]?.id !== +winner && (
           <BracketWin
             bfId={id}
             fighter={fighters[0]?.id}
@@ -108,7 +108,7 @@ export default function BracketCell({
             <TeamName>{truncateString(athletesInfo[1]?.team?.name, 20, true)}</TeamName>
           )}
         </FighterTexts>
-        {!!athletesInfo[1] && +fighters[0]?.id !== +winner && (
+        {fighters?.length === 2 && +fighters[0]?.id !== +winner && (
           <BracketWin
             bfId={id}
             fighter={fighters[1]?.id}

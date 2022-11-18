@@ -23,7 +23,7 @@ const getWrapperStyles = (type) => {
   }
 }
 
-export default function BracketsRobin() {
+export default function BracketsRobin({ updateBF }) {
   const [bracketsBySteps, setBracketsBySteps] = useState(null)
   const [, bracketsFights] = useSelector(selectBrackets)
 
@@ -68,6 +68,7 @@ export default function BracketsRobin() {
                           key={`bracket_cell_${cell.id}`}
                           gridTemplateAreas={gridTemplateAreas}
                           borderDirection={borderDirection}
+                          updateBF={updateBF}
                           classes={cell?.fightRoundType == 0 ? 'noBorder' : ''}
                           cell={cell}
                         />

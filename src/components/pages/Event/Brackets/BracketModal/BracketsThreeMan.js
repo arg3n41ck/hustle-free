@@ -9,7 +9,7 @@ import {
   getThreeManBracketsBySteps,
 } from './bracketsUtils'
 
-export default function BracketsThreeMan() {
+export default function BracketsThreeMan({ updateBF }) {
   const [bracketsBySteps, setBracketsBySteps] = useState(null)
   const [, bracketsFights] = useSelector(selectBrackets)
 
@@ -66,6 +66,7 @@ export default function BracketsThreeMan() {
                                 <BracketCell
                                   key={`bracket_cell_${cell.id}`}
                                   gridTemplateAreas={gridTemplateAreas}
+                                  updateBF={updateBF}
                                   borderDirection={borderDirection}
                                   cell={cell}
                                 />
