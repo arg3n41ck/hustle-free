@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Box, TextField, Autocomplete, useMediaQuery } from '@mui/material'
 import { ru } from 'date-fns/locale'
 import { DatePicker, LocalizationProvider, MobileDatePicker } from '@mui/lab'
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import Radio from '../../ui/Radio'
 import InputMask from 'react-input-mask'
@@ -176,7 +177,7 @@ const AthleteUserInfo = () => {
           <div className='auth-wrapper__input'>
             <p className='auth-title__input'>Дата рождения</p>
             <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-              <DatePicker
+              <DesktopDatePicker
                 toolbarTitle={'Выбрать дату'}
                 cancelText={'Отмена'}
                 disableCloseOnSelect={false}

@@ -7,7 +7,7 @@ import { BoxIcon } from '../../../Events/EventsCatalog/EventsFilter'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { ru } from 'date-fns/locale'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import { DatePicker } from '@mui/lab'
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import { asiaTimezone } from '../../../../../services/asia-timezone'
 import Link from 'next/link'
 import { useTranslation } from 'next-i18next'
@@ -85,7 +85,7 @@ function EventDefaults({ formik }) {
           {tLkOg('editEvent.generalInformation.tournamentStartDate')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-          <DatePicker
+          <DesktopDatePicker
             toolbarTitle={tLkOg('editEvent.generalInformation.tournamentStartDate')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values?.dateStart}
@@ -124,7 +124,7 @@ function EventDefaults({ formik }) {
           {tLkOg('editEvent.generalInformation.tournamentEndDate')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-          <DatePicker
+          <DesktopDatePicker
             toolbarTitle={tLkOg('editEvent.generalInformation.tournamentEndDate')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values?.dateEnd}

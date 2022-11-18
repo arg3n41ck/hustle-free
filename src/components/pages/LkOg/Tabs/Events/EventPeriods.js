@@ -15,7 +15,7 @@ import { fetchSportTypes } from '../../../../../redux/components/sportTypes'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { ru } from 'date-fns/locale'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import { DatePicker } from '@mui/lab'
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import { useRouter } from 'next/router'
 import { Cancel, EventFormFooter, Field, Form, Submit } from './EventDefaults'
 import { formDataHttp } from '../../../../../helpers/formDataHttp'
@@ -212,7 +212,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
             <Field style={{ marginTop: 24 }}>
               <p className='auth-title__input'>{tLkOg('registrationPeriods.sunriseStartDate')}</p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-                <DatePicker
+                <DesktopDatePicker
                   toolbarTitle={tLkOg('registrationPeriods.sunriseStartDate')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.earlyRegStart}
@@ -250,7 +250,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
                 {tLkOg('registrationPeriods.endDateForEarlyRegistration')}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-                <DatePicker
+                <DesktopDatePicker
                   toolbarTitle={tLkOg('registrationPeriods.endDateForEarlyRegistration')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.earlyRegEnd}
@@ -300,7 +300,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
           {tLkOg('registrationPeriods.standardEnrollmentStartDate')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-          <DatePicker
+          <DesktopDatePicker
             toolbarTitle={tLkOg('registrationPeriods.standardEnrollmentStartDate')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.standartRegStart}
@@ -343,7 +343,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
           {tLkOg('registrationPeriods.endDateOfStandardRegistration')}
         </p>
         <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-          <DatePicker
+          <DesktopDatePicker
             toolbarTitle={tLkOg('registrationPeriods.endDateOfStandardRegistration')}
             cancelText={tLkOg('editEvent.cancel')}
             value={values.standartRegEnd}
@@ -410,7 +410,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
                 {tLkOg('registrationPeriods.lateRegistrationStartDate')}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-                <DatePicker
+                <DesktopDatePicker
                   toolbarTitle={tLkOg('registrationPeriods.lateRegistrationStartDate')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.lateRegStart}
@@ -452,7 +452,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
                 {tLkOg('registrationPeriods.lateRegistrationEndDate')}
               </p>
               <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-                <DatePicker
+                <DesktopDatePicker
                   toolbarTitle={tLkOg('registrationPeriods.lateRegistrationEndDate')}
                   cancelText={tLkOg('editEvent.cancel')}
                   value={values.lateRegEnd}

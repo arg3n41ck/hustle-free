@@ -11,7 +11,8 @@ import { fetchSportTypes, selectSportTypes } from '../../../../redux/components/
 import useQuery from '../../../../hooks/useQuery'
 import { useRouter } from 'next/router'
 import { fetchEventsByParams } from '../../../../redux/components/events'
-import { LocalizationProvider, DatePicker } from '@mui/lab'
+import { LocalizationProvider } from '@mui/lab'
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import { ru } from 'date-fns/locale'
 import { format } from 'date-fns'
@@ -147,7 +148,7 @@ function EventsFilter() {
             />
           )}
           <LocalizationProvider locale={ru} dateAdapter={AdapterDateFns}>
-            <DatePicker
+            <DesktopDatePicker
               toolbarTitle={tEvents('events.filter.selectDateFrom')}
               cancelText={tEvents('events.filter.cancel')}
               value={fromDate}
@@ -171,7 +172,7 @@ function EventsFilter() {
                 />
               )}
             />
-            <DatePicker
+            <DesktopDatePicker
               toolbarTitle={tEvents('events.filter.selectDateBefore')}
               cancelText={tEvents('events.filter.cancel')}
               value={toDate}
