@@ -70,8 +70,6 @@ const Index = () => {
     setErrorMessage(null)
   }, [formik.values.email])
 
-  console.log(formik.values)
-
   return (
     <>
       <Form

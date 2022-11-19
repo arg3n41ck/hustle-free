@@ -137,13 +137,13 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   })
 
   useEffect(() => {
-    if (user?.id) {
-      dispatch(fetchTeams())
+    dispatch(fetchTeams())
+    if (user?.athleteId && user?.gender) {
       dispatch(fetchAthleteTeams({ athlete: user?.athleteId }))
       dispatch(fetchLevel({ event: eventId, gender: user?.gender }))
     }
     dispatch(fetchCountries())
-  }, [user])
+  }, [user?.gender, eventId, user?.athleteId])
 
   useEffect(() => {
     setFieldValue('categoty', '')
@@ -163,11 +163,11 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   useEffect(() => {
     setCatAutoRefreshKey(Math.random())
   }, [categories])
-
+  console.log(values)
   return (
     <>
       {!!modalWadeInTeam?.id && (
-        <Modal open={modalWadeInTeam} onClose={() => setModalWadeInTeam(null)}>
+        <Modal open={!!modalWadeInTeam} onClose={() => setModalWadeInTeam(null)}>
           <Box sx={style}>
             <TeamModeration
               onClose={() => {
@@ -194,6 +194,10 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
               key={`form_field_${teamAutoRefreshKey ?? 'initital-event-reg-TARK'}`}
               noOptionsText={'Не найдено'}
               onChange={(_, value) => {
+                console.log(
+                  value,
+                  (athleteTeams || [])?.some((req) => req?.team?.id == value?.id),
+                )
                 if (!(athleteTeams || [])?.some((req) => req?.team?.id == value?.id)) {
                   setModalWadeInTeam({
                     id: value?.id,
