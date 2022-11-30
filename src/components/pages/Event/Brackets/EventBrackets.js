@@ -1,12 +1,15 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import styled from 'styled-components'
 import useQuery from '../../../../hooks/useQuery'
 import { fetchCountries } from '../../../../redux/components/countriesAndCities'
 import {
   fetchBracketsByParams,
   fetchBracketsFightsByParams,
   fetchParticipantAthletes,
+  setSelectedBracket,
 } from '../../../../redux/components/eventBrackets'
 import { fetchParticipantCategories } from '../../../../redux/components/participantsCategories'
 import { getEnabledLevels } from '../Categories/EventCategories'
@@ -19,24 +22,25 @@ function EventBrackets() {
     query: { id: eventId },
     push: routerPush,
   } = useRouter()
-  const pcQuery = useQuery()
-  const bracketsQuery = useQuery()
-  const [selectedBracket, setSelectedBracket] = useState(null)
+  const query = useQuery()
 
   const { data: eventParticipants } = useSelector(
     (state) => state.participantCategories.participantCategories,
   )
-  const { data: brackets } = useSelector((state) => state.brackets.brackets)
+  const {
+    brackets: { data: brackets },
+    bracket,
+  } = useSelector((state) => state.brackets)
 
   const [levels, setLevels] = useState([])
   const dispatch = useDispatch()
 
   useEffect(async () => {
-    dispatch(fetchParticipantCategories(pcQuery))
-  }, [pcQuery])
+    dispatch(fetchParticipantCategories(query))
+  }, [query])
 
   useEffect(() => {
-    dispatch(fetchBracketsByParams(bracketsQuery))
+    dispatch(fetchBracketsByParams(query))
     dispatch(fetchCountries())
   }, [eventId])
 
@@ -45,17 +49,27 @@ function EventBrackets() {
   }, [eventParticipants])
 
   useEffect(() => {
-    pcQuery.set('event', eventId)
-    bracketsQuery.set('event', eventId)
+    query.set('event', eventId)
   }, [eventId])
+
+  useEffect(() => {
+    if (bracket?.id) {
+      dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id }))
+      dispatch(
+        fetchParticipantAthletes({
+          participation_category: bracket?.participationCategory?.id,
+        }),
+      )
+    }
+  }, [bracket])
 
   const filterHandler = ({ target: { name, value } }) => {
     if (!!value) {
-      pcQuery.set(name, value)
+      query.set(name, value)
     } else {
-      name && pcQuery.delete(name)
+      name && query.delete(name)
     }
-    routerPush(`/events/${eventId}/brackets/?${pcQuery}`)
+    routerPush(`/events/${eventId}/brackets/?${query}`)
   }
 
   const bracketsPC = useMemo(() => {
@@ -73,31 +87,71 @@ function EventBrackets() {
   }, [brackets, eventParticipants])
 
   return (
-    <div>
+    <MainWrapper style={{ minHeight: !!bracketsPC?.length ? '100vh' : 'unset' }}>
       <Filters levels={levels} onFilter={filterHandler} />
-
-      {bracketsPC?.length &&
-        bracketsPC
-          .filter(({ participationCategory }) => participationCategory)
-          .map((bracket) => (
-            <BracketPCDropdown
-              key={`bracket_${bracket.id}`}
-              bracket={bracket}
-              onSelectBracket={(value) => {
-                setSelectedBracket(value)
-                dispatch(fetchBracketsFightsByParams({ bracket: value?.id }))
-                dispatch(
-                  fetchParticipantAthletes({
-                    participation_category: value?.participationCategory?.id,
-                  }),
-                )
-              }}
+      <AnimatePresence>
+        {!!bracket?.id && (
+          <BracketsWrapper
+            initial={{ height: 0 }}
+            animate={{
+              height: 'unset',
+              transition: { delay: 0.5, duration: 0.4 },
+            }}
+            exit={{
+              height: 0,
+              transition: { delay: 0.4, duration: 0.5 },
+            }}
+          >
+            <BracketModal
+              selectedBracket={bracket}
+              onClose={() => dispatch(setSelectedBracket(null))}
             />
-          ))}
-
-      <BracketModal selectedBracket={selectedBracket} onClose={() => setSelectedBracket(null)} />
-    </div>
+          </BracketsWrapper>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {!!bracketsPC?.length && !bracket && (
+          <BracketsWrapper
+            initial={{ height: 0 }}
+            animate={{
+              height: 'unset',
+              transition: { delay: 0.2, duration: 0.3 },
+            }}
+            exit={{
+              height: 0,
+              transition: { delay: 0.4, duration: 0.5 },
+            }}
+          >
+            <PCWrapper>
+              {bracketsPC
+                .filter(({ participationCategory }) => participationCategory)
+                .map((bracket) => (
+                  <BracketPCDropdown
+                    key={`bracket_${bracket.id}`}
+                    bracket={bracket}
+                    onSelectBracket={(value) => dispatch(setSelectedBracket(value))}
+                  />
+                ))}
+            </PCWrapper>
+          </BracketsWrapper>
+        )}
+      </AnimatePresence>
+    </MainWrapper>
   )
 }
 
 export default EventBrackets
+
+const MainWrapper = styled.div`
+  position: relative;
+`
+
+const BracketsWrapper = styled(motion.div)`
+  top: 0;
+  z-index: 12;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+`
+
+const PCWrapper = styled.div``

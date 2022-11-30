@@ -163,7 +163,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
   useEffect(() => {
     setCatAutoRefreshKey(Math.random())
   }, [categories])
-  console.log(values)
+
   return (
     <>
       {!!modalWadeInTeam?.id && (

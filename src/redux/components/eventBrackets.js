@@ -70,12 +70,7 @@ export const bracketsSlice = createSlice({
       isLoading: false,
       data: [],
     },
-    bracket: {
-      error: null,
-      isLoading: false,
-      data: null,
-      id: null,
-    },
+    bracket: null,
     participantAthletes: {
       error: null,
       isLoading: false,
@@ -83,7 +78,11 @@ export const bracketsSlice = createSlice({
       id: null,
     },
   },
-  reducers: {},
+  reducers: {
+    setSelectedBracket: (state, action) => {
+      state.bracket = action.payload
+    },
+  },
   extraReducers: (builder) => {
     // BRACKETS BY PARAMS
     builder.addCase(fetchBracketsByParams.pending, ({ brackets }) => {
@@ -119,21 +118,6 @@ export const bracketsSlice = createSlice({
       bracketsFights.count = 0
       bracketsFights.data = null
     })
-    // BRACKET DETAIL
-    builder.addCase(fetchBracket.pending, ({ bracket }) => {
-      bracket.isLoading = true
-    })
-    builder.addCase(fetchBracket.fulfilled, ({ bracket }, action) => {
-      bracket.isLoading = false
-      bracket.data = action.payload
-      bracket.id = action.payload?.id
-      bracket.error = null
-    })
-    builder.addCase(fetchBracket.rejected, ({ bracket }, action) => {
-      bracket.isLoading = false
-      bracket.error = action.payload
-      bracket.data = []
-    })
     // BRACKET PARTICIPANTS
     builder.addCase(fetchParticipantAthletes.pending, ({ participantAthletes }) => {
       participantAthletes.isLoading = true
@@ -152,7 +136,7 @@ export const bracketsSlice = createSlice({
   },
 })
 
-export const { setSearchValue, setSearchOpen, setCartLength } = bracketsSlice.actions
+export const { setSelectedBracket } = bracketsSlice.actions
 
 export const selectBrackets = createSelector(
   (state) => state.brackets.brackets,

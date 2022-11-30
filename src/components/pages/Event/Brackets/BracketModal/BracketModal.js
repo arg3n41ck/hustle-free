@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
@@ -76,56 +76,24 @@ export default function BracketModal({ selectedBracket, onClose }) {
     }
   }, [selectedBracket])
 
-  useEffect(() => {
-    document.querySelector('html').style.overflowY = !!selectedBracket?.id ? 'hidden' : ''
-  }, [selectedBracket])
-
   return (
-    <AnimatePresence>
-      {!!selectedBracket?.id && (
-        <BracketsModalWrapper
-          initial={{ right: `-100vw` }}
-          animate={{
-            right: 0,
-            transition: { delay: 0.1, duration: 0.2 },
-          }}
-          exit={{ right: `-100vw`, transition: { delay: 0.15, duration: 0.2 } }}
-        >
-          <ContentWrapper>
-            <HeaderWrapper>
-              <Back onClick={onClose}>
-                {arrowBack}
-                <span>назад</span>
-              </Back>
-              <Title>{selectedBracket?.title}</Title>
-            </HeaderWrapper>
-            <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
-            {BracketWrapperByType && <BracketWrapperByType updateBF={updateBF} />}
-          </ContentWrapper>
-        </BracketsModalWrapper>
-      )}
-    </AnimatePresence>
+    <ContentWrapper>
+      <HeaderWrapper>
+        <Back onClick={onClose}>
+          {arrowBack}
+          <span>назад</span>
+        </Back>
+        <Title>{selectedBracket?.title}</Title>
+      </HeaderWrapper>
+      <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
+      {BracketWrapperByType && <BracketWrapperByType updateBF={updateBF} />}
+    </ContentWrapper>
   )
 }
 
-const BracketsModalWrapper = styled(motion.div)`
-  width: 100vw;
-  height: 100vh;
-
-  position: fixed;
-  top: 0;
-
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: #0f0f10;
-
-  z-index: 12;
-`
-
 const ContentWrapper = styled.div`
-  min-height: 100vh;
-  max-width: 1489px;
   width: 100%;
+  background: #0f0f10;
 
   display: grid;
   grid-template: min-content min-content auto / 1fr;

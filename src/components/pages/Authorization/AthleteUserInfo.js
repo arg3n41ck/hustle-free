@@ -84,6 +84,10 @@ const AthleteUserInfo = () => {
     },
   })
 
+  useEffect(() => {
+    formik.handleSubmit()
+  }, [])
+
   const changeCurrentCities = (changeCountry) => {
     const findObj = countries.find((country) => country.id === changeCountry.id)
     if (findObj) setCurrentCities(findObj.cityCountry)
@@ -405,8 +409,8 @@ const ButtonWrapper = styled.div`
   margin: 0 32px 0 auto;
 `
 const ErrorMessage = styled.p`
-  color: #eb5757;
-  text-align: center;
+  color: #d32f2f;
+  font-size: 0.75rem;
 `
 
 export default AthleteUserInfo

@@ -12,11 +12,17 @@ import { toast } from 'react-toastify'
 import $api from '../../../../../services/axios'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
-import { fetchBracketsByParams } from '../../../../../redux/components/eventBrackets'
+import {
+  fetchBracketsByParams,
+  fetchBracketsFightsByParams,
+  fetchParticipantAthletes,
+  setSelectedBracket,
+} from '../../../../../redux/components/eventBrackets'
 
 const createBracket = async (body) => {
   try {
-    await $api.post('/brackets/brackets/', body)
+    const { data } = await $api.post('/brackets/brackets/', body)
+    return data
   } catch (e) {
     console.log(e)
     toast.error('Походу что-то пошло не так!')
@@ -27,6 +33,7 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
   const { t: tCommon } = useTranslation('common')
   const {
     query: { id: eventId },
+    push: routerPush,
   } = useRouter()
   const [bracketError, setBracketError] = useState(null)
   const dispatch = useDispatch()
@@ -55,8 +62,20 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
       if (!!values?.qualifyLoserBracketType) {
         reqBody.qualifyLoserBracketType = values.qualifyLoserBracketType
       }
-      await Promise.all(epc.map((id) => createBracket({ ...reqBody, participationCategory: id })))
-
+      await Promise.all(
+        epc.map((id) => createBracket({ ...reqBody, participationCategory: id })),
+      ).then((responses) => {
+        dispatch(setSelectedBracket(null))
+        const bracket = responses[(responses?.length || 0) - 1]
+        dispatch(setSelectedBracket(bracket))
+        dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id }))
+        dispatch(
+          fetchParticipantAthletes({
+            participation_category: bracket?.participationCategory?.id,
+          }),
+        )
+      })
+      routerPush(`/events/${eventId}/brackets/`)
       dispatch(fetchBracketsByParams({ event: eventId }))
       onClose()
     },

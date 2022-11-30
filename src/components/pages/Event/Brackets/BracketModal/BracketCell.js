@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { BracketsAthAva } from '../../../../../assets/svg/icons'
 import { truncateString } from '../../../../../helpers/helpers'
 import { selectCountriesAndCities } from '../../../../../redux/components/countriesAndCities'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
@@ -60,7 +61,11 @@ export default function BracketCell({
         FN:{fightNumber}, ID: {id}, CH: {children[0]}
       </FightNum> */}
       <FighterWrapper className='first'>
-        <FighterAva />
+        {!!athletesInfo[0]?.athlete?.user?.avatar ? (
+          <FighterAva src={athletesInfo[0]?.athlete?.user?.avatar} />
+        ) : (
+          <BracketsAthAva />
+        )}
         <FighterTexts>
           <NameFlagWrapper>
             <CountryFlag src={`https://flagsapi.com/KG/flat/64.png`} />
@@ -90,7 +95,11 @@ export default function BracketCell({
         )}
       </FighterWrapper>
       <FighterWrapper className='second'>
-        <FighterAva />
+        {!!athletesInfo[1]?.athlete?.user?.avatar ? (
+          <FighterAva src={athletesInfo[1]?.athlete?.user?.avatar} />
+        ) : (
+          <BracketsAthAva />
+        )}
         <FighterTexts>
           <NameFlagWrapper>
             <CountryFlag src={`https://flagsapi.com/KG/flat/64.png`} />
@@ -251,7 +260,7 @@ const FighterAva = styled.div`
   height: 40px;
   border-radius: 8px;
 
-  background: ${({ img }) => (img ? `url('img')` : '#333333')};
+  background: no-repeat ${({ src }) => (src ? `url('${src}')` : '#333333')} center / cover;
 `
 
 const FighterTexts = styled.div`
