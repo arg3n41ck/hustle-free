@@ -30,7 +30,7 @@ export const getBracketsBySteps = async (bracketsFights) => {
         }
       }
 
-      const curWithCells = { ...cur }
+      const curWithCells = { ...cur, parents: cur.parents.sort() }
 
       if (+step > 1 && prev[+step - 1]) {
         const parentsFrom1Step = prev[+step - 1].cells.reduce((prevParents, curParCell) => {
@@ -133,26 +133,6 @@ export const createAreaFromChilds = (childCells) => {
 }
 
 export const getBordersDirections = (parentId, childId, cellsFromNextStep) => {
-  const cell = cellsFromNextStep?.length && cellsFromNextStep.find(({ id }) => childId.includes(id))
-  let borderDirection = 'noChild'
-
-  if (cell) {
-    const parents = (cell?.parents || []).slice()
-    const parentIndex = parents?.sort().indexOf(parentId)
-    borderDirection =
-      cell?.parents?.length == 1
-        ? 'straight'
-        : parentIndex == 0
-        ? 'lineDown'
-        : parentIndex == 1
-        ? 'lineUp'
-        : 'noChild'
-  }
-
-  return borderDirection
-}
-
-export const getBordersDirectionsForLosers = (parentId, childId, cellsFromNextStep) => {
   const cell = cellsFromNextStep?.length && cellsFromNextStep.find(({ id }) => childId.includes(id))
   let borderDirection = 'noChild'
 

@@ -190,7 +190,7 @@ export default function BracketsDoubleEl({ updateBF }) {
                       .sort((a, b) => +a.fightNumber - +b.fightNumber)
                       .map((cell) => {
                         const borderDirection = cell.children.length
-                          ? getBordersDirectionsForLosers(cell.id, cell.children, nextStepsCells)
+                          ? getBordersDirections(cell.id, cell.children, nextStepsCells)
                           : 'noChild'
                         return (
                           <BracketCell
