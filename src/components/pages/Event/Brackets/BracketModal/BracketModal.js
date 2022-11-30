@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
 import BracketHeaderInfo from './BracketHeaderInfo'
@@ -7,8 +6,11 @@ import BracketsDoubleEl from './BracketsDoubleEl'
 import BracketsSingleEl from './BracketsSingleEl'
 import BracketsRobin from './BracketsRobin'
 import BracketsThreeMan from './BracketsThreeMan'
-import { useDispatch } from 'react-redux'
-import { fetchBracketsFightsByParams } from '../../../../../redux/components/eventBrackets'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  fetchBracketsFightsByParams,
+  selectBrackets,
+} from '../../../../../redux/components/eventBrackets'
 
 export const bracketTypes = {
   1: {
@@ -57,6 +59,8 @@ export const bracketTypes = {
 
 export default function BracketModal({ selectedBracket, onClose }) {
   const dispatch = useDispatch()
+  const [, bracketsFights] = useSelector(selectBrackets)
+  const [ebanyiKey, setEbanyiKey] = useState(Math.random())
   const { typeTitle, allParticipants, BracketWrapperByType } = useMemo(() => {
     const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
     return {
@@ -76,6 +80,10 @@ export default function BracketModal({ selectedBracket, onClose }) {
     }
   }, [selectedBracket])
 
+  useEffect(() => {
+    setEbanyiKey(Math.random())
+  }, [bracketsFights])
+
   return (
     <ContentWrapper>
       <HeaderWrapper>
@@ -86,7 +94,12 @@ export default function BracketModal({ selectedBracket, onClose }) {
         <Title>{selectedBracket?.title}</Title>
       </HeaderWrapper>
       <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
-      {BracketWrapperByType && <BracketWrapperByType updateBF={updateBF} />}
+      {BracketWrapperByType && (
+        <BracketWrapperByType
+          key={`BracketsWrapperKeyByTypeEbanyi${ebanyiKey}`}
+          updateBF={updateBF}
+        />
+      )}
     </ContentWrapper>
   )
 }
