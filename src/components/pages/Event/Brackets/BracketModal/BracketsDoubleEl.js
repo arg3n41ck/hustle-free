@@ -10,7 +10,6 @@ import {
   createColumnsAreasByStepsCount,
   createDefaultArea,
   getBordersDirections,
-  getBordersDirectionsForLosers,
   getBracketsBySteps,
 } from './bracketsUtils'
 
@@ -84,6 +83,8 @@ export default function BracketsDoubleEl({ updateBF }) {
       const { topBrackets, loserBrackets } = divideTopLoaserBr(bracketsFights.data)
       topBrackets && getBracketsBySteps(topBrackets).then(setTopBracketsBySteps)
       loserBrackets && getBracketsBySteps(loserBrackets).then(setLoserBracketsBySteps)
+      console.log('topBrackets: ', topBrackets)
+      console.log('loserBrackets: ', loserBrackets)
     }
   }, [bracketsFights])
 
@@ -140,6 +141,15 @@ export default function BracketsDoubleEl({ updateBF }) {
                         const borderDirection = cell.children.length
                           ? getBordersDirections(cell.id, cell.children, nextStepsCells)
                           : 'noChild'
+
+                        console.log(
+                          `${cell.id}\n`,
+                          `borderDirectionт: `,
+                          borderDirection,
+                          '\n',
+                          `cell: `,
+                          cell,
+                        )
                         return (
                           <BracketCell
                             key={`bracket_cell_${cell.id}`}

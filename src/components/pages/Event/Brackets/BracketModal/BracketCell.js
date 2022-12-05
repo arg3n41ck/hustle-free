@@ -57,9 +57,9 @@ export default function BracketCell({
       className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
       style={gridTemplateAreas ? { gridArea: `cell-${id}` } : {}}
     >
-      {/* <FightNum>
+      <FightNum>
         FN:{fightNumber}, ID: {id}, CH: {children[0]}
-      </FightNum> */}
+      </FightNum>
       <FighterWrapper className='first'>
         {!!athletesInfo[0]?.athlete?.user?.avatar ? (
           <FighterAva src={athletesInfo[0]?.athlete?.user?.avatar} />
