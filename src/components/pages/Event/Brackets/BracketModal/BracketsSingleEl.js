@@ -3,12 +3,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketCell from './BracketCell'
-import {
-  createAreaFromChilds,
-  createDefaultArea,
-  getBordersDirections,
-  getBracketsBySteps,
-} from './bracketsUtils'
+import { createAreaFromChilds, createDefaultArea, getBracketsBySteps } from './bracketsUtils'
 
 const getWrapperStyles = (type) => {
   switch (type) {
@@ -69,14 +64,10 @@ export default function BracketsSingleEl({ updateBF }) {
                   {cells
                     .sort((a, b) => a.fightNumber - b.fightNumber)
                     .map((cell) => {
-                      const borderDirection = cell.children.length
-                        ? getBordersDirections(cell.id, cell.children, nextStepsCells)
-                        : 'noChild'
                       return (
                         <BracketCell
                           key={`bracket_cell_${cell.id}`}
                           gridTemplateAreas={gridTemplateAreas}
-                          borderDirection={borderDirection}
                           updateBF={updateBF}
                           classes={cell?.fightRoundType == 0 ? 'noBorder' : ''}
                           cell={cell}

@@ -30,7 +30,26 @@ export const getBracketsBySteps = async (bracketsFights) => {
         }
       }
 
-      const curWithCells = { ...cur, parents: cur.parents.sort() }
+      const curWithCells = { ...cur }
+
+      if (curWithCells.children.length) {
+        const cellWithSameChilds = bracketsFights.filter(({ children }) =>
+          children.includes(curWithCells.children[0]),
+        )
+
+        if (cellWithSameChilds.length > 1) {
+          cellWithSameChilds.sort((a, b) => +a.fightNumber - +b.fightNumber)
+          const curCellIdx = cellWithSameChilds.findIndex(({ id }) => id == curWithCells.id)
+
+          if (curCellIdx === 0) {
+            curWithCells.borderDirection = 'lineDown'
+          } else if (curCellIdx === 1) {
+            curWithCells.borderDirection = 'lineUp'
+          }
+        } else if (cellWithSameChilds.length === 1) {
+          curWithCells.borderDirection = 'straight'
+        }
+      }
 
       if (+step > 1 && prev[+step - 1]) {
         const parentsFrom1Step = prev[+step - 1].cells.reduce((prevParents, curParCell) => {
@@ -63,6 +82,15 @@ export const getThreeManBracketsBySteps = async (bracketsFights) => {
     const curKey = (cur?.parents?.length || 0) < 2 ? 1 : 2
     const curParents = curKey == 1 ? [] : cur?.parents
     const rewrittenCur = { ...cur, parents: curParents }
+
+    if (curKey == 1) {
+      if (cur.children.length === 2) {
+        rewrittenCur.borderDirection = 'lineDown'
+      } else if (cur.children.length === 1) {
+        rewrittenCur.borderDirection = 'lineUp'
+      }
+    }
+
     if (!prev[rowName]) {
       prev[rowName] = {}
       prev[rowName][curKey] = {
@@ -86,11 +114,10 @@ export const getThreeManBracketsBySteps = async (bracketsFights) => {
         }
       }
     }
-    // const childrens = prev[rowName][curKey].childrens
-    // prev[rowName][curKey].childrens = childrens.filter((ch) => cur?.id !== ch)
 
     return prev
   }, {})
+  console.log(bracketsFights)
 
   return brSteps
 }
@@ -130,26 +157,6 @@ export const createAreaFromChilds = (childCells) => {
   }, [])
 
   return results
-}
-
-export const getBordersDirections = (parentId, childId, cellsFromNextStep) => {
-  const cell = cellsFromNextStep?.length && cellsFromNextStep.find(({ id }) => childId.includes(id))
-  let borderDirection = 'noChild'
-
-  if (cell) {
-    const parents = (cell?.parents || []).slice()
-    const parentIndex = parents?.sort().indexOf(parentId)
-    borderDirection =
-      cell?.parents?.length == 1
-        ? 'straight'
-        : parentIndex == 0
-        ? 'lineDown'
-        : parentIndex == 1
-        ? 'lineUp'
-        : 'noChild'
-  }
-
-  return borderDirection
 }
 
 export const createColumnsAreasByStepsCount = (bracketsCount) => {

@@ -3,11 +3,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketCell from './BracketCell'
-import {
-  createDefaultArea,
-  getBordersDirections,
-  getThreeManBracketsBySteps,
-} from './bracketsUtils'
+import { createDefaultArea, getThreeManBracketsBySteps } from './bracketsUtils'
 
 export default function BracketsThreeMan({ updateBF }) {
   const [bracketsBySteps, setBracketsBySteps] = useState(null)
@@ -55,19 +51,11 @@ export default function BracketsThreeMan({ updateBF }) {
                           {cells
                             .sort((a, b) => a.fightNumber - b.fightNumber)
                             .map((cell) => {
-                              const borderDirection = !!cell.children.length
-                                ? getBordersDirections(
-                                    cell.id,
-                                    cell.children,
-                                    bracketsBySteps[row][+column + 1]?.cells,
-                                  )
-                                : 'noChild'
                               return (
                                 <BracketCell
                                   key={`bracket_cell_${cell.id}`}
                                   gridTemplateAreas={gridTemplateAreas}
                                   updateBF={updateBF}
-                                  borderDirection={borderDirection}
                                   cell={cell}
                                 />
                               )

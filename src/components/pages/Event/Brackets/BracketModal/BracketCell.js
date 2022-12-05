@@ -7,14 +7,8 @@ import { selectCountriesAndCities } from '../../../../../redux/components/countr
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketWin from './BracketWin'
 
-export default function BracketCell({
-  cell,
-  gridTemplateAreas,
-  borderDirection,
-  updateBF,
-  classes,
-}) {
-  const { id, fighters, fightNumber, parents, winner, children } = cell
+export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes }) {
+  const { id, fighters, fightNumber, parents, winner, children, borderDirection } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const [countries] = useSelector(selectCountriesAndCities)
 
