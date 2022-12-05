@@ -29,45 +29,49 @@ export default function BracketsThreeMan({ updateBF }) {
         }}
       >
         {!!Object.keys(bracketsBySteps || {})?.length &&
-          Object.keys(bracketsBySteps).map((row) => {
-            return (
-              <Row key={`brackets_round_${row}`}>
-                {Object.keys(bracketsBySteps[row]).map((column) => {
-                  const { cells, step } = bracketsBySteps[row][column]
-                  const cellsAreas = createDefaultArea(cells)
-                  const gridTemplateAreas = cellsAreas?.length && `'${cellsAreas.join("' '")}'`
+          Object.keys(bracketsBySteps)
+            .sort((aStep, bStep) => aStep - bStep)
+            .map((rowIndex) => {
+              return (
+                <Row key={`brackets_round_${rowIndex}`}>
+                  {Object.keys(bracketsBySteps[rowIndex]).map((column) => {
+                    const { cells, step } = bracketsBySteps[rowIndex][column]
+                    const cellsAreas = createDefaultArea(cells)
+                    const gridTemplateAreas = cellsAreas?.length && `'${cellsAreas.join("' '")}'`
 
-                  return (
-                    <Column key={`brackets_round_${column}_${step}`}>
-                      {cells?.length && (
-                        <CellsWrapper
-                          style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr',
-                            gridTemplateRows: `repeat(${cellsAreas?.length ?? cells?.length}, 1fr)`,
-                            gridTemplateAreas: gridTemplateAreas,
-                          }}
-                        >
-                          {cells
-                            .sort((a, b) => a.fightNumber - b.fightNumber)
-                            .map((cell) => {
-                              return (
-                                <BracketCell
-                                  key={`bracket_cell_${cell.id}`}
-                                  gridTemplateAreas={gridTemplateAreas}
-                                  updateBF={updateBF}
-                                  cell={cell}
-                                />
-                              )
-                            })}
-                        </CellsWrapper>
-                      )}
-                    </Column>
-                  )
-                })}
-              </Row>
-            )
-          })}
+                    return (
+                      <Column key={`brackets_round_${column}_${step}`}>
+                        {cells?.length && (
+                          <CellsWrapper
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: '1fr',
+                              gridTemplateRows: `repeat(${
+                                cellsAreas?.length ?? cells?.length
+                              }, 1fr)`,
+                              gridTemplateAreas: gridTemplateAreas,
+                            }}
+                          >
+                            {cells
+                              .sort((a, b) => a.fightNumber - b.fightNumber)
+                              .map((cell) => {
+                                return (
+                                  <BracketCell
+                                    key={`bracket_cell_${cell.id}`}
+                                    gridTemplateAreas={gridTemplateAreas}
+                                    updateBF={updateBF}
+                                    cell={cell}
+                                  />
+                                )
+                              })}
+                          </CellsWrapper>
+                        )}
+                      </Column>
+                    )
+                  })}
+                </Row>
+              )
+            })}
       </ColumnsWrapper>
     </div>
   )

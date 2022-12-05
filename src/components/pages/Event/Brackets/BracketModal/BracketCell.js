@@ -8,7 +8,7 @@ import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketWin from './BracketWin'
 
 export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes }) {
-  const { id, fighters, fightNumber, parents, winner, children, borderDirection } = cell
+  const { id, fighters, fightNumber, parents, winner, children, borderDirection, disabled } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const [countries] = useSelector(selectCountriesAndCities)
 
@@ -77,7 +77,7 @@ export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes
             <TeamName>{truncateString(athletesInfo[0]?.team?.name, 20, true)}</TeamName>
           )}
         </FighterTexts>
-        {fighters?.length === 2 && +fighters[1]?.id !== +winner && (
+        {!disabled && fighters?.length === 2 && +fighters[1]?.id !== +winner && (
           <BracketWin
             bfId={id}
             fighter={fighters[0]?.id}
@@ -111,7 +111,7 @@ export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes
             <TeamName>{truncateString(athletesInfo[1]?.team?.name, 20, true)}</TeamName>
           )}
         </FighterTexts>
-        {fighters?.length === 2 && +fighters[0]?.id !== +winner && (
+        {!disabled && fighters?.length === 2 && +fighters[0]?.id !== +winner && (
           <BracketWin
             bfId={id}
             fighter={fighters[1]?.id}

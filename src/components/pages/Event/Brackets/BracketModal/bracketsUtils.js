@@ -31,7 +31,7 @@ export const getBracketsBySteps = async (bracketsFights) => {
       }
 
       const curWithCells = { ...cur }
-
+      curWithCells.disbled = false
       if (curWithCells.children.length) {
         const cellWithSameChilds = bracketsFights.filter(({ children }) =>
           children.includes(curWithCells.children[0]),
@@ -79,10 +79,9 @@ export const getBracketsBySteps = async (bracketsFights) => {
 export const getThreeManBracketsBySteps = async (bracketsFights) => {
   const brSteps = await bracketsFights.reduce((prev, cur) => {
     const { step } = cur
-    const rowName = `row-${step}`
     const curKey = (cur?.parents?.length || 0) < 2 ? 1 : 2
     const curParents = curKey == 1 ? [] : cur?.parents
-    const rewrittenCur = { ...cur, parents: curParents }
+    const rewrittenCur = { ...cur, parents: curParents, disabled: true }
 
     if (curKey == 1) {
       if (cur.children.length === 2) {
@@ -92,22 +91,30 @@ export const getThreeManBracketsBySteps = async (bracketsFights) => {
       }
     }
 
-    if (!prev[rowName]) {
-      prev[rowName] = {}
-      prev[rowName][curKey] = {
+    if (step == 1 && cur.children.length === 2) {
+      rewrittenCur.disabled = false
+    } else if (step == 2 && cur.children.length === 1) {
+      rewrittenCur.disabled = false
+    } else if (step == 3 && cur.children.length === 0) {
+      rewrittenCur.disabled = false
+    }
+
+    if (!prev[step]) {
+      prev[step] = {}
+      prev[step][curKey] = {
         cells: [rewrittenCur],
         childrens: [rewrittenCur.children[0]],
         parents: [...rewrittenCur.parents],
         step: curKey,
       }
-    } else if (prev[rowName]) {
-      if (prev[rowName][curKey]) {
-        const { childrens, parents } = prev[rowName][curKey]
-        prev[rowName][curKey].cells.push(rewrittenCur)
-        prev[rowName][curKey].childrens = [...childrens, rewrittenCur.children[0]]
-        prev[rowName][curKey].parents = [...parents, ...rewrittenCur.parents]
-      } else if (!prev[rowName][curKey]) {
-        prev[rowName][curKey] = {
+    } else if (prev[step]) {
+      if (prev[step][curKey]) {
+        const { childrens, parents } = prev[step][curKey]
+        prev[step][curKey].cells.push(rewrittenCur)
+        prev[step][curKey].childrens = [...childrens, rewrittenCur.children[0]]
+        prev[step][curKey].parents = [...parents, ...rewrittenCur.parents]
+      } else if (!prev[step][curKey]) {
+        prev[step][curKey] = {
           cells: [rewrittenCur],
           childrens: [rewrittenCur.children[0]],
           parents: [...rewrittenCur.parents],
@@ -118,7 +125,6 @@ export const getThreeManBracketsBySteps = async (bracketsFights) => {
 
     return prev
   }, {})
-  console.log(bracketsFights)
 
   return brSteps
 }
