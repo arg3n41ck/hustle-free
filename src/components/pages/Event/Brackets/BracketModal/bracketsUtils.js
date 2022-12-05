@@ -67,6 +67,7 @@ export const getBracketsBySteps = async (bracketsFights) => {
       }
 
       prev[step].cells.push(curWithCells)
+      prev[step].cells.sort((a, b) => a.fightNumber - b.fightNumber)
       cur.children?.length && prev[step].childrens.push(cur.children[0])
       prev[step].parents = [...prev[step].parents, ...cur.parents]
       return prev

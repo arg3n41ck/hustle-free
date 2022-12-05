@@ -59,8 +59,6 @@ export const bracketTypes = {
 
 export default function BracketModal({ selectedBracket, onClose }) {
   const dispatch = useDispatch()
-  const [, bracketsFights] = useSelector(selectBrackets)
-  const [ebanyiKey, setEbanyiKey] = useState(Math.random())
   const { typeTitle, allParticipants, BracketWrapperByType } = useMemo(() => {
     const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
     return {
@@ -80,10 +78,6 @@ export default function BracketModal({ selectedBracket, onClose }) {
     }
   }, [selectedBracket])
 
-  useEffect(() => {
-    setEbanyiKey(Math.random())
-  }, [bracketsFights])
-
   return (
     <ContentWrapper>
       <HeaderWrapper>
@@ -94,12 +88,7 @@ export default function BracketModal({ selectedBracket, onClose }) {
         <Title>{selectedBracket?.title}</Title>
       </HeaderWrapper>
       <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
-      {BracketWrapperByType && (
-        <BracketWrapperByType
-          key={`BracketsWrapperKeyByTypeEbanyi${ebanyiKey}`}
-          updateBF={updateBF}
-        />
-      )}
+      {BracketWrapperByType && <BracketWrapperByType updateBF={updateBF} />}
     </ContentWrapper>
   )
 }
