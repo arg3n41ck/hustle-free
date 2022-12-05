@@ -142,14 +142,6 @@ export default function BracketsDoubleEl({ updateBF }) {
                           ? getBordersDirections(cell.id, cell.children, nextStepsCells)
                           : 'noChild'
 
-                        console.log(
-                          `${cell.id}\n`,
-                          `borderDirectionт: `,
-                          borderDirection,
-                          '\n',
-                          `cell: `,
-                          cell,
-                        )
                         return (
                           <BracketCell
                             key={`bracket_cell_${cell.id}`}
@@ -202,6 +194,15 @@ export default function BracketsDoubleEl({ updateBF }) {
                         const borderDirection = cell.children.length
                           ? getBordersDirections(cell.id, cell.children, nextStepsCells)
                           : 'noChild'
+
+                        console.log(
+                          `${cell.id}\n`,
+                          `borderDirectionт: `,
+                          borderDirection,
+                          '\n',
+                          `cell: `,
+                          cell,
+                        )
                         return (
                           <BracketCell
                             key={`bracket_cell_${cell.id}`}
