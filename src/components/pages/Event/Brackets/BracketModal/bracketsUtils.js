@@ -72,7 +72,7 @@ export const getBracketsBySteps = async (bracketsFights) => {
       prev[step].parents = [...prev[step].parents, ...cur.parents]
       return prev
     }, {})
-  console.log(brSteps)
+
   return brSteps
 }
 

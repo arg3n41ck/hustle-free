@@ -11,6 +11,7 @@ import {
   fetchBracketsFightsByParams,
   selectBrackets,
 } from '../../../../../redux/components/eventBrackets'
+import FullScreenLoader from '../../../../ui/FullScreenLoader'
 
 export const bracketTypes = {
   1: {
@@ -59,6 +60,8 @@ export const bracketTypes = {
 
 export default function BracketModal({ selectedBracket, onClose }) {
   const dispatch = useDispatch()
+  const [, bracketsFights] = useSelector(selectBrackets)
+  const [ebanyiKey, setEbanyiKey] = useState(Math.random())
   const { typeTitle, allParticipants, BracketWrapperByType } = useMemo(() => {
     const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
     return {
@@ -78,18 +81,30 @@ export default function BracketModal({ selectedBracket, onClose }) {
     }
   }, [selectedBracket])
 
+  useEffect(() => {
+    setEbanyiKey(Math.random())
+  }, [bracketsFights])
+
   return (
-    <ContentWrapper>
-      <HeaderWrapper>
-        <Back onClick={onClose}>
-          {arrowBack}
-          <span>назад</span>
-        </Back>
-        <Title>{selectedBracket?.title}</Title>
-      </HeaderWrapper>
-      <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
-      {BracketWrapperByType && <BracketWrapperByType updateBF={updateBF} />}
-    </ContentWrapper>
+    <>
+      <ContentWrapper>
+        <HeaderWrapper>
+          <Back onClick={onClose}>
+            {arrowBack}
+            <span>назад</span>
+          </Back>
+          <Title>{selectedBracket?.title}</Title>
+        </HeaderWrapper>
+        <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
+        {BracketWrapperByType && (
+          <BracketWrapperByType
+            key={`BracketsWrapperKeyByTypeEbanyi${ebanyiKey}`}
+            updateBF={updateBF}
+          />
+        )}
+      </ContentWrapper>
+      <FullScreenLoader open={bracketsFights.isLoading} />
+    </>
   )
 }
 
