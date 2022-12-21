@@ -12,6 +12,7 @@ import {
   selectBrackets,
 } from '../../../../../redux/components/eventBrackets'
 import FullScreenLoader from '../../../../ui/FullScreenLoader'
+import BracketResultTable from './BracketResultTable'
 
 export const bracketTypes = {
   1: {
@@ -82,7 +83,8 @@ export default function BracketModal({ selectedBracket, onClose }) {
   }, [selectedBracket])
 
   useEffect(() => {
-    setEbanyiKey(Math.random())
+    // used for refreshing <BracketWrapperByType /> if fetching bracket fights
+    // setEbanyiKey(Math.random())
   }, [bracketsFights])
 
   return (
@@ -102,6 +104,7 @@ export default function BracketModal({ selectedBracket, onClose }) {
             updateBF={updateBF}
           />
         )}
+        {+(selectedBracket?.bracketType || 0) !== 7 && <BracketResultTable bracketId={selectedBracket?.id} />}
       </ContentWrapper>
       <FullScreenLoader open={bracketsFights.isLoading} />
     </>

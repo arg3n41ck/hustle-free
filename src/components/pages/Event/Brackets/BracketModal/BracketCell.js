@@ -1,17 +1,17 @@
 import React, { useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { BracketsAthAva } from '../../../../../assets/svg/icons'
 import { truncateString } from '../../../../../helpers/helpers'
 import { selectCountriesAndCities } from '../../../../../redux/components/countriesAndCities'
-import { selectBrackets } from '../../../../../redux/components/eventBrackets'
+import { selectBrackets, setBFOnWin } from '../../../../../redux/components/eventBrackets'
 import BracketWin from './BracketWin'
 
 export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes }) {
   const { id, fighters, fightNumber, parents, winner, children, borderDirection, disabled } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const [countries] = useSelector(selectCountriesAndCities)
-
+  const dispatch = useDispatch()
   const athletesInfo = useMemo(() => {
     if (participantAthletes?.data?.length && fighters?.length) {
       const firstParticipantCat =
@@ -46,14 +46,45 @@ export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes
     return []
   }, [participantAthletes, fighters])
 
+  const onWin = ({
+    loserBracketFightIds,
+    loserParticipantId,
+    winnerBracketFightIds,
+    curBFID,
+    winnerId,
+  }) => {
+    const { winnerFighter, loserFighter } = (fighters || [])?.reduce(
+      (prev, cur) => {
+        if (cur?.id == winnerId) {
+          prev.winnerFighter = cur
+        } else if (cur?.id == loserParticipantId) {
+          prev.loserFighter = cur
+        }
+
+        return prev
+      },
+      { winnerFighter: null, loserFighter: null },
+    )
+
+    dispatch(
+      setBFOnWin({
+        currentBFID: curBFID,
+        winner: winnerFighter,
+        winnerBFIDs: winnerBracketFightIds,
+        loser: loserFighter,
+        loserBFIDs: loserBracketFightIds,
+      }),
+    )
+  }
+
   return (
     <CellWrapper
       className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
       style={gridTemplateAreas ? { gridArea: `cell-${id}` } : {}}
     >
-      <FightNum>
+      {/* <FightNum>
         FN:{fightNumber}, ID: {id}, CH: {children[0]}
-      </FightNum>
+      </FightNum> */}
       <FighterWrapper className='first'>
         {!!athletesInfo[0]?.athlete?.user?.avatar ? (
           <FighterAva src={athletesInfo[0]?.athlete?.user?.avatar} />
@@ -82,9 +113,7 @@ export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes
             bfId={id}
             fighter={fighters[0]?.id}
             winner={winner}
-            onWin={() => {
-              updateBF()
-            }}
+            onWin={onWin}
           />
         )}
       </FighterWrapper>
@@ -116,9 +145,7 @@ export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes
             bfId={id}
             fighter={fighters[1]?.id}
             winner={winner}
-            onWin={() => {
-              updateBF()
-            }}
+            onWin={onWin}
           />
         )}
       </FighterWrapper>

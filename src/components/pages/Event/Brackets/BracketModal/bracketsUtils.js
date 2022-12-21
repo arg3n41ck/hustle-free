@@ -78,7 +78,7 @@ export const getBracketsBySteps = async (bracketsFights) => {
 
 export const getThreeManBracketsBySteps = async (bracketsFights) => {
   const brSteps = await bracketsFights.reduce((prev, cur) => {
-    const { step } = cur
+    const { step, fightNumber } = cur
     const curKey = (cur?.parents?.length || 0) < 2 ? 1 : 2
     const curParents = curKey == 1 ? [] : cur?.parents
     const rewrittenCur = { ...cur, parents: curParents, disabled: true }
@@ -91,11 +91,7 @@ export const getThreeManBracketsBySteps = async (bracketsFights) => {
       }
     }
 
-    if (step == 1 && cur.children.length === 2) {
-      rewrittenCur.disabled = false
-    } else if (step == 2 && cur.children.length === 1) {
-      rewrittenCur.disabled = false
-    } else if (step == 3 && cur.children.length === 0) {
+    if ([4, 8, 9].includes(fightNumber)) {
       rewrittenCur.disabled = false
     }
 

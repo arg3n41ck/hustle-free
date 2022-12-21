@@ -78,7 +78,7 @@ export default function BracketsDoubleEl({ updateBF }) {
   const [, bracketsFights] = useSelector(selectBrackets)
 
   useEffect(async () => {
-    if (bracketsFights.data?.length) {
+    if (!!bracketsFights.data?.length) {
       const { topBrackets, loserBrackets } = divideTopLoaserBr(bracketsFights.data)
       topBrackets && getBracketsBySteps(topBrackets).then(setTopBracketsBySteps)
       loserBrackets && getBracketsBySteps(loserBrackets).then(setLoserBracketsBySteps)

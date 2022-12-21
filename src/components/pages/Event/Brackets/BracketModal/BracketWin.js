@@ -2,11 +2,12 @@ import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import $api from '../../../../../services/axios'
 
-const setWinner = async (bfId, fighter) => {
+const setWinner = async (bfId, participantId) => {
   try {
-    await $api.post(`/brackets/brackets_fights/${bfId}/winner_endpoint/`, {
-      fighter,
+    const {data} = await $api.post(`/brackets/brackets_fights/${bfId}/winner_endpoint/`, {
+      participantId,
     })
+    return data
   } catch (error) {
     console.log(error)
   }
@@ -19,8 +20,8 @@ export default function BracketWin({ bfId, winner, fighter, onWin }) {
 
   const handleSetWinner = useCallback(async () => {
     setHideBtns(true)
-    await setWinner(bfId, fighter).then(() => {
-      onWin()
+    await setWinner(bfId, fighter).then((response) => {
+      onWin({...response, curBFID: bfId, winnerId: fighter})
       setHideBtns(false)
       setOpenConf(false)
     })
