@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next'
 import ULAccordion from '../../../ui/ULAccordion'
 import MobileResultsRow from './MobileResultsRow'
 
-const EventResultsItem = ({ participant, updatePC }) => {
+const EventResultsItem = ({ participant }) => {
   if (!participant) return null
   const { eventParticipantsCategory, level } = participant
   const { t: tEventDetail } = useTranslation('eventDetail')
@@ -38,7 +38,6 @@ const EventResultsItem = ({ participant, updatePC }) => {
           <List>
             {participants.map((participant) => (
               <EventResultParticipant
-                updatePC={updatePC}
                 key={`results-pc-${participant.id}`}
                 participant={participant}
               />
@@ -58,7 +57,7 @@ const EventResultsItem = ({ participant, updatePC }) => {
             'event.results.eventResultsItem.kg',
           )}`}
         >
-          <MobileResultsRow participants={participants} updatePC={updatePC} />
+          <MobileResultsRow participants={participants} />
         </ULAccordion>
       )}
     </Box>

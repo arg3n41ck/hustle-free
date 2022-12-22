@@ -8,6 +8,14 @@ import $api from '../../../../services/axios'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { theme } from '../../../../styles/theme'
+import FullScreenLoader from '../../../../components/ui/FullScreenLoader'
+
+const getPC = async (params) => {
+  const { data } = await $api.get(`/directories/participant_category/`, {
+    params,
+  })
+  return data
+}
 
 const Participants = ({ onloadPC }) => {
   const [participants, setParticipants] = useState([])
@@ -30,22 +38,17 @@ const Participants = ({ onloadPC }) => {
     setFilter((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const updatePC = useCallback(async () => {
-    const { data } = await $api.get(`/directories/participant_category/`, {
-      params: {
-        search: searchValue,
-        country: countryValue,
-        team: teamValue,
-        id: categoryValue,
-        event: eventId,
-      },
+  useEffect(() => {
+    getPC({
+      search: searchValue,
+      country: countryValue,
+      team: teamValue,
+      id: categoryValue,
+      event: eventId,
+    }).then((data) => {
+      setParticipants(data)
+      onloadPC(data)
     })
-    setParticipants(data)
-    onloadPC(data)
-  }, [searchValue, countryValue, teamValue, categoryValue])
-
-  useEffect(async () => {
-    await updatePC()
   }, [searchValue, countryValue, teamValue, categoryValue])
 
   return (
@@ -55,9 +58,11 @@ const Participants = ({ onloadPC }) => {
         {tEventDetail('event.results.participants.allResultsEvent')}
       </TitleBlock>
       <EventResults>
-        {participants.map((participant) => (
-          <EventResultsItem key={participant.id} participant={participant} updatePC={updatePC} />
-        ))}
+        {
+        !!participants?.length ?
+        participants.map((participant) => (
+          <EventResultsItem key={participant.id} participant={participant} />
+        )): <FullScreenLoader open />}
       </EventResults>
     </>
   )

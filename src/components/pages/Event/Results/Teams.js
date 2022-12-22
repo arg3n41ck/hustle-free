@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import TeamItem from './TeamItem'
 import { useTranslation } from 'next-i18next'
 import { removeDuplicateObjectFromArray } from '../../../../helpers/helpers'
+import FullScreenLoader from '../../../../components/ui/FullScreenLoader'
 
 const Teams = () => {
   const router = useRouter()
@@ -55,8 +56,10 @@ const Teams = () => {
         {tEventDetail('event.results.teams.allTeams')}
       </TitleBlock>
       <List>
-        {!!teams?.length &&
-          teams.map((team, i) => <TeamItem team={team} key={team.id} index={i + 1} />)}
+        {!!teams?.length ?
+          teams.map((team, i) => <TeamItem team={team} key={team.id} index={i + 1} />):
+          <FullScreenLoader open={true} />
+        }
       </List>
     </>
   )

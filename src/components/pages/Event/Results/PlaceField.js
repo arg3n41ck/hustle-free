@@ -5,7 +5,9 @@ function PlaceField({ defaultCount, onChange }) {
   const [count, setCount] = useState(defaultCount)
 
   useEffect(() => {
-    onChange && onChange(count)
+    onChange &&
+    defaultCount !== count &&
+     onChange(count)
   }, [count])
 
   return (

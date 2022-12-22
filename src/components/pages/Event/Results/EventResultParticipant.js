@@ -18,7 +18,7 @@ export const changeParticipantPlace = async (eventId, data) => {
   }
 }
 
-function EventResultParticipant({ participant, updatePC }) {
+function EventResultParticipant({ participant }) {
   const user = useSelector((state) => state.user.user)
   const [place, setPlace] = useState(participant.place)
   const { t: tEventDetail } = useTranslation('eventDetail')
@@ -34,7 +34,6 @@ function EventResultParticipant({ participant, updatePC }) {
       participant: pcId,
       place: count,
     })
-    updatePC()
   }
 
   return (
@@ -78,8 +77,8 @@ function EventResultParticipant({ participant, updatePC }) {
 export default EventResultParticipant
 
 const Item = styled.li`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template: 1fr / 1.5fr 1fr;
 `
 const Left = styled.div`
   display: flex;
@@ -97,6 +96,7 @@ const Title = styled.h3`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `
 const InfoItem = styled.div`
   border-left: 1px solid #333333;
