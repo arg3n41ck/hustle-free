@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import $api from '../../../../../services/axios'
+import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 
 const getResults = async (bracket) => {
   try {
