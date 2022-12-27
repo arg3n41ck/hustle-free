@@ -31,6 +31,7 @@ function Events({ teamId, isPublic = false }) {
       }?${query}`,
     )
   }, [debouncedSearch])
+
   useEffect(() => {
     teamId && getStatistics(teamId, query).then(setStatics)
   }, [query])

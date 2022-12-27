@@ -6,7 +6,7 @@ import { theme } from '../../../../../../styles/theme'
 
 function FilterMyStories({ data }) {
   const [open, setOpen] = React.useState(false)
-  const { id, place, event, participationCategory } = data
+  const { id, place, placeDescribe, event, participationCategory } = data
   const md = useMediaQuery('(max-width:767px)')
 
   return (
@@ -37,9 +37,9 @@ function FilterMyStories({ data }) {
               </EventInfoParticipantsInfo>
             </EventsInfo>
           </EventItems>
-          {/* <Collapse in={open} timeout='auto' unmountOnExit>
-          <StoryCollapse />
-        </Collapse> */}
+          <Collapse in={open} timeout='auto' unmountOnExit>
+            <StoryCollapse place={place} placeDescribe={placeDescribe} />
+          </Collapse>
         </BorderWrapper>
       </EventContainer>
     </>
@@ -126,6 +126,7 @@ const EventItems = styled.div`
   display: grid;
   grid-template-columns: 104px auto;
   grid-gap: 16px;
+  cursor: pointer;
 
   ${theme.mqMax('md')} {
     grid-template: 1fr min-content / 1fr;
@@ -179,7 +180,7 @@ const UnknownMedal = styled.div`
   }
 `
 
-export const PlaceIcon = ({ place }) => {
+export const PlaceIcon = ({ place, size }) => {
   return (
     <>
       {place === 1 && (
@@ -189,6 +190,7 @@ export const PlaceIcon = ({ place }) => {
           viewBox='0 0 104 104'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
+          style={size ? { width: size, height: size } : null}
         >
           <g clipPath='url(#clip0_3078_5650)'>
             <path d='M41.6816 35.4992L62.4202 0H92.5352L71.7966 35.4992H41.6816Z' fill='#3F46F1' />
@@ -225,6 +227,7 @@ export const PlaceIcon = ({ place }) => {
           viewBox='0 0 104 104'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
+          style={size ? { width: size, height: size } : null}
         >
           <g clipPath='url(#clip0_3078_5677)'>
             <path d='M41.6816 35.4992L62.4202 0H92.5352L71.7966 35.4992H41.6816Z' fill='#3F46F1' />
@@ -261,6 +264,7 @@ export const PlaceIcon = ({ place }) => {
           viewBox='0 0 104 104'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
+          style={size ? { width: size, height: size } : null}
         >
           <g clipPath='url(#clip0_3078_496)'>
             <path d='M41.6816 35.4992L62.4202 0H92.5352L71.7966 35.4992H41.6816Z' fill='#3F46F1' />
@@ -290,7 +294,7 @@ export const PlaceIcon = ({ place }) => {
           </defs>
         </svg>
       )}
-      {place === 0 && <UnknownMedal>?</UnknownMedal>}
+      {(place < 1 || place > 3) && <UnknownMedal>{place}</UnknownMedal>}
     </>
   )
 }

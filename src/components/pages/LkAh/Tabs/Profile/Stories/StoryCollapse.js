@@ -1,56 +1,65 @@
-import { useTranslation } from "next-i18next"
-import React from "react"
-import styled from "styled-components"
+import { useTranslation } from 'next-i18next'
+import React, { useMemo } from 'react'
+import styled from 'styled-components'
+import { PlaceIcon } from './FilterMyStories'
 
-function StoryCollapse() {
-  const { t: tLkAh } = useTranslation("lkAh")
+function StoryCollapse({ place, placeDescribe }) {
+  const { t: tLkAh } = useTranslation('lkAh')
+
+  const { placeText, color } = useMemo(() => {
+    if (place && place <= 3) {
+      const placeText =
+        +place === 1 ? tLkAh('gold') : +place === 2 ? tLkAh('silver') : tLkAh('bronze')
+      const color = +place === 1 ? '#FFC107' : +place === 2 ? '#f2f2f2' : '#9B5711'
+      return {
+        placeText,
+        color,
+      }
+    }
+    return {
+      placeText: `${place} место`,
+      color: '#f2f2f2',
+    }
+  }, [place])
 
   return (
     <ParticipantInfoSummary>
       <ParticipantInfoSummaryField>
         <ParticipantInfoSummaryFieldCol1>
-          <ParticipantInfoSummaryFieldCol1Text color={"#27ae60"}>
-            {tLkAh("won")}
+          <ParticipantInfoSummaryFieldCol1Text color={'#27ae60'}>
+            {tLkAh('won')}
           </ParticipantInfoSummaryFieldCol1Text>
         </ParticipantInfoSummaryFieldCol1>
-        <ParticipantInfoSummaryFieldCol2 background={"rgba(39, 174, 96, 0.15)"}>
-          <ParticipantInfoSummaryFieldCol2Text color={"#F2F2F2"}>
-            ARTUR ELZHANOV
+        <ParticipantInfoSummaryFieldCol2 background={'rgba(39, 174, 96, 0.15)'}>
+          <ParticipantInfoSummaryFieldCol2Text color={'#F2F2F2'}>
+            {placeDescribe?.wonAgainst || ''}
           </ParticipantInfoSummaryFieldCol2Text>
-          <ParticipantInfoSummaryFieldCol2Text2>
-            {tLkAh("wonOnPoints")} 9–2
-          </ParticipantInfoSummaryFieldCol2Text2>
         </ParticipantInfoSummaryFieldCol2>
       </ParticipantInfoSummaryField>
       <Line />
       <ParticipantInfoSummaryField>
         <ParticipantInfoSummaryFieldCol1>
-          <ParticipantInfoSummaryFieldCol1Text color={"#EB5757"}>
-            {tLkAh("lost")}
+          <ParticipantInfoSummaryFieldCol1Text color={'#EB5757'}>
+            {tLkAh('lost')}
           </ParticipantInfoSummaryFieldCol1Text>
         </ParticipantInfoSummaryFieldCol1>
-
-        <ParticipantInfoSummaryFieldCol2 background={"rgba(235, 87, 87, 0.15)"}>
-          <ParticipantInfoSummaryFieldCol2Text color={"#F2F2F2"}>
-            ARTUR ELZHANOV
+        <ParticipantInfoSummaryFieldCol2 background={'rgba(235, 87, 87, 0.15)'}>
+          <ParticipantInfoSummaryFieldCol2Text color={'#F2F2F2'}>
+            {placeDescribe?.lostTo || ''}
           </ParticipantInfoSummaryFieldCol2Text>
-          <ParticipantInfoSummaryFieldCol2Text2>
-            {tLkAh("wonOnPoints")} 9–2
-          </ParticipantInfoSummaryFieldCol2Text2>
-        </ParticipantInfoSummaryFieldCol2>
+        </ParticipantInfoSummaryFieldCol2>{' '}
       </ParticipantInfoSummaryField>
       <Line />
       <ParticipantInfoSummaryField>
         <ParticipantInfoSummaryFieldCol1>
-          <ParticipantInfoSummaryFieldCol1Text color={"#9B5711"}>
-            {tLkAh("outcome")}
+          <ParticipantInfoSummaryFieldCol1Text color={color}>
+            {tLkAh('outcome')}
           </ParticipantInfoSummaryFieldCol1Text>
         </ParticipantInfoSummaryFieldCol1>
-        <ParticipantInfoSummaryFieldCol2
-          background={"rgba(255, 255, 255, 0.1)"}
-        >
-          <ParticipantInfoSummaryFieldCol2Text color={"#9B5711"}>
-            {tLkAh("bronze")}
+        <ParticipantInfoSummaryFieldCol2 background={'rgba(255, 255, 255, 0.1)'}>
+          <ParticipantInfoSummaryFieldCol2Text color={color}>
+            {place > 0 && place <= 3 && <PlaceIcon place={place} size={32} />}
+            {placeText}
           </ParticipantInfoSummaryFieldCol2Text>
         </ParticipantInfoSummaryFieldCol2>
       </ParticipantInfoSummaryField>
@@ -79,6 +88,12 @@ const ParticipantInfoSummaryField = styled.div`
   height: 56px;
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 992px) {
+    height: unset;
+    align-items: flex-start;
+    flex-direction: column;
+  }
 `
 
 const Line = styled.div`
@@ -100,7 +115,12 @@ const ParticipantInfoSummaryFieldCol2 = styled.div`
   display: grid;
   align-items: center;
   padding: 16px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+
+  @media screen and (max-width: 756px) {
+    grid-template: 1fr/ 1fr;
+    grid-gap: 10px;
+  }
 `
 
 const ParticipantInfoSummaryFieldCol2Text = styled.p`
@@ -109,12 +129,8 @@ const ParticipantInfoSummaryFieldCol2Text = styled.p`
   font-size: 18px;
   line-height: 24px;
   color: ${({ color }) => color};
-`
 
-const ParticipantInfoSummaryFieldCol2Text2 = styled.p`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 24px;
-  color: #828282;
+  display: flex;
+  align-items: center;
+  grid-gap: 10px;
 `

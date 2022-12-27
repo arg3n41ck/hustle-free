@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { GoldMedalIcon } from '../../../../../assets/svg/icons'
 import { SilverMedalIcon } from '../../../../../assets/svg/icons'
 import { BronzeMedalIcon } from '../../../../../assets/svg/icons'
 import styled from 'styled-components'
 import { useTranslation } from 'next-i18next'
-import { useSelector } from 'react-redux'
 
 function Awards({ places }) {
   const { t: tLkTm } = useTranslation('lkTm')

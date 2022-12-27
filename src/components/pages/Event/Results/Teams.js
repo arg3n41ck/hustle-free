@@ -26,7 +26,12 @@ const Teams = () => {
     })
 
     if (data.length) {
-      const _teams = data.map(({ team }) => team)
+      const _teams = data.map(({ team, countParticipant, wins, defeats }) => ({
+        ...team,
+        countParticipant,
+        wins,
+        defeats,
+      }))
       setTeams(removeDuplicateObjectFromArray(_teams, 'id'))
     }
   }, [searchValue])
@@ -56,10 +61,11 @@ const Teams = () => {
         {tEventDetail('event.results.teams.allTeams')}
       </TitleBlock>
       <List>
-        {!!teams?.length ?
-          teams.map((team, i) => <TeamItem team={team} key={team.id} index={i + 1} />):
+        {!!teams?.length ? (
+          teams.map((team, i) => <TeamItem team={team} key={team.id} index={i + 1} />)
+        ) : (
           <FullScreenLoader open={true} />
-        }
+        )}
       </List>
     </>
   )

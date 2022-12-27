@@ -17,7 +17,7 @@ const getPC = async (params) => {
   return data
 }
 
-const Participants = ({ onloadPC }) => {
+const Participants = () => {
   const [participants, setParticipants] = useState([])
   const { t: tEventDetail } = useTranslation('eventDetail')
   const {
@@ -45,10 +45,7 @@ const Participants = ({ onloadPC }) => {
       team: teamValue,
       id: categoryValue,
       event: eventId,
-    }).then((data) => {
-      setParticipants(data)
-      onloadPC(data)
-    })
+    }).then(setParticipants)
   }, [searchValue, countryValue, teamValue, categoryValue])
 
   return (
@@ -58,11 +55,13 @@ const Participants = ({ onloadPC }) => {
         {tEventDetail('event.results.participants.allResultsEvent')}
       </TitleBlock>
       <EventResults>
-        {
-        !!participants?.length ?
-        participants.map((participant) => (
-          <EventResultsItem key={participant.id} participant={participant} />
-        )): <FullScreenLoader open />}
+        {!!participants?.length ? (
+          participants.map((participant) => (
+            <EventResultsItem key={participant.id} participant={participant} />
+          ))
+        ) : (
+          <FullScreenLoader open />
+        )}
       </EventResults>
     </>
   )

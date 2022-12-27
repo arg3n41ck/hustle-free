@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import HorizontalTabsBorder from '../../../ui/tabs/HorizontalTabsBorder'
 import { GoldMedalIcon } from '../../../../assets/svg/icons'
@@ -8,11 +8,25 @@ import Teams from './Teams'
 import Participants from './Participants'
 import { useTranslation } from 'next-i18next'
 import { theme } from '../../../../styles/theme'
+import $api from '../../../../services/axios'
+import { useRouter } from 'next/router'
+
+const getEventPlaces = async (eventId) => {
+  try {
+    const { data } = await $api.get(`/events/events/${eventId}/stats/`)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 const EventResults = () => {
   const [view, setView] = useState('participants') // participants | teams
-  const [resultsPlaces, setResultsPlaces] = useState([])
+  const [resultsPlaces, setResultsPlaces] = useState(null)
   const { t: tEventDetail } = useTranslation('eventDetail')
+  const {
+    query: { id: eventId },
+  } = useRouter()
 
   const tabs = [
     {
@@ -25,27 +39,14 @@ const EventResults = () => {
     },
   ]
 
-  const onloadPC = (data) => {
-    data.length && setResultsPlaces(data.map((item) => item.participants).flat(Infinity))
-  }
-
-  const { first, second, third, all } = useMemo(() => {
-    const firstP =
-      !!resultsPlaces.length && (resultsPlaces.filter(({ place }) => place === 1).length || '0')
-    const secondP =
-      !!resultsPlaces.length && (resultsPlaces.filter(({ place }) => place === 2).length || '0')
-    const thirdP =
-      !!resultsPlaces.length && (resultsPlaces.filter(({ place }) => place === 3).length || '0')
-
-    const allP =
-      !!resultsPlaces.length && (resultsPlaces.filter(({ place }) => place).length || '-')
-    return { first: firstP, second: secondP, third: thirdP, all: allP }
-  }, [resultsPlaces])
+  useEffect(() => {
+    getEventPlaces(eventId).then(setResultsPlaces)
+  }, [])
 
   return (
     <>
       <MedalsTitle>
-        {tEventDetail('event.results.eventResults.totalFights')}: {all}
+        {tEventDetail('event.results.eventResults.totalFights')}: {resultsPlaces?.fightsCount || 0}
       </MedalsTitle>
       <Medals>
         <Medal>
@@ -54,7 +55,7 @@ const EventResults = () => {
             <MedalText color={'#FFC107'}>
               {tEventDetail('event.results.eventResults.gold')}:
             </MedalText>
-            <MedalText color={'#FFC107'}>{first || 0}</MedalText>
+            <MedalText color={'#FFC107'}>{resultsPlaces?.goldCount || 0}</MedalText>
           </MedalInfo>
         </Medal>
         <MedalBorder />
@@ -64,7 +65,7 @@ const EventResults = () => {
             <MedalText color={'#E0E0E0'}>
               {tEventDetail('event.results.eventResults.silver')}:
             </MedalText>
-            <MedalText color={'#E0E0E0'}>{second || 0}</MedalText>
+            <MedalText color={'#E0E0E0'}>{resultsPlaces?.silverCount || 0}</MedalText>
           </MedalInfo>
         </Medal>
         <MedalBorder />
@@ -74,7 +75,7 @@ const EventResults = () => {
             <MedalText color={'#D7832D'}>
               {tEventDetail('event.results.eventResults.bronze')}:
             </MedalText>
-            <MedalText color={'#D7832D'}>{third || 0}</MedalText>
+            <MedalText color={'#D7832D'}>{resultsPlaces?.bronzeCount || 0}</MedalText>
           </MedalInfo>
         </Medal>
       </Medals>
@@ -84,7 +85,7 @@ const EventResults = () => {
         onChangeHandler={setView}
         height={'96px'}
       >
-        {view === 'participants' ? <Participants onloadPC={onloadPC} /> : <Teams />}
+        {view === 'participants' ? <Participants /> : <Teams />}
       </HorizontalTabsBorder>
     </>
   )

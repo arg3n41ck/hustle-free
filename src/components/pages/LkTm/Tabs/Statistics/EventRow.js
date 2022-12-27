@@ -14,16 +14,12 @@ function EventRow({ eventResults, isPublic, teamId }) {
         <p>{eventResults?.countParticipant || 0}</p>
         <div>{tLkTm('statistics.participant')}</div>
       </InfoItem>
-      <InfoItem color={'#2E79DD'}>
-        <p>0</p>
-        <div>{tLkTm('statistics.point')}</div>
-      </InfoItem>
       <InfoItem color={'#27AE60'}>
-        <p>0</p>
+        <p>{eventResults?.wins || 0}</p>
         <div>{tLkTm('statistics.wins')}</div>
       </InfoItem>
       <InfoItem color={'#EB5757'}>
-        <p>0</p>
+        <p>{eventResults?.defeats || 0}</p>
         <div>{tLkTm('statistics.defeats')}</div>
       </InfoItem>
       <InfoItem color={'#FFC107'}>
@@ -63,7 +59,6 @@ const Info = styled.div`
   display: grid;
   grid-template: 1fr / repeat(7, 1fr);
   padding: 32px 0;
-  margin: 0 32px;
 
   border-top: 1px solid #333;
 `

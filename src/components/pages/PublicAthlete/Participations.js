@@ -44,9 +44,9 @@ function Participations({ eventName, level, fromAge, fromWeight, toAge, name, to
           </EventInfoParticipantsInfo>
         </EventsInfo>
       </EventsMainInfo>
-      {/* <Collapse in={open} timeout='auto' unmountOnExit>
+      <Collapse in={open} timeout='auto' unmountOnExit>
         <StoryCollapse />
-      </Collapse> */}
+      </Collapse>
     </EventsWrapper>
   )
 }

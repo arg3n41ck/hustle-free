@@ -42,7 +42,7 @@ function MyStories({ onToggleSidebar }) {
 
   React.useEffect(() => {
     user && dispatch(fetchAthleteStories({ period: 'all', athlete: user?.athleteId }))
-  }, [])
+  }, [user])
 
   return (
     <div>

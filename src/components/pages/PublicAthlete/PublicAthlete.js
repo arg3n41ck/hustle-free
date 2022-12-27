@@ -9,6 +9,7 @@ import HorizontalTabsBorder from '../../ui/tabs/HorizontalTabsBorder'
 import { useTranslation } from 'next-i18next'
 import Awards from '../LkTm/Tabs/Statistics/Awards'
 import $api from '../../../services/axios'
+import FilterMyStories from '../LkAh/Tabs/Profile/Stories/FilterMyStories'
 
 const getAthParticipations = async (query) => {
   try {
@@ -71,7 +72,7 @@ function PublicAthlete({ athleteData }) {
       value: 'defeats',
     },
   ])
-
+  console.log({ participations })
   return (
     <MainWrapper>
       {user && <AthleteUserData user={user} isVisible={isVisible} />}
@@ -86,22 +87,8 @@ function PublicAthlete({ athleteData }) {
               onChangeHandler={(value) => setView(value)}
               height={'96px'}
             >
-              {participations.map(({ event, participationCategory, place }, i) => {
-                return (
-                  participationCategory && (
-                    <Participations
-                      key={`${event?.name}-${i}`}
-                      eventName={event?.name}
-                      level={participationCategory?.level}
-                      place={place}
-                      name={participationCategory?.eventParticipantsCategory?.name}
-                      fromAge={participationCategory?.eventParticipantsCategory?.fromAge}
-                      toAge={participationCategory?.eventParticipantsCategory?.toAge}
-                      fromWeight={participationCategory?.eventParticipantsCategory?.fromWeight}
-                      toWeight={participationCategory?.eventParticipantsCategory?.toWeight}
-                    />
-                  )
-                )
+              {participations.map((pc, i) => {
+                return <FilterMyStories data={pc} key={pc?.id} />
               })}
             </HorizontalTabsBorder>
           )}

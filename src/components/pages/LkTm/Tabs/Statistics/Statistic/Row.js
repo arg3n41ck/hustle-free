@@ -24,18 +24,18 @@ function Row({ ePC, participants }) {
             <AthleteWrapper key={`statistic-athlete-${index}`}>
               <PlaceIcon place={place || 0} />
               <AthleteName>{athleteName}</AthleteName>
-              <WDWrapper>
-                <WinDefeat>
-                  <p className='win'>{tLkTm('statistics.win')}</p>
-                  <p>{athleteName}</p>
-                  <p>{tLkTm('statistics.onPoints')} 9–2</p>
-                </WinDefeat>
-                <WinDefeat>
-                  <p className='defeat'>{tLkTm('statistics.defeat')}</p>
-                  <p>{athleteName}</p>
-                  <p>{tLkTm('statistics.onPoints')} 9–2</p>
-                </WinDefeat>
-              </WDWrapper>
+              {!!place && (
+                <WDWrapper>
+                  <WinDefeat>
+                    <p className='win'>{tLkTm('statistics.win')}</p>
+                    <p>{athleteName}</p>
+                  </WinDefeat>
+                  <WinDefeat>
+                    <p className='defeat'>{tLkTm('statistics.defeat')}</p>
+                    <p>{athleteName}</p>
+                  </WinDefeat>
+                </WDWrapper>
+              )}
             </AthleteWrapper>
           ))
         ) : (
@@ -65,6 +65,7 @@ const AthleteName = styled.p`
 `
 
 const WDWrapper = styled.div`
+  width: 100%;
   height: 100%;
   display: grid;
   grid-template: 1fr / 1fr 1fr;
@@ -77,6 +78,7 @@ const WinDefeat = styled.div`
   display: flex;
   flex-direction: column;
   grid-row-gap: 4px;
+  justify-content: center;
 
   p {
     font-weight: 400;

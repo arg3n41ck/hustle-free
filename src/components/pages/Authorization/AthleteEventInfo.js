@@ -194,10 +194,6 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
               key={`form_field_${teamAutoRefreshKey ?? 'initital-event-reg-TARK'}`}
               noOptionsText={'Не найдено'}
               onChange={(_, value) => {
-                console.log(
-                  value,
-                  (athleteTeams || [])?.some((req) => req?.team?.id == value?.id),
-                )
                 if (!(athleteTeams || [])?.some((req) => req?.team?.id == value?.id)) {
                   setModalWadeInTeam({
                     id: value?.id,

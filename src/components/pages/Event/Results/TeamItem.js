@@ -19,48 +19,35 @@ const TeamItem = ({ team, index }) => {
               <ItemTitle>{team.name}</ItemTitle>
               <ItemDescription>{team.country.name}</ItemDescription>
             </ItemText>
-            {mxMd && (
-              <InfoItem color={'#2E79DD'} style={{ margin: '0 0 0 auto' }}>
-                <p>0</p>
-                <div>{tEventDetail('event.results.teamItem.points')}</div>
-              </InfoItem>
-            )}
           </ItemLeft>
           <ItemRight>
             <Info>
               {!mxMd && (
-                <>
-                  <InfoItem color={'#828282'}>
-                    <p>{team.teamMembersCount}</p>
-                    <div>{tEventDetail('event.results.teamItem.participant')}</div>
-                  </InfoItem>
-
-                  <InfoItem color={'#2E79DD'}>
-                    <p>0</p>
-                    <div>{tEventDetail('event.results.teamItem.points')}</div>
-                  </InfoItem>
-                </>
+                <InfoItem color={'#828282'}>
+                  <p>{team?.countParticipant || 0}</p>
+                  <div>{tEventDetail('event.results.teamItem.participant')}</div>
+                </InfoItem>
               )}
               <InfoItem color={'#27AE60'}>
-                <p>0</p>
+                <p>{team?.wins || 0}</p>
                 <div>{tEventDetail('event.results.teamItem.wins')}</div>
               </InfoItem>
               <InfoItem color={'#EB5757'}>
-                <p>0</p>
+                <p>{team?.defeats || 0}</p>
                 <div>{tEventDetail('event.results.teamItem.defeats')}</div>
               </InfoItem>
             </Info>
             <Medal>
               <InfoItem color={'#FFC107'}>
-                <p>0</p>
+                <p>{team?.places?.gold || 0}</p>
                 <div>{tEventDetail('event.results.teamItem.gold')}</div>
               </InfoItem>
               <InfoItem color={'#E0E0E0'}>
-                <p>0</p>
+                <p>{team?.places?.silver || 0}</p>
                 <div>{tEventDetail('event.results.teamItem.silver')}</div>
               </InfoItem>
               <InfoItem color={'#D7832D'}>
-                <p>0</p>
+                <p>{team?.places?.bronze || 0}</p>
                 <div>{tEventDetail('event.results.teamItem.bronze')}</div>
               </InfoItem>
             </Medal>

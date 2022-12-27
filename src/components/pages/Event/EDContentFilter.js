@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Collapse, TextField, useMediaQuery } from '@mui/material'
 import styled from 'styled-components'
 import { useTranslation } from 'next-i18next'
 import { theme } from '../../../styles/theme'
+import useDebounce from '../../../hooks/useDebounce'
 
 function EDContentFilter({ label, onSearch, children, isFilterOpen, searchPlaceholder = 'Поиск' }) {
   const [search, setSearch] = useState('')
+  const debouncedSearch = useDebounce(search, 500)
   const [openChildren, setOpenChildren] = useState(false)
   const mxMd = useMediaQuery('(max-width: 767px)')
   const { t: tLkTm } = useTranslation('lkTm')
-
+  useEffect(() => {
+    onSearch(debouncedSearch || '')
+  }, [debouncedSearch])
   return (
     <MainWrapper>
       {!!label && <h2>{label}</h2>}
@@ -21,10 +25,7 @@ function EDContentFilter({ label, onSearch, children, isFilterOpen, searchPlaceh
             placeholder={
               searchPlaceholder === 'Поиск' ? tLkTm('statistics.search') : searchPlaceholder
             }
-            onChange={({ target: { value } }) => {
-              setSearch(value)
-              onSearch && onSearch(value)
-            }}
+            onChange={({ target: { value } }) => setSearch(value)}
             sx={{
               '& >.MuiOutlinedInput-root': {
                 borderRadius: mxMd ? '16px !important' : '16px 0 0 16px !important',
