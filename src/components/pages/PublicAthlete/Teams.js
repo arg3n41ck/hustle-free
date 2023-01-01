@@ -15,13 +15,19 @@ function Teams({ teams }) {
       <PubAthTitles>{tLkAh('teams')}</PubAthTitles>
 
       <ul>
-        {!!teams?.length &&
-          teams.map(({ user: { avatar }, name, id }, i) => (
+        {!!teams?.length ? (
+          teams.map(({ user: { avatar }, name, id, athletes }, i) => (
             <li key={`ATH-Teams-${i}`} onClick={() => routerPush(`/team/${id}`)}>
-              <Avatar src={avatar} alt={`${avatar}`} sx={{ width: 64, height: 64 }} />
+              <Avatar src={avatar} alt={`${avatar}`} sx={{ width: 104, height: 104 }} />
               <p>{name}</p>
+              <span>{athletes?.length} Athletes</span>
             </li>
-          ))}
+          ))
+        ) : (
+          <li>
+            <p>Этот атлет не участвует ни в одной команде</p>
+          </li>
+        )}
       </ul>
     </TeamsWrapper>
   )
@@ -38,11 +44,13 @@ const TeamsWrapper = styled.div`
 
   ul {
     display: flex;
-    flex-direction: column;
-    grid-row-gap: 16px;
+    grid-row-gap: 24px;
+
     li {
       display: flex;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
       grid-column-gap: 16px;
       cursor: pointer;
 
@@ -51,7 +59,15 @@ const TeamsWrapper = styled.div`
         font-weight: 600;
         font-size: 24px;
         line-height: 32px;
+        margin: 16px 0 8px;
         color: #f2f2f2;
+      }
+
+      span {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: #828282;
       }
     }
   }

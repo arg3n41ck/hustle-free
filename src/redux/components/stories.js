@@ -3,11 +3,20 @@ import $api from '../../services/axios'
 
 export const fetchAthleteStories = createAsyncThunk(
   'stories/fetchAthleteStories',
-  async (params, { rejectWithValue }) => {
+  async ({ athleteId }, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/events/participant_athletes/`, {
-        params,
-      })
+      const { data } = await $api.get(`/athletes/history/${athleteId}/`)
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  },
+)
+export const fetchAthleteStatistics = createAsyncThunk(
+  'stories/fetchAthleteStatistics',
+  async ({ athleteId }, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/athletes/history/${athleteId}/stats/`)
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
@@ -24,6 +33,11 @@ export const storiesSlice = createSlice({
       isLoading: false,
       athleteStories: [],
     },
+    statistics: {
+      error: null,
+      isLoading: false,
+      statistics: null,
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAthleteStories.pending, ({ stories }) => {
@@ -39,6 +53,20 @@ export const storiesSlice = createSlice({
       stories.isLoading = false
       stories.error = action.payload
       stories.athleteStories = []
+    })
+
+    builder.addCase(fetchAthleteStatistics.pending, ({ statistics }) => {
+      statistics.isLoading = true
+    })
+    builder.addCase(fetchAthleteStatistics.fulfilled, ({ statistics }, action) => {
+      statistics.isLoading = false
+      statistics.statistics = action.payload
+      statistics.error = null
+    })
+    builder.addCase(fetchAthleteStatistics.rejected, ({ statistics }, action) => {
+      statistics.isLoading = false
+      statistics.error = action.payload
+      statistics.statistics = null
     })
   },
 })

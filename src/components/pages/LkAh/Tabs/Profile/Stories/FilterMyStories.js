@@ -6,43 +6,41 @@ import { theme } from '../../../../../../styles/theme'
 
 function FilterMyStories({ data }) {
   const [open, setOpen] = React.useState(false)
-  const { id, place, placeDescribe, event, participationCategory } = data
+  const { id, place, fightsHistory, event, participationCategory } = data
   const md = useMediaQuery('(max-width:767px)')
 
   return (
-    <>
-      <EventContainer onClick={() => setOpen(!open)} key={id}>
-        <BorderWrapper>
-          <EventItems>
-            <MedalWrapper>
-              {place <= 3 && place > 0 ? (
-                <PlaceIcon place={place} />
-              ) : (
-                <MedalContainer>
-                  <MedalInfoPlace>{place}</MedalInfoPlace>
-                  {!md && <MedalInfoPlaceText>место</MedalInfoPlaceText>}
-                </MedalContainer>
-              )}
-              {md && <EventInfoHeadingText>{event?.name}</EventInfoHeadingText>}
-            </MedalWrapper>
-            <EventsInfo>
-              {!md && <EventInfoHeadingText>{event?.name}</EventInfoHeadingText>}
-              <EventInfoParticipantsInfo>
-                {participationCategory?.eventParticipantsCategory?.name} /{' '}
-                {participationCategory?.level?.name} /{' '}
-                {participationCategory?.eventParticipantsCategory?.fromAge}-
-                {participationCategory?.eventParticipantsCategory?.toAge} лет /{' '}
-                {participationCategory?.eventParticipantsCategory?.fromWeight} кг -{' '}
-                {participationCategory?.eventParticipantsCategory?.toWeight} кг{' '}
-              </EventInfoParticipantsInfo>
-            </EventsInfo>
-          </EventItems>
-          <Collapse in={open} timeout='auto' unmountOnExit>
-            <StoryCollapse place={place} placeDescribe={placeDescribe} />
-          </Collapse>
-        </BorderWrapper>
-      </EventContainer>
-    </>
+    <EventContainer onClick={() => setOpen(!open)} key={id}>
+      <BorderWrapper>
+        <EventItems>
+          <MedalWrapper>
+            {place <= 3 && place > 0 ? (
+              <PlaceIcon place={place} />
+            ) : (
+              <MedalContainer>
+                <MedalInfoPlace>{place}</MedalInfoPlace>
+                {!md && <MedalInfoPlaceText>место</MedalInfoPlaceText>}
+              </MedalContainer>
+            )}
+            {md && <EventInfoHeadingText>{event}</EventInfoHeadingText>}
+          </MedalWrapper>
+          <EventsInfo>
+            {!md && <EventInfoHeadingText>{event}</EventInfoHeadingText>}
+            <EventInfoParticipantsInfo>
+              {participationCategory?.eventParticipantsCategory?.name} /{' '}
+              {participationCategory?.level} /{' '}
+              {participationCategory?.eventParticipantsCategory?.fromAge}-
+              {participationCategory?.eventParticipantsCategory?.toAge} лет /{' '}
+              {participationCategory?.eventParticipantsCategory?.fromWeight} кг -{' '}
+              {participationCategory?.eventParticipantsCategory?.toWeight} кг{' '}
+            </EventInfoParticipantsInfo>
+          </EventsInfo>
+        </EventItems>
+        <Collapse in={open} timeout='auto' unmountOnExit>
+          <StoryCollapse fightsHistory={fightsHistory} />
+        </Collapse>
+      </BorderWrapper>
+    </EventContainer>
   )
 }
 
@@ -96,6 +94,7 @@ const MedalContainer = styled.div`
     height: 48px;
   }
 `
+
 const EventContainer = styled.div`
   padding: 32px;
 

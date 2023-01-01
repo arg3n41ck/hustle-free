@@ -14,12 +14,13 @@ import {
 import { motion } from 'framer-motion'
 import { AuthButton } from '../../Authorization/Authorization'
 import $api from '../../../../services/axios'
-import { useDispatch } from 'react-redux'
 import { getCookie, setCookie } from '../../../../services/JWTService'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { PasswordIcon } from '../../../../pages/auth/auth-reset-password'
 import { useTranslation } from 'next-i18next'
+import { fetchUser } from '../../../../redux/components/user'
+import { useDispatch } from 'react-redux'
 
 const validationSchema = yup.object({
   lastName: yup
@@ -45,6 +46,7 @@ const InputPersonalData = () => {
   const { t: tCommon } = useTranslation('common')
   const sm = useMediaQuery('(max-width: 578px)')
   const router = useRouter()
+  const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: {
       lastName: '',
@@ -67,6 +69,7 @@ const InputPersonalData = () => {
             setCookie('token', _data.access, 999)
             setCookie('refresh', _data.refresh, 999999)
             toast.success(tAuth('toast.successActivation'))
+            dispatch(fetchUser())
             await router.push('/')
           } catch (e) {}
         } catch (e) {}

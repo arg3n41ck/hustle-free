@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import { setCookie } from '../../../../services/JWTService'
 import { fetchCountries } from '../../../../redux/components/countriesAndCities'
 import { useTranslation } from 'next-i18next'
+import { fetchUser } from '../../../../redux/components/user'
 
 function TeamTabs() {
   const [view, setView] = React.useState('contactInfo') // contactInfo | info
@@ -43,6 +44,7 @@ function TeamTabs() {
         setCookie('refresh', data.refresh, 999999)
       })
       toast.success(tAuth('toast.successActivation'))
+      dispatch(fetchUser())
       await router.push('/')
     } catch (e) {
       console.log(e)

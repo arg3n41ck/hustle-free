@@ -1,68 +1,32 @@
 import { useTranslation } from 'next-i18next'
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { PlaceIcon } from './FilterMyStories'
 
-function StoryCollapse({ place, placeDescribe }) {
+function StoryCollapse({ fightsHistory }) {
   const { t: tLkAh } = useTranslation('lkAh')
-
-  const { placeText, color } = useMemo(() => {
-    if (place && place <= 3) {
-      const placeText =
-        +place === 1 ? tLkAh('gold') : +place === 2 ? tLkAh('silver') : tLkAh('bronze')
-      const color = +place === 1 ? '#FFC107' : +place === 2 ? '#f2f2f2' : '#9B5711'
-      return {
-        placeText,
-        color,
-      }
-    }
-    return {
-      placeText: `${place} место`,
-      color: '#f2f2f2',
-    }
-  }, [place])
 
   return (
     <ParticipantInfoSummary>
-      <ParticipantInfoSummaryField>
-        <ParticipantInfoSummaryFieldCol1>
-          <ParticipantInfoSummaryFieldCol1Text color={'#27ae60'}>
-            {tLkAh('won')}
-          </ParticipantInfoSummaryFieldCol1Text>
-        </ParticipantInfoSummaryFieldCol1>
-        <ParticipantInfoSummaryFieldCol2 background={'rgba(39, 174, 96, 0.15)'}>
-          <ParticipantInfoSummaryFieldCol2Text color={'#F2F2F2'}>
-            {placeDescribe?.wonAgainst || ''}
-          </ParticipantInfoSummaryFieldCol2Text>
-        </ParticipantInfoSummaryFieldCol2>
-      </ParticipantInfoSummaryField>
-      <Line />
-      <ParticipantInfoSummaryField>
-        <ParticipantInfoSummaryFieldCol1>
-          <ParticipantInfoSummaryFieldCol1Text color={'#EB5757'}>
-            {tLkAh('lost')}
-          </ParticipantInfoSummaryFieldCol1Text>
-        </ParticipantInfoSummaryFieldCol1>
-        <ParticipantInfoSummaryFieldCol2 background={'rgba(235, 87, 87, 0.15)'}>
-          <ParticipantInfoSummaryFieldCol2Text color={'#F2F2F2'}>
-            {placeDescribe?.lostTo || ''}
-          </ParticipantInfoSummaryFieldCol2Text>
-        </ParticipantInfoSummaryFieldCol2>{' '}
-      </ParticipantInfoSummaryField>
-      <Line />
-      <ParticipantInfoSummaryField>
-        <ParticipantInfoSummaryFieldCol1>
-          <ParticipantInfoSummaryFieldCol1Text color={color}>
-            {tLkAh('outcome')}
-          </ParticipantInfoSummaryFieldCol1Text>
-        </ParticipantInfoSummaryFieldCol1>
-        <ParticipantInfoSummaryFieldCol2 background={'rgba(255, 255, 255, 0.1)'}>
-          <ParticipantInfoSummaryFieldCol2Text color={color}>
-            {place > 0 && place <= 3 && <PlaceIcon place={place} size={32} />}
-            {placeText}
-          </ParticipantInfoSummaryFieldCol2Text>
-        </ParticipantInfoSummaryFieldCol2>
-      </ParticipantInfoSummaryField>
+      {!!fightsHistory?.length &&
+        fightsHistory.map(({ opponent, result }) => {
+          const bgColor = !!result ? 'rgba(39,174,96,0.15)' : 'rgba(235,87,87,0.15)'
+          const color = !!result ? '#27ae60' : '#EB5757'
+          return (
+            <ParticipantInfoSummaryField>
+              <ParticipantInfoSummaryFieldCol1>
+                <ParticipantInfoSummaryFieldCol1Text color={color}>
+                  {tLkAh('won')}
+                  {tLkAh('lost')}
+                </ParticipantInfoSummaryFieldCol1Text>
+              </ParticipantInfoSummaryFieldCol1>
+              <ParticipantInfoSummaryFieldCol2 background={bgColor}>
+                <ParticipantInfoSummaryFieldCol2Text>
+                  {opponent}
+                </ParticipantInfoSummaryFieldCol2Text>
+              </ParticipantInfoSummaryFieldCol2>
+            </ParticipantInfoSummaryField>
+          )
+        })}
     </ParticipantInfoSummary>
   )
 }
@@ -75,6 +39,12 @@ const ParticipantInfoSummaryFieldCol1Text = styled.p`
   font-size: 18px;
   line-height: 24px;
   color: ${({ color }) => color};
+
+  border-bottom: #333;
+
+  &:last-child {
+    border: none;
+  }
 `
 
 const ParticipantInfoSummary = styled.div`
@@ -94,11 +64,6 @@ const ParticipantInfoSummaryField = styled.div`
     align-items: flex-start;
     flex-direction: column;
   }
-`
-
-const Line = styled.div`
-  border: 1px solid #333333;
-  width: 100%;
 `
 
 const ParticipantInfoSummaryFieldCol1 = styled.div`
@@ -128,7 +93,7 @@ const ParticipantInfoSummaryFieldCol2Text = styled.p`
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
-  color: ${({ color }) => color};
+  color: #f2f2f2;
 
   display: flex;
   align-items: center;
