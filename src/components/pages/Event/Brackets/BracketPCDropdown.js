@@ -7,7 +7,7 @@ import { ParticipantsItem } from '../Participants/ParticipantsItem'
 
 export default function BracketPCDropdown({ bracket, onSelectBracket }) {
   const { participationCategory } = bracket
-  const { eventParticipantsCategory, level, participants } = participationCategory
+  const { eventParticipantsCategory, level, participants, id: pcID } = participationCategory
 
   const { t: tEventDetail } = useTranslation('eventDetail')
   const [open, setOpen] = useState(true)
@@ -46,6 +46,7 @@ export default function BracketPCDropdown({ bracket, onSelectBracket }) {
       onClick={() =>
         onSelectBracket({
           ...bracket,
+          participationCategory: pcID,
           title: header,
         })
       }

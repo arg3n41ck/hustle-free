@@ -10,7 +10,7 @@ import {
   fetchBracketsFightsByParams,
   fetchParticipantAthletes,
   setSelectedBracket,
-  clearBF
+  clearBF,
 } from '../../../../redux/components/eventBrackets'
 import { fetchParticipantCategories } from '../../../../redux/components/participantsCategories'
 import { getEnabledLevels } from '../Categories/EventCategories'
@@ -58,7 +58,7 @@ function EventBrackets() {
       dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id }))
       dispatch(
         fetchParticipantAthletes({
-          participation_category: bracket?.participationCategory?.id,
+          participation_category: bracket?.participationCategory,
         }),
       )
     }
@@ -107,7 +107,8 @@ function EventBrackets() {
               selectedBracket={bracket}
               onClose={() => {
                 dispatch(clearBF())
-                dispatch(setSelectedBracket(null))}}
+                dispatch(setSelectedBracket(null))
+              }}
             />
           </BracketsWrapper>
         )}

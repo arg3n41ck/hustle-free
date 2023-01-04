@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
 import BracketHeaderInfo from './BracketHeaderInfo'
@@ -61,13 +61,11 @@ export const bracketTypes = {
 
 export default function BracketModal({ selectedBracket, onClose }) {
   const dispatch = useDispatch()
-  const [, bracketsFights] = useSelector(selectBrackets)
-  const [ebanyiKey, setEbanyiKey] = useState(Math.random())
-  const { typeTitle, allParticipants, BracketWrapperByType } = useMemo(() => {
+  const [, bracketsFights, participantAthletes] = useSelector(selectBrackets)
+  const { typeTitle, BracketWrapperByType } = useMemo(() => {
     const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
     return {
       typeTitle: selectedBrType && selectedBrType?.title,
-      allParticipants: selectedBracket && selectedBracket?.participationCategory?.allParticipants,
       BracketWrapperByType: (props) => selectedBrType && selectedBrType?.component(props),
     }
   }, [selectedBracket])
@@ -82,11 +80,6 @@ export default function BracketModal({ selectedBracket, onClose }) {
     }
   }, [selectedBracket])
 
-  useEffect(() => {
-    // used for refreshing <BracketWrapperByType /> if fetching bracket fights
-    // setEbanyiKey(Math.random())
-  }, [bracketsFights])
-
   return (
     <>
       <ContentWrapper>
@@ -97,14 +90,14 @@ export default function BracketModal({ selectedBracket, onClose }) {
           </Back>
           <Title>{selectedBracket?.title}</Title>
         </HeaderWrapper>
-        <BracketHeaderInfo title={typeTitle} allParticipants={allParticipants} />
-        {BracketWrapperByType && (
-          <BracketWrapperByType
-            key={`BracketsWrapperKeyByTypeEbanyi${ebanyiKey}`}
-            updateBF={updateBF}
-          />
+        <BracketHeaderInfo
+          title={typeTitle}
+          allParticipants={participantAthletes?.data?.length || 0}
+        />
+        {BracketWrapperByType && <BracketWrapperByType updateBF={updateBF} />}
+        {+(selectedBracket?.bracketType || 0) !== 7 && (
+          <BracketResultTable bracketId={selectedBracket?.id} />
         )}
-        {+(selectedBracket?.bracketType || 0) !== 7 && <BracketResultTable bracketId={selectedBracket?.id} />}
       </ContentWrapper>
       <FullScreenLoader open={bracketsFights.isLoading} />
     </>

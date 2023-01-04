@@ -72,7 +72,7 @@ const divideTopLoaserBr = (brackets) => {
   )
 }
 
-export default function BracketsDoubleEl({ updateBF }) {
+export default function BracketsDoubleEl() {
   const [topBracketsBySteps, setTopBracketsBySteps] = useState(null)
   const [loserBracketsBySteps, setLoserBracketsBySteps] = useState(null)
   const [, bracketsFights] = useSelector(selectBrackets)
@@ -139,7 +139,6 @@ export default function BracketsDoubleEl({ updateBF }) {
                           <BracketCell
                             key={`bracket_cell_${cell.id}`}
                             gridTemplateAreas={gridTemplateAreas}
-                            updateBF={updateBF}
                             cell={cell}
                           />
                         )
@@ -187,7 +186,6 @@ export default function BracketsDoubleEl({ updateBF }) {
                           <BracketCell
                             key={`bracket_cell_${cell.id}`}
                             gridTemplateAreas={gridTemplateAreas}
-                            updateBF={updateBF}
                             cell={cell}
                           />
                         )

@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { camelizeKeys } from 'humps'
+// import axios from 'axios'
+// import { camelizeKeys } from 'humps'
 
 export const getBracketsRoundType = {
   1: 'FINAL',
@@ -36,6 +36,8 @@ export const getBracketsBySteps = async (bracketsFights) => {
         const cellWithSameChilds = bracketsFights.filter(({ children }) =>
           children.includes(curWithCells.children[0]),
         )
+
+        console.log(curWithCells.children[0], cellWithSameChilds)
 
         if (cellWithSameChilds.length > 1) {
           cellWithSameChilds.sort((a, b) => +a.fightNumber - +b.fightNumber)
@@ -125,16 +127,16 @@ export const getThreeManBracketsBySteps = async (bracketsFights) => {
   return brSteps
 }
 
-export const getLocalBrackets = async (id) => {
-  try {
-    const {
-      data: { fights },
-    } = await axios.get(`http://192.168.0.107:8000/api/brackets/${id}/`)
-    return camelizeKeys(fights)
-  } catch (e) {
-    console.log(e)
-  }
-}
+// export const getLocalBrackets = async (id) => {
+//   try {
+//     const {
+//       data: { fights },
+//     } = await axios.get(`http://192.168.0.107:8000/api/brackets/${id}/`)
+//     return camelizeKeys(fights)
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
 
 export const createAresJustFromIds = (cells) => cells?.map(({ id }) => `cell-${id}`)
 

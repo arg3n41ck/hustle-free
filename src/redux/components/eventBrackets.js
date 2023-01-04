@@ -84,35 +84,37 @@ export const bracketsSlice = createSlice({
     },
     clearBF: (state) => {
       state.bracketsFights = {
-      error: null,
-      count: 0,
-      isLoading: false,
-      data: [],
-    }
+        error: null,
+        count: 0,
+        isLoading: false,
+        data: [],
+      }
     },
-    setBFOnWin: (state, {payload}) => {
-      const {currentBFID, winner, winnerBFIDs, loser, loserBFIDs} = payload
+    setBFOnWin: (state, { payload }) => {
+      const { currentBFID, winner, winnerBFIDs, loser, loserBFIDs } = payload
       const newBFs = state.bracketsFights.data.map((bf) => {
         if (bf?.id == currentBFID && winner?.id) {
-          return {...bf, winner: winner?.id}
+          return { ...bf, winner: winner?.id }
         }
 
         if (!!winnerBFIDs?.includes(bf?.id) && winner?.id) {
           return {
-            ...bf, fighters: [...bf?.fighters, winner] 
+            ...bf,
+            fighters: [...bf?.fighters, winner],
           }
         }
 
         if (loserBFIDs?.includes(bf?.id) && loser?.id) {
           return {
-            ...bf, fighters: [...bf?.fighters, loser]
+            ...bf,
+            fighters: [...bf?.fighters, loser],
           }
         }
 
         return bf
       })
       state.bracketsFights.data = newBFs
-    }
+    },
   },
   extraReducers: (builder) => {
     // BRACKETS BY PARAMS

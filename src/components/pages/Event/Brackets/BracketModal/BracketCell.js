@@ -7,11 +7,12 @@ import { selectCountriesAndCities } from '../../../../../redux/components/countr
 import { selectBrackets, setBFOnWin } from '../../../../../redux/components/eventBrackets'
 import BracketWin from './BracketWin'
 
-export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes }) {
+export default function BracketCell({ cell, gridTemplateAreas, classes }) {
   const { id, fighters, fightNumber, parents, winner, children, borderDirection, disabled } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const [countries] = useSelector(selectCountriesAndCities)
   const dispatch = useDispatch()
+
   const athletesInfo = useMemo(() => {
     if (participantAthletes?.data?.length && fighters?.length) {
       const firstParticipantCat =
@@ -70,9 +71,9 @@ export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes
       setBFOnWin({
         currentBFID: curBFID,
         winner: winnerFighter,
-        winnerBFIDs: winnerBracketFightIds,
+        winnerBFIDs: !!winnerBracketFightIds?.[0] ? winnerBracketFightIds : loserBracketFightIds,
         loser: loserFighter,
-        loserBFIDs: loserBracketFightIds,
+        loserBFIDs: !!winnerBracketFightIds?.[0] ? loserBracketFightIds : null,
       }),
     )
   }
@@ -82,9 +83,9 @@ export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes
       className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
       style={gridTemplateAreas ? { gridArea: `cell-${id}` } : {}}
     >
-      {/* <FightNum>
+      <FightNum>
         FN:{fightNumber}, ID: {id}, CH: {children[0]}
-      </FightNum> */}
+      </FightNum>
       <FighterWrapper className='first'>
         {!!athletesInfo[0]?.athlete?.user?.avatar ? (
           <FighterAva src={athletesInfo[0]?.athlete?.user?.avatar} />
@@ -109,12 +110,7 @@ export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes
           )}
         </FighterTexts>
         {!disabled && fighters?.length === 2 && +fighters[1]?.id !== +winner && (
-          <BracketWin
-            bfId={id}
-            fighter={fighters[0]?.id}
-            winner={winner}
-            onWin={onWin}
-          />
+          <BracketWin bfId={id} fighter={fighters[0]?.id} winner={winner} onWin={onWin} />
         )}
       </FighterWrapper>
       <FighterWrapper className='second'>
@@ -141,12 +137,7 @@ export default function BracketCell({ cell, gridTemplateAreas, updateBF, classes
           )}
         </FighterTexts>
         {!disabled && fighters?.length === 2 && +fighters[0]?.id !== +winner && (
-          <BracketWin
-            bfId={id}
-            fighter={fighters[1]?.id}
-            winner={winner}
-            onWin={onWin}
-          />
+          <BracketWin bfId={id} fighter={fighters[1]?.id} winner={winner} onWin={onWin} />
         )}
       </FighterWrapper>
       {/* {!!children?.length && <Children>{children[0]}</Children>} */}
