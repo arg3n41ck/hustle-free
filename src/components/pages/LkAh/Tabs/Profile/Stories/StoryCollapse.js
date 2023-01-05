@@ -15,8 +15,7 @@ function StoryCollapse({ fightsHistory }) {
             <ParticipantInfoSummaryField>
               <ParticipantInfoSummaryFieldCol1>
                 <ParticipantInfoSummaryFieldCol1Text color={color}>
-                  {tLkAh('won')}
-                  {tLkAh('lost')}
+                  {!!result ? tLkAh('won') : tLkAh('lost')}
                 </ParticipantInfoSummaryFieldCol1Text>
               </ParticipantInfoSummaryFieldCol1>
               <ParticipantInfoSummaryFieldCol2 background={bgColor}>
@@ -52,12 +51,20 @@ const ParticipantInfoSummary = styled.div`
   border: 1px solid #333333;
   border-radius: 8px;
   margin: 32px 0;
+  overflow: hidden;
 `
 
 const ParticipantInfoSummaryField = styled.div`
   height: 56px;
   display: flex;
   align-items: center;
+
+  border-bottom: 1px solid #333333;
+  overflow: hidden;
+
+  &:last-child {
+    border: none;
+  }
 
   @media screen and (max-width: 992px) {
     height: unset;

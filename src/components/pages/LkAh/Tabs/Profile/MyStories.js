@@ -33,7 +33,7 @@ function MyStories({ onToggleSidebar }) {
       <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
         <TitleHeader>{tLkAh('myHistory.myHistory')}</TitleHeader>
       </LkDefaultHeader>
-      <ResultsChart wins={statistics?.winsCount || 0} defeats={statistics?.defeats || 0} />
+      <ResultsChart wins={statistics?.winsCount || 0} defeats={statistics?.loses || 0} />
       <MyStoriesWrapper>
         {!!athleteStories?.length && athleteStories.map((item) => <FilterMyStories data={item} />)}
       </MyStoriesWrapper>
