@@ -66,14 +66,23 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
         epc.map((id) => createBracket({ ...reqBody, participationCategory: id })),
       ).then((responses) => {
         dispatch(setSelectedBracket(null))
-        const bracket = responses[(responses?.length || 0) - 1]
-        dispatch(setSelectedBracket(bracket))
-        dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id }))
-        dispatch(
-          fetchParticipantAthletes({
-            participation_category: bracket?.participationCategory,
-          }),
-        )
+        const bracket = responses[(responses?.length || 1) - 1]
+        if (bracket) {
+          const title =
+            selectedEPCDetailed.find(({ id }) => id == bracket?.participationCategory)?.title || ''
+          dispatch(
+            setSelectedBracket({
+              ...bracket,
+              title,
+            }),
+          )
+          dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id }))
+          dispatch(
+            fetchParticipantAthletes({
+              participation_category: bracket?.participationCategory,
+            }),
+          )
+        }
       })
       routerPush(`/events/${eventId}/brackets/`)
       dispatch(fetchBracketsByParams({ event: eventId }))

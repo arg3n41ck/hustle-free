@@ -1,5 +1,5 @@
 import { Collapse } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
 import Radio from '../../../../ui/Radio'
@@ -12,6 +12,7 @@ const doubleChilds = [
     title: 'Everyone',
     secondaryText: 'Everyone gets a second chance',
     value: 1,
+    defaultChecket: true,
   },
   {
     id: 42,
@@ -102,30 +103,39 @@ const compareCountAndGetError = (count, min, max) => {
 
 function EPFormBrackets({ formik, selectedEPCDetailed, bracketError, onBracketError }) {
   const { values, errors, touched, setFieldValue } = formik
+  const [selectedBracketOption, setSelectedBracketOption] = useState(null)
+  const [optionsRefresher, setOptionsRefresher] = useState(Math.random())
 
-  useEffect(async () => {
-    const selectedBracket = bracketsChoises.find(({ id }) => id == values.brackets)
-    if (values.epc?.length && selectedBracket) {
-      const detailedEPCValues = selectedEPCDetailed.filter(({ id }) => values.epc.includes(id))
-      const brError = detailedEPCValues.reduce(
-        (prev, cur) => {
-          const check = compareCountAndGetError(
-            cur.participantsCount,
-            selectedBracket.min,
-            selectedBracket.max,
-          )
-          if (check) {
-            prev.id = cur.id
-            prev.text = check
-          }
-          return prev
-        },
+  useEffect(() => {
+    setOptionsRefresher(Math.random())
+    if (selectedBracketOption) {
+      setFieldValue('brackets', selectedBracketOption)
+      setFieldValue('qualifyLoserBracketType', null)
 
-        { text: '', id: null },
-      )
-      onBracketError(brError)
+      const selectedBracket = bracketsChoises.find(({ id }) => id == selectedBracketOption)
+
+      if (values.epc?.length && selectedBracket) {
+        const detailedEPCValues = selectedEPCDetailed.filter(({ id }) => values.epc.includes(id))
+        const brError = detailedEPCValues.reduce(
+          (prev, cur) => {
+            const check = compareCountAndGetError(
+              cur.participantsCount,
+              selectedBracket.min,
+              selectedBracket.max,
+            )
+            if (check) {
+              prev.id = cur.id
+              prev.text = check
+            }
+            return prev
+          },
+
+          { text: '', id: null },
+        )
+        onBracketError(brError)
+      }
     }
-  }, [values])
+  }, [selectedBracketOption])
 
   return (
     <EPFieldMainWrapper
@@ -141,12 +151,7 @@ function EPFormBrackets({ formik, selectedEPCDetailed, bracketError, onBracketEr
             className={`${values.brackets == id ? 'selected' : ''}`}
             key={`EPForm_brackets_${id}`}
           >
-            <BracketMain
-              onClick={() => {
-                setFieldValue('brackets', id)
-                setFieldValue('qualifyLoserBracketType', null)
-              }}
-            >
+            <BracketMain onClick={() => setSelectedBracketOption(id)}>
               <img src={src} />
               <Radio text={title} checked={values.brackets == id} readOnly />
             </BracketMain>
@@ -155,18 +160,16 @@ function EPFormBrackets({ formik, selectedEPCDetailed, bracketError, onBracketEr
               <Collapse in={values.brackets == id}>
                 <ChildsWrapper>
                   <ChildsTitle>How many will able to qualify to the loser bracket</ChildsTitle>
-                  {childFields.map(({ id, name, title, value, secondaryText }) => (
-                    <ChildRadios key={id}>
-                      <Radio
-                        text={title}
-                        checked={+values[name] === +value}
-                        onChange={({ target: { checked } }) =>
-                          checked && setFieldValue(name, value)
-                        }
-                        secondaryText={secondaryText}
+                  {childFields.map((child) => {
+                    return (
+                      <ChildOptions
+                        key={`Brackets_childs_options_${optionsRefresher}_${child.id}`}
+                        values={values}
+                        setFieldValue={setFieldValue}
+                        {...child}
                       />
-                    </ChildRadios>
-                  ))}
+                    )
+                  })}
                 </ChildsWrapper>
               </Collapse>
             )}
@@ -184,6 +187,31 @@ function EPFormBrackets({ formik, selectedEPCDetailed, bracketError, onBracketEr
 }
 
 export default EPFormBrackets
+
+const ChildOptions = ({
+  name,
+  value,
+  title,
+  setFieldValue,
+  values,
+  defaultChecket,
+  secondaryText,
+}) => {
+  useEffect(() => {
+    defaultChecket && setFieldValue(name, value)
+  }, [])
+
+  return (
+    <ChildRadios>
+      <Radio
+        text={title}
+        checked={+values[name] === +value}
+        onChange={({ target: { checked } }) => checked && setFieldValue(name, value)}
+        secondaryText={secondaryText}
+      />
+    </ChildRadios>
+  )
+}
 
 export const EPFieldMainWrapper = styled.div`
   display: flex;

@@ -37,8 +37,6 @@ export const getBracketsBySteps = async (bracketsFights) => {
           children.includes(curWithCells.children[0]),
         )
 
-        console.log(curWithCells.children[0], cellWithSameChilds)
-
         if (cellWithSameChilds.length > 1) {
           cellWithSameChilds.sort((a, b) => +a.fightNumber - +b.fightNumber)
           const curCellIdx = cellWithSameChilds.findIndex(({ id }) => id == curWithCells.id)
