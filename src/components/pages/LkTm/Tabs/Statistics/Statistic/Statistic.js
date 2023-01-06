@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next'
 function Statistic({ statistic, isPublic = false, teamId }) {
   const { eventParticipantsCategory, name } = statistic
   const { t: tLkTm } = useTranslation('lkTm')
-
+  console.log(eventParticipantsCategory)
   return (
     <div>
       <HeaderWithBack

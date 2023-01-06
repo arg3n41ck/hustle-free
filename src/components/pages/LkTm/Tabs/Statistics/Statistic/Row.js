@@ -20,7 +20,7 @@ function Row({ ePC, participants }) {
     >
       <ListWrapper>
         {!!participants?.length ? (
-          participants.map(({ athleteName, place }, index) => (
+          participants.map(({ athleteName, place, placeDescribe }, index) => (
             <AthleteWrapper key={`statistic-athlete-${index}`}>
               <PlaceIcon place={place || 0} />
               <AthleteName>{athleteName}</AthleteName>
@@ -28,11 +28,11 @@ function Row({ ePC, participants }) {
                 <WDWrapper>
                   <WinDefeat>
                     <p className='win'>{tLkTm('statistics.win')}</p>
-                    <p>{athleteName}</p>
+                    <p>{placeDescribe?.wonAgainst}</p>
                   </WinDefeat>
                   <WinDefeat>
                     <p className='defeat'>{tLkTm('statistics.defeat')}</p>
-                    <p>{athleteName}</p>
+                    <p>{placeDescribe?.lostTo}</p>
                   </WinDefeat>
                 </WDWrapper>
               )}
