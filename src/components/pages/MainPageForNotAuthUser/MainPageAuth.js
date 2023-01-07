@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { localStorageSetItem } from '../../../helpers/helpers'
@@ -6,94 +6,105 @@ import { useDispatch } from 'react-redux'
 import { exitUser } from '../../../redux/components/user'
 import { useTranslation } from 'next-i18next'
 import { theme } from '../../../styles/theme'
-import { useMediaQuery } from '@mui/material'
 
 function MainPageAuth() {
   const router = useRouter()
   const { t: tMainPageFotNotAuthUser } = useTranslation('mainPageForNotAuthUser')
   const dispatch = useDispatch()
-  const xl = useMediaQuery('(min-width: 768px)')
   const handleClick = (role) => {
     localStorageSetItem('role', role)
     router.push('/registration')
   }
 
-  const array = useMemo(
-    () => [
-      {
-        id: xl ? 1 : null,
-        value: 'organizer',
-        heading: tMainPageFotNotAuthUser('mainPage.auth.forOrganizers'),
-        description: tMainPageFotNotAuthUser('mainPage.auth.forOrganizersDesc'),
-        icon: orgIcon,
-      },
-      {
-        id: 2,
-        value: 'athlete',
-        heading: tMainPageFotNotAuthUser('mainPage.auth.forAthletes'),
-        description: tMainPageFotNotAuthUser('mainPage.auth.forAthletesDesc'),
-        icon: athIcon,
-      },
-      {
-        id: xl ? 3 : null,
-        value: 'team',
-        heading: tMainPageFotNotAuthUser('mainPage.auth.forTeams'),
-        description: tMainPageFotNotAuthUser('mainPage.auth.forTeamsDesc'),
-        icon: teamIcon,
-      },
-    ],
-    [xl],
-  )
+  const { current: array } = useRef([
+    {
+      id: 1,
+      value: 'organizer',
+      heading: tMainPageFotNotAuthUser('mainPage.auth.forOrganizers'),
+      description: tMainPageFotNotAuthUser('mainPage.auth.forOrganizersDesc'),
+      icon: orgIcon,
+    },
+    {
+      id: 2,
+      value: 'athlete',
+      heading: tMainPageFotNotAuthUser('mainPage.auth.forAthletes'),
+      description: tMainPageFotNotAuthUser('mainPage.auth.forAthletesDesc'),
+      icon: athIcon,
+    },
+    {
+      id: 3,
+      value: 'team',
+      heading: tMainPageFotNotAuthUser('mainPage.auth.forTeams'),
+      description: tMainPageFotNotAuthUser('mainPage.auth.forTeamsDesc'),
+      icon: teamIcon,
+    },
+  ])
 
   useEffect(() => {
     dispatch(exitUser())
   }, [])
 
   return (
-    <ContainerCards>
-      {array
-        .filter(({ id }) => id)
-        .map((item) => (
-          <Card key={item.id}>
-            {item.icon}
-            <Texts>
-              <CardTextHeading>{item.heading}</CardTextHeading>
-              <CardTextDesc>{item.description}</CardTextDesc>
-            </Texts>
-            <CardButton onClick={() => handleClick(item.value)}>
-              {tMainPageFotNotAuthUser('mainPage.auth.signUp')}
-            </CardButton>
-          </Card>
-        ))}
-    </ContainerCards>
+    <MainWrapper>
+      <ContainerCards>
+        {array
+          .filter(({ id }) => id)
+          .map((item) => (
+            <Card key={item.id}>
+              {item.icon}
+              <Texts>
+                <CardTextHeading>{item.heading}</CardTextHeading>
+                <CardTextDesc>{item.description}</CardTextDesc>
+              </Texts>
+              <CardButton onClick={() => handleClick(item.value)}>
+                {tMainPageFotNotAuthUser('mainPage.auth.signUp')}
+              </CardButton>
+            </Card>
+          ))}
+      </ContainerCards>
+    </MainWrapper>
   )
 }
+
+const MainWrapper = styled.div`
+  width: 100%;
+  ${theme.mqMax('md')} {
+    overflow: auto;
+  }
+`
 
 const ContainerCards = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 32px;
 
-  ${theme.mqMax('xl')} {
+  @media screen and (min-width: 767px) and (max-width: 1200px) {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-items: center;
     justify-content: center;
   }
+
+  ${theme.mqMax('md')} {
+    display: grid;
+    grid-gap: 16px;
+  }
 `
 
 const Card = styled.div`
-  background: #1b1c22;
-  padding: 32px;
-  height: auto;
   max-width: 448px;
-  border-radius: 16px;
   width: 100%;
+  height: 100%;
+
   display: grid;
   grid-template: 128px auto 48px / 1fr;
   grid-row-gap: 24px;
   justify-items: center;
+
+  padding: 32px;
+  border-radius: 16px;
+  background: #1b1c22;
 
   ${theme.mqMin('xl')} {
     & svg {

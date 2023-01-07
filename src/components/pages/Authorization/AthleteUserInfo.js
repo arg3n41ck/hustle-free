@@ -186,13 +186,15 @@ const AthleteUserInfo = () => {
                 cancelText={'Отмена'}
                 disableCloseOnSelect={false}
                 value={formik.values?.dateBirthday}
-                onChange={(value) =>
+                onChange={(value) => {
+                  const checkYear = new Date(value)?.getFullYear()
                   formik.setFieldValue(
                     'dateBirthday',
-                    !!(value instanceof Date && !isNaN(value.valueOf())) &&
-                      format(value, 'yyyy-MM-dd'),
+                    !!(value instanceof Date && !isNaN(value.valueOf()) && (checkYear || 0) > 1900)
+                      ? format(value, 'yyyy-MM-dd')
+                      : value,
                   )
-                }
+                }}
                 inputFormat='dd/MM/yyyy'
                 renderInput={(params) => (
                   <TextField
