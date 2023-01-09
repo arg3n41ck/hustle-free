@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
 import BracketHeaderInfo from './BracketHeaderInfo'
@@ -7,10 +7,7 @@ import BracketsSingleEl from './BracketsSingleEl'
 import BracketsRobin from './BracketsRobin'
 import BracketsThreeMan from './BracketsThreeMan'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  fetchBracketsFightsByParams,
-  selectBrackets,
-} from '../../../../../redux/components/eventBrackets'
+import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import FullScreenLoader from '../../../../ui/FullScreenLoader'
 import BracketResultTable from './BracketResultTable'
 
@@ -60,23 +57,12 @@ export const bracketTypes = {
 }
 
 export default function BracketModal({ selectedBracket, onClose }) {
-  const dispatch = useDispatch()
   const [, bracketsFights, participantAthletes] = useSelector(selectBrackets)
   const { typeTitle, BracketWrapperByType } = useMemo(() => {
     const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
     return {
       typeTitle: selectedBrType && selectedBrType?.title,
       BracketWrapperByType: (props) => selectedBrType && selectedBrType?.component(props),
-    }
-  }, [selectedBracket])
-
-  const updateBF = useCallback(() => {
-    const handler = setTimeout(() => {
-      dispatch(fetchBracketsFightsByParams({ bracket: selectedBracket?.id }))
-    }, 700)
-
-    return () => {
-      clearTimeout(handler)
     }
   }, [selectedBracket])
 
@@ -94,7 +80,7 @@ export default function BracketModal({ selectedBracket, onClose }) {
           title={typeTitle}
           allParticipants={participantAthletes?.data?.length || 0}
         />
-        {BracketWrapperByType && <BracketWrapperByType updateBF={updateBF} />}
+        {BracketWrapperByType && <BracketWrapperByType />}
         {+(selectedBracket?.bracketType || 0) !== 7 && (
           <BracketResultTable bracketId={selectedBracket?.id} />
         )}

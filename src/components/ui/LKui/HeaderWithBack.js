@@ -34,6 +34,10 @@ const MainHeaderWrapper = styled.div`
   ${theme.mqMax('md')} {
     padding: 16px;
   }
+
+  ${theme.mqMax('sm')} {
+    padding: 0 0 16px;
+  }
 `
 
 const Back = styled.div`

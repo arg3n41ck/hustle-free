@@ -23,7 +23,7 @@ const getWrapperStyles = (type) => {
   }
 }
 
-export default function BracketsRobin({ updateBF }) {
+export default function BracketsRobin() {
   const [bracketsBySteps, setBracketsBySteps] = useState(null)
   const [, bracketsFights] = useSelector(selectBrackets)
 
@@ -38,7 +38,6 @@ export default function BracketsRobin({ updateBF }) {
       {!!Object.keys(bracketsBySteps || {})?.length &&
         Object.keys(bracketsBySteps).map((key) => {
           const { step, cells } = bracketsBySteps[key]
-          const { cells: nextStepsCells } = bracketsBySteps[+key + 1] || { cells: null }
           const cellsAreas = createAresJustFromIds(cells)
           const gridTemplateAreas = cellsAreas?.length && `'${cellsAreas.join("' '")}'`
 
@@ -64,7 +63,6 @@ export default function BracketsRobin({ updateBF }) {
                         <BracketCell
                           key={`bracket_cell_${cell.id}`}
                           gridTemplateAreas={gridTemplateAreas}
-                          updateBF={updateBF}
                           classes={cell?.fightRoundType == 0 ? 'noBorder' : ''}
                           cell={cell}
                         />

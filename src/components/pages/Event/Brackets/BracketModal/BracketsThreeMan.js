@@ -5,7 +5,7 @@ import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketCell from './BracketCell'
 import { createDefaultArea, getThreeManBracketsBySteps } from './bracketsUtils'
 
-export default function BracketsThreeMan({ updateBF }) {
+export default function BracketsThreeMan() {
   const [bracketsBySteps, setBracketsBySteps] = useState(null)
   const [, bracketsFights] = useSelector(selectBrackets)
 
@@ -59,7 +59,6 @@ export default function BracketsThreeMan({ updateBF }) {
                                   <BracketCell
                                     key={`bracket_cell_${cell.id}`}
                                     gridTemplateAreas={gridTemplateAreas}
-                                    updateBF={updateBF}
                                     cell={cell}
                                   />
                                 )

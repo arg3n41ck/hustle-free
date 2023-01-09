@@ -64,13 +64,14 @@ function Athletes() {
 
       <AthletesWrapper>
         {!!athletes.length &&
-          athletes.map(({ id, user, teams }, i) => (
+          athletes.map(({ id, user, teams, statistic }, i) => (
             <>
               <Athlete
                 key={`${id}-team-profile-${user.id}`}
                 athleteId={id}
                 user={user}
                 team={teams[0]}
+                statistic={statistic}
               />
               {i !== athletes.length - 1 && sm && <Line />}
             </>

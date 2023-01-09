@@ -23,7 +23,7 @@ const getWrapperStyles = (type) => {
   }
 }
 
-export default function BracketsSingleEl({ updateBF }) {
+export default function BracketsSingleEl() {
   const [bracketsBySteps, setBracketsBySteps] = useState(null)
   const [, bracketsFights] = useSelector(selectBrackets)
 
@@ -68,7 +68,6 @@ export default function BracketsSingleEl({ updateBF }) {
                         <BracketCell
                           key={`bracket_cell_${cell.id}`}
                           gridTemplateAreas={gridTemplateAreas}
-                          updateBF={updateBF}
                           classes={cell?.fightRoundType == 0 ? 'noBorder' : ''}
                           cell={cell}
                         />

@@ -1,6 +1,8 @@
 // import axios from 'axios'
 // import { camelizeKeys } from 'humps'
 
+//gotov'sya tebya jdet polnyi pizdavorot)))
+
 export const getBracketsRoundType = {
   1: 'FINAL',
   2: 'SEMI_FINALS',
@@ -125,17 +127,6 @@ export const getThreeManBracketsBySteps = async (bracketsFights) => {
   return brSteps
 }
 
-// export const getLocalBrackets = async (id) => {
-//   try {
-//     const {
-//       data: { fights },
-//     } = await axios.get(`http://192.168.0.107:8000/api/brackets/${id}/`)
-//     return camelizeKeys(fights)
-//   } catch (e) {
-//     console.log(e)
-//   }
-// }
-
 export const createAresJustFromIds = (cells) => cells?.map(({ id }) => `cell-${id}`)
 
 export const createDefaultArea = (cells) => {
@@ -169,4 +160,35 @@ export const createColumnsAreasByStepsCount = (bracketsCount) => {
     bracketsSteps.push(`step-${step + 1}`)
   }
   return `'${bracketsSteps.join(' ')}'`
+}
+
+//tut polnyi pizdecc
+export const getFighterPlace = (params) => {
+  const { bracketType, fightNumber, winner, cellPlace, fighter, fighters } = params
+
+  if (fighter && winner) {
+    if ([1, 2, 3, 4].includes(bracketType)) {
+      if (!cellPlace) {
+        return null
+      }
+      if (cellPlace == 1) {
+        return fighter == winner ? 1 : 2
+      } else if (cellPlace == 3 && fighter == winner) {
+        return 3
+      }
+    } else if ([5, 6].includes(bracketType)) {
+      if (fightNumber == 9) {
+        if (fighters.length === 1 && fighter == winner) {
+          return 1
+        }
+        if (fighters.length === 2) {
+          return fighter == winner ? 1 : 2
+        }
+      } else if (fightNumber == 8 && fighter == winner) {
+        return 3
+      }
+    }
+  }
+
+  return null
 }

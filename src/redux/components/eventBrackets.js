@@ -55,6 +55,18 @@ export const fetchParticipantAthletes = createAsyncThunk(
   },
 )
 
+export const fetchBracketResults = createAsyncThunk(
+  'brackets/fetchBracketsResults',
+  async ({ bracketId }, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/brackets/brackets/${bracketId}/bracket_results/`)
+      return data
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  },
+)
+
 export const bracketsSlice = createSlice({
   name: 'brackets',
   initialState: {
@@ -75,6 +87,12 @@ export const bracketsSlice = createSlice({
       error: null,
       isLoading: false,
       data: null,
+      id: null,
+    },
+    bracketsResults: {
+      error: null,
+      isLoading: false,
+      results: null,
       id: null,
     },
   },
@@ -166,6 +184,20 @@ export const bracketsSlice = createSlice({
       participantAthletes.error = action.payload
       participantAthletes.data = []
     })
+    // BRACKET RESULTS
+    builder.addCase(fetchBracketResults.pending, ({ bracketsResults }) => {
+      bracketsResults.isLoading = true
+    })
+    builder.addCase(fetchBracketResults.fulfilled, ({ bracketsResults }, action) => {
+      bracketsResults.isLoading = false
+      bracketsResults.data = action.payload
+      bracketsResults.error = null
+    })
+    builder.addCase(fetchBracketResults.rejected, ({ bracketsResults }, action) => {
+      bracketsResults.isLoading = false
+      bracketsResults.error = action.payload
+      bracketsResults.data = null
+    })
   },
 })
 
@@ -175,10 +207,12 @@ export const selectBrackets = createSelector(
   (state) => state.brackets.brackets,
   (state) => state.brackets.bracketsFights,
   (state) => state.brackets.participantAthletes,
-  (brackets, bracketsFights, participantAthletes) => [
+  (state) => state.brackets.bracketsResults,
+  (brackets, bracketsFights, participantAthletes, bracketsResults) => [
     brackets,
     bracketsFights,
     participantAthletes,
+    bracketsResults,
   ],
 )
 

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { theme } from '../../../styles/theme'
 
-function Athlete({ children, user, athleteId, team }) {
+function Athlete({ children, user, athleteId, team, statistic }) {
   const { push: routerPush, pathname } = useRouter()
 
   return (
@@ -26,7 +26,9 @@ function Athlete({ children, user, athleteId, team }) {
                 {user?.firstName || ''} {user?.lastName || ''}
               </ItemTitle>
               {!!team?.name && <ItemDescription>{team?.name}</ItemDescription>}
-              {/* <WinsAndDefeats>14 побед / 100 поражений</WinsAndDefeats> */}
+              <WinsAndDefeats>
+                {statistic?.winsCount || 0} побед / {statistic?.loses || 0} поражений
+              </WinsAndDefeats>
             </div>
           </Item>
           {children}
@@ -74,4 +76,9 @@ const ItemDescription = styled.p`
   font-size: 16px;
   line-height: 24px;
   color: #bdbdbd;
+`
+const WinsAndDefeats = styled.p`
+  font-size: 16px;
+  line-height: 24px;
+  color: #a0a0a0;
 `

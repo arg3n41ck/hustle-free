@@ -45,6 +45,11 @@ const MainWrapper = styled.div`
   background: #1b1c22;
   border-radius: 24px;
   border: 1px solid #333;
+
+  ${theme.mqMax('sm')} {
+    border: none;
+    background: none;
+  }
 `
 const Rows = styled.div`
   padding: 32px;
@@ -60,6 +65,10 @@ const Rows = styled.div`
   ${theme.mqMax('md')} {
     padding: 16px;
     grid-row-gap: 16px;
+  }
+
+  ${theme.mqMax('sm')} {
+    padding: 16px 0 0;
   }
 `
 
@@ -77,6 +86,10 @@ const Title = styled.h1`
 
   ${theme.mqMax('md')} {
     padding: 16px 16px 0;
+  }
+
+  ${theme.mqMax('sm')} {
+    padding: 16px 0 0;
   }
 `
 

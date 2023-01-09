@@ -37,11 +37,13 @@ function FilterMyStories({ data }) {
             </EventInfoParticipantsInfo>
           </EventsInfo>
         </EventItems>
-        <Collapse in={open} timeout='auto' unmountOnExit>
-          <StoryWrapper>
-            <StoryCollapse fightsHistory={fightsHistory} />
-          </StoryWrapper>
-        </Collapse>
+        {!!fightsHistory?.length && (
+          <Collapse in={open} timeout='auto' unmountOnExit>
+            <StoryWrapper>
+              <StoryCollapse fightsHistory={fightsHistory} />
+            </StoryWrapper>
+          </Collapse>
+        )}
       </BorderWrapper>
     </EventContainer>
   )
@@ -105,6 +107,10 @@ const EventContainer = styled.div`
     padding: 16px;
     border-radius: 12px;
   }
+
+  ${theme.mqMax('sm')} {
+    padding: 0;
+  }
 `
 
 const BorderWrapper = styled.div`
@@ -121,6 +127,11 @@ const BorderWrapper = styled.div`
     &:last-child {
       border-radius: 12px;
     }
+  }
+
+  ${theme.mqMax('sm')} {
+    background: #141519;
+    border: none;
   }
 `
 

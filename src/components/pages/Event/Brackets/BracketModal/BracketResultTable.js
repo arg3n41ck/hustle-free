@@ -1,25 +1,15 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import $api from '../../../../../services/axios'
-import { selectBrackets } from '../../../../../redux/components/eventBrackets'
-
-const getResults = async (bracket) => {
-  try {
-    const { data } = await $api.get(`/brackets/brackets/${bracket}/bracket_results/`)
-    return data
-  } catch (error) {
-    console.log(error)
-  }
-}
+import { fetchBracketResults, selectBrackets } from '../../../../../redux/components/eventBrackets'
 
 export default function BracketResultTable({ bracketId }) {
-  const [results, setResults] = useState([])
-  const [, bracketsFights] = useSelector(selectBrackets)
+  const [, , , bracketsResults] = useSelector(selectBrackets)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    getResults(bracketId).then(setResults)
-  }, [bracketId, bracketsFights])
+    dispatch(fetchBracketResults({ bracketId }))
+  }, [bracketId])
 
   return (
     <>
@@ -33,8 +23,8 @@ export default function BracketResultTable({ bracketId }) {
           </Tr>
         </thead>
         <tbody>
-          {!!results?.length ? (
-            results.map(({ id, place, athlete, team }) => {
+          {!!bracketsResults.data?.length ? (
+            bracketsResults.data.map(({ id, place, athlete, team }) => {
               return (
                 <Tr key={`brackets_results_${id}`}>
                   <Td>{place}</Td>
