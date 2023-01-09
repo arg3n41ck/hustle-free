@@ -107,6 +107,10 @@ li {
   text-transform: inherit !important;
 }
 
+.MuiPaginationItem-root {
+  border: 1px solid #333 !important;
+}
+
 .MuiOutlinedInput-root {
   border-radius: 16px !important;
   grid-gap: 14px;
@@ -226,4 +230,8 @@ select:-webkit-autofill:focus {
   border: none !important;
   width: 24px !important;
   height: 32px !important;
+}
+
+.MuiCollapse-hidden {
+  visibility: unset !important;
 }

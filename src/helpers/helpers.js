@@ -79,7 +79,7 @@ export const truncateString = (str, num, dots = true) => {
     return str
   }
 
-  return (str || '').slice(0, num) + (dots ? '...' : '')
+  return (str || '').slice(0, num) + (str.length > num && dots ? '...' : '')
 }
 
 export const removeDuplicateObjectFromArray = (array, key) => {

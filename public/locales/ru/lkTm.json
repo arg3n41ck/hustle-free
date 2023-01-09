@@ -1,45 +1,45 @@
 {
-    "teamProfile": {
-        "profile": "Профиль",
-        "edit": "Редактировать",
-        "website": "Сайт",
-        "country": "Страна",
-        "city": "Город",
-        "contacts": "Контакты",
-        "mainCoach": "Главный тренер",
-        "email": "Email"
+  "teamProfile": {
+    "profile": "Профиль",
+    "edit": "Редактировать",
+    "website": "Сайт",
+    "country": "Страна",
+    "city": "Город",
+    "contacts": "Контакты",
+    "mainCoach": "Главный тренер",
+    "email": "Email"
+  },
+  "athletes": {
+    "athletes": "Атлеты",
+    "tabs": {
+      "participants": "Участники",
+      "applications": "Заявки"
     },
-    "athletes": {
-        "athletes": "Атлеты",
-        "tabs": {
-            "participants": "Участники",
-            "applications": "Заявки"
-        },
-        "reject": "Отклонить",
-        "confirm": "Подтвердить"
-    },
-    "statistics": {
-        "participants": "Участники",
-        "points": "Баллы",
-        "events": "Турниры",
-        "eventsSearch": "Поиск по турнирам",
-        "noEvents": "Нет турниров",
-        "statistic": "Статистика",
-        "participant": "Участника",
-        "point": "Балла",
-        "wins": "Побед",
-        "defeats": "Поражений",
-        "gold": "Золото",
-        "silver": "Серебро",
-        "bronze": "Бронза",
-        "categories": "Категории",
-        "noCategories": "Нет категорий",
-        "win": "Выйграл",
-        "defeat": "Проиграл",
-        "onPoints": "по очкам",
-        "noParticipants": "Нет участников",
-        "back": "Назад",
-        "search": "Поиск",
-        "filter": "Фильтр"
-    }
+    "reject": "Отклонить",
+    "confirm": "Подтвердить"
+  },
+  "statistics": {
+    "participants": "Участники",
+    "points": "Баллы",
+    "events": "Турниры",
+    "eventsSearch": "Поиск по турнирам",
+    "noEvents": "Нет турниров",
+    "statistic": "Статистика",
+    "participant": "Участника",
+    "point": "Балла",
+    "wins": "Побед",
+    "defeats": "Поражений",
+    "gold": "Золото",
+    "silver": "Серебро",
+    "bronze": "Бронза",
+    "categories": "Категории",
+    "noCategories": "Нет категорий",
+    "win": "Выиграл",
+    "defeat": "Проиграл",
+    "onPoints": "по очкам",
+    "noParticipants": "Нет участников",
+    "back": "Назад",
+    "search": "Поиск",
+    "filter": "Фильтр"
+  }
 }

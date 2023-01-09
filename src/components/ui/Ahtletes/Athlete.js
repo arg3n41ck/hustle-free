@@ -2,6 +2,7 @@ import React from 'react'
 import { Avatar } from '@mui/material'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
+import { theme } from '../../../styles/theme'
 
 function Athlete({ children, user, athleteId, team }) {
   const { push: routerPush, pathname } = useRouter()
@@ -37,20 +38,15 @@ function Athlete({ children, user, athleteId, team }) {
 
 export default Athlete
 
-const WinsAndDefeats = styled.p`
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #a0a0a0;
-`
-
 const ItemWrapper = styled.div`
   background: #1b1c22;
   border: 1px solid #1b1c22;
   border-radius: 16px;
   padding: 24px;
+
+  ${theme.mqMax('md')} {
+    padding: 20px;
+  }
 `
 
 const Item = styled.li`

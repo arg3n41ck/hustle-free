@@ -7,6 +7,8 @@ import { useRouter } from 'next/router'
 import $api from '../../../../../services/axios'
 import EventRow from './EventRow'
 import { useTranslation } from 'next-i18next'
+import { theme } from '../../../../../styles/theme'
+import { GoldMedalIcon } from '../../../../../assets/svg/icons'
 
 const getStatistics = async (teamId, params) => {
   const { data } = await $api.get(`/events/team_statistic/?team=${teamId}`, {
@@ -64,7 +66,14 @@ function Events({ teamId, isPublic = false }) {
 export default Events
 
 const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 32px;
   padding: 0 32px;
+
+  ${theme.mqMax('md')} {
+    padding: 0;
+  }
 `
 const EventRows = styled.div`
   display: flex;

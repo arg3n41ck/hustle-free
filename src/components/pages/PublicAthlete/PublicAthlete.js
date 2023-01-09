@@ -8,7 +8,13 @@ import { useTranslation } from 'next-i18next'
 import Awards from '../LkTm/Tabs/Statistics/Awards'
 import $api from '../../../services/axios'
 import FilterMyStories from '../LkAh/Tabs/Profile/Stories/FilterMyStories'
-import { fetchAthleteStories, storiesSelector } from '../../../redux/components/stories'
+import {
+  fetchAthleteStatistics,
+  fetchAthleteStories,
+  storiesSelector,
+} from '../../../redux/components/stories'
+import { theme } from '../../../styles/theme'
+import PublicAthleteChartStats from './PublicAthleteChartStats'
 
 const getAthTeams = async (query) => {
   try {
@@ -30,8 +36,11 @@ function PublicAthlete({ athleteData }) {
 
   useEffect(() => {
     dispatch(fetchCountries())
-    athleteId && getAthTeams({ athletes: athleteId }).then(setTeams)
-    athleteId && dispatch(fetchAthleteStories({ athleteId }))
+    if (athleteId) {
+      getAthTeams({ athletes: athleteId }).then(setTeams)
+      dispatch(fetchAthleteStories({ athleteId }))
+      dispatch(fetchAthleteStatistics({ athleteId: athleteId }))
+    }
   }, [athleteData])
 
   return (
@@ -41,10 +50,15 @@ function PublicAthlete({ athleteData }) {
         <TeamsAndPartWrapper>
           <Teams teams={teams} />
           <Awards places={athleteData?.medals} />
-          {!!athleteStories?.length &&
-            athleteStories.map((pc) => {
-              return <FilterMyStories data={pc} key={pc?.id} />
-            })}
+
+          <PublicAthleteChartStats />
+
+          <StoriesWrapper>
+            {!!athleteStories?.length &&
+              athleteStories.map((pc) => {
+                return <FilterMyStories data={pc} key={pc?.id} />
+              })}
+          </StoriesWrapper>
         </TeamsAndPartWrapper>
       ) : (
         <Private>
@@ -62,13 +76,19 @@ const MainWrapper = styled.div`
   height: max-content;
   display: grid;
   justify-self: flex-start;
-  grid-template-columns: 328px auto;
-  background: #1b1c22;
+  grid-template: 1fr / min-content auto;
   margin-top: 64px;
-  border: 1px solid #333333;
-  border-radius: 24px;
+  grid-gap: 32px;
+
+  ${theme.mqMax('md')} {
+    grid-template: min-content 1fr / 1fr;
+  }
 `
-const TeamsAndPartWrapper = styled.div``
+const TeamsAndPartWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-gap: 32px;
+`
 
 export const PubAthTitles = styled.h3`
   font-weight: 600;
@@ -90,6 +110,11 @@ const Private = styled.div`
     line-height: 32px;
     color: #f2f2f2;
   }
+`
+
+const StoriesWrapper = styled.div`
+  background: #141519;
+  border-radius: 8px;
 `
 
 const lock = (

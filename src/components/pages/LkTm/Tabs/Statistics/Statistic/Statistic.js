@@ -3,13 +3,14 @@ import HeaderWithBack from '../../../../../ui/LKui/HeaderWithBack'
 import Row from './Row'
 import styled from 'styled-components'
 import { useTranslation } from 'next-i18next'
+import { theme } from '../../../../../../styles/theme'
 
 function Statistic({ statistic, isPublic = false, teamId }) {
   const { eventParticipantsCategory, name } = statistic
   const { t: tLkTm } = useTranslation('lkTm')
-  console.log(eventParticipantsCategory)
+
   return (
-    <div>
+    <MainWrapper>
       <HeaderWithBack
         link={teamId && isPublic ? `/team/${teamId}/statistics/` : '/lk-tm/profile/statistics'}
         title={name}
@@ -33,17 +34,33 @@ function Statistic({ statistic, isPublic = false, teamId }) {
           <Empty>{tLkTm('statistics.noCategories')}</Empty>
         )}
       </Rows>
-    </div>
+    </MainWrapper>
   )
 }
 
 export default Statistic
 
+const MainWrapper = styled.div`
+  margin: 32px 0 0;
+  background: #1b1c22;
+  border-radius: 24px;
+  border: 1px solid #333;
+`
 const Rows = styled.div`
   padding: 32px;
   display: flex;
   flex-direction: column;
   grid-row-gap: 32px;
+
+  ${theme.mqMax('xl')} {
+    padding: 20px;
+    grid-row-gap: 20px;
+  }
+
+  ${theme.mqMax('md')} {
+    padding: 16px;
+    grid-row-gap: 16px;
+  }
 `
 
 const Title = styled.h1`
@@ -53,6 +70,14 @@ const Title = styled.h1`
   color: #bdbdbd;
   padding: 32px 32px 0;
   border-top: 1px solid #333;
+
+  ${theme.mqMax('xl')} {
+    padding: 20px 20px 0;
+  }
+
+  ${theme.mqMax('md')} {
+    padding: 16px 16px 0;
+  }
 `
 
 const Empty = styled.p``

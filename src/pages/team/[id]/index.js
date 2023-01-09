@@ -1,41 +1,28 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import LkLayout from '../../../components/layouts/LkLayout'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { teamProfileTabs } from '../../../components/pages/Team/tabConstants'
-import TeamInfo from '../../../components/pages/Team/TeamProfile'
-import $api from '../../../services/axios'
+import TeamInfo from '../../../components/pages/PublicTeam/TeamProfile'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-
-export const getIsUserInTeam = async (teamId) => {
-  const { data } = await $api.get(`/teams/teams/${teamId}/check_athlete/`)
-  return data
-}
+import PublicTeamWrapper from '../../../components/pages/PublicTeam/general/PublicTeamWrapper'
+import { useDispatch } from 'react-redux'
+import { fetchTeam } from '../../../redux/components/teams'
 
 function TeamProfile() {
   const {
     query: { id: teamId },
   } = useRouter()
-  const [userStatusInTeam, setUserStatusInTeam] = useState(null)
-  const tabs = useMemo(() => {
-    return teamProfileTabs(teamId)
-  }, [teamId])
 
-  const checkUserStatus = useCallback(() => {
-    teamId && getIsUserInTeam(teamId).then(setUserStatusInTeam)
-  }, [teamId])
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    checkUserStatus()
+    if (teamId) {
+      dispatch(fetchTeam({ teamId }))
+    }
   }, [teamId])
 
   return (
-    <LkLayout tabs={tabs}>
-      <TeamInfo
-        teamId={teamId}
-        userStatusInTeam={userStatusInTeam}
-        checkUserStatus={checkUserStatus}
-      />
-    </LkLayout>
+    <PublicTeamWrapper>
+      <TeamInfo />
+    </PublicTeamWrapper>
   )
 }
 

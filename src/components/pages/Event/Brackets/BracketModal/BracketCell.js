@@ -87,58 +87,62 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
         FN:{fightNumber}, ID: {id}, CH: {children[0]}
       </FightNum>
       <FighterWrapper className='first'>
-        {!!athletesInfo[0]?.athlete?.user?.avatar ? (
-          <FighterAva src={athletesInfo[0]?.athlete?.user?.avatar} />
-        ) : (
-          <BracketsAthAva />
-        )}
-        <FighterTexts>
-          <NameFlagWrapper>
-            <CountryFlag src={`https://flagsapi.com/KG/flat/64.png`} />
-            <FighterName>
-              {athletesInfo[0]
-                ? truncateString(
-                    `${athletesInfo[0]?.athlete?.user?.firstName} ${athletesInfo[0]?.athlete?.user?.lastName}`,
-                    12,
-                    true,
-                  )
-                : '?'}
-            </FighterName>
-          </NameFlagWrapper>
-          {athletesInfo[0] && athletesInfo[0]?.team && (
-            <TeamName>{truncateString(athletesInfo[0]?.team?.name, 20, true)}</TeamName>
+        <UserInfoPart disabled={!!winner || disabled}>
+          {!!athletesInfo[0]?.athlete?.user?.avatar ? (
+            <FighterAva src={athletesInfo[0]?.athlete?.user?.avatar} />
+          ) : (
+            <BracketsAthAva />
           )}
-        </FighterTexts>
+          <FighterTexts>
+            <NameFlagWrapper>
+              <CountryFlag src={`https://flagsapi.com/KG/flat/64.png`} />
+              <FighterName>
+                {athletesInfo[0]
+                  ? truncateString(
+                      `${athletesInfo[0]?.athlete?.user?.firstName} ${athletesInfo[0]?.athlete?.user?.lastName}`,
+                      12,
+                      true,
+                    )
+                  : '?'}
+              </FighterName>
+            </NameFlagWrapper>
+            {athletesInfo[0] && athletesInfo[0]?.team && (
+              <TeamName>{truncateString(athletesInfo[0]?.team?.name, 20, true)}</TeamName>
+            )}
+          </FighterTexts>
+        </UserInfoPart>
         {!disabled && fighters?.length === 2 && +fighters[1]?.id !== +winner && (
           <BracketWin bfId={id} fighter={fighters[0]?.id} winner={winner} onWin={onWin} />
         )}
       </FighterWrapper>
       <FighterWrapper className='second'>
-        {!!athletesInfo[1]?.athlete?.user?.avatar ? (
-          <FighterAva src={athletesInfo[1]?.athlete?.user?.avatar} />
-        ) : (
-          <BracketsAthAva />
-        )}
-        <FighterTexts>
-          <NameFlagWrapper>
-            <CountryFlag src={`https://flagsapi.com/KG/flat/64.png`} />
-            <FighterName>
-              {athletesInfo[1]
-                ? truncateString(
-                    `${athletesInfo[1]?.athlete?.user?.firstName} ${athletesInfo[1]?.athlete?.user?.lastName}`,
-                    12,
-                    true,
-                  )
-                : '?'}
-            </FighterName>
-          </NameFlagWrapper>
-          {athletesInfo[1] && athletesInfo[1]?.team && (
-            <TeamName>{truncateString(athletesInfo[1]?.team?.name, 20, true)}</TeamName>
+        <UserInfoPart disabled={!!winner || disabled}>
+          {!!athletesInfo[1]?.athlete?.user?.avatar ? (
+            <FighterAva src={athletesInfo[1]?.athlete?.user?.avatar} />
+          ) : (
+            <BracketsAthAva />
           )}
-        </FighterTexts>
-        {!disabled && fighters?.length === 2 && +fighters[0]?.id !== +winner && (
-          <BracketWin bfId={id} fighter={fighters[1]?.id} winner={winner} onWin={onWin} />
-        )}
+          <FighterTexts>
+            <NameFlagWrapper>
+              <CountryFlag src={`https://flagsapi.com/KG/flat/64.png`} />
+              <FighterName>
+                {athletesInfo[1]
+                  ? truncateString(
+                      `${athletesInfo[1]?.athlete?.user?.firstName} ${athletesInfo[1]?.athlete?.user?.lastName}`,
+                      12,
+                      true,
+                    )
+                  : '?'}
+              </FighterName>
+            </NameFlagWrapper>
+            {athletesInfo[1] && athletesInfo[1]?.team && (
+              <TeamName>{truncateString(athletesInfo[1]?.team?.name, 20, true)}</TeamName>
+            )}
+          </FighterTexts>
+          {!disabled && fighters?.length === 2 && +fighters[0]?.id !== +winner && (
+            <BracketWin bfId={id} fighter={fighters[1]?.id} winner={winner} onWin={onWin} />
+          )}
+        </UserInfoPart>
       </FighterWrapper>
       {/* {!!children?.length && <Children>{children[0]}</Children>} */}
     </CellWrapper>
@@ -151,10 +155,6 @@ const FighterWrapper = styled.div`
   width: 208px;
   background: #1b1c22;
   border: 1px solid #333333;
-  display: flex;
-  grid-gap: 8px;
-  font-weight: 700;
-  padding: 10px;
   z-index: 8;
   cursor: pointer;
   transform: translateY(-1px);
@@ -173,6 +173,15 @@ const FighterWrapper = styled.div`
     /* border-top: none; */
     border-bottom: 1px solid #333333;
   }
+`
+
+const UserInfoPart = styled.div`
+  display: flex;
+  grid-gap: 8px;
+  font-weight: 700;
+  padding: 10px;
+
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `
 
 const CellWrapper = styled.div`

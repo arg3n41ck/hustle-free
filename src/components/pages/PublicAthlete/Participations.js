@@ -45,7 +45,9 @@ function Participations({ eventName, level, fromAge, fromWeight, toAge, name, to
         </EventsInfo>
       </EventsMainInfo>
       <Collapse in={open} timeout='auto' unmountOnExit>
-        <StoryCollapse />
+        <StoryWrapper>
+          <StoryCollapse />
+        </StoryWrapper>
       </Collapse>
     </EventsWrapper>
   )
@@ -119,4 +121,8 @@ const EventInfoParticipantsInfo = styled.p`
   font-size: 20px;
   line-height: 32px;
   color: #f2f2f2;
+`
+
+const StoryWrapper = styled.div`
+  margin: 32px 0;
 `

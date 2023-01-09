@@ -1,22 +1,13 @@
-import React, { useMemo } from 'react'
-import LkLayout from '../../../../components/layouts/LkLayout'
+import React from 'react'
 import $api from '../../../../services/axios'
 import Statistic from '../../../../components/pages/LkTm/Tabs/Statistics/Statistic/Statistic'
 import { useRouter } from 'next/router'
-import { teamProfileTabs } from '../../../../components/pages/Team/tabConstants'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 function StatisticPage({ statistic }) {
   const { query } = useRouter()
-  const tabs = useMemo(() => {
-    return teamProfileTabs(query.id)
-  }, [query.id])
 
-  return (
-    <LkLayout tabs={tabs}>
-      {statistic && <Statistic statistic={statistic[0]?.event} isPublic teamId={query.id} />}
-    </LkLayout>
-  )
+  return statistic && <Statistic statistic={statistic[0]?.event} isPublic teamId={query.id} />
 }
 
 export default StatisticPage
@@ -27,7 +18,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       statistic: data || null,
-      ...(await serverSideTranslations(locale, ['header', 'common', 'lkTm', 'footer'])),
+      ...(await serverSideTranslations(locale, ['header', 'common', 'lkTm', 'lkAh', 'footer'])),
     },
   }
 }

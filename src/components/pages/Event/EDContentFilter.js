@@ -54,7 +54,6 @@ export default EDContentFilter
 // svg and style
 
 const MainWrapper = styled.div`
-  padding: 32px 0;
   display: flex;
   flex-direction: column;
   grid-row-gap: 20px;

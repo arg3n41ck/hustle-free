@@ -1,22 +1,27 @@
-import React, { useMemo } from "react"
-import LkLayout from "../../../../components/layouts/LkLayout"
-import { teamProfileTabs } from "../../../../components/pages/Team/tabConstants"
-import { useRouter } from "next/router"
-import Statistics from "../../../../components/pages/Team/Statistics"
-import { serverSideTranslations } from "next-i18next/serverSideTranslations"
+import React, { useEffect } from 'react'
+import Statistics from '../../../../components/pages/PublicTeam/Statistics'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import PublicTeamWrapper from '../../../../components/pages/PublicTeam/general/PublicTeamWrapper'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
+import { fetchTeam } from '../../../../redux/components/teams'
 
 function StatisticsPage() {
   const {
     query: { id: teamId },
   } = useRouter()
-  const tabs = useMemo(() => {
-    return teamProfileTabs(teamId)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (teamId) {
+      dispatch(fetchTeam({ teamId }))
+    }
   }, [teamId])
 
   return (
-    <LkLayout tabs={tabs}>
+    <PublicTeamWrapper>
       <Statistics />
-    </LkLayout>
+    </PublicTeamWrapper>
   )
 }
 
@@ -24,13 +29,13 @@ export default StatisticsPage
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ["header", "common", "lkTm", "footer"])),
+    ...(await serverSideTranslations(locale, ['header', 'common', 'lkTm', 'footer'])),
   },
 })
 
 export const getStaticPaths = async () => {
   return {
     paths: [], //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
+    fallback: 'blocking', //indicates the type of fallback
   }
 }

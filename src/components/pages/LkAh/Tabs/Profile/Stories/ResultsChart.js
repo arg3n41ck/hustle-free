@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { theme } from '../../../../../../styles/theme'
 import DonutChart from 'react-svg-donut-chart'
 
-export default function ResultsChart({ wins, defeats }) {
+export default function ResultsChart({ wins, defeats, chartWHSize = null }) {
   const dataPie = useMemo(() => {
     return !!wins + defeats
       ? [
@@ -14,51 +13,24 @@ export default function ResultsChart({ wins, defeats }) {
   }, [wins, defeats])
 
   return (
-    <MainWrapper>
-      <Chart>
-        <DonutChart data={dataPie} />
-        <CenterText>
-          {wins} <span>побед</span>
-        </CenterText>
-      </Chart>
-      <Legends>
-        <li>
-          <span>{wins} </span>побед
-        </li>
-        <li>
-          <span>{defeats} </span>поражений
-        </li>
-      </Legends>
-    </MainWrapper>
+    <Chart size={chartWHSize}>
+      <DonutChart data={dataPie} />
+      <CenterText size={chartWHSize}>
+        {wins} <span>побед</span>
+      </CenterText>
+    </Chart>
   )
 }
-
-const MainWrapper = styled.div`
-  padding: 32px;
-  display: grid;
-  grid-template: 1fr / min-content 1fr;
-
-  @media screen and (max-width: 576px) {
-    grid-template: 143px min-content / 1fr;
-  }
-  padding: 32px;
-  gap: 20px;
-
-  ${theme.mqMax('md')} {
-    padding: 16px;
-    border-radius: 12px;
-  }
-`
 
 const Chart = styled.div`
   position: relative;
 
-  height: 240px;
-  width: 240px;
+  height: ${({ size }) => (size ? size : 240)}px;
+  width: ${({ size }) => (size ? size : 240)}px;
 
   @media screen and (max-width: 576px) {
-    height: 143px;
-    width: 143px;
+    height: ${({ size }) => (size ? size : 143)}px;
+    width: ${({ size }) => (size ? size : 143)}px;
 
     justify-self: center;
   }
@@ -81,63 +53,22 @@ const CenterText = styled.p`
   transform: translate(-50%, -50%);
   text-transform: uppercase;
   font-weight: 900;
-  font-size: 52px;
-  line-height: 52px;
+  font-size: ${({ size }) => (size || 240) * 0.25}px;
+  line-height: 100%;
 
   color: #f2f2f2;
 
   & span {
-    font-size: 18px;
+    font-size: ${({ size }) => (size || 240) * 0.07}px;
     font-weight: 500;
     line-height: 100%;
   }
 
   @media screen and (max-width: 576px) {
-    font-size: 40px;
-    line-height: 48px;
-    & span {
-      font-size: 10px;
-    }
-  }
-`
-
-const Legends = styled.ul`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  li {
-    font-size: 32px;
-    line-height: 150%;
-    display: grid;
-    grid-template: 1fr/ 32px auto;
-    grid-gap: 10;
-
-    @media screen and (max-width: 576px) {
-      display: flex;
-      justify-content: center;
-      grid-gap: 10px;
-      font-size: 24px;
-      text-align: center;
-    }
+    font-size: ${({ size }) => (size || 112) * 0.25}px;
 
     & span {
-      justify-self: center;
-      font-weight: 700;
+      font-size: ${({ size }) => (size || 112) * 0.07}px;
     }
-  }
-  li:first-child {
-    & span {
-      color: #27ae60;
-    }
-  }
-  li:nth-child(2) {
-    & span {
-      color: #eb5757;
-    }
-  }
-  @media screen and (max-width: 576px) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
 `

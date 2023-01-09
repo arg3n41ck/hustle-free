@@ -5,9 +5,9 @@ import { theme } from '../../styles/theme'
 import MobileSidebar from '../ui/MobileSidebar'
 import Sidebar from '../ui/Sidebar'
 
-function LkLayout({ tabs, children }) {
+function LkLayout({ tabs, children, mediaTurning = 'string' }) {
   const [openSidebar, setOpenSidebar] = useState(false)
-  const xl = useMediaQuery('(max-width: 1200px)')
+  const xl = mediaTurning !== 'string' ? mediaTurning : useMediaQuery('(max-width: 1200px)')
 
   const toggleSidebarHandler = () => {
     setOpenSidebar((prev) => !prev)

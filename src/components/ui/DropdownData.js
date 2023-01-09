@@ -77,7 +77,7 @@ const ArrowIconS = styled.div`
 
 export default DropdownData
 
-const ArrowIcon = (props) => (
+export const ArrowIcon = (props) => (
   <svg
     width='32'
     height='32'

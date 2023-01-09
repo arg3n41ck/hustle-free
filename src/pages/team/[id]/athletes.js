@@ -1,68 +1,49 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import LkLayout from '../../../components/layouts/LkLayout'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { teamProfileTabs } from '../../../components/pages/Team/tabConstants'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAthletesByParams, selectAthletes } from '../../../redux/components/athletes'
 import useQuery from '../../../hooks/useQuery'
 import { fetchCountries } from '../../../redux/components/countriesAndCities'
-import LkDefaultHeader from '../../../components/ui/LKui/LKDefaultHeader'
-import { HeaderWrapper } from '../../../components/pages/LkOg/Tabs/Events/Events/Events'
-import { TitleHeader } from '../../../components/ui/LKui/HeaderContent'
+
 import Athlete from '../../../components/ui/Ahtletes/Athlete'
 import styled from 'styled-components'
-import { TextField } from '@mui/material'
+import { Pagination, TextField, useMediaQuery } from '@mui/material'
 import { SearchIcon } from '../../../components/pages/Events/EventsGlobalSearch/EventsGlobalSearch'
 import useDebounce from '../../../hooks/useDebounce'
-import ApplyToTeam from '../../../components/TeamProfile/ApplyToTeam'
-import { getIsUserInTeam } from './index'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
+import PublicTeamWrapper from '../../../components/pages/PublicTeam/general/PublicTeamWrapper'
+import { fetchTeam } from '../../../redux/components/teams'
+import { theme } from '../../../styles/theme'
 
-function Athletes({ onToggleSidebar }) {
+function Athletes() {
   const {
     query: { id: teamId },
   } = useRouter()
   const query = useQuery()
-  const [userStatusInTeam, setUserStatusInTeam] = useState(null)
-  const [, athletes] = useSelector(selectAthletes)
+  const [, athletes, count] = useSelector(selectAthletes)
+  const sm = useMediaQuery('(max-width: 576px)')
   const [searchValue, setSearchValue] = useState('')
-  const searchDebounced = useDebounce(searchValue, 500)
-  const checkUserStatus = useCallback(() => {
-    teamId && getIsUserInTeam(teamId).then(setUserStatusInTeam)
-  }, [teamId])
+  const [page, setPage] = useState(1)
+  const searchDebounced = useDebounce(searchValue, 400)
   const { t: tLkTm } = useTranslation('lkTm')
-
-  const tabs = useMemo(() => {
-    return teamProfileTabs(teamId)
-  }, [teamId])
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     query.set('team', teamId || '')
-    dispatch(fetchAthletesByParams(query))
     dispatch(fetchCountries())
-  }, [query, teamId])
+    teamId && dispatch(fetchTeam({ teamId }))
+  }, [])
 
   useEffect(() => {
     query.set('search', searchDebounced)
+    query.set('page', page)
     dispatch(fetchAthletesByParams(query))
-  }, [searchDebounced])
-
-  useEffect(() => {
-    checkUserStatus()
-  }, [teamId])
+  }, [searchDebounced, page])
 
   return (
-    <LkLayout tabs={tabs}>
-      <LkDefaultHeader onToggleSidebar={onToggleSidebar}>
-        <HeaderWrapper>
-          <TitleHeader>{tLkTm('teamProfile.profile')}</TitleHeader>
-          <ApplyToTeam userStatusInTeam={userStatusInTeam} checkUserStatus={checkUserStatus} />
-        </HeaderWrapper>
-      </LkDefaultHeader>
-
+    <PublicTeamWrapper>
       <Field>
         <TextField
           sx={{
@@ -75,7 +56,7 @@ function Athletes({ onToggleSidebar }) {
           value={searchValue}
           placeholder={tLkTm('statistics.search')}
         />
-        <SearchButton>
+        <SearchButton onClick={() => dispatch(fetchAthletesByParams(query))}>
           <SearchIcon />
           <span>{tLkTm('statistics.search')}</span>
         </SearchButton>
@@ -84,15 +65,26 @@ function Athletes({ onToggleSidebar }) {
       <AthletesWrapper>
         {!!athletes.length &&
           athletes.map(({ id, user, teams }, i) => (
-            <Athlete
-              key={`${id}-team-profile-${user.id || i}`}
-              athleteId={id}
-              user={user}
-              team={teams[0]}
-            />
+            <>
+              <Athlete
+                key={`${id}-team-profile-${user.id}`}
+                athleteId={id}
+                user={user}
+                team={teams[0]}
+              />
+              {i !== athletes.length - 1 && sm && <Line />}
+            </>
           ))}
       </AthletesWrapper>
-    </LkLayout>
+      <PaginationWrapper>
+        <Pagination
+          onChange={(_, value) => setPage(value)}
+          count={Math.ceil(count / 20)}
+          variant='outlined'
+          shape='rounded'
+        />
+      </PaginationWrapper>
+    </PublicTeamWrapper>
   )
 }
 
@@ -112,10 +104,33 @@ export const getStaticPaths = async () => {
 }
 
 const AthletesWrapper = styled.div`
-  display: flex;
-  grid-gap: 16px;
-  padding: 32px;
+  display: grid;
+  padding: 32px 0 0;
   flex-wrap: wrap;
+  background: #1b1c22;
+
+  @media screen and (min-width: 1400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media screen and (max-width: 1400px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 1100px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  ${theme.mqMax('md')} {
+    margin: 32px 0 0;
+    padding: 0;
+    background: #1b1c22;
+    border-radius: 16px;
+  }
+
+  ${theme.mqMax('sm')} {
+    grid-template-columns: 1fr;
+  }
 `
 
 const Field = styled.div`
@@ -124,6 +139,23 @@ const Field = styled.div`
   align-items: center;
 
   padding: 32px 32px 0;
+
+  ${theme.mqMax('md')} {
+    padding: 32px 0 0;
+  }
+`
+
+const Line = styled.div`
+  width: calc(100% - 48px);
+  height: 2px;
+  border-bottom: 1px solid #333;
+  justify-self: center;
+`
+
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 32px 0 32px;
 `
 
 const SearchButton = styled.button`
