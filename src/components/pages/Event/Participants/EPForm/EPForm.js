@@ -34,6 +34,7 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
   const {
     query: { id: eventId },
     push: routerPush,
+    pathname,
   } = useRouter()
   const [bracketError, setBracketError] = useState(null)
   const dispatch = useDispatch()
@@ -46,6 +47,10 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
       brackets: yup.string().required(tCommon('validation.required')).nullable(),
     }),
   )
+
+  useEffect(() => {
+    onClose()
+  }, [pathname])
 
   const formik = useFormik({
     initialValues: {
