@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useDebounce from '../../../../hooks/useDebounce'
 import styled from 'styled-components'
 import { Box } from '@mui/material'
@@ -49,7 +49,7 @@ const Participants = () => {
   }, [searchValue, countryValue, teamValue, categoryValue])
 
   return (
-    <>
+    <MainWrapper>
       <Filter onFilter={filterHandler} />
       <TitleBlock sx={{ margin: '32px 0' }} component={'h4'}>
         {tEventDetail('event.results.participants.allResultsEvent')}
@@ -63,9 +63,13 @@ const Participants = () => {
           <FullScreenLoader open />
         )}
       </EventResults>
-    </>
+    </MainWrapper>
   )
 }
+
+const MainWrapper = styled.div`
+  padding: 32px 0 0;
+`
 
 export const TitleBlock = styled(Box)`
   font-style: normal;

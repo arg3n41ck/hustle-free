@@ -35,9 +35,22 @@ const BracketText = styled.p`
   b {
     color: #fff;
   }
+
+  ${theme.mqMax('xl')} {
+    font-size: 16px;
+  }
+
+  ${theme.mqMax('md')} {
+    font-size: 12px;
+    border: none;
+    padding: 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 
 const HeaderWrapper = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   background: #1b1c22;
@@ -46,6 +59,8 @@ const HeaderWrapper = styled.div`
   padding: 16px;
 
   ${theme.mqMax('md')} {
-    gap: 16px;
+    display: grid;
+    grid-template: 1fr / auto min-content;
+    gap: 10px;
   }
 `

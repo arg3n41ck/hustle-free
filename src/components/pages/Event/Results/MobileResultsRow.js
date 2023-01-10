@@ -24,7 +24,7 @@ const PlaceContent = ({ participant, eventId, ogAndIsMyEvent }) => (
       <Country>{participant?.athlete.user?.country}</Country>
       <Team>{participant?.team?.name}</Team>
     </Texts>
-    {!!ogAndIsMyEvent && (
+    {/* {!!ogAndIsMyEvent && (
       <PlaceField
         defaultCount={participant?.place || 0}
         onChange={(count) => {
@@ -34,7 +34,7 @@ const PlaceContent = ({ participant, eventId, ogAndIsMyEvent }) => (
           })
         }}
       />
-    )}
+    )} */}
   </Wrapper>
 )
 
@@ -71,18 +71,24 @@ export default function MobileResultsRow({ participants, updatePC }) {
                 ogAndIsMyEvent={ogAndIsMyEvent}
               />
             ))}
-            <Collapse in={open}>
-              {participants.slice(-(participants.length - 3)).map((participant) => (
-                <PlaceContent
-                  key={participant.id}
-                  participant={participant}
-                  updatePC={updatePC}
-                  eventId={eventId}
-                  ogAndIsMyEvent={ogAndIsMyEvent}
-                />
-              ))}
-            </Collapse>
-            <OpenClose onClick={() => setOpen(!open)}>{open ? 'Скрыть' : 'Показать еще'}</OpenClose>
+            {participants?.length > 3 && (
+              <>
+                <Collapse in={open}>
+                  {participants.slice(-(participants.length - 3)).map((participant) => (
+                    <PlaceContent
+                      key={participant.id}
+                      participant={participant}
+                      updatePC={updatePC}
+                      eventId={eventId}
+                      ogAndIsMyEvent={ogAndIsMyEvent}
+                    />
+                  ))}
+                </Collapse>
+                <OpenClose onClick={() => setOpen(!open)}>
+                  {open ? 'Скрыть' : 'Показать еще'}
+                </OpenClose>
+              </>
+            )}
           </>
         ))}
     </div>
@@ -92,7 +98,7 @@ export default function MobileResultsRow({ participants, updatePC }) {
 const Wrapper = styled.div`
   overflow: auto;
   display: grid;
-  grid-template: 1fr / 50px auto 100px;
+  grid-template: 1fr / 50px auto;
   grid-gap: 16px;
   padding: 12px 16px;
 

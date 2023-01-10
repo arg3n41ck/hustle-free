@@ -10,7 +10,7 @@ import {
 import BracketCellFighter from './BracketCellFighter'
 
 export default function BracketCell({ cell, gridTemplateAreas, classes }) {
-  const { id, fighters, fightNumber, parents, children, borderDirection, place } = cell
+  const { id, fighters, fightNumber, parents, children, borderDirection } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
   const [countries] = useSelector(selectCountriesAndCities)

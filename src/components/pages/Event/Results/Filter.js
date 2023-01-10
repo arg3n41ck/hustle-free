@@ -37,9 +37,6 @@ const Filter = ({ onFilter }) => {
 
   return (
     <>
-      <TitleBlock sx={{ margin: '32px 0 -16px 0' }} component={'h4'}>
-        {tEventDetail('event.results.filter.search')}
-      </TitleBlock>
       <EDContentFilter
         onSearch={(value) =>
           onFilter({

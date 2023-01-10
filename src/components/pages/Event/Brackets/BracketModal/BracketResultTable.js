@@ -24,7 +24,7 @@ export default function BracketResultTable({ bracketId }) {
         </thead>
         <tbody>
           {!!bracketsResults.data?.length ? (
-            bracketsResults.data.map(({ id, place, athlete, team }) => {
+            bracketsResults?.data.map(({ id, place, athlete, team }) => {
               return (
                 <Tr key={`brackets_results_${id}`}>
                   <Td>{place}</Td>

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
 import BracketHeaderInfo from './BracketHeaderInfo'
@@ -6,10 +6,11 @@ import BracketsDoubleEl from './BracketsDoubleEl'
 import BracketsSingleEl from './BracketsSingleEl'
 import BracketsRobin from './BracketsRobin'
 import BracketsThreeMan from './BracketsThreeMan'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import FullScreenLoader from '../../../../ui/FullScreenLoader'
 import BracketResultTable from './BracketResultTable'
+import { useRouter } from 'next/router'
 
 export const bracketTypes = {
   1: {
@@ -58,6 +59,7 @@ export const bracketTypes = {
 
 export default function BracketModal({ selectedBracket, onClose }) {
   const [, bracketsFights, participantAthletes] = useSelector(selectBrackets)
+  const { pathname } = useRouter()
   const { typeTitle, BracketWrapperByType } = useMemo(() => {
     const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
     return {
@@ -65,6 +67,10 @@ export default function BracketModal({ selectedBracket, onClose }) {
       BracketWrapperByType: (props) => selectedBrType && selectedBrType?.component(props),
     }
   }, [selectedBracket])
+
+  useEffect(() => {
+    pathname !== '/events/[id]/brackets' && onClose()
+  }, [pathname])
 
   return (
     <>
@@ -111,7 +117,13 @@ const HeaderWrapper = styled.div`
   padding: 20px;
 
   ${theme.mqMax('md')} {
-    gap: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    gap: 8px;
+
+    background: none;
+    border-radius: 0;
   }
 `
 
@@ -131,7 +143,7 @@ const Title = styled.h3`
   color: #f2f2f2;
 
   ${theme.mqMax('md')} {
-    font-size: 18px;
+    font-size: 16px;
   }
 `
 

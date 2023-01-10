@@ -99,6 +99,8 @@ export default function BracketsDoubleEl() {
     }
   }, [loserBracketsBySteps])
 
+  console.log({ bracketsFights, loserBracketsBySteps })
+
   return (
     <ColumnsWrapper>
       <TopBrackets

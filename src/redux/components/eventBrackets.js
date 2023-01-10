@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
+import { camelizeKeys } from 'humps'
 import $api from '../../services/axios'
 
 export const fetchBracketsByParams = createAsyncThunk(
@@ -22,6 +24,10 @@ export const fetchBracketsFightsByParams = createAsyncThunk(
       const { data } = await $api.get(`/brackets/brackets_fights/`, {
         params,
       })
+      // const {
+      //   data: { fights },
+      // } = await axios.get(`http://192.168.0.114:8000/api/brackets/33/`)
+      // return camelizeKeys(fights)
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)

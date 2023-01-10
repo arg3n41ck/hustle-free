@@ -6,7 +6,7 @@ import { theme } from '../../../../../../styles/theme'
 import { BronzeMedalIcon, GoldMedalIcon, SilverMedalIcon } from '../../../../../../assets/svg/icons'
 
 function FilterMyStories({ data }) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(true)
   const { id, place, fightsHistory, event, participationCategory } = data
   const md = useMediaQuery('(max-width:767px)')
 

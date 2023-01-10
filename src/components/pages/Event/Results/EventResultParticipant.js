@@ -63,12 +63,12 @@ function EventResultParticipant({ participant }) {
             <InfoItemDescription>{participant.athlete.user?.country}</InfoItemDescription>
           </InfoItem>
         )}
-        {!!ogAndIsMyEvent && (
+        {/* {!!ogAndIsMyEvent && (
           <PlaceField
             defaultCount={place || 0}
             onChange={(count) => onChange(participant.id, count)}
           />
-        )}
+        )} */}
       </Right>
     </Item>
   )
@@ -78,7 +78,7 @@ export default EventResultParticipant
 
 const Item = styled.li`
   display: grid;
-  grid-template: 1fr / 1.5fr 1fr;
+  grid-template: 1fr / 1.5fr min-content;
 `
 const Left = styled.div`
   display: flex;
@@ -94,9 +94,9 @@ const Title = styled.h3`
   margin-left: 24px;
 `
 const Right = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template: 1fr / 1fr 1fr;
+  grid-gap: 20px;
 `
 const InfoItem = styled.div`
   border-left: 1px solid #333333;

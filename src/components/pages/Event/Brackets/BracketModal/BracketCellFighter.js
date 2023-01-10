@@ -3,22 +3,31 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { BracketsAthAva } from '../../../../../assets/svg/icons'
 import { truncateString } from '../../../../../helpers/helpers'
+import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import { getFighterPlace } from './bracketsUtils'
 import BracketWin from './BracketWin'
 
 export default function BracketCellFighter({ cell, fighter, onWin, opponent, orientation }) {
   const { id, fighters, winner, disabled, fightNumber, place: cellPlace } = cell
+  const [, , , bracketsResults] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
   const fighterPlace = useMemo(() => {
+    if ([5, 6].includes(bracket?.bracketType) && fightNumber >= 8) {
+      if (fightNumber == 8 && winner == fighter?.id) {
+        return null
+      }
+      const threeManFPlace =
+        bracketsResults.data?.length && bracketsResults.data.find(({ id }) => fighter?.id == id)
+      return threeManFPlace?.place
+    }
+
     return getFighterPlace({
       bracketType: bracket?.bracketType,
-      fightNumber,
       winner,
       cellPlace,
       fighter: fighter?.id,
-      fighters,
     })
-  }, [fighters, winner, id, fighter])
+  }, [bracketsResults, fighters, winner, bracket, fighter, fightNumber])
 
   return (
     <FighterWrapper className={orientation}>
@@ -46,7 +55,7 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
           )}
         </FighterTexts>
       </UserInfoPart>
-      {fighterPlace && <PlaceBlock place={fighterPlace}>{fighterPlace}</PlaceBlock>}
+      {!!fighterPlace && <PlaceBlock place={fighterPlace}>{fighterPlace}</PlaceBlock>}
       {!disabled && !!fighter && fighters?.length === 2 && opponent !== winner && (
         <BracketWin bfId={id} fighter={fighter.id} winner={winner} onWin={onWin} />
       )}

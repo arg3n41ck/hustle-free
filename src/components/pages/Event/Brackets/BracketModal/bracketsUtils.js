@@ -164,7 +164,7 @@ export const createColumnsAreasByStepsCount = (bracketsCount) => {
 
 //tut polnyi pizdecc
 export const getFighterPlace = (params) => {
-  const { bracketType, fightNumber, winner, cellPlace, fighter, fighters } = params
+  const { bracketType, winner, cellPlace, fighter } = params
 
   if (fighter && winner) {
     if ([1, 2, 3, 4].includes(bracketType)) {
@@ -173,18 +173,7 @@ export const getFighterPlace = (params) => {
       }
       if (cellPlace == 1) {
         return fighter == winner ? 1 : 2
-      } else if (cellPlace == 3 && fighter == winner) {
-        return 3
-      }
-    } else if ([5, 6].includes(bracketType)) {
-      if (fightNumber == 9) {
-        if (fighters.length === 1 && fighter == winner) {
-          return 1
-        }
-        if (fighters.length === 2) {
-          return fighter == winner ? 1 : 2
-        }
-      } else if (fightNumber == 8 && fighter == winner) {
+      } else if (bracketType !== 1 && cellPlace == 3 && fighter == winner) {
         return 3
       }
     }
