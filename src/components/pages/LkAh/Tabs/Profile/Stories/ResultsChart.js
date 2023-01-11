@@ -1,20 +1,39 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import DonutChart from 'react-svg-donut-chart'
+import { Chart as ChartJS, ArcElement } from 'chart.js'
+import { Doughnut } from 'react-chartjs-2'
+
+ChartJS.register(ArcElement)
 
 export default function ResultsChart({ wins, defeats, chartWHSize = null }) {
-  const dataPie = useMemo(() => {
-    return !!wins + defeats
-      ? [
-          { value: (wins * 100) / (wins + defeats), stroke: '#27AE60', strokeWidth: 2 },
-          { value: (defeats * 100) / (wins + defeats), stroke: '#EB5757', strokeWidth: 2 },
-        ]
-      : [{ value: 100, stroke: '#333', strokeWidth: 2 }]
+  const chartData = useMemo(() => {
+    if (wins && defeats) {
+      return {
+        datasets: [
+          {
+            data: [wins, defeats],
+            backgroundColor: ['#27AE60', '#EB5757'],
+            borderColor: ['#1B1C22', '#1B1C22'],
+            borderWidth: 2,
+          },
+        ],
+      }
+    }
+    return {
+      datasets: [
+        {
+          data: [100],
+          backgroundColor: ['#333'],
+          borderColor: ['#1B1C22'],
+          borderWidth: 2,
+        },
+      ],
+    }
   }, [wins, defeats])
 
   return (
     <Chart size={chartWHSize}>
-      <DonutChart data={dataPie} />
+      <Doughnut data={chartData} options={{ cutout: '80%' }} />
       <CenterText size={chartWHSize}>
         {wins} <span>побед</span>
       </CenterText>
@@ -38,6 +57,7 @@ const Chart = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 `
 
 const CenterText = styled.p`

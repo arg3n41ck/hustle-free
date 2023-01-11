@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { fetchBracketResults, selectBrackets } from '../../../../../redux/components/eventBrackets'
+import { theme } from '../../../../../styles/theme'
 
 export default function BracketResultTable({ bracketId }) {
   const [, , , bracketsResults] = useSelector(selectBrackets)
@@ -27,7 +28,7 @@ export default function BracketResultTable({ bracketId }) {
             bracketsResults?.data.map(({ id, place, athlete, team }) => {
               return (
                 <Tr key={`brackets_results_${id}`}>
-                  <Td>{place}</Td>
+                  <Td>{place || '?'}</Td>
                   <Td>{athlete}</Td>
                   <Td>{team}</Td>
                 </Tr>
@@ -35,7 +36,7 @@ export default function BracketResultTable({ bracketId }) {
             })
           ) : (
             <Tr>
-              <Td>0</Td>
+              <Td>?</Td>
               <Td>Места не заданы</Td>
             </Tr>
           )}
@@ -58,7 +59,6 @@ const Table = styled.table`
   background: #141519;
   border-collapse: collapse;
   border-radius: 16px;
-  overflow: hidden;
   padding: 0;
 
   & thead {
@@ -81,6 +81,10 @@ const Th = styled.th`
   padding: 20px;
   color: #828282;
   text-align: start;
+
+  ${theme.mqMax('md')} {
+    padding: 10px;
+  }
 `
 
 const Td = styled.td`
@@ -92,6 +96,10 @@ const Td = styled.td`
   }
 
   &:first-child {
-    width: 104px;
+    width: min-content;
+  }
+
+  ${theme.mqMax('md')} {
+    padding: 10px;
   }
 `

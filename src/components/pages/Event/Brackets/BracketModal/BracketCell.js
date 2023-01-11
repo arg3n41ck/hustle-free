@@ -73,11 +73,11 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
   return (
     <CellWrapper
       className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
-      style={gridTemplateAreas ? { gridArea: `cell-${id}` } : {}}
+      gridArea={gridTemplateAreas && `cell-${id}`}
     >
-      {/* <FightNum>
+      <FightNum>
         FN:{fightNumber}, ID: {id}, CH: {children[0]}
-      </FightNum> */}
+      </FightNum>
       <BracketCellFighter
         cell={cell}
         fighter={fighters[0] ? getFighterDetails(fighters[0]) : null}
@@ -100,6 +100,7 @@ const CellWrapper = styled.div`
   position: relative;
   display: grid;
   grid-template: min-content min-content / 1fr;
+  grid-area: ${({ gridArea }) => gridArea || 'unset'};
   align-content: center;
   padding: 16px 0;
 

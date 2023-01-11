@@ -86,7 +86,7 @@ export default function BracketModal({ selectedBracket, onClose }) {
           title={typeTitle}
           allParticipants={participantAthletes?.data?.length || 0}
         />
-        {BracketWrapperByType && <BracketWrapperByType />}
+        <BracketWrapper>{BracketWrapperByType && <BracketWrapperByType />}</BracketWrapper>
         {+(selectedBracket?.bracketType || 0) !== 7 && (
           <BracketResultTable bracketId={selectedBracket?.id} />
         )}
@@ -106,6 +106,10 @@ const ContentWrapper = styled.div`
 
   padding: 16px 16px 40px;
   margin: 0 auto;
+
+  ${theme.mqMax('md')} {
+    padding: 16px 0 40px;
+  }
 `
 
 const HeaderWrapper = styled.div`
@@ -125,6 +129,10 @@ const HeaderWrapper = styled.div`
     background: none;
     border-radius: 0;
   }
+`
+
+const BracketWrapper = styled.div`
+  overflow: auto;
 `
 
 const Back = styled.button`

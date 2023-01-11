@@ -210,7 +210,6 @@ export default function BracketsDoubleEl() {
 const ColumnsWrapper = styled.div`
   position: relative;
   width: 100%;
-  overflow-x: auto;
   display: flex;
   flex-direction: column;
 `

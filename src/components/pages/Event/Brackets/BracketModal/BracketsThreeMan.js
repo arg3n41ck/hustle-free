@@ -78,7 +78,6 @@ export default function BracketsThreeMan() {
 
 const ColumnsWrapper = styled.div`
   width: 100%;
-  overflow-x: auto;
   display: grid;
   grid-template-columns: 1fr;
 `

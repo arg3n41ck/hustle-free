@@ -17,6 +17,7 @@ const getWrapperStyles = (type) => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        '-webkit-box-pack': 'center',
       }
     default:
       break
@@ -84,7 +85,6 @@ export default function BracketsSingleEl() {
 
 const ColumnsWrapper = styled.div`
   width: 100%;
-  overflow-x: auto;
   display: flex;
 `
 

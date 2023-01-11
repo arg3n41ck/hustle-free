@@ -39,6 +39,17 @@ const ParticipantInfoSummaryFieldCol1Text = styled.div`
   &:last-child {
     border: none;
   }
+
+  @media screen and (min-width: 992px) {
+    height: calc(100% + 16px);
+    width: calc(100% + 18px);
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    margin: -8px 0 -8px -18px;
+    padding: 16px;
+    background: #1b1c22;
+  }
 `
 
 const ParticipantInfoSummary = styled.div`
@@ -53,7 +64,7 @@ const ParticipantInfoSummaryField = styled.div`
 
   display: grid;
   grid-template: 1fr / 0.5fr 2fr;
-  grid-gap: 10px;
+  grid-gap: 32px;
   align-items: center;
   padding: 8px 18px;
 
@@ -68,9 +79,7 @@ const ParticipantInfoSummaryField = styled.div`
 
   @media screen and (max-width: 992px) {
     height: unset;
-  }
-
-  @media screen and (max-width: 576px) {
+    grid-gap: 10px;
     grid-template: 1fr 1fr / 1fr;
     grid-gap: 4px;
   }

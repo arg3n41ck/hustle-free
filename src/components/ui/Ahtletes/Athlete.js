@@ -11,18 +11,18 @@ function Athlete({ children, user, athleteId, team, statistic }) {
     <div>
       {user && (
         <ItemWrapper>
-          <Item>
+          <Item
+            onClick={() => {
+              routerPush(athleteId ? `/athlete/${athleteId}` : pathname)
+            }}
+          >
             <Avatar
               alt={`${user?.avatar || ''}`}
               src={user?.avatar || ''}
               sx={{ width: '64px', height: '64px' }}
             />
             <div>
-              <ItemTitle
-                onClick={() => {
-                  routerPush(athleteId ? `/athlete/${athleteId}` : pathname)
-                }}
-              >
+              <ItemTitle>
                 {user?.firstName || ''} {user?.lastName || ''}
               </ItemTitle>
               {!!team?.name && <ItemDescription>{team?.name}</ItemDescription>}

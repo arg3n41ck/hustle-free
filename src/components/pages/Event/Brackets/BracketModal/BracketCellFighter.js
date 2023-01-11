@@ -8,13 +8,16 @@ import { getFighterPlace } from './bracketsUtils'
 import BracketWin from './BracketWin'
 
 export default function BracketCellFighter({ cell, fighter, onWin, opponent, orientation }) {
-  const { id, fighters, winner, disabled, fightNumber, place: cellPlace } = cell
-  const [, , , bracketsResults] = useSelector(selectBrackets)
+  const { id, fighters, winner, children, disabled, fightNumber, place: cellPlace } = cell
+  const [, bracketsFights, , bracketsResults] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
   const fighterPlace = useMemo(() => {
     if ([5, 6].includes(bracket?.bracketType) && fightNumber >= 8) {
-      if (fightNumber == 8 && winner == fighter?.id) {
-        return null
+      if (fightNumber == 8 && children?.length && winner == fighter?.id) {
+        const finalFightersCount =
+          bracketsFights.data?.length &&
+          bracketsFights.data.find(({ id }) => id == children[0])?.fighters?.length
+        return finalFightersCount === 1 ? 2 : null
       }
       const threeManFPlace =
         bracketsResults.data?.length && bracketsResults.data.find(({ id }) => fighter?.id == id)

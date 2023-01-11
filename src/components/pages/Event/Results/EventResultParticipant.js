@@ -63,12 +63,12 @@ function EventResultParticipant({ participant }) {
             <InfoItemDescription>{participant.athlete.user?.country}</InfoItemDescription>
           </InfoItem>
         )}
-        {/* {!!ogAndIsMyEvent && (
+        {!!ogAndIsMyEvent && (
           <PlaceField
             defaultCount={place || 0}
             onChange={(count) => onChange(participant.id, count)}
           />
-        )} */}
+        )}
       </Right>
     </Item>
   )
