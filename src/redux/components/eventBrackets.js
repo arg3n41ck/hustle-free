@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { camelizeKeys } from 'humps'
 import $api from '../../services/axios'
+// import { camelizeKeys } from 'humps'
+// import axios from 'axios'
 
 export const fetchBracketsByParams = createAsyncThunk(
   'brackets/fetchBracketsByParams',
