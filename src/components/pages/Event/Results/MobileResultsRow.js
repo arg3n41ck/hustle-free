@@ -24,7 +24,7 @@ const PlaceContent = ({ participant, eventId, ogAndIsMyEvent }) => (
       <Country>{participant?.athlete.user?.country}</Country>
       <Team>{participant?.team?.name}</Team>
     </Texts>
-    {/* {!!ogAndIsMyEvent && (
+    {!!ogAndIsMyEvent && (
       <PlaceField
         defaultCount={participant?.place || 0}
         onChange={(count) => {
@@ -34,7 +34,7 @@ const PlaceContent = ({ participant, eventId, ogAndIsMyEvent }) => (
           })
         }}
       />
-    )} */}
+    )}
   </Wrapper>
 )
 
@@ -98,7 +98,7 @@ export default function MobileResultsRow({ participants, updatePC }) {
 const Wrapper = styled.div`
   overflow: auto;
   display: grid;
-  grid-template: 1fr / 50px auto;
+  grid-template: 1fr / 50px auto 100px;
   grid-gap: 16px;
   padding: 12px 16px;
 

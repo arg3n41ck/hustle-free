@@ -66,7 +66,7 @@ function EventResultParticipant({ participant }) {
         {!!ogAndIsMyEvent && (
           <PlaceField
             defaultCount={place || 0}
-            onChange={(count) => onChange(participant.id, count)}
+            // onChange={(count) => onChange(participant.id, count)}
           />
         )}
       </Right>
@@ -95,7 +95,7 @@ const Title = styled.h3`
 `
 const Right = styled.div`
   display: grid;
-  grid-template: 1fr / 1fr 1fr;
+  grid-template: 1fr / 1fr 1fr 100px;
   grid-gap: 20px;
 `
 const InfoItem = styled.div`
