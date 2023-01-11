@@ -8,7 +8,7 @@ import { selectOgEvents } from '../../../../redux/components/user'
 import { changeParticipantPlace } from './EventResultParticipant'
 import PlaceField from './PlaceField'
 
-const PlaceContent = ({ participant, eventId, ogAndIsMyEvent }) => (
+const PlaceContent = ({ participant, eventId, ogAndIsMyEvent, isRobinRound }) => (
   <Wrapper key={participant?.id}>
     {(participant?.place === 1 && <FirstPlaceIcon style={{ height: '50px', width: '50px' }} />) ||
       (participant?.place === 2 && <SecondPlaceIcon style={{ height: '50px', width: '50px' }} />) ||
@@ -16,7 +16,7 @@ const PlaceContent = ({ participant, eventId, ogAndIsMyEvent }) => (
         <ThirdPlaceIcon style={{ height: '50px', width: '50px' }} />
       )) || (
         <OtherPlace>
-          <p>{participant?.place}</p>
+          <p>{participant?.place || '?'}</p>
         </OtherPlace>
       )}
     <Texts>
@@ -24,7 +24,7 @@ const PlaceContent = ({ participant, eventId, ogAndIsMyEvent }) => (
       <Country>{participant?.athlete.user?.country}</Country>
       <Team>{participant?.team?.name}</Team>
     </Texts>
-    {!!ogAndIsMyEvent && (
+    {!!isRobinRound && !!ogAndIsMyEvent && (
       <PlaceField
         defaultCount={participant?.place || 0}
         onChange={(count) => {

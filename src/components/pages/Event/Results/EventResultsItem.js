@@ -9,12 +9,14 @@ import MobileResultsRow from './MobileResultsRow'
 
 const EventResultsItem = ({ participant }) => {
   if (!participant) return null
-  const { eventParticipantsCategory, level } = participant
+  const { eventParticipantsCategory, level, isRobinRound } = participant
   const { t: tEventDetail } = useTranslation('eventDetail')
   const desk = useMediaQuery('(min-width: 768px)')
   const [showAll, setShowAll] = useState(false)
   const participants = useMemo(() => {
-    return participant.participants.sort((a, b) => (a?.place || 0) - (b?.place || 0))
+    const zeros = participant.participants.filter(({ place }) => !place)
+    const norms = participant.participants.filter(({ place }) => place)
+    return [...norms.sort((a, b) => (a?.place || 0) - (b?.place || 0)), ...zeros]
   }, [participant])
 
   const [open, setOpen] = useState(!!participants?.length)
@@ -42,6 +44,7 @@ const EventResultsItem = ({ participant }) => {
                 <EventResultParticipant
                   key={`results-pc-${participant.id}`}
                   participant={participant}
+                  isRobinRound={isRobinRound}
                 />
               ))}
             </List>
@@ -53,6 +56,7 @@ const EventResultsItem = ({ participant }) => {
                       <EventResultParticipant
                         key={`results-pc-${participant.id}`}
                         participant={participant}
+                        isRobinRound={isRobinRound}
                       />
                     ))}
                   </List>

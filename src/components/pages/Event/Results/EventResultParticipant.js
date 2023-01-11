@@ -18,7 +18,7 @@ export const changeParticipantPlace = async (eventId, data) => {
   }
 }
 
-function EventResultParticipant({ participant }) {
+function EventResultParticipant({ participant, isRobinRound }) {
   const user = useSelector((state) => state.user.user)
   const [place, setPlace] = useState(participant.place)
   const { t: tEventDetail } = useTranslation('eventDetail')
@@ -43,7 +43,7 @@ function EventResultParticipant({ participant }) {
           (place === 2 && <SecondPlaceIcon />) ||
           (place === 3 && <ThirdPlaceIcon />) || (
             <OtherPlace>
-              <p>{place}</p>
+              <p>{place || '?'}</p>
             </OtherPlace>
           )}
         <Title>{`${participant?.athlete?.user?.firstName} ${participant?.athlete?.user?.lastName}`}</Title>
@@ -63,10 +63,10 @@ function EventResultParticipant({ participant }) {
             <InfoItemDescription>{participant.athlete.user?.country}</InfoItemDescription>
           </InfoItem>
         )}
-        {!!ogAndIsMyEvent && (
+        {!!isRobinRound && !!ogAndIsMyEvent && (
           <PlaceField
             defaultCount={place || 0}
-            // onChange={(count) => onChange(participant.id, count)}
+            onChange={(count) => onChange(participant.id, count)}
           />
         )}
       </Right>
