@@ -173,8 +173,12 @@ export const getFighterPlace = (params) => {
       }
       if (cellPlace == 1) {
         return fighter == winner ? 1 : 2
-      } else if (bracketType !== 1 && cellPlace == 3 && fighter == winner) {
-        return 3
+      } else if (cellPlace == 3) {
+        if (bracketType !== 1 && fighter == winner) {
+          return 3
+        } else if (bracketType === 1 && fighter !== winner) {
+          return 3
+        }
       }
     }
   }
