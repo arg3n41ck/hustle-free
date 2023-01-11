@@ -18,7 +18,7 @@ const EventResultsItem = ({ participant }) => {
   }, [participant])
 
   const [open, setOpen] = useState(!!participants?.length)
-  console.log(participant)
+
   return (
     <Box sx={{ marginBottom: 4 }}>
       {desk ? (

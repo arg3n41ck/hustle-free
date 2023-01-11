@@ -99,8 +99,6 @@ export default function BracketsDoubleEl() {
     }
   }, [loserBracketsBySteps])
 
-  console.log({ bracketsFights, loserBracketsBySteps })
-
   return (
     <ColumnsWrapper>
       <TopBrackets
@@ -210,8 +208,6 @@ export default function BracketsDoubleEl() {
 const ColumnsWrapper = styled.div`
   position: relative;
   width: 100%;
-  display: flex;
-  flex-direction: column;
 `
 
 const TopBrackets = styled.div`

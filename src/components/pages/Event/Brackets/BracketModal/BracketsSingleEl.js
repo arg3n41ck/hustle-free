@@ -17,7 +17,6 @@ const getWrapperStyles = (type) => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        '-webkit-box-pack': 'center',
       }
     default:
       break
@@ -90,7 +89,6 @@ const ColumnsWrapper = styled.div`
 
 const Column = styled.div`
   min-width: 360px;
-  height: 100%;
   display: flex;
   flex-direction: column;
   padding: 32px;

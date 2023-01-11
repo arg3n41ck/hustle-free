@@ -68,6 +68,12 @@ export default function BracketModal({ selectedBracket, onClose }) {
     }
   }, [selectedBracket])
 
+  const fightersCount = useMemo(() => {
+    return participantAthletes.data?.length
+      ? participantAthletes.data?.filter(({ isPaid }) => isPaid)
+      : 0
+  }, [participantAthletes])
+
   useEffect(() => {
     pathname !== '/events/[id]/brackets' && onClose()
   }, [pathname])
@@ -82,10 +88,7 @@ export default function BracketModal({ selectedBracket, onClose }) {
           </Back>
           <Title>{selectedBracket?.title}</Title>
         </HeaderWrapper>
-        <BracketHeaderInfo
-          title={typeTitle}
-          allParticipants={participantAthletes?.data?.length || 0}
-        />
+        <BracketHeaderInfo title={typeTitle} allParticipants={fightersCount?.length || 0} />
         <BracketWrapper>{BracketWrapperByType && <BracketWrapperByType />}</BracketWrapper>
         {+(selectedBracket?.bracketType || 0) !== 7 && (
           <BracketResultTable bracketId={selectedBracket?.id} />
