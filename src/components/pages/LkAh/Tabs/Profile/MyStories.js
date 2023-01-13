@@ -63,6 +63,7 @@ const ResultStatsWrapper = styled.div`
   grid-template: 1fr / min-content 1fr;
   gap: 20px;
   padding: 32px;
+  border-bottom: 1px solid #333;
 
   @media screen and (max-width: 576px) {
     grid-template: 143px min-content / 1fr;

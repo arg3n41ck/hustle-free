@@ -109,6 +109,7 @@ const EventContainer = styled.div`
   }
 
   ${theme.mqMax('sm')} {
+    border: 1px solid #333333;
     padding: 0;
   }
 `

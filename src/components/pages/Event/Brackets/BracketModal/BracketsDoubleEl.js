@@ -106,6 +106,9 @@ export default function BracketsDoubleEl() {
           gridTemplateColumns: topBracketsLastStep && `repeat(${topBracketsLastStep}, 340px)`,
           gridTemplateAreas: createColumnsAreasByStepsCount(topBracketsLastStep),
         }}
+        key={`Top_Bracket_Refresh_When_${
+          (!!topBracketsBySteps && Object.keys(topBracketsBySteps))?.length || Math.random()
+        }`}
       >
         {!!topBracketsLastStep &&
           Object.keys(topBracketsBySteps).map((key) => {
@@ -154,6 +157,9 @@ export default function BracketsDoubleEl() {
           gridTemplateColumns: loserBracketsLastStep && `repeat(${loserBracketsLastStep}, 340px)`,
           gridTemplateAreas: createColumnsAreasByStepsCount(loserBracketsLastStep),
         }}
+        key={`Loser_Bracket_Refresh_When_${
+          (!!loserBracketsBySteps && Object.keys(loserBracketsBySteps))?.length || Math.random()
+        }`}
       >
         {!!Object.keys(loserBracketsBySteps || {})?.length &&
           Object.keys(loserBracketsBySteps).map((key) => {

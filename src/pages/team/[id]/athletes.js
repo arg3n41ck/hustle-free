@@ -41,7 +41,7 @@ function Athletes() {
     query.set('page', page)
     dispatch(fetchAthletesByParams(query))
   }, [searchDebounced, page])
-
+  console.log(athletes)
   return (
     <PublicTeamWrapper>
       <Field>

@@ -34,7 +34,9 @@ export default function BracketsSingleEl() {
   }, [bracketsFights])
 
   return (
-    <ColumnsWrapper>
+    <ColumnsWrapper
+      key={`Single_refresh_when_${Object.keys(bracketsBySteps || {})?.length || Math.random()}`}
+    >
       {!!Object.keys(bracketsBySteps || {})?.length &&
         Object.keys(bracketsBySteps).map((key) => {
           const { roundName, cells } = bracketsBySteps[key]
