@@ -19,16 +19,18 @@ export const fetchBracketsByParams = createAsyncThunk(
 
 export const fetchBracketsFightsByParams = createAsyncThunk(
   'brackets/fetchBracketsFightsByParams',
-  async (params, { rejectWithValue }) => {
+  async ({ bracket, type }, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/brackets/brackets_fights/`, {
-        params,
-      })
+      if (![1, 2, 3, 4].includes(type)) {
+        const { data } = await $api.get(`/brackets/brackets_fights/?bracket=${bracket}`)
+        return data
+      }
+      const { data } = await $api.get(`/brackets/test_brackets/${bracket}/`)
+      return data
       // const {
       //   data: { fights },
       // } = await axios.get(`http://192.168.0.114:8000/api/brackets/33/`)
       // return camelizeKeys(fights)
-      return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }

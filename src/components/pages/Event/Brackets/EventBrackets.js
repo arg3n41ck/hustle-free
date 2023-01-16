@@ -55,7 +55,7 @@ function EventBrackets() {
 
   useEffect(() => {
     if (bracket?.id) {
-      dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id }))
+      dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: bracket?.bracketType }))
       dispatch(
         fetchParticipantAthletes({
           participation_category: bracket?.participationCategory,

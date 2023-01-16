@@ -16,6 +16,8 @@ export const getBracketsRoundType = {
   10: '512ND_FINALS',
 }
 
+//не пытайся понять этот код, ахахаххахахахахаххааххаха
+// она работает только для робин, лучше переписать что-то другое для робин
 export const getBracketsBySteps = async (bracketsFights) => {
   const brSteps = await bracketsFights
     .slice()
@@ -34,6 +36,7 @@ export const getBracketsBySteps = async (bracketsFights) => {
 
       const curWithCells = { ...cur }
       curWithCells.disbled = false
+
       if (curWithCells.children.length) {
         const cellWithSameChilds = bracketsFights.filter(({ children }) =>
           children.includes(curWithCells.children[0]),
@@ -54,6 +57,9 @@ export const getBracketsBySteps = async (bracketsFights) => {
       }
 
       if (+step > 1 && prev[+step - 1]) {
+        const parentsChilds = prev[+step - 1].childrens
+        prev[step].templateAreas = parentsChilds?.sort().map((id) => `cell-${id}`)
+
         const parentsFrom1Step = prev[+step - 1].cells.reduce((prevParents, curParCell) => {
           if (curParCell.children?.length && curParCell.children.includes(cur.id)) {
             if (!!curParCell?.parentsFrom1Step) {
@@ -69,13 +75,25 @@ export const getBracketsBySteps = async (bracketsFights) => {
       }
 
       prev[step].cells.push(curWithCells)
-      prev[step].cells.sort((a, b) => a.fightNumber - b.fightNumber)
+      prev[step].cells.sort((a, b) => a.children?.[0] - b.children?.[0])
       cur.children?.length && prev[step].childrens.push(cur.children[0])
       prev[step].parents = [...prev[step].parents, ...cur.parents]
       return prev
     }, {})
-
   return brSteps
+}
+
+export const bracketsFightsDistribution = (bracketsFights) => {
+  return bracketsFights.reduce((prev, cur, i) => {
+    const { isLoserBracket, fightParents } = cur
+    if (!isLoserBracket && !fightParents?.length && !!prev[0]) {
+      prev[0] = { ...prev[0], children: [cur] }
+      return prev
+    }
+
+    prev.push(cur)
+    return prev
+  }, [])
 }
 
 export const getThreeManBracketsBySteps = async (bracketsFights) => {

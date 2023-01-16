@@ -136,7 +136,7 @@ export default function BracketsDoubleEl() {
                     }
                   >
                     {cells
-                      .sort((a, b) => +a.fightNumber - +b.fightNumber)
+                      // .sort((a, b) => +a.fightNumber - +b.fightNumber)
                       .map((cell) => {
                         return (
                           <BracketCell
@@ -186,7 +186,7 @@ export default function BracketsDoubleEl() {
                     }
                   >
                     {cells
-                      .sort((a, b) => +a.fightNumber - +b.fightNumber)
+                      // .sort((a, b) => +a.fightNumber - +b.fightNumber)
                       .map((cell) => {
                         return (
                           <BracketCell

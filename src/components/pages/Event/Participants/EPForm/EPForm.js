@@ -81,7 +81,7 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
               title,
             }),
           )
-          dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id }))
+          dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: brackets }))
           dispatch(
             fetchParticipantAthletes({
               participation_category: bracket?.participationCategory,

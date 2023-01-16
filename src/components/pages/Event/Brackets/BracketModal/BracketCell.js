@@ -4,13 +4,13 @@ import styled from 'styled-components'
 import { selectCountriesAndCities } from '../../../../../redux/components/countriesAndCities'
 import {
   fetchBracketResults,
+  fetchBracketsFightsByParams,
   selectBrackets,
-  setBFOnWin,
 } from '../../../../../redux/components/eventBrackets'
 import BracketCellFighter from './BracketCellFighter'
 
 export default function BracketCell({ cell, gridTemplateAreas, classes }) {
-  const { id, fighters, fightNumber, parents, children, borderDirection } = cell
+  const { id, fighters, parents, borderDirection } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
   const [countries] = useSelector(selectCountriesAndCities)
@@ -37,37 +37,9 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
     [participantAthletes, fighters],
   )
 
-  const onWin = ({
-    loserBracketFightIds,
-    loserParticipantId,
-    winnerBracketFightIds,
-    curBFID,
-    winnerId,
-  }) => {
-    const { winnerFighter, loserFighter } = (fighters || [])?.reduce(
-      (prev, cur) => {
-        if (cur?.id == winnerId) {
-          prev.winnerFighter = cur
-        } else if (cur?.id == loserParticipantId) {
-          prev.loserFighter = cur
-        }
-
-        return prev
-      },
-      { winnerFighter: null, loserFighter: null },
-    )
-
+  const onWin = () => {
+    dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: bracket?.bracketType }))
     dispatch(fetchBracketResults({ bracketId: bracket?.id }))
-
-    dispatch(
-      setBFOnWin({
-        currentBFID: curBFID,
-        winner: winnerFighter,
-        winnerBFIDs: !!winnerBracketFightIds?.[0] ? winnerBracketFightIds : loserBracketFightIds,
-        loser: loserFighter,
-        loserBFIDs: !!winnerBracketFightIds?.[0] ? loserBracketFightIds : null,
-      }),
-    )
   }
 
   return (
@@ -75,9 +47,9 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
       className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
       gridArea={gridTemplateAreas && `cell-${id}`}
     >
-      <FightNum>
-        FN:{fightNumber}, ID: {id}, CH: {children[0]}
-      </FightNum>
+      {/* <FightNum>
+        ID: {id}, PAR: {!!parents?.[0] && parents[0]} {!!parents?.[1] && parents[1]}
+      </FightNum> */}
       <BracketCellFighter
         cell={cell}
         fighter={fighters[0] ? getFighterDetails(fighters[0]) : null}
@@ -103,6 +75,7 @@ const CellWrapper = styled.div`
   grid-area: ${({ gridArea }) => gridArea || 'unset'};
   align-content: center;
   padding: 16px 0;
+  z-index: 2;
 
   &::after,
   &::before {
@@ -123,6 +96,7 @@ const CellWrapper = styled.div`
   &.lineDown,
   &.lineUp,
   &.straight {
+    height: 100%;
     &::after,
     &::before {
       width: calc(100% + 32px);
@@ -168,8 +142,8 @@ const CellWrapper = styled.div`
 
 const FightNum = styled.div`
   position: absolute;
-  top: 50%;
-  left: -28px;
+  top: 49%;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;

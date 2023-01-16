@@ -2,8 +2,6 @@ import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
 import BracketHeaderInfo from './BracketHeaderInfo'
-import BracketsDoubleEl from './BracketsDoubleEl'
-import BracketsSingleEl from './BracketsSingleEl'
 import BracketsRobin from './BracketsRobin'
 import BracketsThreeMan from './BracketsThreeMan'
 import { useSelector } from 'react-redux'
@@ -11,31 +9,32 @@ import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import FullScreenLoader from '../../../../ui/FullScreenLoader'
 import BracketResultTable from './BracketResultTable'
 import { useRouter } from 'next/router'
+import BracketTest from './BracketTest'
 
 export const bracketTypes = {
   1: {
     id: 1,
     name: 'SEWithoutBF',
     title: 'Single elimination bracket (without bronze fight)',
-    component: (props) => <BracketsSingleEl brType={'SEWithoutBF'} {...props} />,
+    component: (props) => <BracketTest brType={'SEWithoutBF'} {...props} />,
   },
   2: {
     id: 2,
     name: 'SEWithBF',
     title: 'Single elimination bracket (with a bronze fight)',
-    component: (props) => <BracketsSingleEl brType={'SEWithBF'} {...props} />,
+    component: (props) => <BracketTest brType={'SEWithBF'} {...props} />,
   },
   3: {
     id: 3,
     name: 'DEWithoutBZ',
     title: 'Double elimination bracket (without bronze fight)',
-    component: (props) => <BracketsDoubleEl brType={'DEWithoutBZ'} {...props} />,
+    component: (props) => <BracketTest brType={'DEWithoutBZ'} {...props} />,
   },
   4: {
     id: 4,
     name: 'DEWithBZ',
     title: 'Double elimination bracket (with a bronze fight)',
-    component: (props) => <BracketsDoubleEl brType={'DEWithBZ'} {...props} />,
+    component: (props) => <BracketTest brType={'DEWithBZ'} {...props} />,
   },
   5: {
     id: 5,

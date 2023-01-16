@@ -63,18 +63,16 @@ export default function BracketsSingleEl() {
                       : getWrapperStyles('flex')
                   }
                 >
-                  {cells
-                    .sort((a, b) => a.fightNumber - b.fightNumber)
-                    .map((cell) => {
-                      return (
-                        <BracketCell
-                          key={`bracket_cell_${cell.id}`}
-                          gridTemplateAreas={gridTemplateAreas}
-                          classes={cell?.fightRoundType == 0 ? 'noBorder' : ''}
-                          cell={cell}
-                        />
-                      )
-                    })}
+                  {cells.map((cell) => {
+                    return (
+                      <BracketCell
+                        key={`bracket_cell_${cell.id}`}
+                        gridTemplateAreas={gridTemplateAreas}
+                        classes={cell?.fightRoundType == 0 ? 'noBorder' : ''}
+                        cell={cell}
+                      />
+                    )
+                  })}
                 </CellsWrapper>
               )}
             </Column>

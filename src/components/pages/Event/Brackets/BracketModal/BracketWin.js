@@ -4,7 +4,7 @@ import $api from '../../../../../services/axios'
 
 const setWinner = async (bfId, participantId) => {
   try {
-    const {data} = await $api.post(`/brackets/brackets_fights/${bfId}/winner_endpoint/`, {
+    const { data } = await $api.post(`/brackets/brackets_fights/${bfId}/winner_endpoint/`, {
       participantId,
     })
     return data
@@ -20,10 +20,10 @@ export default function BracketWin({ bfId, winner, fighter, onWin }) {
 
   const handleSetWinner = useCallback(async () => {
     setHideBtns(true)
-    await setWinner(bfId, fighter).then((response) => {
-      onWin({...response, curBFID: bfId, winnerId: fighter})
+    await setWinner(bfId, fighter).then(() => {
       setHideBtns(false)
       setOpenConf(false)
+      onWin()
     })
   }, [])
 
