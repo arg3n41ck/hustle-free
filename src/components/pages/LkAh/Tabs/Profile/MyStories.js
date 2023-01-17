@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import LkDefaultHeader from '../../../../ui/LKui/LKDefaultHeader'
 import { TitleHeader } from '../../../../ui/LKui/HeaderContent'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,19 +12,21 @@ import { useTranslation } from 'next-i18next'
 import styled from 'styled-components'
 import ResultsChart from './Stories/ResultsChart'
 import { theme } from '../../../../../styles/theme'
+import { Pagination } from '@mui/material'
 
 function MyStories({ onToggleSidebar }) {
   const dispatch = useDispatch()
   const {
     user: { user },
   } = useSelector((state) => state)
-  const [athleteStories] = useSelector(storiesSelector)
+  const [page, setPage] = useState(1)
+  const [athleteStories, count] = useSelector(storiesSelector)
   const { statistics } = useSelector((state) => state?.stories?.statistics)
   const { t: tLkAh } = useTranslation('lkAh')
 
   React.useEffect(() => {
     if (user?.athleteId) {
-      dispatch(fetchAthleteStories({ athleteId: user?.athleteId }))
+      dispatch(fetchAthleteStories({ athlete_id: user?.athleteId, page }))
       dispatch(fetchAthleteStatistics({ athleteId: user?.athleteId }))
     }
   }, [user])
@@ -48,6 +50,16 @@ function MyStories({ onToggleSidebar }) {
       <MyStoriesWrapper>
         {!!athleteStories?.length && athleteStories.map((item) => <FilterMyStories data={item} />)}
       </MyStoriesWrapper>
+      <PaginationWrapper>
+        <Pagination
+          onChange={(_, value) => {
+            setPage(value)
+          }}
+          count={Math.ceil(count / 5)}
+          variant='outlined'
+          shape='rounded'
+        />
+      </PaginationWrapper>
     </div>
   )
 }
@@ -115,4 +127,10 @@ const Legends = styled.ul`
     flex-direction: column;
     justify-content: center;
   }
+`
+
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 0 0 32px;
 `

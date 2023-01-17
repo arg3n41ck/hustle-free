@@ -3,9 +3,9 @@ import $api from '../../services/axios'
 
 export const fetchAthleteStories = createAsyncThunk(
   'stories/fetchAthleteStories',
-  async ({ athleteId }, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const { data } = await $api.get(`/athletes/history/${athleteId}/`)
+      const { data } = await $api.get(`/events/participants/`, { params })
       return data
     } catch (e) {
       return rejectWithValue(e.response.data)
@@ -44,9 +44,10 @@ export const storiesSlice = createSlice({
       stories.isLoading = true
     })
     builder.addCase(fetchAthleteStories.fulfilled, ({ stories }, action) => {
+      const { count, results } = action.payload
       stories.isLoading = false
-      stories.athleteStories = action.payload
-      stories.count = action.payload.count ?? action.payload.length
+      stories.athleteStories = results
+      stories.count = count ?? results.length
       stories.error = null
     })
     builder.addCase(fetchAthleteStories.rejected, ({ stories }, action) => {
@@ -73,7 +74,8 @@ export const storiesSlice = createSlice({
 
 export const storiesSelector = createSelector(
   (state) => state.stories.stories.athleteStories,
-  (athleteStories) => [athleteStories],
+  (state) => state.stories.stories.count,
+  (athleteStories, count) => [athleteStories, count],
 )
 
 export default storiesSlice.reducer

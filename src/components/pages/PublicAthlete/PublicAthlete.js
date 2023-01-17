@@ -15,6 +15,7 @@ import {
 } from '../../../redux/components/stories'
 import { theme } from '../../../styles/theme'
 import PublicAthleteChartStats from './PublicAthleteChartStats'
+import { Pagination } from '@mui/material'
 
 const getAthTeams = async (query) => {
   try {
@@ -29,7 +30,8 @@ const getAthTeams = async (query) => {
 
 function PublicAthlete({ athleteData }) {
   const { id: athleteId, user, isVisible } = athleteData
-  const [athleteStories] = useSelector(storiesSelector)
+  const [athleteStories, count] = useSelector(storiesSelector)
+  const [page, setPage] = useState(1)
   const [teams, setTeams] = useState(null)
   const dispatch = useDispatch()
   const { t: tLkAh } = useTranslation('lkAh')
@@ -38,7 +40,7 @@ function PublicAthlete({ athleteData }) {
     dispatch(fetchCountries())
     if (athleteId) {
       getAthTeams({ athletes: athleteId }).then(setTeams)
-      dispatch(fetchAthleteStories({ athleteId }))
+      dispatch(fetchAthleteStories({ athlete_id: athleteId }))
       dispatch(fetchAthleteStatistics({ athleteId: athleteId }))
     }
   }, [athleteData])
@@ -58,6 +60,16 @@ function PublicAthlete({ athleteData }) {
               athleteStories.map((pc) => {
                 return <FilterMyStories data={pc} key={pc?.id} />
               })}
+            <PaginationWrapper>
+              <Pagination
+                onChange={(_, value) => {
+                  setPage(value)
+                }}
+                count={Math.ceil(count / 5)}
+                variant='outlined'
+                shape='rounded'
+              />
+            </PaginationWrapper>
           </StoriesWrapper>
         </TeamsAndPartWrapper>
       ) : (
@@ -115,6 +127,12 @@ const Private = styled.div`
 const StoriesWrapper = styled.div`
   background: #141519;
   border-radius: 8px;
+`
+
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 32px 0;
 `
 
 const lock = (
