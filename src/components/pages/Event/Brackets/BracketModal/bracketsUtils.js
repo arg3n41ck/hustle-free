@@ -96,55 +96,6 @@ export const bracketsFightsDistribution = (bracketsFights) => {
   }, [])
 }
 
-export const getThreeManBracketsBySteps = async (bracketsFights) => {
-  const brSteps = await bracketsFights.reduce((prev, cur) => {
-    const { step, fightNumber } = cur
-    const curKey = (cur?.parents?.length || 0) < 2 ? 1 : 2
-    const curParents = curKey == 1 ? [] : cur?.parents
-    const rewrittenCur = { ...cur, parents: curParents, disabled: true }
-
-    if (curKey == 1) {
-      if (cur.children.length === 2) {
-        rewrittenCur.borderDirection = 'lineDown'
-      } else if (cur.children.length === 1) {
-        rewrittenCur.borderDirection = 'lineUp'
-      }
-    }
-
-    if ([4, 8, 9].includes(fightNumber)) {
-      rewrittenCur.disabled = false
-    }
-
-    if (!prev[step]) {
-      prev[step] = {}
-      prev[step][curKey] = {
-        cells: [rewrittenCur],
-        childrens: [rewrittenCur.children[0]],
-        parents: [...rewrittenCur.parents],
-        step: curKey,
-      }
-    } else if (prev[step]) {
-      if (prev[step][curKey]) {
-        const { childrens, parents } = prev[step][curKey]
-        prev[step][curKey].cells.push(rewrittenCur)
-        prev[step][curKey].childrens = [...childrens, rewrittenCur.children[0]]
-        prev[step][curKey].parents = [...parents, ...rewrittenCur.parents]
-      } else if (!prev[step][curKey]) {
-        prev[step][curKey] = {
-          cells: [rewrittenCur],
-          childrens: [rewrittenCur.children[0]],
-          parents: [...rewrittenCur.parents],
-          step: curKey,
-        }
-      }
-    }
-
-    return prev
-  }, {})
-
-  return brSteps
-}
-
 export const createAresJustFromIds = (cells) => cells?.map(({ id }) => `cell-${id}`)
 
 export const createDefaultArea = (cells) => {

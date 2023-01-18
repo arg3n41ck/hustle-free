@@ -10,7 +10,7 @@ import {
 import BracketCellFighter from './BracketCellFighter'
 
 export default function BracketCell({ cell, gridTemplateAreas, classes }) {
-  const { id, fighters, parents, borderDirection } = cell
+  const { id, fighters, parents, borderDirection, children } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
   const [countries] = useSelector(selectCountriesAndCities)
@@ -47,9 +47,9 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
       className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
       gridArea={gridTemplateAreas && `cell-${id}`}
     >
-      {/* <FightNum>
-        ID: {id}, PAR: {!!parents?.[0] && parents[0]} {!!parents?.[1] && parents[1]}
-      </FightNum> */}
+      <FightNum>
+        ID: {id}, CH: {!!children?.[0] && children[0]} {!!children?.[1] && children[1]}
+      </FightNum>
       <BracketCellFighter
         cell={cell}
         fighter={fighters[0] ? getFighterDetails(fighters[0]) : null}

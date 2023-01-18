@@ -21,7 +21,7 @@ export const fetchBracketsFightsByParams = createAsyncThunk(
   'brackets/fetchBracketsFightsByParams',
   async ({ bracket, type }, { rejectWithValue }) => {
     try {
-      if (![1, 2, 3, 4].includes(type)) {
+      if (type == 7) {
         const { data } = await $api.get(`/brackets/brackets_fights/?bracket=${bracket}`)
         return data
       }
