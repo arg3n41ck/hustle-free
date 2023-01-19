@@ -8,20 +8,26 @@ import { getFighterPlace } from './bracketsUtils'
 import BracketWin from './BracketWin'
 
 export default function BracketCellFighter({ cell, fighter, onWin, opponent, orientation }) {
-  const { id, fighters, winner, children, disabled, fightNumber, place: cellPlace } = cell
+  const { id, fighters, winner, disabled, fightNumber, place: cellPlace } = cell
   const [, bracketsFights, , bracketsResults] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
   const fighterPlace = useMemo(() => {
     if ([5, 6].includes(bracket?.bracketType) && fightNumber >= 8) {
-      if (fightNumber == 8 && children?.length && winner == fighter?.id) {
-        const finalFightersCount =
-          bracketsFights.data?.length &&
-          bracketsFights.data.find(({ id }) => id == children[0])?.fighters?.length
-        return finalFightersCount === 1 ? 2 : null
+      const threeManFinal = bracketsFights.data.find(({ fightNumber }) => fightNumber == 9)
+
+      if (threeManFinal?.fighters?.length === 2) {
+        if (fightNumber === 9 && winner) {
+          return winner == fighter?.id ? 1 : 2
+        } else if (fightNumber == 8 && winner !== fighter?.id) {
+          return 3
+        }
+      } else if (threeManFinal?.fighters?.length !== 2 && !!threeManFinal.winner) {
+        if (fightNumber === 9 && winner == fighter?.id) {
+          return 1
+        } else if (fightNumber === 8) {
+          return winner == fighter?.id ? 2 : 3
+        }
       }
-      const threeManFPlace =
-        bracketsResults.data?.length && bracketsResults.data.find(({ id }) => fighter?.id == id)
-      return threeManFPlace?.place
     }
 
     return getFighterPlace({
@@ -42,7 +48,9 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
         )}
         <FighterTexts>
           <NameFlagWrapper>
-            <CountryFlag src={`https://flagsapi.com/KG/flat/64.png`} />
+            {fighter?.countryCode && (
+              <CountryFlag src={`https://flagsapi.com/${fighter?.countryCode}/flat/64.png`} />
+            )}
             <FighterName>
               {fighter
                 ? truncateString(

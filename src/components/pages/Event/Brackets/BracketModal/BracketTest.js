@@ -112,6 +112,7 @@ const FightRoundWrapper = styled.div`
     padding: 0 0 32px 0;
     margin: 0 0 32px 0;
     border-bottom: 1px solid #333;
+    justify-content: flex-end;
   }
 `
 

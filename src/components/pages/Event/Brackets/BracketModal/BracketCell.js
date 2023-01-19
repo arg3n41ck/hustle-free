@@ -13,7 +13,6 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
   const { id, fighters, parents, borderDirection, children } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
-  const [countries] = useSelector(selectCountriesAndCities)
   const dispatch = useDispatch()
 
   const getFighterDetails = useCallback(
@@ -27,9 +26,7 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
       const fighterDetails = participantCat?.athlete && {
         id: fighter.id,
         athlete: participantCat?.athlete,
-        countryCode:
-          countries?.length &&
-          countries?.find(({ id }) => id == participantCat?.athlete?.user?.counrty),
+        countryCode: participantCat?.athlete?.user?.country,
         team: participantCat?.team,
       }
       return fighterDetails
