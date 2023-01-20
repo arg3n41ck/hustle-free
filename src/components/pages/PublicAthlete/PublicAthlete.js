@@ -40,7 +40,7 @@ function PublicAthlete({ athleteData }) {
     dispatch(fetchCountries())
     if (athleteId) {
       getAthTeams({ athletes: athleteId }).then(setTeams)
-      dispatch(fetchAthleteStories({ athlete_id: athleteId }))
+      dispatch(fetchAthleteStories({ athlete_id: athleteId, page }))
       dispatch(fetchAthleteStatistics({ athleteId: athleteId }))
     }
   }, [athleteData])
@@ -65,7 +65,7 @@ function PublicAthlete({ athleteData }) {
                 onChange={(_, value) => {
                   setPage(value)
                 }}
-                count={Math.ceil(count / 5)}
+                count={Math.ceil(count / 3)}
                 variant='outlined'
                 shape='rounded'
               />

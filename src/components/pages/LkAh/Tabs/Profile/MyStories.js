@@ -55,7 +55,7 @@ function MyStories({ onToggleSidebar }) {
           onChange={(_, value) => {
             setPage(value)
           }}
-          count={Math.ceil(count / 5)}
+          count={Math.ceil(count / 3)}
           variant='outlined'
           shape='rounded'
         />
