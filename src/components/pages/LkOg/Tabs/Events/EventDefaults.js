@@ -90,9 +90,7 @@ function EventDefaults({ formik }) {
             cancelText={tLkOg('editEvent.cancel')}
             value={values?.dateStart}
             onChange={(value) => value && setFieldValue('dateStart', value)}
-            shouldDisableDate={(date) =>
-              date.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
-            }
+            disablePast
             inputFormat='dd/MM/yyyy'
             renderInput={(params) => (
               <TextField
@@ -131,11 +129,10 @@ function EventDefaults({ formik }) {
             onChange={(value) => value && setFieldValue('dateEnd', value)}
             inputFormat='dd/MM/yyyy'
             disableCloseOnSelect={false}
+            disablePast
             shouldDisableDate={(date) =>
-              date.setHours(0, 0, 0, 0) <
-              (values?.dateStart
-                ? new Date(values?.dateStart).setDate(new Date(values?.dateStart).getDate() - 1)
-                : new Date())
+              values.dateStart &&
+              date.setHours(0, 0, 0, 0) < new Date(values.dateStart).setHours(0, 0, 0, 0)
             }
             renderInput={(params) => (
               <TextField

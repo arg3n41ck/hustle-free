@@ -50,7 +50,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
           test: function (value) {
             return this.parent.earlyRegActive
               ? this.parent.earlyRegEnd &&
-                  new Date(this.parent.earlyRegEnd).getTime() > new Date(value).getTime()
+                  new Date(this.parent.earlyRegEnd).getTime() >= new Date(value).getTime()
               : true
           },
         })
@@ -90,14 +90,8 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
           test: function (value) {
             return (
               this.parent.standartRegEnd &&
-              new Date(this.parent.standartRegEnd).getTime() > new Date(value).getTime()
+              new Date(this.parent.standartRegEnd).getTime() >= new Date(value).getTime()
             )
-          },
-        })
-        .test({
-          message: tLkOg('validation.validDate'),
-          test: function (value) {
-            return new Date().setHours(0, 0, 0, 0) <= new Date(value).setHours(0, 0, 0, 0)
           },
         }),
       standartRegEnd: yup.date().nullable().required(tLkOg('validation.required')),
@@ -119,7 +113,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
           test: function (value) {
             return this.parent.lateRegActive
               ? this.parent.lateRegEnd &&
-                  new Date(this.parent.lateRegEnd).getTime() > new Date(value).getTime()
+                  new Date(this.parent.lateRegEnd).getTime() >= new Date(value).getTime()
               : true
           },
         }),
@@ -258,7 +252,7 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
                   onChange={(value) => value && setFieldValue('earlyRegEnd', value)}
                   shouldDisableDate={(date) =>
                     values.earlyRegStart &&
-                    date.setHours(0, 0, 0, 0) < new Date(values.earlyRegStart)
+                    date.setHours(0, 0, 0, 0) < new Date(values.earlyRegStart).setHours(0, 0, 0, 0)
                   }
                   inputFormat='dd/MM/yyyy'
                   renderInput={(params) => (
@@ -307,10 +301,14 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
             onChange={(value) => value && setFieldValue('standartRegStart', value)}
             inputFormat='dd/MM/yyyy'
             disableCloseOnSelect={false}
-            shouldDisableDate={(date) =>
-              date.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) ||
-              (values.earlyRegEnd && date.setHours(0, 0, 0, 0) < new Date(values.earlyRegEnd))
-            }
+            shouldDisableDate={(date) => {
+              if (values.earlyRegEnd) {
+                return (
+                  date.setHours(0, 0, 0, 0) <= new Date(values.earlyRegEnd).setHours(0, 0, 0, 0)
+                )
+              }
+              return date.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -350,12 +348,15 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
             onChange={(value) => value && setFieldValue('standartRegEnd', value)}
             inputFormat='dd/MM/yyyy'
             disableCloseOnSelect={false}
-            shouldDisableDate={(date) =>
-              date.setHours(0, 0, 0, 0) <
-              (values.standartRegStart
-                ? new Date(values.standartRegStart)
-                : new Date().setHours(0, 0, 0, 0))
-            }
+            shouldDisableDate={(date) => {
+              if (values?.standartRegStart) {
+                return (
+                  date.setHours(0, 0, 0, 0) < new Date(values.standartRegStart).setHours(0, 0, 0, 0)
+                )
+              }
+
+              return date.setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -461,7 +462,9 @@ function EventPeriods({ defaultValues = emptyInitialValues, eventId, periodsId }
                   disableCloseOnSelect={false}
                   shouldDisableDate={(date) =>
                     date.setHours(0, 0, 0, 0) <
-                    (values.lateRegStart ? new Date(values.lateRegStart) : new Date())
+                    (values.lateRegStart
+                      ? new Date(values.lateRegStart).setHours(0, 0, 0, 0)
+                      : new Date())
                   }
                   renderInput={(params) => (
                     <TextField
