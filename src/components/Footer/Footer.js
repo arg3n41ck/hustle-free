@@ -1,4 +1,5 @@
 import { useTranslation } from 'next-i18next'
+import Image from 'next/image'
 import React from 'react'
 import styled from 'styled-components'
 import { theme } from '../../styles/theme'
@@ -8,7 +9,10 @@ function Footer() {
 
   return (
     <FooterMainWrapper>
-      <FooterIcon />
+      <LogosWrapper>
+        <FooterIcon />
+        <Image src='/assets/png/astana_hub.png' width={230} height={60} objectFit={'contain'} />
+      </LogosWrapper>
       <a href='/privacy_policy.pdf' target='_blank' rel='noreferrer'>
         <p>{tFooter('footer.privacyPolicy')}</p>
       </a>
@@ -63,6 +67,12 @@ const FooterMainWrapper = styled.div`
     line-height: 24px;
     color: #828282;
   }
+`
+
+const LogosWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 const Copyright = styled.div`
