@@ -50,6 +50,7 @@
     "react-yandex-metrika": "^2.6.0",
     "rimraf": "^3.0.2",
     "sass": "^1.49.7",
+    "sharp": "^0.32.0",
     "styled-components": "^5.3.3",
     "swiper": "^8.1.0",
     "use-google-maps-script": "^0.1.2",
