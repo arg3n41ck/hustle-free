@@ -449,7 +449,7 @@ const Edits = ({ onView }) => {
               <GalleryInput
                 name='avatar'
                 type={'file'}
-                accept='image/*'
+                accept='.jpg, .jpeg, .png'
                 onChange={(e) => formik.setFieldValue('avatar', e.target.files[0])}
               />
             </GalleryLabel>

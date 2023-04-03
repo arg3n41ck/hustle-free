@@ -38,7 +38,12 @@ function FileUploaderBig({ onChange, defaultBanner, error }) {
 
   return (
     <FileUploadLabel>
-      <CustomInput type='file' error={!!error} onChange={onUploadImage} />
+      <CustomInput
+        accept='.jpg, .jpeg, .png'
+        type='file'
+        error={!!error}
+        onChange={onUploadImage}
+      />
       {file && (
         <CropEasy
           open={openCropModal}

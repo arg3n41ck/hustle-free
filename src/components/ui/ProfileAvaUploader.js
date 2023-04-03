@@ -56,7 +56,7 @@ function ProfileAvaUploader({ src, sx = { width: 112, height: 112 }, alt = '', o
               <input
                 style={{ display: 'none' }}
                 type='file'
-                accept='image/*'
+                accept='.jpg, .jpeg, .png'
                 onChange={({ target }) => {
                   if (target.files[0].size < 4000000) {
                     setFile(target.files[0])

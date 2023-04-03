@@ -499,7 +499,7 @@ const Edits = () => {
               <input
                 id={'avatar'}
                 name={'avatar'}
-                accept='image/*'
+                accept='.jpg, .jpeg, .png'
                 onChange={(e) => {
                   uploadImageToClient(e)
                   const file = e.target.files[0]

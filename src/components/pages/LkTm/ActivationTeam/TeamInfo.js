@@ -132,7 +132,7 @@ const TeamInfo = ({ dataPersonal, data, sportTypes, setDataInfo, onSubmit }) => 
           <input
             id={'avatar'}
             name={'avatar'}
-            accept={'image/jpeg, image/png'}
+            accept='.jpg, .jpeg, .png'
             onChange={(e) => {
               uploadImageToClient(e)
               const file = e.target.files[0]
