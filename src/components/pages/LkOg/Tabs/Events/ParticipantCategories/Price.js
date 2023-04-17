@@ -45,31 +45,33 @@ const getEventPeriods = async (id) => {
 }
 
 function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id: pcId }) {
-  const [defaultValues, setDefaultValues] = useState(initialEmptyValues)
   const { t: tLkOg } = useTranslation('lkOg')
   const { t: tCommon } = useTranslation('common')
   const [eventPeriods, setEventPeriods] = useState(null)
 
-  const validationSchema = yup.object({
-    standartPrice: yup.string().required(tLkOg('validation.required')),
-    earlyPrice: yup.lazy(() => {
-      if (eventPeriods?.earlyRegActive) {
-        return yup.string().required(tLkOg('validation.required'))
-      }
-      return yup.string()
+  const formik = useFormik({
+    initialValues: initialEmptyValues,
+    validationSchema: yup.object({
+      standartPrice: yup.string().required(tLkOg('validation.required')),
+      earlyPrice: yup
+        .string()
+        .test('earlyPriceRequired', tLkOg('validation.required'), (value) => {
+          if (eventPeriods?.earlyRegActive) {
+            return value !== undefined && value !== null && value !== ''
+          }
+          return true
+        })
+        .nullable(),
+      latePrice: yup
+        .string()
+        .test('latePriceRequired', tLkOg('validation.required'), (value) => {
+          if (eventPeriods?.lateRegActive) {
+            return value !== undefined && value !== null && value !== ''
+          }
+          return true
+        })
+        .nullable(),
     }),
-    latePrice: yup.lazy(() => {
-      if (eventPeriods?.lateRegActive) {
-        return yup.string().required(tLkOg('validation.required'))
-      }
-      return yup.string()
-    }),
-  })
-
-  const { values, setFieldValue, touched, errors, handleChange, handleSubmit } = useFormik({
-    initialValues: defaultValues,
-    validationSchema,
-    enableReinitialize: true,
     onSubmit: async (values) => {
       if (!priceId && !Array.isArray(pcId)) {
         createPrice({ ...values, eventId }).then((data) => {
@@ -95,7 +97,11 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
   })
 
   useEffect(() => {
-    priceId && getPrice(priceId).then(setDefaultValues)
+    formik.validateForm()
+  }, [eventPeriods])
+
+  useEffect(() => {
+    priceId && getPrice(priceId).then(formik.setValues)
   }, [priceId])
 
   useEffect(() => {
@@ -114,10 +120,10 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
       title={name}
       onClose={onClose}
       onBack={onBack}
-      onSubmit={handleSubmit}
+      onSubmit={formik.handleSubmit}
       edit={edit}
     >
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={formik.handleSubmit}>
         <FormSubTitle>{tLkOg('categoriesOfParticipants.categoryRegistrationPrices')}</FormSubTitle>
 
         {eventPeriods?.earlyRegActive && (
@@ -129,10 +135,14 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
               variant='outlined'
               fullWidth
               type='number'
-              error={touched.earlyPrice && Boolean(errors.earlyPrice)}
-              helperText={touched.earlyPrice && errors.earlyPrice}
-              onChange={handleChange}
-              value={values.earlyPrice ? Math.round(values.earlyPrice) : values.earlyPrice}
+              error={formik.touched.earlyPrice && Boolean(formik.errors.earlyPrice)}
+              helperText={formik.touched.earlyPrice && formik.errors.earlyPrice}
+              onChange={formik.handleChange}
+              value={
+                formik.values.earlyPrice
+                  ? Math.round(formik.values.earlyPrice)
+                  : formik.values.earlyPrice
+              }
             />
           </Field>
         )}
@@ -145,10 +155,14 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
             variant='outlined'
             fullWidth
             type='number'
-            error={touched.standartPrice && Boolean(errors.standartPrice)}
-            helperText={touched.standartPrice && errors.standartPrice}
-            onChange={handleChange}
-            value={values.standartPrice ? Math.round(values.standartPrice) : values.standartPrice}
+            error={formik.touched.standartPrice && Boolean(formik.errors.standartPrice)}
+            helperText={formik.touched.standartPrice && formik.errors.standartPrice}
+            onChange={formik.handleChange}
+            value={
+              formik.values.standartPrice
+                ? Math.round(formik.values.standartPrice)
+                : formik.values.standartPrice
+            }
           />
         </Field>
 
@@ -161,10 +175,14 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
               variant='outlined'
               fullWidth
               type='number'
-              error={touched.latePrice && Boolean(errors.latePrice)}
-              helperText={touched.latePrice && errors.latePrice}
-              onChange={handleChange}
-              value={values.latePrice ? Math.round(values.latePrice) : values.latePrice}
+              error={formik.touched.latePrice && Boolean(formik.errors.latePrice)}
+              helperText={formik.touched.latePrice && formik.errors.latePrice}
+              onChange={formik.handleChange}
+              value={
+                formik.values.latePrice
+                  ? Math.round(formik.values.latePrice)
+                  : formik.values.latePrice
+              }
             />
           </Field>
         )}
@@ -173,11 +191,11 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
           <p className='auth-title__input'>{tLkOg('categoriesOfParticipants.valuta')}</p>
           <Autocomplete
             noOptionsText={tLkOg('editEvent.generalInformation.nothingFound')}
-            onChange={(_, value) => value && setFieldValue('currency', value.value)}
+            onChange={(_, value) => value && formik.setFieldValue('currency', value.value)}
             options={currencyOptions.map((option) => option)}
             getOptionLabel={(option) => option.name}
             fullWidth
-            value={currencyOptions.find(({ value }) => values.currency === value)}
+            value={currencyOptions.find(({ value }) => formik.values.currency === value)}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -186,13 +204,15 @@ function Price({ open, name, edit, onClose, submit, priceId, onBack, eventId, id
                   '& .MuiOutlinedInput-root': {
                     '& > fieldset': {
                       borderColor:
-                        touched.currency && Boolean(errors.currency) && '#d32f2f !important',
+                        formik.touched.currency &&
+                        Boolean(formik.errors.currency) &&
+                        '#d32f2f !important',
                     },
                   },
                 }}
                 fullWidth
-                error={touched.currency && Boolean(errors.currency)}
-                helperText={touched.currency && errors.currency}
+                error={formik.touched.currency && Boolean(formik.errors.currency)}
+                helperText={formik.touched.currency && formik.errors.currency}
                 placeholder='Валюта'
               />
             )}

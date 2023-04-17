@@ -32,11 +32,6 @@ function ParticipantCategories() {
     if (eventId) {
       await refreshPC()
       getSportTypeByEvent(eventId).then((data) => setSportType(data.typeSport))
-      // getEventDefaultValues(`/organizer/events/${eventId}/manual_participants_category/`).then(
-      //   (data) => {
-      //     setManualEventPC(data)
-      //   },
-      // )
     }
   }, [eventId])
 

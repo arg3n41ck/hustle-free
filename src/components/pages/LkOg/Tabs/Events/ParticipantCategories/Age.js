@@ -23,7 +23,7 @@ function Age({ open, edit, name, onClose, submit, onBack, defaultValues = initia
         .required(tLkOg('validation.required'))
         .test({
           test: function (value) {
-            return value < this.parent.toAge
+            return +value < +this.parent.toAge
           },
           message: tLkOg('validation.ageFromValidate'),
         }),
@@ -58,7 +58,10 @@ function Age({ open, edit, name, onClose, submit, onBack, defaultValues = initia
             fullWidth
             error={touched.fromAge && Boolean(errors.fromAge)}
             helperText={touched.fromAge && errors.fromAge}
-            onChange={(e) => setFieldValue('fromAge', e.target.value.replace(/\D/gi, ''))}
+            onChange={(e) => {
+              e.target.value.replace(/\D/gi, '')
+              setFieldValue('fromAge', e.target.value.replace(/\D/gi, ''))
+            }}
             value={values.fromAge}
           />
           <TextField
@@ -71,7 +74,7 @@ function Age({ open, edit, name, onClose, submit, onBack, defaultValues = initia
             onChange={(e) => setFieldValue('toAge', e.target.value.replace(/\D/gi, ''))}
             value={values.toAge}
           />
-          <input style={{display: 'none'}} type="submit"/>
+          <input style={{ display: 'none' }} type='submit' />
         </FieldsRow>
       </form>
     </ParticipantCategoriesModal>
