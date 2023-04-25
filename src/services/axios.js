@@ -9,13 +9,6 @@ const $api = axios.create({
   baseURL: API_URL,
 })
 
-// export const refreshTokens = async () => {
-//   const [cookies, setCookie] = useCookies(["token"])
-//   const { data } = await $api.post(`/accounts/auth/jwt/refresh/`, { refresh })
-//   console.log(data.access)
-//   setCookie("token", data.access)
-// }
-
 $api.interceptors.request.use(
   (config) => {
     let token = getCookie('token')

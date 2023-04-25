@@ -154,7 +154,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
           level: values.level || '',
           weight: values.weight || '',
           gender: user?.gender,
-          age: !!user?.dateBirthday ? calculateAge(user?.dateBirthday) : '',
+          birth_date: !!user?.dateBirthday ? user?.dateBirthday : '',
         }),
       )
     }
