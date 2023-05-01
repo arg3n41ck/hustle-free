@@ -29,7 +29,6 @@ const Teams = () => {
       setTeams(removeDuplicateObjectFromArray(data, 'id'))
     }
   }, [searchValue])
-  console.log({ teams })
 
   return (
     <>
