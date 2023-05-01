@@ -89,7 +89,7 @@ const AthleteUserInfo = () => {
   }, [])
 
   const changeCurrentCities = (changeCountry) => {
-    const findObj = countries.find((country) => country.id === changeCountry.id)
+    const findObj = countries.find((country) => country?.id === changeCountry?.id)
     if (findObj) setCurrentCities(findObj.cityCountry)
   }
 

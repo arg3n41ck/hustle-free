@@ -18,7 +18,7 @@ const Teams = () => {
   const { t: tEventDetail } = useTranslation('eventDetail')
 
   useEffect(async () => {
-    const { data } = await $api.get(`/events/team_events/`, {
+    const { data } = await $api.get(`/events/team_events_results/`, {
       params: {
         event_id: router.query.id,
         search: searchValue,
@@ -26,15 +26,10 @@ const Teams = () => {
     })
 
     if (data.length) {
-      const _teams = data.map(({ team, countParticipant, wins, defeats }) => ({
-        ...team,
-        countParticipant,
-        wins,
-        defeats,
-      }))
-      setTeams(removeDuplicateObjectFromArray(_teams, 'id'))
+      setTeams(removeDuplicateObjectFromArray(data, 'id'))
     }
   }, [searchValue])
+  console.log({ teams })
 
   return (
     <>

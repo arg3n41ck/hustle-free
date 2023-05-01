@@ -147,6 +147,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
 
   useEffect(() => {
     setFieldValue('categoty', '')
+
     if (user) {
       dispatch(
         fetchCategories({
@@ -154,7 +155,7 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
           level: values.level || '',
           weight: values.weight || '',
           gender: user?.gender,
-          birth_date: !!user?.dateBirthday ? user?.dateBirthday : '',
+          birth_date: user?.dateBirthday || '',
         }),
       )
     }

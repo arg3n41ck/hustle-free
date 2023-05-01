@@ -7,17 +7,18 @@ import { theme } from '../../../../styles/theme'
 
 const TeamItem = ({ team, index }) => {
   const { t: tEventDetail } = useTranslation('eventDetail')
+  console.log({ team })
   const mxMd = useMediaQuery('(max-width: 620px)')
 
   return (
     <Item>
-      <Link href={`/team/${team.id}`} passHref>
+      <Link href={`/team/${team?.team?.id}`} passHref>
         <A>
           <ItemLeft>
             <ItemNumber>{index}.</ItemNumber>
             <ItemText>
-              <ItemTitle>{team.name}</ItemTitle>
-              <ItemDescription>{team.country.name}</ItemDescription>
+              <ItemTitle>{team?.team?.name}</ItemTitle>
+              <ItemDescription>{team?.team?.country?.name}</ItemDescription>
             </ItemText>
           </ItemLeft>
           <ItemRight>
@@ -39,15 +40,15 @@ const TeamItem = ({ team, index }) => {
             </Info>
             <Medal>
               <InfoItem color={'#FFC107'}>
-                <p>{team?.places?.gold || 0}</p>
+                <p>{team?.team?.places?.gold || 0}</p>
                 <div>{tEventDetail('event.results.teamItem.gold')}</div>
               </InfoItem>
               <InfoItem color={'#E0E0E0'}>
-                <p>{team?.places?.silver || 0}</p>
+                <p>{team?.team?.places?.silver || 0}</p>
                 <div>{tEventDetail('event.results.teamItem.silver')}</div>
               </InfoItem>
               <InfoItem color={'#D7832D'}>
-                <p>{team?.places?.bronze || 0}</p>
+                <p>{team?.team?.places?.bronze || 0}</p>
                 <div>{tEventDetail('event.results.teamItem.bronze')}</div>
               </InfoItem>
             </Medal>
