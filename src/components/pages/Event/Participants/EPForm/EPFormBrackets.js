@@ -42,14 +42,14 @@ const bracketsChoises = [
     id: 1,
     title: 'Single elimination bracket (without bronze fight)',
     src: '/assets/png/singleOutBronze.png',
-    min: 4,
+    min: 1,
     max: 1024,
   },
   {
     id: 2,
     title: 'Single elimination bracket (with a bronze fight)',
     src: '/assets/png/singleWithBF.png',
-    min: 4,
+    min: 1,
     max: 1024,
   },
   {

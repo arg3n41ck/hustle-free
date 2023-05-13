@@ -45,6 +45,10 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
         gridArea={gridTemplateAreas && `cell-${id}`}
       >
         <DragWrapper>
+          <FightNum>
+            FR1: "<b>{fighters?.[0]?.id}</b>"; FR2: "<b>{fighters?.[1]?.id}</b>"
+          </FightNum>
+
           <BracketCellFighter
             cell={cell}
             fighter={fighters[0] ? getFighterDetails(fighters[0]) : null}
@@ -143,5 +147,29 @@ const DragWrapper = styled.div`
 
   &:hover {
     background: linear-gradient(0deg, rgba(109, 78, 234, 0.1), rgba(109, 78, 234, 0.1)), #141519;
+  }
+`
+const FightNum = styled.div`
+  position: absolute;
+  top: 49%;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+
+  background: #0f0f10;
+
+  border: 1px solid #333333;
+  border-radius: 60px;
+
+  transform: translateY(-50%);
+  font-weight: 700;
+  font-size: 18px;
+  padding: 5px;
+  background: #000;
+
+  & b {
+    color: pink;
   }
 `
