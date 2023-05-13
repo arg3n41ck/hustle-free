@@ -1,11 +1,14 @@
 import { Checkbox } from '@mui/material'
 import { useTranslation } from 'next-i18next'
-import React, { useMemo, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { theme } from '../../../../styles/theme'
 import DropdownData from '../../../ui/DropdownData'
 import ParticipantsList from './ParticipantsList'
+import useQuery from '../../../../hooks/useQuery'
+import { useRouter } from 'next/router'
+import { fetchParticipantCategories } from '../../../../redux/components/participantsCategories'
 
 const organizerTitleStyles = {
   transform: 'translateX(24px)',
@@ -19,13 +22,22 @@ const EventParticipantsItem = ({
   selectedEPC,
   setSelectedEPC,
 }) => {
+  const query = useQuery()
+  const {
+    query: { id: eventId },
+  } = useRouter()
   const { eventParticipantsCategory, level } = eventParticipant
   const { t: tEventDetail } = useTranslation('eventDetail')
   const { user } = useSelector((state) => state.user)
+
   const canCreateBracket = useMemo(
     () => enabledToCreateBracketPC.some((id) => id == eventParticipant?.id),
     [enabledToCreateBracketPC],
   )
+
+  useEffect(async () => {
+    query.set('event', eventId)
+  }, [])
 
   const participantsValues = useMemo(() => {
     const registered = eventParticipant?.participants.filter(
@@ -47,53 +59,64 @@ const EventParticipantsItem = ({
     ),
   )
 
-  const { current: info } = useRef(
-    <Info>
-      <InfoText>
-        {tEventDetail('event.participants.eventParticipantsItem.total')}:{' '}
-        {(participantsValues?.registered?.length || 0) +
-          (participantsValues?.unconfirmed?.length || 0)}
-      </InfoText>
-      {isOrganizer && (
-        <InfoText color={'#6D4EEA'}>
-          {tEventDetail('event.participants.eventParticipantsItem.confirmed')}:{' '}
-          {participantsValues?.registered?.length || 0}
+  const info = useMemo(() => {
+    return (
+      <Info>
+        <InfoText>
+          {tEventDetail('event.participants.eventParticipantsItem.total')}:{' '}
+          {eventParticipant?.allParticipants}
         </InfoText>
-      )}
-      <InfoText color='#27AE60'>
-        {tEventDetail('event.participants.eventParticipantsItem.registrations')}:{' '}
-        {participantsValues?.registered?.length}
-      </InfoText>
-      <InfoText color='#F2994A'>
-        {tEventDetail('event.participants.eventParticipantsItem.unconfirmed')}:{' '}
-        {participantsValues?.unconfirmed?.length}
-      </InfoText>
-    </Info>,
-  )
+        {isOrganizer && (
+          <InfoText color={'#6D4EEA'}>
+            {tEventDetail('event.participants.eventParticipantsItem.confirmed')}:{' '}
+            {eventParticipant?.isAcceptParticipants || 0}
+          </InfoText>
+        )}
+        <InfoText color='#27AE60'>
+          {tEventDetail('event.participants.eventParticipantsItem.registrations')}:{' '}
+          {participantsValues?.registered?.length}
+        </InfoText>
+        <InfoText color='#F2994A'>
+          {tEventDetail('event.participants.eventParticipantsItem.unconfirmed')}:{' '}
+          {participantsValues?.unconfirmed?.length}
+        </InfoText>
+      </Info>
+    )
+  }, [isOrganizer, eventParticipant, participantsValues])
 
-  const header = (
-    <HeaderWrapper>
-      {!!(isOrganizer && canCreateBracket) && (
-        <ChekboxWrapper>
-          <Checkbox
-            checked={!!selectedEPC?.length && selectedEPC.includes(eventParticipant?.id)}
-            onChange={({ target: { checked } }) =>
-              checked
-                ? setSelectedEPC((s) => [...(s || []), eventParticipant?.id])
-                : setSelectedEPC((s) => s.filter((id) => id !== eventParticipant?.id))
-            }
-          />
-        </ChekboxWrapper>
-      )}
+  const header = useMemo(
+    () => (
+      <HeaderWrapper>
+        {!!(isOrganizer && canCreateBracket) && (
+          <ChekboxWrapper>
+            <Checkbox
+              checked={!!selectedEPC?.length && selectedEPC.includes(eventParticipant?.id)}
+              onChange={({ target: { checked } }) =>
+                checked
+                  ? setSelectedEPC((s) => [...(s || []), eventParticipant?.id])
+                  : setSelectedEPC((s) => s.filter((id) => id !== eventParticipant?.id))
+              }
+            />
+          </ChekboxWrapper>
+        )}
 
-      <p
-        style={!!(isOrganizer && canCreateBracket) ? organizerTitleStyles : {}}
-        onClick={() => setOpen((s) => !s)}
-      >
-        {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
+        <p
+          style={!!(isOrganizer && canCreateBracket) ? organizerTitleStyles : {}}
+          onClick={() => setOpen((s) => !s)}
+        >
+          {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
         ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
-      </p>
-    </HeaderWrapper>
+        </p>
+      </HeaderWrapper>
+    ),
+    [
+      canCreateBracket,
+      selectedEPC,
+      eventParticipant,
+      organizerTitleStyles,
+      eventParticipantsCategory,
+      level,
+    ],
   )
 
   return (
