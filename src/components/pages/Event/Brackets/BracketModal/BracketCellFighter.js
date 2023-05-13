@@ -1,16 +1,41 @@
-import React, { useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useMemo, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { BracketsAthAva } from '../../../../../assets/svg/icons'
 import { truncateString } from '../../../../../helpers/helpers'
-import { selectBrackets } from '../../../../../redux/components/eventBrackets'
-import { getFighterPlace } from './bracketsUtils'
+import {
+  fetchBracketsFightsByParams,
+  selectBrackets,
+} from '../../../../../redux/components/eventBrackets'
+import { BF_DND_ACCEPT_TYPE, getFighterPlace } from './bracketsUtils'
 import BracketWin from './BracketWin'
+import { useDrag, useDrop } from 'react-dnd'
+import $api from '../../../../../services/axios'
+
+const replaceBFCell = async (fromBF, toBF, draggedPr, hoverPr) => {
+  try {
+    const body = {
+      fromBracketFight: fromBF,
+      changingParticipant: draggedPr,
+      toBracketFight: toBF,
+      replacedParticipant: hoverPr,
+    }
+    const data = await $api.post(
+      '/brackets/brackets_fights/change_participant_bracket_fight/',
+      body,
+    )
+    return data
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 export default function BracketCellFighter({ cell, fighter, onWin, opponent, orientation }) {
-  const { id, fighters, winner, disabled, fightNumber, place: cellPlace } = cell
+  const { id: bfId, fighters, winner, disabled, fightNumber, place: cellPlace } = cell
   const [, bracketsFights, , bracketsResults] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
+  const dragNDropRef = useRef(null)
+  const dispatch = useDispatch()
   const fighterPlace = useMemo(() => {
     if ([5, 6].includes(bracket?.bracketType) && fightNumber >= 8) {
       const threeManFinal = bracketsFights.data.find(({ fightNumber }) => fightNumber == 9)
@@ -38,9 +63,58 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
     })
   }, [bracketsResults, fighters, winner, bracket, fighter, fightNumber])
 
+  const [{ canDrop, isOver }, drop] = useDrop({
+    accept: BF_DND_ACCEPT_TYPE,
+    drop: async (item) => {
+      if (!dragNDropRef.current) {
+        return
+      }
+      if (!item?.fighterId || !fighter || item.bfId === bfId || winner) {
+        return
+      }
+
+      // const hoveredRect = dragNDropRef.current.getBoundingClientRect()
+      // const hoverMiddleY = (hoveredRect.bottom - hoveredRect.top) / 2
+      // const mousePosition = monitor.getClientOffset()
+      // const hoverClientY = mousePosition.y - hoveredRect.top
+
+      // if (item.bfId < bfId && hoverClientY < hoverMiddleY) {
+      //   return
+      // }
+
+      // if (item.bfId > bfId && hoverClientY > hoverMiddleY) {
+      //   return
+      // }
+
+      await replaceBFCell(item.bfId, bfId, item.fighterId, fighter?.id).then(() => {
+        dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: bracket?.bracketType }))
+      })
+    },
+    collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
+  })
+
+  const [{ isDragging }, drag] = useDrag({
+    type: BF_DND_ACCEPT_TYPE,
+    item: () => {
+      if (!!fighter?.id && !winner) {
+        return { type: BF_DND_ACCEPT_TYPE, bfId, fighterId: fighter?.id }
+      }
+    },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  })
+
+  drag(drop(dragNDropRef))
+
   return (
-    <FighterWrapper className={orientation}>
-      <UserInfoPart disabled={!!winner || disabled}>
+    <FighterWrapper
+      ref={dragNDropRef}
+      className={`${orientation} ${isDragging ? 'dragging' : ''} ${
+        isOver && canDrop ? 'isOver' : ''
+      }`}
+    >
+      <UserInfoPart className={orientation} disabled={!!winner || disabled}>
         {!!fighter?.athlete?.user?.avatar ? (
           <FighterAva src={fighter?.athlete?.user?.avatar} />
         ) : (
@@ -68,35 +142,42 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
       </UserInfoPart>
       {!!fighterPlace && <PlaceBlock place={fighterPlace}>{fighterPlace}</PlaceBlock>}
       {!disabled && !!fighter && fighters?.length === 2 && opponent !== winner && (
-        <BracketWin bfId={id} fighter={fighter.id} winner={winner} onWin={onWin} />
+        <BracketWin bfId={bfId} fighter={fighter.id} winner={winner} onWin={onWin} />
       )}
     </FighterWrapper>
   )
 }
 
 const FighterWrapper = styled.div`
+  width: 208px;
   position: relative;
   min-height: 56px;
-  width: 208px;
-  background: #1b1c22;
-  border: 1px solid #333333;
   z-index: 8;
   cursor: pointer;
   transform: translateY(-1px);
+  border: 1px solid transparent;
+  margin: 1px;
 
   &:hover {
     background-color: #0f0f10;
+    border: 1px dotted #6d4eea;
+  }
+
+  &.dragging {
+    border: 1px dotted #6d4eea;
+  }
+
+  &.isOver {
+    border: 1px solid #6d4eea;
+    background: linear-gradient(0deg, rgba(109, 78, 234, 0.1), rgba(109, 78, 234, 0.1)), #141519;
   }
 
   &.first {
     border-radius: 8px 8px 0 0;
-    /* border-bottom: none; */
   }
 
   &.second {
     border-radius: 0 0 8px 8px;
-    /* border-top: none; */
-    border-bottom: 1px solid #333333;
   }
 `
 
@@ -105,6 +186,10 @@ const UserInfoPart = styled.div`
   grid-gap: 8px;
   font-weight: 700;
   padding: 10px;
+
+  &.first {
+    border-bottom: 1px solid #333333;
+  }
 
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `

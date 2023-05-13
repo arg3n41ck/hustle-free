@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { selectCountriesAndCities } from '../../../../../redux/components/countriesAndCities'
 import {
   fetchBracketResults,
   fetchBracketsFightsByParams,
@@ -10,7 +9,7 @@ import {
 import BracketCellFighter from './BracketCellFighter'
 
 export default function BracketCell({ cell, gridTemplateAreas, classes }) {
-  const { id, fighters, parents, borderDirection, children } = cell
+  const { id, fighters, parents, borderDirection } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
   const dispatch = useDispatch()
@@ -40,28 +39,29 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
   }
 
   return (
-    <CellWrapper
-      className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
-      gridArea={gridTemplateAreas && `cell-${id}`}
-    >
-      {/* <FightNum>
-        ID: {id}, CH: {!!children?.[0] && children[0]} {!!children?.[1] && children[1]}
-      </FightNum> */}
-      <BracketCellFighter
-        cell={cell}
-        fighter={fighters[0] ? getFighterDetails(fighters[0]) : null}
-        opponent={fighters[1]?.id}
-        onWin={onWin}
-        orientation={'first'}
-      />
-      <BracketCellFighter
-        cell={cell}
-        fighter={fighters[1] ? getFighterDetails(fighters[1]) : null}
-        opponent={fighters[0]?.id}
-        onWin={onWin}
-        orientation={'second'}
-      />
-    </CellWrapper>
+    <>
+      <CellWrapper
+        className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
+        gridArea={gridTemplateAreas && `cell-${id}`}
+      >
+        <DragWrapper>
+          <BracketCellFighter
+            cell={cell}
+            fighter={fighters[0] ? getFighterDetails(fighters[0]) : null}
+            opponent={fighters[1]?.id}
+            onWin={onWin}
+            orientation={'first'}
+          />
+          <BracketCellFighter
+            cell={cell}
+            fighter={fighters[1] ? getFighterDetails(fighters[1]) : null}
+            opponent={fighters[0]?.id}
+            onWin={onWin}
+            orientation={'second'}
+          />
+        </DragWrapper>
+      </CellWrapper>
+    </>
   )
 }
 
@@ -131,29 +131,17 @@ const CellWrapper = styled.div`
 
   &.noBorder::after,
   &.noBorder::before {
-    width: 208px;
-    height: 50%;
-    left: 0;
+    border: none;
   }
 `
 
-const FightNum = styled.div`
-  position: absolute;
-  top: 49%;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9;
+const DragWrapper = styled.div`
+  width: fit-content;
+  border-radius: 8px;
+  border: 2px solid #333333;
+  background: #1b1c22;
 
-  background: #0f0f10;
-
-  border: 1px solid #333333;
-  border-radius: 60px;
-
-  transform: translateY(-50%);
-  font-weight: 700;
-  font-size: 18px;
-  padding: 5px;
-  background: #000;
+  &:hover {
+    background: linear-gradient(0deg, rgba(109, 78, 234, 0.1), rgba(109, 78, 234, 0.1)), #141519;
+  }
 `

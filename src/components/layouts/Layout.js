@@ -1,3 +1,5 @@
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
 import React, { useEffect } from 'react'
 import Header from '../Header/Header'
 import { useMediaQuery } from '@mui/material'
@@ -55,11 +57,13 @@ const Layout = ({ children }) => {
       </Head>
       <div id='topScroll' ref={topRef} />
       <Header />
-      <ChildrenWrapper lg={lg}>
-        <div style={{ height: '100%' }}>{children}</div>
+      <DndProvider backend={HTML5Backend}>
+        <ChildrenWrapper lg={lg}>
+          <div style={{ height: '100%' }}>{children}</div>
 
-        <Footer />
-      </ChildrenWrapper>
+          <Footer />
+        </ChildrenWrapper>
+      </DndProvider>
     </>
   )
 }

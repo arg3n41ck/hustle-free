@@ -83,7 +83,7 @@ export const getBracketsBySteps = async (bracketsFights) => {
   return brSteps
 }
 
-export const bracketsFightsDistribution = (bracketsFights) => {
+export const mapBracketsFights = (bracketsFights) => {
   return bracketsFights.reduce((prev, cur, i) => {
     const { isLoserBracket, fightParents } = cur
     if (!isLoserBracket && !fightParents?.length && !!prev[0]) {
@@ -154,3 +154,5 @@ export const getFighterPlace = (params) => {
 
   return null
 }
+
+export const BF_DND_ACCEPT_TYPE = `BF_DND_ACCEPT_TYPE`

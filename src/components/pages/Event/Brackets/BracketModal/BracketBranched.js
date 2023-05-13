@@ -3,29 +3,29 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketCell from './BracketCell'
-import { bracketsFightsDistribution, getBracketsRoundType } from './bracketsUtils'
+import { mapBracketsFights, getBracketsRoundType } from './bracketsUtils'
 
-export default function BracketTest() {
+export default function BracketBranched() {
   const [, bracketsFights] = useSelector(selectBrackets)
   const [fightRoundTypes, setFightRoundTypes] = useState([])
 
-  const ditributedBracketFight = useMemo(() => {
+  const mapedBracketFight = useMemo(() => {
     if (bracketsFights?.data?.length) {
-      return bracketsFightsDistribution(bracketsFights.data)
+      return mapBracketsFights(bracketsFights.data)
     }
     return null
   }, [bracketsFights])
 
   return (
-    <WaveWrapper rows={ditributedBracketFight?.length || 1}>
+    <WaveWrapper rows={mapedBracketFight?.length || 1}>
       <Zebras count={fightRoundTypes.length}>
         {!!fightRoundTypes?.length &&
           fightRoundTypes.map((frt) => (
             <Zebra key={`frt_${frt}`}>{getBracketsRoundType[frt]}</Zebra>
           ))}
       </Zebras>
-      {!!ditributedBracketFight &&
-        ditributedBracketFight
+      {!!mapedBracketFight &&
+        mapedBracketFight
           .sort((a, b) => a.isLoserBracket - b.isLoserBracket)
           .map((bracketsFight) => (
             <GenerateBracketWave
