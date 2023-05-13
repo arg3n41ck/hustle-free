@@ -69,7 +69,7 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
       if (!dragNDropRef.current) {
         return
       }
-      if (!item?.fighterId || !fighter || item.bfId === bfId || winner) {
+      if (!item?.fighterId || item.bfId === bfId || winner) {
         return
       }
 
@@ -86,7 +86,7 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
       //   return
       // }
 
-      await replaceBFCell(item.bfId, bfId, item.fighterId, fighter?.id).then(() => {
+      await replaceBFCell(item.bfId, bfId, item.fighterId, fighter?.id || null).then(() => {
         dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: bracket?.bracketType }))
       })
     },

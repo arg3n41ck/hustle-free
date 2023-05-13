@@ -38,11 +38,6 @@ const EventParticipants = () => {
     dispatch(fetchParticipantCategories(query))
   }, [query])
 
-  useEffect(async () => {
-    query.set('event', eventId)
-    dispatch(fetchParticipantCategories(query))
-  }, [])
-
   return (
     <>
       <Filters levels={levels} onFilter={filterHandler} />

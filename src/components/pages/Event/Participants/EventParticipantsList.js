@@ -16,7 +16,10 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
   const {
     query: { id: eventId },
   } = useRouter()
-  const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
+  const ogAndIsMyEvent = useMemo(() => {
+    return user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
+  }, [eventId, user, ogEventsId])
+
   const [showEPHeader, setShowEPHeader] = useState(false)
   const [brackets] = useSelector(selectBrackets)
   const [openEPForm, setOpenEPForm] = useState(false)
@@ -42,11 +45,11 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
       setShowEPHeader(true)
       return eventParticipants
         .filter(({ id }) => !!selectedEPC.includes(id))
-        .map(({ id, eventParticipantsCategory, level, participants }) => ({
+        .map(({ id, eventParticipantsCategory, level, isAcceptParticipants }) => ({
           id,
           title: `${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
         ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`,
-          participantsCount: participants?.length || 0,
+          participantsCount: isAcceptParticipants || 0,
         }))
     } else if (!selectedEPC?.length) {
       return []
