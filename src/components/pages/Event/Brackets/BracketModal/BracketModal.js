@@ -9,32 +9,32 @@ import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import FullScreenLoader from '../../../../ui/FullScreenLoader'
 import BracketResultTable from './BracketResultTable'
 import { useRouter } from 'next/router'
-import BracketTest from './BracketTest'
+import BracketBranched from './BracketBranched'
 
 export const bracketTypes = {
   1: {
     id: 1,
     name: 'SEWithoutBF',
     title: 'Single elimination bracket (without bronze fight)',
-    component: (props) => <BracketTest brType={'SEWithoutBF'} {...props} />,
+    component: (props) => <BracketBranched brType={'SEWithoutBF'} {...props} />,
   },
   2: {
     id: 2,
     name: 'SEWithBF',
     title: 'Single elimination bracket (with a bronze fight)',
-    component: (props) => <BracketTest brType={'SEWithBF'} {...props} />,
+    component: (props) => <BracketBranched brType={'SEWithBF'} {...props} />,
   },
   3: {
     id: 3,
     name: 'DEWithoutBZ',
     title: 'Double elimination bracket (without bronze fight)',
-    component: (props) => <BracketTest brType={'DEWithoutBZ'} {...props} />,
+    component: (props) => <BracketBranched brType={'DEWithoutBZ'} {...props} />,
   },
   4: {
     id: 4,
     name: 'DEWithBZ',
     title: 'Double elimination bracket (with a bronze fight)',
-    component: (props) => <BracketTest brType={'DEWithBZ'} {...props} />,
+    component: (props) => <BracketBranched brType={'DEWithBZ'} {...props} />,
   },
   5: {
     id: 5,
