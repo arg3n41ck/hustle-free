@@ -69,7 +69,7 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
       if (!dragNDropRef.current) {
         return
       }
-      if (!item?.fighterId || item.bfId === bfId || winner) {
+      if (!item?.fighterId || !fighter?.id || item.bfId === bfId || winner) {
         return
       }
 
