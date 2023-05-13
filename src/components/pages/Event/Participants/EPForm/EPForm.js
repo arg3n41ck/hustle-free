@@ -89,8 +89,8 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
           )
         }
       })
-      routerPush(`/events/${eventId}/brackets/`)
       dispatch(fetchBracketsByParams({ event: eventId }))
+      routerPush(`/events/${eventId}/brackets/`)
       onClose()
     },
     enableReinitialize: true,
