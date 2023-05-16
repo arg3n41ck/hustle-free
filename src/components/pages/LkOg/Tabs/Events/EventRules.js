@@ -57,7 +57,7 @@ function EventRules({ eventId, defaultValues = emptyInitialValues, rulesId }) {
           {tLkOg('editEvent.cancel')}
         </Cancel>
         <Submit disabled={!isValid} type='submit'>
-          {tLkOg('editEvent.further')}
+          {tLkOg('editEvent.save')}
         </Submit>
       </EventFormFooter>
     </Form>

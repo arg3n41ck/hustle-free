@@ -177,7 +177,7 @@ function EventParticipantCategories({
             {tLkOg('editEvent.cancel')}
           </Cancel>
           <Submit type='submit' onClick={handleSubmit}>
-            {tLkOg('editEvent.further')}
+            {tLkOg('editEvent.save')}
           </Submit>
         </EventFormFooter>
       </Form>

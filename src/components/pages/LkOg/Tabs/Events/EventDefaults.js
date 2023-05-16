@@ -218,7 +218,7 @@ function EventDefaults({ formik }) {
         <Link href='/lk-og/profile/events'>
           <Cancel>{tLkOg('editEvent.cancel')}</Cancel>
         </Link>
-        <Submit type='submit'>{tLkOg('editEvent.further')}</Submit>
+        <Submit type='submit'>{tLkOg('editEvent.save')}</Submit>
       </EventFormFooter>
     </Form>
   )
@@ -231,6 +231,7 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   grid-gap: 24px;
+  padding: 32px;
 `
 
 export const Field = styled.div`

@@ -19,6 +19,7 @@
     "cancel": "Cancel",
     "back": "Back",
     "further": "Further",
+    "save": "Save",
     "sendToModeration": "Send for moderation",
     "generalInformation": {
       "generalInformation": "General information",
@@ -116,6 +117,9 @@
     "phoneNumber": "Phone number",
     "social": "Social networks",
     "dispensable": "Dispensable"
+  },
+  "mat": {
+    "matAndSchedule": "Mats and Schedule"
   },
   "validation": {
     "required": "Required field!",

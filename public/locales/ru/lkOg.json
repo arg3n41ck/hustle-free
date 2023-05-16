@@ -19,6 +19,7 @@
     "cancel": "Отмена",
     "back": "Назад",
     "further": "Далее",
+    "save": "Сохранить",
     "sendToModeration": "Отправить на модерацию",
     "generalInformation": {
       "generalInformation": "Общая информация",
@@ -116,6 +117,9 @@
     "phoneNumber": "Номер телефона",
     "social": "Соц. сети",
     "dispensable": "Необязательно"
+  },
+  "mat": {
+    "matAndSchedule": "Маты и расписание"
   },
   "validation": {
     "required": "Обязательное поле!",
