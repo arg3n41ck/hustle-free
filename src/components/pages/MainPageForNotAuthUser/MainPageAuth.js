@@ -74,20 +74,14 @@ const MainWrapper = styled.div`
 `
 
 const ContainerCards = styled.div`
-  display: grid;
-  grid-template-rows: repeat(3, 1fr);
+  display: flex;
   grid-gap: 32px;
-
-  @media screen and (min-width: 767px) and (max-width: 1200px) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-items: center;
-    justify-content: center;
-  }
+  flex-wrap: wrap;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
 
   ${theme.mqMax('md')} {
-    display: grid;
     grid-gap: 16px;
   }
 `
