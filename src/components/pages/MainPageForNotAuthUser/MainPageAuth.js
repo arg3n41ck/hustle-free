@@ -19,17 +19,17 @@ function MainPageAuth() {
   const { current: array } = useRef([
     {
       id: 1,
-      value: 'organizer',
-      heading: tMainPageFotNotAuthUser('mainPage.auth.forOrganizers'),
-      description: tMainPageFotNotAuthUser('mainPage.auth.forOrganizersDesc'),
-      icon: orgIcon,
-    },
-    {
-      id: 2,
       value: 'athlete',
       heading: tMainPageFotNotAuthUser('mainPage.auth.forAthletes'),
       description: tMainPageFotNotAuthUser('mainPage.auth.forAthletesDesc'),
       icon: athIcon,
+    },
+    {
+      id: 2,
+      value: 'organizer',
+      heading: tMainPageFotNotAuthUser('mainPage.auth.forOrganizers'),
+      description: tMainPageFotNotAuthUser('mainPage.auth.forOrganizersDesc'),
+      icon: orgIcon,
     },
     {
       id: 3,
@@ -74,20 +74,14 @@ const MainWrapper = styled.div`
 `
 
 const ContainerCards = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   grid-gap: 32px;
-
-  @media screen and (min-width: 767px) and (max-width: 1200px) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-items: center;
-    justify-content: center;
-  }
+  flex-wrap: wrap;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
 
   ${theme.mqMax('md')} {
-    display: grid;
     grid-gap: 16px;
   }
 `
