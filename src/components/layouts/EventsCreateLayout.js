@@ -50,7 +50,7 @@ export const createEventEditingSteps = ({ eventId, tLkOg }) => {
     {
       title: tLkOg('mat.matAndSchedule'),
       href: `/lk-og/profile/events/edit/[id]/mats`,
-      ctxKey: 'contacts',
+      ctxKey: 'mats',
       path: eventId ? `/lk-og/profile/events/edit/${eventId}/mats` : null,
     },
     {

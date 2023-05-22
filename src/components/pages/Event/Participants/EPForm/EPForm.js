@@ -18,6 +18,9 @@ import {
   fetchParticipantAthletes,
   setSelectedBracket,
 } from '../../../../../redux/components/eventBrackets'
+import EPFormDaysAndMats from './EPFormDaysAndMats'
+import EPFormOtherConfigs from './EPFormOtherConfigs'
+import { format } from 'date-fns'
 
 const createBracket = async (body) => {
   try {
@@ -45,6 +48,25 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
         test: (value) => !!value?.length,
       }),
       brackets: yup.string().required(tCommon('validation.required')).nullable(),
+      day: yup.string().required(tCommon('validation.required')).nullable(),
+      mat: yup.string().required(tCommon('validation.required')).nullable(),
+      roundsAmount: yup.number().required(tCommon('validation.required')).nullable(),
+      roundTime: yup
+        .string()
+        .test({
+          message: 'Время одного раунда не может длиться больше часа!',
+          test: (value) => !isNaN(new Date(value)),
+        })
+        .nullable()
+        .required(tCommon('validation.required')),
+      estimateRoundTime: yup
+        .string()
+        .test({
+          message: 'Расчетное время на раунд не может длиться больше часа!',
+          test: (value) => !isNaN(new Date(value)),
+        })
+        .nullable()
+        .required(tCommon('validation.required')),
     }),
   )
 
@@ -56,6 +78,11 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
     initialValues: {
       epc: selectedEPCIDS,
       brackets: null,
+      day: null,
+      mat: null,
+      roundsAmount: 1,
+      roundTime: null,
+      estimateRoundTime: null,
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -63,10 +90,17 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
       const reqBody = {
         event: eventId,
         bracketType: brackets,
+        eventDay: values?.day,
+        mat: values?.mat,
+        roundsAmount: +values?.roundsAmount,
+        roundTime: format(new Date(values?.roundTime), 'HH:mm:ss'),
+        estimateRoundTime: format(new Date(values?.estimateRoundTime), 'HH:mm:ss'),
       }
+
       if (!!values?.qualifyLoserBracketType) {
         reqBody.qualifyLoserBracketType = values.qualifyLoserBracketType
       }
+
       await Promise.all(
         epc.map((id) => createBracket({ ...reqBody, participationCategory: id })),
       ).then((responses) => {
@@ -89,6 +123,7 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
           )
         }
       })
+
       dispatch(fetchBracketsByParams({ event: eventId }))
       routerPush(`/events/${eventId}/brackets/`)
       onClose()
@@ -118,12 +153,14 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
           <ContentWrapper>
             <EPFormHeader onClose={onClose} formik={formik} />
             <EPFormPCField selectedEPCDetailed={selectedEPCDetailed} formik={formik} />
+            <EPFormDaysAndMats formik={formik} />
             <EPFormBrackets
               bracketError={bracketError}
               onBracketError={onBracketError}
               formik={formik}
               selectedEPCDetailed={selectedEPCDetailed}
             />
+            <EPFormOtherConfigs formik={formik} />
             <EPFrormFooter onClose={onClose} formik={formik} customError={!!bracketError} />
           </ContentWrapper>
         </FormWrapper>

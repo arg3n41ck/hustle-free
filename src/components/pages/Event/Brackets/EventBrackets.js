@@ -1,145 +1,62 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import useQuery from '../../../../hooks/useQuery'
-import { fetchCountries } from '../../../../redux/components/countriesAndCities'
-import {
-  fetchBracketsByParams,
-  fetchBracketsFightsByParams,
-  fetchParticipantAthletes,
-  setSelectedBracket,
-  clearBF,
-} from '../../../../redux/components/eventBrackets'
-import { fetchParticipantCategories } from '../../../../redux/components/participantsCategories'
-import { getEnabledLevels } from '../Categories/EventCategories'
-import Filters from '../Participants/Filters'
-import BracketModal from './BracketModal/BracketModal'
-import BracketPCDropdown from './BracketPCDropdown'
+import { fetchDaysByParams, fetchMatsWithBrackets } from '../../../../redux/components/daysAndMats'
+import { Autocomplete, TextField } from '@mui/material'
+import { useTranslation } from 'next-i18next'
 
 function EventBrackets() {
   const {
     query: { id: eventId },
-    push: routerPush,
   } = useRouter()
-  const query = useQuery()
+  const [selectedDay, setSelectedDay] = useState(null)
+  const { t: tEventDetail } = useTranslation('eventDetail')
 
-  const { data: eventParticipants } = useSelector(
-    (state) => state.participantCategories.participantCategories,
-  )
-  const {
-    brackets: { data: brackets },
-    bracket,
-  } = useSelector((state) => state.brackets)
+  const { days, matsWithBrackets } = useSelector((state) => state.daysAndMats)
 
-  const [levels, setLevels] = useState([])
   const dispatch = useDispatch()
 
-  useEffect(async () => {
-    dispatch(fetchParticipantCategories(query))
-  }, [query])
-
   useEffect(() => {
-    dispatch(fetchBracketsByParams(query))
-    dispatch(fetchCountries())
+    dispatch(fetchDaysByParams({ event: eventId }))
   }, [eventId])
 
   useEffect(() => {
-    setLevels(getEnabledLevels(eventParticipants))
-  }, [eventParticipants])
+    dispatch(fetchMatsWithBrackets({ event_id: eventId, day_id: selectedDay || '' }))
+  }, [eventId, selectedDay])
 
-  useEffect(() => {
-    query.set('event', eventId)
-  }, [eventId])
-
-  useEffect(() => {
-    if (bracket?.id) {
-      dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: bracket?.bracketType }))
-      dispatch(
-        fetchParticipantAthletes({
-          participation_category: bracket?.participationCategory,
-        }),
-      )
-    }
-  }, [bracket])
-
-  const filterHandler = ({ target: { name, value } }) => {
-    if (!!value) {
-      query.set(name, value)
-    } else {
-      name && query.delete(name)
-    }
-    routerPush(`/events/${eventId}/brackets/?${query}`)
-  }
-
-  const bracketsPC = useMemo(() => {
-    return (
-      brackets?.length &&
-      eventParticipants?.length &&
-      brackets.map((bracket) => {
-        const bracketPC = eventParticipants.find(({ id }) => id === bracket.participationCategory)
-        return {
-          ...bracket,
-          participationCategory: bracketPC,
-        }
-      })
-    )
-  }, [brackets, eventParticipants])
-
+  console.log({ days, matsWithBrackets })
   return (
-    <MainWrapper style={{ minHeight: !!bracketsPC?.length ? '100vh' : 'unset' }}>
-      <Filters levels={levels} onFilter={filterHandler} />
-      <AnimatePresence>
-        {!!bracket?.id && (
-          <BracketsWrapper
-            initial={{ height: 0 }}
-            animate={{
-              height: 'unset',
-              transition: { delay: 0.5, duration: 0.4 },
-            }}
-            exit={{
-              height: 0,
-              transition: { delay: 0.4, duration: 0.5 },
-            }}
-          >
-            <BracketModal
-              selectedBracket={bracket}
-              onClose={() => {
-                dispatch(clearBF())
-                dispatch(setSelectedBracket(null))
+    <MainWrapper style={{ minHeight: '100vh' }}>
+      <FilterByDaysWrapper>
+        <p>День</p>
+        <Autocomplete
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              padding: '20px 68px 20px 20px',
+            },
+            '& .MuiAutocomplete-endAdornment': {
+              right: '20px !important',
+            },
+          }}
+          onChange={(_, value) => value && setSelectedDay(value?.id)}
+          options={days.data.map((option) => option)}
+          isOptionEqualToValue={() => days.data.some((day) => day?.id === selectedDay)}
+          noOptionsText={tEventDetail('event.participants.filters.nothingFound')}
+          getOptionLabel={(option) => option.name}
+          fullWidth
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              sx={{
+                width: '100%',
               }}
+              fullWidth
+              placeholder={'Выбрать день'}
             />
-          </BracketsWrapper>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {!!bracketsPC?.length && !bracket && (
-          <BracketsWrapper
-            initial={{ height: 0 }}
-            animate={{
-              height: 'unset',
-              transition: { delay: 0.2, duration: 0.3 },
-            }}
-            exit={{
-              height: 0,
-              transition: { delay: 0.4, duration: 0.5 },
-            }}
-          >
-            <PCWrapper>
-              {bracketsPC
-                .filter(({ participationCategory }) => participationCategory)
-                .map((bracket) => (
-                  <BracketPCDropdown
-                    key={`bracket_${bracket.id}`}
-                    bracket={bracket}
-                    onSelectBracket={(value) => dispatch(setSelectedBracket(value))}
-                  />
-                ))}
-            </PCWrapper>
-          </BracketsWrapper>
-        )}
-      </AnimatePresence>
+          )}
+        />
+      </FilterByDaysWrapper>
     </MainWrapper>
   )
 }
@@ -150,12 +67,6 @@ const MainWrapper = styled.div`
   position: relative;
 `
 
-const BracketsWrapper = styled(motion.div)`
-  top: 0;
-  z-index: 12;
-
-  overflow-y: auto;
-  overflow-x: hidden;
-`
+const FilterByDaysWrapper = styled.div``
 
 const PCWrapper = styled.div``

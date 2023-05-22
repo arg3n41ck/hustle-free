@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Modal, TextField } from '@mui/material'
 import styled from 'styled-components'
 import { useTranslation } from 'next-i18next'
@@ -11,14 +11,26 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { ru } from 'date-fns/locale'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker'
 import { format } from 'date-fns'
-import $api from '../../../../../../services/axios'
 import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
+import { EventMatsClient } from '../../../../../../services/apiClients/eventMatsClient'
+import { fetchDaysByParams } from '../../../../../../redux/components/daysAndMats'
+import { useDispatch } from 'react-redux'
 
-function CreateDayModal({ open, onClose }) {
+const eventMatsClient = new EventMatsClient()
+
+const emptyValues = {
+  name: '',
+  startDate: null,
+  startTime: null,
+}
+
+function CreateDayModal({ open, onClose, editDayId = null, initialValues = null }) {
   const { t: tLkOg } = useTranslation('lkOg')
   const {
     query: { id: eventId },
   } = useRouter()
+  const dispatch = useDispatch()
 
   const formik = useFormik({
     validationSchema: yup.object({
@@ -26,11 +38,7 @@ function CreateDayModal({ open, onClose }) {
       startDate: yup.string().required(tLkOg('validation.required')).nullable(),
       startTime: yup.string().required(tLkOg('validation.required')).nullable(),
     }),
-    initialValues: {
-      name: '',
-      startDate: null,
-      startTime: null,
-    },
+    initialValues: emptyValues,
     onSubmit: async (values) => {
       const body = {
         startDate: format(new Date(values.startDate), 'y-MM-dd'),
@@ -40,12 +48,35 @@ function CreateDayModal({ open, onClose }) {
       }
 
       try {
-        await $api.post(`/mats/event_days/`, body)
+        if (editDayId) {
+          await eventMatsClient
+            .editDay(editDayId, body)
+            .then(() => dispatch(fetchDaysByParams({ event: eventId })))
+        } else {
+          await eventMatsClient
+            .createDay(body)
+            .then(() => dispatch(fetchDaysByParams({ event: eventId })))
+        }
+
+        formik.resetForm()
+        onClose()
       } catch (error) {
-        console.error(error)
+        const errors = error?.response?.data?.non_field_errors
+        const isBerfore = (errors?.[0] || '').indexOf('before') > -1
+        const isAfter = (errors?.[0] || '').indexOf('after') > -1
+        const message = isBerfore
+          ? 'Дата не может быть позже даты окончания турнира'
+          : isAfter && 'Дата не может быть раньше даты окончания турнира'
+        if (isBerfore || isAfter) {
+          toast.error(message)
+        }
       }
     },
   })
+
+  useEffect(() => {
+    formik.setValues(editDayId ? initialValues : emptyValues)
+  }, [open, editDayId, initialValues])
 
   const handleClose = () => {
     formik.resetForm()

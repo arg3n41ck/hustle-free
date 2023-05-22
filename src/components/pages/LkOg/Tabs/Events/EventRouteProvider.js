@@ -12,6 +12,7 @@ const steps = [
   'description',
   'rules',
   'participantCategories',
+  'mats',
   // 'brackets',
   'contacts',
 ]
@@ -22,6 +23,7 @@ export const eventProfileFormPaths = [
   '/lk-og/profile/events/edit/[id]/contacts',
   '/lk-og/profile/events/edit/[id]/description',
   '/lk-og/profile/events/edit/[id]/participant-categories',
+  '/lk-og/profile/events/edit/[id]/mats',
   // '/lk-og/profile/events/edit/[id]/brackets',
   '/lk-og/profile/events/edit/[id]/periods',
   '/lk-og/profile/events/edit/[id]/rules',
@@ -29,22 +31,10 @@ export const eventProfileFormPaths = [
   '/lk-og/profile/events/edit',
 ]
 
-const pageNames = {
-  general: 'general',
-  location: 'location',
-  periods: 'periods',
-  description: 'description',
-  rules: 'rules',
-  participantCategories: 'participant-categories',
-  // brackets: 'brackets',
-  contacts: 'contacts',
-}
-
 function EventRouteWrapper({ children }) {
   const {
     pathname,
     query: { id: eventId },
-    push: routerPush,
   } = useRouter()
   const [activePage, setActivePage] = useState(null)
 
@@ -73,6 +63,10 @@ function EventRouteWrapper({ children }) {
       allFieldsFilled: false,
       access: false,
     },
+    mats: {
+      allFieldsFilled: true,
+      access: true,
+    },
     contacts: {
       allFieldsFilled: false,
       access: false,
@@ -89,7 +83,7 @@ function EventRouteWrapper({ children }) {
             ...s,
             [statusKey]: {
               allFieldsFilled: isCurrentFilled,
-              access: statusKey === 'general' ? true : !!isPreviousFilled,
+              access: statusKey === 'general' || statusKey === 'mats' ? true : !!isPreviousFilled,
             },
           }))
         })
@@ -124,7 +118,7 @@ function EventRouteWrapper({ children }) {
     isInOgProfile && eventId
       ? await $api.get(`/events/status/?event=${eventId}`).then(({ data }) => {
           const { event, id, ...rest } = data
-          rowEventRoutes(rest['0'])
+          rowEventRoutes(rest[0])
         })
       : rowEventRoutes(null)
   }, [eventId, pathname])

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function EPFormHeader({ onClose, formik }) {
+function EPFormHeader({ onClose }) {
   return (
     <HeaderWrapper>
       <Back onClick={onClose}>
@@ -9,7 +9,7 @@ function EPFormHeader({ onClose, formik }) {
         <span>назад</span>
       </Back>
       <Title>Создание сетки</Title>
-      <SaveChanges onClick={formik.hundleSubmit}>Сохранить изменения</SaveChanges>
+      {/* <SaveChanges onClick={formik.hundleSubmit}>Сохранить изменения</SaveChanges> */}
     </HeaderWrapper>
   )
 }
@@ -38,16 +38,16 @@ const Title = styled.h3`
   font-size: 28px;
   color: #f2f2f2;
 `
-const SaveChanges = styled.button`
-  padding: 15px;
-  background: #333333;
-  border-radius: 8px;
+// const SaveChanges = styled.button`
+//   padding: 15px;
+//   background: #333333;
+//   border-radius: 8px;
 
-  font-size: 18px;
-  color: #ffffff;
+//   font-size: 18px;
+//   color: #ffffff;
 
-  margin: 0 0 0 auto;
-`
+//   margin: 0 0 0 auto;
+// `
 
 const arrowBack = (
   <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>

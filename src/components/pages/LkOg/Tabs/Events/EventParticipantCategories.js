@@ -64,7 +64,7 @@ function EventParticipantCategories({
     initialValues: emptyInitialValues,
     validationSchema,
     onSubmit: async () => {
-      routerPush(`/lk-og/profile/events/edit/${eventId}/contacts`)
+      routerPush(`/lk-og/profile/events/edit/${eventId}/mats`)
     },
   })
 

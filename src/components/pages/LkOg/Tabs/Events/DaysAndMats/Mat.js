@@ -1,24 +1,43 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { DNDIcon } from '../../../../../../assets/svg/icons'
 import { CustomIconButton } from './DayWithMats'
 import { Delete, Edit } from '@mui/icons-material'
 import { useDrag, useDrop } from 'react-dnd'
+import { EventMatsClient } from '../../../../../../services/apiClients/eventMatsClient'
+import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
+import { fetchDaysByParams } from '../../../../../../redux/components/daysAndMats'
 
-export default function Mat({ mat }) {
+const eventMatsClient = new EventMatsClient()
+
+export default function Mat({ mat, day, onSelectToEditMat }) {
   const dragNDropRef = useRef()
   const dndIconRef = useRef()
+  const {
+    query: { id: eventId },
+  } = useRouter()
 
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: `BRACKETS_MATS`,
+  const dispatch = useDispatch()
+
+  const [{ isOver }, drop] = useDrop({
+    accept: `BRACKETS_MATS_${day?.id}`,
     drop: async (item) => {
-      console.log(item)
+      const { mat: dragMat } = item
+      const hoverMat = mat
+      console.log({
+        dragMat,
+        hoverMat,
+      })
+      await eventMatsClient.editMat(dragMat?.id, { order: hoverMat?.order })
+      await eventMatsClient.editMat(hoverMat?.id, { order: dragMat?.order })
+      dispatch(fetchDaysByParams({ event: eventId }))
     },
     collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
   })
 
-  const [{ isDragging }, drag] = useDrag({
-    type: `BRACKETS_MATS`,
+  const [_, drag] = useDrag({
+    type: `BRACKETS_MATS_${day?.id}`,
     item: () => {
       return { type: `BRACKETS_MATS`, mat }
     },
@@ -29,19 +48,30 @@ export default function Mat({ mat }) {
 
   drag(drop(dragNDropRef))
 
+  const handleDeleteMat = useCallback(async () => {
+    if (mat?.id) {
+      await eventMatsClient
+        .deleteMat(mat.id)
+        .then(() => dispatch(fetchDaysByParams({ event: eventId })))
+    }
+  }, [mat])
+
   return (
-    <MatWrapper ref={dragNDropRef}>
-      <MatName>Mat {mat}</MatName>
+    <MatWrapper ref={dragNDropRef} className={`${isOver ? 'isOver' : ''}`}>
+      <MatName>
+        {mat?.prefix} {mat?.name}
+      </MatName>
+      {/* TODO СХВАТКИ ДОДЕЛАТЬ! */}
       <MatFights>Схваток: 0</MatFights>
       <SeeMat>Посмотреть</SeeMat>
       <MatsActions>
         <CustomIconButton ref={dndIconRef}>
           <DNDIcon />
         </CustomIconButton>
-        <CustomIconButton>
+        <CustomIconButton onClick={handleDeleteMat}>
           <Delete />
         </CustomIconButton>
-        <CustomIconButton>
+        <CustomIconButton onClick={onSelectToEditMat}>
           <Edit />
         </CustomIconButton>
       </MatsActions>
@@ -64,6 +94,7 @@ const MatWrapper = styled.li`
   align-items: center;
   grid-gap: 32px;
   padding: 24px 32px;
+  border: 1px solid transparent;
   border-bottom: 1px solid #333;
 
   &:hover {
@@ -72,6 +103,10 @@ const MatWrapper = styled.li`
     ${MatsActions} {
       width: 180px;
     }
+  }
+
+  &.isOver {
+    border: 1px solid #6d4eea;
   }
 
   &:last-child {

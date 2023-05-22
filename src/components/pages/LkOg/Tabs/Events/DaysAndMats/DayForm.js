@@ -1,13 +1,35 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Add } from '@mui/icons-material'
 import styled from 'styled-components'
 import CreateDayModal from './CreateDayModal'
 
-export default function CreateDay() {
+export default function DayForm({ editDay, onClose }) {
   const [openCreate, setOpenCreate] = useState(false)
+
+  const { openEdit, dayEditState } = useMemo(() => {
+    if (editDay?.id) {
+      const dayDate = new Date(`${editDay?.startDate} ${editDay?.startTime}`)
+      const state = {
+        name: editDay?.name,
+        startDate: editDay?.startDate,
+        startTime: dayDate,
+      }
+      return { openEdit: true, dayEditState: state }
+    }
+    return { openEdit: false, dayEditState: null }
+  }, [editDay])
+
   return (
     <>
-      <CreateDayModal open={openCreate} onClose={() => setOpenCreate(false)} />
+      <CreateDayModal
+        initialValues={dayEditState}
+        editDayId={editDay?.id || null}
+        open={openEdit || openCreate}
+        onClose={() => {
+          setOpenCreate(false)
+          onClose()
+        }}
+      />
       <CreateButton onClick={() => setOpenCreate(true)}>
         <Add />
         Добавить новый день
