@@ -8,7 +8,7 @@ import {
 } from '../../../../../redux/components/eventBrackets'
 import BracketCellFighter from './BracketCellFighter'
 
-export default function BracketCell({ cell, gridTemplateAreas, classes }) {
+export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes }) {
   const { id, fighters, parents, borderDirection } = cell
   const [, , participantAthletes] = useSelector(selectBrackets)
   const bracket = useSelector((state) => state.brackets.bracket)
@@ -41,6 +41,7 @@ export default function BracketCell({ cell, gridTemplateAreas, classes }) {
   return (
     <>
       <CellWrapper
+        ref={cellRef}
         className={`${parents?.length ? 'parents' : ''} ${borderDirection} ${classes || ''}`}
         gridArea={gridTemplateAreas && `cell-${id}`}
       >

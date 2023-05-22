@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
@@ -49,6 +49,7 @@ const GenerateBracketWave = ({
   fightRoundTypes,
 }) => {
   const { fightParents, ...cell } = bracketFight
+  const cellRef = useRef()
   const parents = fightParents?.length && fightParents.map(({ id }) => id)
   const borderDirection = useMemo(() => {
     if (2 == parentsCount) {
@@ -74,11 +75,17 @@ const GenerateBracketWave = ({
       }
     >
       <ChildColumn>
-        <BracketCell cell={{ ...cell, parents, borderDirection }} />
-        {!!cell.children?.length &&
-          cell.children.map((child) => (
-            <BracketCell key={`cell.children_${child?.id}`} cell={{ ...child }} />
-          ))}
+        <BracketCell cellRef={cellRef} cell={{ ...cell, parents, borderDirection }} />
+        {!!cell.children?.length && cellRef?.current && (
+          <OversideBacketCellWrapper
+            top={+cellRef?.current?.offsetTop + 168}
+            left={cellRef?.current?.offsetLeft}
+          >
+            {cell.children.map((child) => (
+              <BracketCell key={`cell.children_${child?.id}`} cell={{ ...child }} />
+            ))}
+          </OversideBacketCellWrapper>
+        )}
       </ChildColumn>
       <ParentsRow>
         {!!fightParents?.length &&
@@ -98,6 +105,7 @@ const GenerateBracketWave = ({
 }
 
 const WaveWrapper = styled.div`
+  min-height: 700px;
   position: relative;
   display: grid;
   grid-template: ${({ rows }) => `repeat(${rows}, min-content)`} / 1fr;
@@ -105,10 +113,13 @@ const WaveWrapper = styled.div`
 `
 
 const FightRoundWrapper = styled.div`
+  height: 100%;
+  position: relative;
   display: flex;
   flex-direction: row-reverse;
 
   &.withBorder {
+    min-height: 610px;
     padding: 0 0 32px 0;
     margin: 0 0 32px 0;
     border-bottom: 1px solid #333;
@@ -117,6 +128,7 @@ const FightRoundWrapper = styled.div`
 `
 
 const ParentsRow = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
 `
@@ -146,4 +158,10 @@ const Zebra = styled.div`
   &:nth-child(odd) {
     background: rgba(27, 28, 34, 0.25);
   }
+`
+
+const OversideBacketCellWrapper = styled.div`
+  position: absolute;
+  top: ${({ top }) => top}px;
+  left: ${({ left }) => left}px;
 `
