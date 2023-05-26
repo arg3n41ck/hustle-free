@@ -1,6 +1,8 @@
 // import axios from 'axios'
 // import { camelizeKeys } from 'humps'
 
+import { format } from 'date-fns'
+
 //gotov'sya tebya jdet polnyi pizdavorot)))
 
 export const getBracketsRoundType = {
@@ -156,3 +158,13 @@ export const getFighterPlace = (params) => {
 }
 
 export const BF_DND_ACCEPT_TYPE = `BF_DND_ACCEPT_TYPE`
+
+export const getFormattedStartTime = (eta) => {
+  const timeParts = eta?.split(':')
+  const dateObject = new Date()
+  dateObject.setHours(timeParts[0], timeParts[1], timeParts[2])
+  if (!isNaN(dateObject.valueOf())) {
+    return format(dateObject, 'HH:mm')
+  }
+  return undefined
+}

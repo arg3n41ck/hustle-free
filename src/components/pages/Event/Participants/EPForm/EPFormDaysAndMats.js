@@ -11,14 +11,24 @@ import { theme } from '../../../../../styles/theme'
 
 function EPFormDaysAndMats({ formik }) {
   const { id: eventId } = useRouter()
-  const { values, errors, touched, setFieldValue } = formik
+  const { errors, touched, setFieldValue } = formik
   const [matsOptions, setMatsOptions] = useState([])
+  const [selectedDay, setSelectedDay] = useState(null)
+  const [selectedMat, setSelectedMat] = useState(null)
   const days = useSelector((state) => state.daysAndMats.days)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchDaysByParams({ event: eventId }))
   }, [eventId])
+
+  useEffect(() => {
+    setFieldValue('day', selectedDay?.id || null)
+  }, [selectedDay])
+
+  useEffect(() => {
+    setFieldValue('mat', selectedMat?.id || null)
+  }, [selectedMat])
 
   return (
     <EPFieldMainWrapper
@@ -32,19 +42,20 @@ function EPFormDaysAndMats({ formik }) {
             noOptionsText={'Не найдено'}
             onChange={(_, value) => {
               if (value) {
-                setFieldValue('day', value?.id)
+                setSelectedDay(value)
+                setSelectedMat(null)
                 setMatsOptions(value?.mats)
               }
             }}
             options={days.data.map((option) => option)}
-            isOptionEqualToValue={() => days.data.some((day) => day?.id === values.day)}
+            isOptionEqualToValue={() => days.data.some((day) => day?.id === selectedDay.id)}
             getOptionLabel={(option) =>
               `${option?.name} • ${format(new Date(option?.startDate), 'dd MMMM yyyy', {
                 locale: ru,
               })} г.`
             }
             fullWidth
-            value={days.data.find((day) => day?.id === values.day)}
+            value={selectedDay}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -66,12 +77,12 @@ function EPFormDaysAndMats({ formik }) {
           <p>Маты</p>
           <Autocomplete
             noOptionsText={'Не найдено'}
-            onChange={(_, value) => value && setFieldValue('mat', value?.id)}
+            onChange={(_, value) => value && setSelectedMat(value)}
             options={matsOptions.map((option) => option)}
-            isOptionEqualToValue={() => matsOptions.some((mat) => mat?.id === values.mat)}
+            isOptionEqualToValue={() => matsOptions.some((mat) => mat?.id === selectedMat?.id)}
             getOptionLabel={(option) => `${option?.prefix} ${option?.name}`}
             fullWidth
-            value={matsOptions.find((mat) => mat?.id === values.mat)}
+            value={selectedMat}
             renderInput={(params) => (
               <TextField
                 {...params}

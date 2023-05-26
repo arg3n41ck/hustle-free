@@ -82,7 +82,7 @@ function EventRouteWrapper({ children }) {
           setCtxStep((s) => ({
             ...s,
             [statusKey]: {
-              allFieldsFilled: isCurrentFilled,
+              allFieldsFilled: isPreviousFilled && statusKey === 'mats' ? true : isCurrentFilled,
               access: statusKey === 'general' || statusKey === 'mats' ? true : !!isPreviousFilled,
             },
           }))

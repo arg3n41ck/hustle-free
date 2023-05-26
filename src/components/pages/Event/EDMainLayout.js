@@ -21,30 +21,35 @@ function EdMainLayout({ event, children }) {
       title: tEventDetail('event.EDMainLayout.info'),
       link: `/events/${event.id}`,
       icon: <EDInfoIcon />,
+      exact: true,
     },
     {
       id: 'ed_categoty',
       title: tEventDetail('event.EDMainLayout.categories'),
       link: `/events/${event.id}/categories`,
       icon: <EDCategIcon />,
+      exact: true,
     },
     {
       id: 'ed_participants',
       title: `${tEventDetail('event.EDMainLayout.participants')} (${event.participantsCount || 0})`,
       link: `/events/${event.id}/participants`,
       icon: <EDParticipantIcon />,
+      exact: true,
     },
     {
       id: 'ed_grid',
       title: tEventDetail('event.EDMainLayout.brackets'),
       link: `/events/${event.id}/brackets`,
       icon: <EDGridIcon />,
+      exact: false,
     },
     {
       id: 'ed_results',
       title: tEventDetail('event.EDMainLayout.results'),
       link: `/events/${event.id}/results`,
       icon: <EDResultsIcon />,
+      exact: true,
     },
   ])
 
@@ -53,9 +58,9 @@ function EdMainLayout({ event, children }) {
       <EdGeneralInfo event={event} />
       <ChildWrapper>
         <NavigationUl>
-          {links.map(({ id, title, link, icon }) => (
+          {links.map(({ id, title, link, icon, exact }) => (
             <li key={id}>
-              <ActiveLink activeClassName='activeEDLink' href={link}>
+              <ActiveLink activeClassName='activeEDLink' exact={exact} href={link}>
                 <a>
                   {icon}
                   <p>{title}</p>

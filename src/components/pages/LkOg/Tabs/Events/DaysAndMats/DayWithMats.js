@@ -72,7 +72,7 @@ export default function DayWithMats({
   return (
     <DayRowWrapper>
       <DayHeader>
-        <DayHeaderActions>{day?.name}</DayHeaderActions>
+        <DayHeaderActions className='name'>{day?.name}</DayHeaderActions>
         <DayHeaderActions>{dateTime}</DayHeaderActions>
         <DayHeaderActions>Матов: {day?.mats?.length}</DayHeaderActions>
         <DayHeaderActions>
@@ -164,6 +164,9 @@ const DayHeaderActions = styled.div`
   padding: 21px 32px;
   border-right: 1px solid #333;
 
+  &.name {
+    justify-content: flex-start;
+  }
   &:last-child {
     border-right: none;
   }

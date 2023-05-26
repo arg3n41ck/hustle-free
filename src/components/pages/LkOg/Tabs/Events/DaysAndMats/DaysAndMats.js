@@ -40,6 +40,15 @@ export default function DaysAndMats() {
             day={day}
           />
         ))}
+      <DayForm editDay={editDay} onClose={() => setEditDay(null)} />
+      <MatModal
+        editMat={editMat || null}
+        day={selectedDay || null}
+        onClose={() => {
+          setEditMat(null)
+          setSelectedDay(null)
+        }}
+      />
       <EventFormFooter>
         <Cancel onClick={() => routerPush('/lk-og/profile/events')}>
           {tLkOg('editEvent.cancel')}
@@ -51,15 +60,6 @@ export default function DaysAndMats() {
           {tLkOg('editEvent.save')}
         </Submit>
       </EventFormFooter>
-      <DayForm editDay={editDay} onClose={() => setEditDay(null)} />
-      <MatModal
-        editMat={editMat || null}
-        day={selectedDay || null}
-        onClose={() => {
-          setEditMat(null)
-          setSelectedDay(null)
-        }}
-      />
     </div>
   )
 }

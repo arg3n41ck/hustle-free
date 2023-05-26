@@ -7,7 +7,7 @@ import {
   fetchBracketsFightsByParams,
   selectBrackets,
 } from '../../../../../redux/components/eventBrackets'
-import { BF_DND_ACCEPT_TYPE, getFighterPlace } from './bracketsUtils'
+import { BF_DND_ACCEPT_TYPE, getFighterPlace } from '../bracketsUtils'
 import BracketWin from './BracketWin'
 import { useDrag, useDrop } from 'react-dnd'
 import $api from '../../../../../services/axios'

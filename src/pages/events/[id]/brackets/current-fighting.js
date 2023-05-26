@@ -3,11 +3,14 @@ import EdMainLayout from '../../../../components/pages/Event/EDMainLayout'
 import $api from '../../../../services/axios'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import BracketsWrapper from '../../../../components/pages/Event/Brackets/BracketsWrapper/BracketsWrapper'
+import CurrentFightings from '../../../../components/pages/Event/Brackets/CurrentFightings/CurrentFightings'
 
 function Brackets({ event }) {
   return (
     <EdMainLayout event={event}>
-      <BracketsWrapper>Current Fightings</BracketsWrapper>
+      <BracketsWrapper>
+        <CurrentFightings />
+      </BracketsWrapper>
     </EdMainLayout>
   )
 }

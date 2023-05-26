@@ -767,10 +767,10 @@ export const EDInfoIcon = (props) => (
     <path
       d='M16.0252 25.4894C17.5341 25.2234 18.9757 24.6628 20.2678 23.8396C21.56 23.0164 22.6774 21.9467 23.5561 20.6917C24.4349 19.4367 25.0579 18.0209 25.3895 16.5251C25.7211 15.0294 25.7548 13.4829 25.4888 11.9741C25.2227 10.4653 24.6621 9.02366 23.8389 7.73151C23.0157 6.43936 21.9461 5.32201 20.6911 4.44324C19.4361 3.56447 18.0202 2.94149 16.5245 2.60989C15.0287 2.27829 13.4823 2.24454 11.9735 2.51059C10.4646 2.77663 9.023 3.33725 7.73085 4.16044C6.4387 4.98364 5.32134 6.05327 4.44257 7.30829C3.56381 8.5633 2.94083 9.97911 2.60923 11.4749C2.27763 12.9707 2.24388 14.5171 2.50993 16.0259C2.77597 17.5347 3.33659 18.9764 4.15978 20.2685C4.98298 21.5607 6.05261 22.678 7.30763 23.5568C8.56264 24.4356 9.97845 25.0585 11.4742 25.3901C12.97 25.7217 14.5164 25.7555 16.0252 25.4894L16.0252 25.4894Z'
       stroke='#E0E0E0'
-      stroke-width='2'
+      strokeWidth='2'
     />
-    <path d='M14 14L14 21' stroke='#E0E0E0' stroke-width='2' stroke-linecap='square' />
-    <path d='M14 8.16666L14 6.99999' stroke='#E0E0E0' stroke-width='2' stroke-linecap='square' />
+    <path d='M14 14L14 21' stroke='#E0E0E0' strokeWidth='2' strokeLinecap='square' />
+    <path d='M14 8.16666L14 6.99999' stroke='#E0E0E0' strokeWidth='2' strokeLinecap='square' />
   </svg>
 )
 
@@ -783,9 +783,9 @@ export const EDCategIcon = (props) => (
     fill='none'
     xmlns='http://www.w3.org/2000/svg'
   >
-    <path d='M5.83398 8.16666H22.1673' stroke='#E0E0E0' stroke-width='2' stroke-linecap='round' />
-    <path d='M5.83398 14H22.1673' stroke='#E0E0E0' stroke-width='2' stroke-linecap='round' />
-    <path d='M5.83398 19.8333H22.1673' stroke='#E0E0E0' stroke-width='2' stroke-linecap='round' />
+    <path d='M5.83398 8.16666H22.1673' stroke='#E0E0E0' strokeWidth='2' strokeLinecap='round' />
+    <path d='M5.83398 14H22.1673' stroke='#E0E0E0' strokeWidth='2' strokeLinecap='round' />
+    <path d='M5.83398 19.8333H22.1673' stroke='#E0E0E0' strokeWidth='2' strokeLinecap='round' />
   </svg>
 )
 
@@ -815,7 +815,7 @@ export const EDGridIcon = (props) => (
       rx='1'
       fill='#F2F2F2'
       stroke='#BDBDBD'
-      stroke-width='0.5'
+      strokeWidth='0.5'
     />
     <rect
       x='16.332'
@@ -825,7 +825,7 @@ export const EDGridIcon = (props) => (
       rx='1'
       fill='#F2F2F2'
       stroke='#BDBDBD'
-      stroke-width='0.5'
+      strokeWidth='0.5'
     />
     <rect
       x='3.5'
@@ -835,27 +835,27 @@ export const EDGridIcon = (props) => (
       rx='1'
       fill='#F2F2F2'
       stroke='#BDBDBD'
-      stroke-width='0.5'
+      strokeWidth='0.5'
     />
     <path
       d='M12.832 8.16669H13.582C14.1343 8.16669 14.582 8.6144 14.582 9.16669V13C14.582 13.5523 15.0297 14 15.582 14H16.332'
       stroke='#BDBDBD'
-      stroke-width='0.5'
+      strokeWidth='0.5'
     />
     <path
       d='M16.332 14L15.582 14C15.0297 14 14.582 14.4477 14.582 15L14.582 18.8333C14.582 19.3856 14.1343 19.8333 13.582 19.8333L12.832 19.8333'
       stroke='#BDBDBD'
-      stroke-width='0.5'
+      strokeWidth='0.5'
     />
     <path
       d='M3.5 19.8334L2.16667 19.8334C1.61438 19.8334 1.16667 19.3857 1.16667 18.8334L1.16667 14'
       stroke='#BDBDBD'
-      stroke-width='0.5'
+      strokeWidth='0.5'
     />
     <path
       d='M1.16602 14L1.16602 9.16667C1.16602 8.61438 1.61373 8.16667 2.16602 8.16667L3.49935 8.16667'
       stroke='#BDBDBD'
-      stroke-width='0.5'
+      strokeWidth='0.5'
     />
   </svg>
 )
@@ -948,6 +948,80 @@ export const DNDIcon = (props) => (
     <path
       d='M3 12L2.21913 12.6247L1.71937 12L2.21913 11.3753L3 12ZM9 11C9.55228 11 10 11.4477 10 12C10 12.5523 9.55228 13 9 13L9 11ZM5.41913 16.6247L2.21913 12.6247L3.78087 11.3753L6.98087 15.3753L5.41913 16.6247ZM2.21913 11.3753L5.41913 7.37531L6.98087 8.6247L3.78087 12.6247L2.21913 11.3753ZM3 11L9 11L9 13L3 13L3 11Z'
       fill='#E0E0E0'
+    />
+  </svg>
+)
+
+export const FightStatusPlay = (props) => (
+  <svg
+    {...props}
+    width='32'
+    height='32'
+    viewBox='0 0 32 32'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path
+      d='M23.4115 13.366L11.6785 7.35403C9.52905 6.25263 7 7.85444 7 10.3173V21.6827C7 24.1456 9.52905 25.7474 11.6785 24.646L23.4115 18.634C25.5295 17.5487 25.5295 14.4513 23.4115 13.366Z'
+      fill='#6D4EEA'
+    />
+  </svg>
+)
+
+export const FightStatusBeReady = (props) => (
+  <svg
+    {...props}
+    width='32'
+    height='32'
+    viewBox='0 0 32 32'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <circle cx='16' cy='16' r='9' stroke='#F2994A' strokeWidth='2' />
+    <circle cx='16' cy='16' r='5' fill='#F2994A' />
+  </svg>
+)
+
+export const FightStatusGoToBullPen = (props) => (
+  <svg
+    {...props}
+    width='32'
+    height='32'
+    viewBox='0 0 32 32'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path
+      fillRule='evenodd'
+      clipRule='evenodd'
+      d='M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26ZM16.078 8.29116C15.999 8.36523 15.999 8.48449 15.999 8.72301V15.7121C15.999 15.853 15.999 15.9234 15.9655 15.9815C15.932 16.0395 15.871 16.0747 15.749 16.1451L9.69627 19.6397C9.48971 19.7589 9.38642 19.8186 9.36177 19.924C9.33712 20.0295 9.40042 20.1244 9.527 20.3144C10.1891 21.3078 11.0724 22.1374 12.1101 22.7365C13.2925 23.4192 14.6337 23.7786 15.999 23.7786C17.3643 23.7786 18.7055 23.4192 19.8879 22.7365C21.0703 22.0539 22.0521 21.0721 22.7348 19.8897C23.4174 18.7073 23.7768 17.3661 23.7768 16.0008C23.7768 14.6355 23.4174 13.2943 22.7348 12.1119C22.0521 10.9295 21.0703 9.94768 19.8879 9.26504C18.8502 8.66589 17.69 8.31576 16.4987 8.23908C16.2709 8.22441 16.157 8.21708 16.078 8.29116Z'
+      fill='#A0A0A0'
+    />
+  </svg>
+)
+
+export const FightStatusInProgress = (props) => (
+  <svg
+    {...props}
+    width='32'
+    height='32'
+    viewBox='0 0 32 32'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path d='M18.6654 20L13.332 25.3333L18.6654 30.6667' stroke='#6D4EEA' strokeWidth='2' />
+    <path
+      d='M24.0816 11.3327C24.9008 12.7515 25.332 14.361 25.332 15.9993C25.332 17.6377 24.9008 19.2472 24.0816 20.666C23.2624 22.0849 22.0842 23.2631 20.6654 24.0823C19.2465 24.9014 17.637 25.3327 15.9987 25.3327'
+      stroke='#6D4EEA'
+      strokeWidth='2'
+      strokeLinecap='round'
+    />
+    <path d='M13.3346 12L18.668 6.66667L13.3346 1.33333' stroke='#6D4EEA' strokeWidth='2' />
+    <path
+      d='M7.9184 20.6673C7.09923 19.2485 6.66797 17.639 6.66797 16.0007C6.66797 14.3623 7.09923 12.7528 7.9184 11.334C8.73757 9.91514 9.91579 8.73692 11.3346 7.91775C12.7535 7.09857 14.363 6.66732 16.0013 6.66732'
+      stroke='#6D4EEA'
+      strokeWidth='2'
+      strokeLinecap='round'
     />
   </svg>
 )

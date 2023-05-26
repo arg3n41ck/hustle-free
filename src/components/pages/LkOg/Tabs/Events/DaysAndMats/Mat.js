@@ -39,7 +39,7 @@ export default function Mat({ mat, day, onSelectToEditMat }) {
   const [_, drag] = useDrag({
     type: `BRACKETS_MATS_${day?.id}`,
     item: () => {
-      return { type: `BRACKETS_MATS`, mat }
+      return { type: `BRACKETS_MATS_${day?.id}`, mat }
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),

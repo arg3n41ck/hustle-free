@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketCell from './BracketCell'
-import { mapBracketsFights, getBracketsRoundType } from './bracketsUtils'
+import { mapBracketsFights, getBracketsRoundType } from '../bracketsUtils'
 
 export default function BracketBranched() {
   const [, bracketsFights] = useSelector(selectBrackets)

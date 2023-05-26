@@ -8,7 +8,8 @@ export const fetchDaysByParams = createAsyncThunk(
   'daysAndMats/fetchDaysByParams',
   async (params, { rejectWithValue }) => {
     try {
-      return await eventMatsClient.getEventDays(params)
+      const { data } = await eventMatsClient.getEventDays(params)
+      return data
     } catch (e) {
       return rejectWithValue(e.response.data)
     }
@@ -73,8 +74,8 @@ export const daysAndMats = createSlice({
     })
     builder.addCase(fetchDaysByParams.fulfilled, ({ days }, action) => {
       days.isLoading = false
-      days.data = action.payload.data
-      days.count = action.payload?.count ?? action.payload.data?.length
+      days.data = action.payload
+      days.count = action.payload.data?.length
       days.error = null
     })
     builder.addCase(fetchDaysByParams.rejected, ({ days }, action) => {

@@ -5,17 +5,11 @@ import { TextField } from '@mui/material'
 import { ru } from 'date-fns/locale'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { isValid } from 'date-fns'
 import { theme } from '../../../../../styles/theme'
 
 function EPFormOtherConfigs({ formik }) {
   const { values, errors, touched, handleChange, setFieldValue } = formik
-  console.log({
-    values,
-    errors,
-    touched,
-    isValid: values?.estimateRoundTime?.$d && isValid(values?.estimateRoundTime?.$d),
-  })
+
   return (
     <EPFieldMainWrapper
       className={`${

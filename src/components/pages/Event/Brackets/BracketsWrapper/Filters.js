@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Autocomplete, TextField } from '@mui/material'
 import { categoriesSelector, fetchCategories } from '../../../../../redux/components/categories'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,39 +7,62 @@ import {
   selectCountriesAndCities,
 } from '../../../../../redux/components/countriesAndCities'
 import { useRouter } from 'next/router'
-import { removeDuplicateObjectFromArray } from '../../../../../helpers/helpers'
-import $api from '../../../../../services/axios'
 import { useTranslation } from 'next-i18next'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
-
-const fetchEventTeams = async () => {
-  try {
-    const { data } = await $api.get(`/events/team_events/`)
-    return data
-  } catch (error) {}
-}
+import useQuery from '../../../../../hooks/useQuery'
+import { fetchEventTeams } from '../../../../../redux/components/teams'
 
 export default function Filters() {
   const {
     query: { id: eventId },
+    push: routerPush,
   } = useRouter()
   const [categories] = useSelector(categoriesSelector)
   const [countries] = useSelector(selectCountriesAndCities)
+  const { data: teams } = useSelector((state) => state?.teams.eventTeams)
   const { t: tEventDetail } = useTranslation('eventDetail')
-  const [teams, setTeams] = useState([])
+  const query = useQuery()
+  const [athleteName, setAthleteName] = useState('')
+  const [selectedTeam, setSelectedTeam] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchCountries())
     dispatch(fetchCategories({ event: eventId }))
-    fetchEventTeams().then((data) => {
-      if (data?.length) {
-        const _teams = data.map(({ team }) => team)
-        setTeams(removeDuplicateObjectFromArray(_teams, 'id'))
-      }
-    })
+    dispatch(fetchEventTeams())
   }, [])
+
+  useEffect(() => {
+    const queryAthleteName = query.get('full_name')
+    const queryTeam = query.get('team_id')
+    const queryCountry = query.get('country_id')
+    const queryCategory = query.get('category_id')
+
+    queryAthleteName && setAthleteName(queryAthleteName)
+    queryTeam && teams?.length && setSelectedTeam(teams.find((team) => team?.id == queryTeam))
+    queryCountry &&
+      countries?.length &&
+      setSelectedCountry(countries.find((country) => country?.id == queryCountry))
+    queryCategory &&
+      categories?.length &&
+      setSelectedCategory(categories.find((category) => category?.id == queryCategory))
+  }, [teams, categories, countries])
+
+  const isDisabledSearchBtn = useMemo(() => {
+    return !(athleteName || selectedTeam || selectedCountry || selectedCategory)
+  }, [athleteName, selectedTeam, selectedCountry, selectedCategory])
+
+  const onClickSearch = () => {
+    athleteName ? query.set('full_name', athleteName) : query.delete('full_name')
+    selectedTeam ? query.set('team_id', selectedTeam?.id) : query.delete('team_id')
+    selectedCountry ? query.set('country_id', selectedCountry?.id) : query.delete('country_id')
+    selectedCategory ? query.set('category_id', selectedCategory?.id) : query.delete('category_id')
+
+    routerPush(`/events/${eventId}/brackets/current-fighting/?${query}`)
+  }
 
   return (
     <MainWrapper>
@@ -47,7 +70,13 @@ export default function Filters() {
       <Fields>
         <Field>
           <FieldTitle>Поиск по Атлетам</FieldTitle>
-          <TextField fullWidth size='small' placeholder='Поиск' />
+          <TextField
+            fullWidth
+            size='small'
+            value={athleteName}
+            onChange={({ target: { value } }) => setAthleteName(value)}
+            placeholder='Поиск'
+          />
         </Field>
 
         <Field>
@@ -61,7 +90,8 @@ export default function Filters() {
                 right: '20px !important',
               },
             }}
-            onChange={(_, value) => value?.id}
+            onChange={(_, value) => setSelectedTeam(value)}
+            value={selectedTeam}
             options={teams.map((option) => option)}
             noOptionsText={tEventDetail('event.participants.filters.nothingFound')}
             getOptionLabel={(option) => option.name}
@@ -90,9 +120,11 @@ export default function Filters() {
                 right: '20px !important',
               },
             }}
+            value={selectedCountry}
             noOptionsText={tEventDetail('event.participants.filters.nothingFound')}
-            onChange={(_, value) => value?.id}
-            options={countries.map((option) => option.name)}
+            onChange={(_, value) => setSelectedCountry(value)}
+            getOptionLabel={(option) => option && option.name}
+            options={countries}
             fullWidth
             renderInput={(params) => (
               <TextField
@@ -119,11 +151,13 @@ export default function Filters() {
               },
             }}
             noOptionsText={tEventDetail('event.participants.filters.nothingFound')}
-            onChange={(_, value) => value?.id}
-            options={categories.map(
-              (option) => `${option?.name} / ${option?.fromAge} -
-        ${option?.toAge} лет / ${option?.fromWeight} кг - ${option?.toWeight} кг`,
-            )}
+            onChange={(_, value) => setSelectedCategory(value)}
+            value={selectedCategory}
+            getOptionLabel={(option) =>
+              option &&
+              `${option?.name} / ${option?.fromAge} - ${option?.toAge} лет / ${option?.fromWeight} кг - ${option?.toWeight} кг`
+            }
+            options={categories}
             fullWidth
             renderInput={(params) => (
               <TextField
@@ -137,7 +171,9 @@ export default function Filters() {
             )}
           />
         </Field>
-        <SubmitBtn>Найти</SubmitBtn>
+        <SubmitBtn disabled={isDisabledSearchBtn} onClick={onClickSearch}>
+          Найти
+        </SubmitBtn>
       </Fields>
     </MainWrapper>
   )
@@ -193,8 +229,9 @@ const SubmitBtn = styled.button`
   align-self: flex-end;
   text-align: center;
   padding: 20px 24px;
-
-  color: #ffffff;
-  background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
   border-radius: 8px;
+
+  color: ${({ disabled }) => (disabled ? '#bdbdbd' : '#ffffff')};
+  background: ${({ disabled }) =>
+    disabled ? '#828282' : 'linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%)'};
 `
