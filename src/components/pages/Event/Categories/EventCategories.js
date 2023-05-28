@@ -80,10 +80,10 @@ function EventCategories() {
       column: tEventDetail('event.categories.table.gender'),
       accessor: 'gender',
     },
-    {
-      column: tEventDetail('event.categories.table.age'),
-      accessor: 'age',
-    },
+    // {
+    //   column: tEventDetail('event.categories.table.age'),
+    //   accessor: 'age',
+    // },
     {
       column: tEventDetail('event.categories.table.weight'),
       accessor: 'weight',

@@ -40,14 +40,13 @@ const getPriceByRegistration = (registration) => {
 }
 
 const createDataForTable = (pc = [], crp) => {
-  const { id, fromAge, toAge, fromWeight, levels, toWeight, gender, price } = pc
+  const { id, fromWeight, levels, toWeight, gender, price } = pc
   const { standartPrice, currency, latePrice } = price
   return levels
     .map(({ id: lId, name: lName }, i) => {
       return {
         id: `${id}-${lId}-${i}`,
         gender: getGender(gender, true),
-        age: `${fromAge} - ${toAge} лет`,
         price: `${Math.round(price[crp] || standartPrice || latePrice)} ${currency.toLowerCase()}`,
         weight: `${fromWeight} - ${toWeight} кг`,
         name: lName,
