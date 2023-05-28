@@ -37,7 +37,7 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
     dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: bracket?.bracketType }))
     dispatch(fetchBracketResults({ bracketId: bracket?.id }))
   }
-
+  console.log({ cell })
   return (
     <>
       <CellWrapper
@@ -47,7 +47,7 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
       >
         <DragWrapper>
           {/* <FightNum>
-            FR1: "<b>{fighters?.[0]?.id}</b>"; FR2: "<b>{fighters?.[1]?.id}</b>"
+            ST: "<b>{cell?.fightStartTime}</b>"; ET: "<b>{cell?.fightEndTime}</b>"
           </FightNum> */}
 
           <BracketCellFighter

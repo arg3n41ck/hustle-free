@@ -29,14 +29,10 @@ const EventResultsItem = ({ participant }) => {
           setActive={setOpen}
           heightWrapper={'100px'}
           title={`${eventParticipantsCategory.name} / ${level?.name} / ${
-            eventParticipantsCategory.fromAge
-          } - ${eventParticipantsCategory.toAge} ${tEventDetail(
-            'event.results.eventResultsItem.years',
-          )} / ${eventParticipantsCategory.fromWeight} ${tEventDetail(
-            'event.results.eventResultsItem.kg',
-          )} - ${eventParticipantsCategory.toWeight} ${tEventDetail(
-            'event.results.eventResultsItem.kg',
-          )}`}
+            eventParticipantsCategory.fromWeight
+          } ${tEventDetail('event.results.eventResultsItem.kg')} - ${
+            eventParticipantsCategory.toWeight
+          } ${tEventDetail('event.results.eventResultsItem.kg')}`}
         >
           <List>
             <List>

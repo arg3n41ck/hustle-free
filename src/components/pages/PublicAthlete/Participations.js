@@ -37,7 +37,7 @@ function Participations({ eventName, level, fromAge, fromWeight, toAge, name, to
           <EventInfoParticipantsInfo>
             {(name && `${name} / `) || ''}
             {(!!level?.name && `${level.name} / `) || ''}
-            {(fromAge && `${fromAge}-`) || ''}
+            {/* {(fromAge && `${fromAge}-`) || ''} */}
             {(toAge && `${toAge} ${tLkAh('years')} / `) || ''}
             {(fromWeight && `${fromWeight} ${tLkAh('kg')} - `) || ''}
             {(toWeight && `${toWeight}  ${tLkAh('kg')}`) || ''}

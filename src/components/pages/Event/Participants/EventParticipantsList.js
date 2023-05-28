@@ -47,8 +47,7 @@ const EventParticipantsList = ({ eventParticipants, isAthletes }) => {
         .filter(({ id }) => !!selectedEPC.includes(id))
         .map(({ id, eventParticipantsCategory, level, isAcceptParticipants }) => ({
           id,
-          title: `${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
-        ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`,
+          title: `${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`,
           participantsCount: isAcceptParticipants || 0,
         }))
     } else if (!selectedEPC?.length) {

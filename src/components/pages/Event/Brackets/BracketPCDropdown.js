@@ -38,8 +38,7 @@ export default function BracketPCDropdown({ bracket, onSelectBracket }) {
     </Info>,
   )
 
-  const header = `${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
-        ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`
+  const header = `${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`
 
   const arrow = (
     <Arrow

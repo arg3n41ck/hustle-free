@@ -304,11 +304,9 @@ function RegistrationAthleteToEvent({ eventRegistration }) {
               getOptionLabel={(option) => {
                 const { name, fromAge, levels, toAge, fromWeight, toWeight } = option
                 const levelName = levels?.filter(({ id }) => id === values?.level)?.name ?? ''
-                return `${truncateString(name, 20)} / ${levelName ? levelName + ' / ' : ' '}${
-                  fromAge ? fromAge + ' - ' : ' '
-                }${toAge ? toAge + ' лет' : ''} / ${fromWeight ? fromWeight + ' кг ' : ' '} - ${
-                  toWeight ? toWeight + '  кг ' : ''
-                }`
+                return `${truncateString(name, 20)} / ${levelName ? levelName + ' / ' : ' '} / ${
+                  fromWeight ? fromWeight + ' кг ' : ' '
+                } - ${toWeight ? toWeight + '  кг ' : ''}`
               }}
               fullWidth
               renderInput={(params) => (

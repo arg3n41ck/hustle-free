@@ -104,8 +104,7 @@ const EventParticipantsItem = ({
           style={!!(isOrganizer && canCreateBracket) ? organizerTitleStyles : {}}
           onClick={() => setOpen((s) => !s)}
         >
-          {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromAge} -
-        ${eventParticipantsCategory.toAge} лет / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
+          {`${eventParticipantsCategory.name} / ${level?.name} / ${eventParticipantsCategory.fromWeight} кг - ${eventParticipantsCategory.toWeight} кг`}
         </p>
       </HeaderWrapper>
     ),

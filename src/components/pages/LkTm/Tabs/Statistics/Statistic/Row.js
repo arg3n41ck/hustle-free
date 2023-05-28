@@ -18,9 +18,9 @@ function Row({ ePC, participants }) {
     <MainWrapper>
       <TitlePart onClick={() => setOpen(!open)}>
         <Title>
-          {` ${ePC.name ? ePC.name + ' /' : ''} ${ePC.level ? ePC.level + ' /' : ''} ${
-            ePC.fromAge || 0
-          }-${ePC.toAge || 0} лет / ${ePC.fromWeight || 0}-${ePC.toWeight || 0} кг `}
+          {` ${ePC.name ? ePC.name + ' /' : ''} ${ePC.level ? ePC.level + ' /' : ''} / ${
+            ePC.fromWeight || 0
+          }-${ePC.toWeight || 0} кг `}
         </Title>
         <ArrowWrapper variants={variants} animate={open ? 'open' : 'closed'}>
           <ArrowIcon />

@@ -30,8 +30,8 @@ function FilterMyStories({ data }) {
             <EventInfoParticipantsInfo>
               {participationCategory?.eventParticipantsCategory?.name} /{' '}
               {participationCategory?.level} /{' '}
-              {participationCategory?.eventParticipantsCategory?.fromAge}-
-              {participationCategory?.eventParticipantsCategory?.toAge} лет /{' '}
+              {/* {participationCategory?.eventParticipantsCategory?.fromAge}-
+              {participationCategory?.eventParticipantsCategory?.toAge} лет /{' '} */}
               {participationCategory?.eventParticipantsCategory?.fromWeight} кг -{' '}
               {participationCategory?.eventParticipantsCategory?.toWeight} кг{' '}
             </EventInfoParticipantsInfo>

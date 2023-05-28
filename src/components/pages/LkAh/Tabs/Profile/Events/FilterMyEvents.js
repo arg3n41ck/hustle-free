@@ -53,8 +53,6 @@ function FilterMyEvents({ data }) {
           <EventInfoParticipantsInfo>
             {data?.participationCategory?.eventParticipantsCategory?.name} /{' '}
             {data?.participationCategory?.level?.name} /{' '}
-            {data?.participationCategory?.eventParticipantsCategory?.fromAge}-
-            {data?.participationCategory?.eventParticipantsCategory?.toAge} лет /{' '}
             {data?.participationCategory?.eventParticipantsCategory?.fromWeight} кг -{' '}
             {data?.participationCategory?.eventParticipantsCategory?.toWeight} кг{' '}
           </EventInfoParticipantsInfo>
