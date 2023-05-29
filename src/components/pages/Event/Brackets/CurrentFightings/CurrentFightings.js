@@ -39,7 +39,13 @@ export default function CurrentFightings() {
       <MatsOuterWrapper>
         {!!currentFightings?.results?.length &&
           currentFightings.results.map((curMat) => (
-            <MatsWithFightings key={curMat?.id} matWithFightings={curMat} />
+            <MatsWithFightings
+              key={curMat?.id}
+              matWithFightings={{
+                ...curMat,
+                category: `${curMat?.bracket?.categoryName} / ${curMat?.bracket?.level} / ${curMat?.bracket?.fromAge} - ${curMat?.bracket?.toAge} / ${curMat?.bracket?.fromWeight} - ${curMat?.bracket?.toWeight}`,
+              }}
+            />
           ))}
       </MatsOuterWrapper>
     </div>

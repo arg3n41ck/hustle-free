@@ -6,12 +6,14 @@ import {
 } from '../../../../assets/svg/icons'
 import { getFormattedStartTime } from './bracketsUtils'
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 
-export default function MatFight({ fight }) {
-  const { bracket, status, fightNumber, prefix, fighters, fightStartTime } = fight
-  const category = useMemo(() => {
-    return `${bracket?.categoryName} / ${bracket?.level} / ${bracket?.fromAge} - ${bracket?.toAge} / ${bracket?.fromWeight} - ${bracket?.toWeight}`
-  }, [bracket])
+export default function MatFight({ fight, bracketId }) {
+  const {
+    push: routerPush,
+    query: { id: eventId },
+  } = useRouter()
+  const { category, status, fightNumber, prefix, fighters, fightStartTime } = fight
 
   const statusIcon = useMemo(() => {
     switch (status) {
@@ -45,16 +47,40 @@ export default function MatFight({ fight }) {
         </Details>
       </FightingContent>
       {fightStartTime && <Time>{getFormattedStartTime(fightStartTime)}</Time>}
+      <ActionsWrapper>
+        <Button onClick={() => routerPush(`/events/${eventId}/brackets/bracket/${bracketId}/`)}>
+          Сетка
+        </Button>
+      </ActionsWrapper>
     </FightingWrapper>
   )
 }
 
+const ActionsWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: none;
+  justify-content: flex-end;
+  grid-gap: 32px;
+  padding: 16px;
+`
+
 const FightingWrapper = styled.div`
+  position: relative;
   display: grid;
   grid-template: 1fr / auto 72px;
   border-bottom: 1px solid #1b1c22;
   &:last-child {
     border-bottom: none;
+  }
+
+  &:hover {
+    background: linear-gradient(0deg, rgba(109, 78, 234, 0.07), rgba(109, 78, 234, 0.07)), #141519;
+
+    ${ActionsWrapper} {
+      display: flex;
+    }
   }
 `
 
@@ -136,4 +162,16 @@ const Time = styled.div`
   font-size: 14px;
   line-height: 24px;
   color: #f2f2f2;
+`
+
+const Button = styled.button`
+  height: min-content;
+  background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
+  border-radius: 16px;
+  padding: 12px 20px;
+
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: #ffffff;
 `

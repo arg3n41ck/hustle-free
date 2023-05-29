@@ -80,4 +80,12 @@ export class EventMatsClient {
       throw error
     }
   }
+
+  async getMatBracketDetails(bracketId) {
+    try {
+      return await $api.get(`/mats/bracket_detail/${bracketId}/`)
+    } catch (error) {
+      throw error
+    }
+  }
 }

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { selectBrackets } from '../../../../../redux/components/eventBrackets'
 import BracketCell from './BracketCell'
-import { createAresJustFromIds, getBracketsBySteps } from './bracketsUtils'
+import { createAresJustFromIds, getBracketsBySteps } from '../bracketsUtils'
 
 const getWrapperStyles = (type) => {
   switch (type) {

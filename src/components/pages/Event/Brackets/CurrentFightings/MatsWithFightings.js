@@ -14,7 +14,9 @@ export default function MatsWithFightings({ matWithFightings }) {
       }
     >
       {!!matWithFightings?.fights?.length &&
-        matWithFightings.fights.map((fight) => <MatFight key={fight?.id} fight={fight} />)}
+        matWithFightings.fights.map((fight) => (
+          <MatFight key={fight?.id} bracketId={fight?.bracket?.id} fight={fight} />
+        ))}
     </MatsWrapper>
   )
 }

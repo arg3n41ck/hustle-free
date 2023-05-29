@@ -2,6 +2,9 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { EventMatsClient } from '../../../../../services/apiClients/eventMatsClient'
 import MatDetailHeader from './MatDetailHeader'
+import MatBrackets from './MatBrackets'
+import styled from 'styled-components'
+import BracketFights from './BracketFights'
 
 const eventMatsClient = new EventMatsClient()
 
@@ -13,6 +16,7 @@ export default function MatDetails() {
   const [fightsTotal, setFightsTotal] = useState(0)
   const [fightsFinished, setFightsFinished] = useState(0)
   const [selectedBracket, setSelectedBracket] = useState(null)
+  const [bracketFights, setBracketFights] = useState(null)
 
   useEffect(() => {
     if (matId) {
@@ -27,7 +31,6 @@ export default function MatDetails() {
             },
             { fightsFinished: 0, fightsTotal: 0 },
           )
-          console.log({ fightsCount })
           setFightsTotal(fightsCount.fightsTotal)
           setFightsFinished(fightsCount.fightsFinished)
         }
@@ -35,16 +38,50 @@ export default function MatDetails() {
     }
   }, [matId])
 
-  console.log({ matDetails })
+  useEffect(() => {
+    if (selectedBracket) {
+      eventMatsClient
+        .getMatBracketDetails(selectedBracket)
+        .then(({ data }) => setBracketFights(data?.fights))
+    }
+  }, [selectedBracket])
+
+  useEffect(() => {
+    if (matDetails?.brackets?.length) {
+      setSelectedBracket(matDetails.brackets[0]?.id)
+    }
+  }, [matDetails])
 
   return (
-    <div>
+    <MainWrapper>
       <MatDetailHeader
         name={`${matDetails?.prefix} ${matDetails?.name}`}
         dayStartTime={matDetails?.dayStartTime}
         fightsTotal={fightsTotal}
         fightsFinished={fightsFinished}
       />
-    </div>
+      <InnerWrapper>
+        <MatBrackets
+          brackets={matDetails?.brackets}
+          selectedBracket={selectedBracket}
+          onSelect={(bracketId) => setSelectedBracket(bracketId)}
+        />
+        <BracketFights
+          bracket={matDetails?.brackets.find((br) => br?.id == selectedBracket)}
+          bracketFights={bracketFights}
+        />
+      </InnerWrapper>
+    </MainWrapper>
   )
 }
+
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-row-gap: 32px;
+`
+const InnerWrapper = styled.div`
+  display: grid;
+  grid-template: 1fr / 1fr 1fr;
+  grid-gap: 32px;
+`
