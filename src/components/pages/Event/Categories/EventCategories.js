@@ -4,8 +4,6 @@ import { useRouter } from 'next/router'
 import Row from './Row'
 import styled from 'styled-components'
 import EDContentFilter from '../EDContentFilter'
-import Autocompletes from './Autocompletes'
-import { useSelector } from 'react-redux'
 import { useTranslation } from 'next-i18next'
 
 export const getEventPC = async (query) => {
@@ -43,16 +41,6 @@ export const getEnabledLevels = (pc) => {
   return [...new Set(pc.map(({ level }) => level))] || []
 }
 
-const filterPc = ({ pc, ageQValue, weightQValue }) => {
-  return pc
-    .sort(({ toAge: aAgeFrom }, { toAge: bAgeFrom }) => {
-      return ageQValue === 'increase' ? aAgeFrom - bAgeFrom : bAgeFrom - aAgeFrom
-    })
-    .sort(({ toWeight: aWeightFrom }, { toWeight: bWeightFrom }) => {
-      return weightQValue === 'increase' ? aWeightFrom - bWeightFrom : bWeightFrom - aWeightFrom
-    })
-}
-
 function EventCategories() {
   const { t: tEventDetail } = useTranslation('eventDetail')
 
@@ -67,9 +55,7 @@ function EventCategories() {
   } = useRouter()
   const [pc, setPc] = useState([])
   const [search, setSearch] = useState('')
-  const [levelOptions, setLevelOptions] = useState([])
   const [eventReg, setEventReg] = useState(null)
-  const user = useSelector((state) => state.user.user)
 
   const { current: tbColumns } = useRef([
     {
@@ -98,31 +84,19 @@ function EventCategories() {
     return !!(search && levelQValue)
   }, [levelQValue, genderQValue, weightQValue, ageQValue])
 
-  const filterPcMemo = useMemo(
-    () =>
-      filterPc({
-        pc,
-        levelQValue,
-        ageQValue,
-        weightQValue,
-        genderQValue,
-      }),
-    [levelQValue, genderQValue, ageQValue, weightQValue, pc],
-  )
-
   useEffect(() => {
     getEventPC({
       search,
       event: eventId,
-      level: `${levelQValue || ''}`,
-      gender: `${genderQValue || ''}`,
+      // level: `${levelQValue || ''}`,
+      // gender: `${genderQValue || ''}`,
     }).then((data) => {
       setPc(createPCList(data || []))
-      if (data?.length) {
-        setLevelOptions(getEnabledLevels(data))
-      }
+      // if (data?.length) {
+      //   setLevelOptions(getEnabledLevels(data))
+      // }
     })
-  }, [levelQValue, genderQValue, search])
+  }, [search])
 
   useEffect(() => {
     eventId && getEventRegistrationPeriods(eventId).then(setEventReg)
@@ -135,12 +109,11 @@ function EventCategories() {
         onSearch={(value) => setSearch((value || '').toLowerCase())}
         openChildren={isFilterOpen}
       >
-        {user?.role !== 'organizer' && <Autocompletes levelOptions={levelOptions} />}
+        {/* {user?.role !== 'organizer' && <Autocompletes levelOptions={levelOptions} />} */}
       </EDContentFilter>
       <PCRows>
         {!!pc?.length &&
-          !!filterPcMemo.length &&
-          filterPcMemo.map((pci) => (
+          pc.map((pci) => (
             <Row
               key={`EventCategories_PC_Collapse_${pci.id}`}
               columns={tbColumns}
