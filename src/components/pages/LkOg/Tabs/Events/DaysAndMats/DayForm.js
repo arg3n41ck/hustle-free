@@ -8,7 +8,7 @@ export default function DayForm({ editDay, onClose }) {
 
   const { openEdit, dayEditState } = useMemo(() => {
     if (editDay?.id) {
-      const dayDate = new Date(`${editDay?.startDate} ${editDay?.startTime}`)
+      const dayDate = new Date(`${editDay?.startDate}T${editDay?.startTime}`)
       const state = {
         name: editDay?.name,
         startDate: editDay?.startDate,

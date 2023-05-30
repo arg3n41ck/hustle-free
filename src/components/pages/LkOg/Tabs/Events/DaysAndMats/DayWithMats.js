@@ -27,7 +27,7 @@ export default function DayWithMats({
 
   const dateTime = useMemo(() => {
     if (day && day?.startTime && day?.startDate) {
-      const dateStr = new Date(`${day?.startDate} ${day?.startTime}`)
+      const dateStr = new Date(`${day?.startDate}T${day?.startTime}`)
       const date = format(dateStr, 'dd MMMM yyyy', { locale: ru })
       const time = format(dateStr, 'HH:mm')
 

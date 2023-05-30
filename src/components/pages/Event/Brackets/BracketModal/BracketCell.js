@@ -36,7 +36,7 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
     dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: bracket?.bracketType }))
     dispatch(fetchBracketResults({ bracketId: bracket?.id }))
   }
-  console.log({ cell })
+
   return (
     <>
       <CellWrapper

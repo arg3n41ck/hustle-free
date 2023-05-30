@@ -88,8 +88,6 @@ function Bracket({ event }) {
     }
   }, [bracket])
 
-  console.log({ bracket })
-
   const { typeTitle, BracketWrapperByType } = useMemo(() => {
     console.log(bracket, bracketComponentByTypes?.[bracket?.bracketType])
     const selectedBrType = bracket && bracketComponentByTypes?.[bracket?.bracketType]
