@@ -225,7 +225,7 @@ function EventLocation({ defaultValues = emptyInitialValues, eventId, locationId
         <Cancel onClick={() => routerPush('/lk-og/profile/events')} type='button'>
           {tLkOg('editEvent.cancel')}
         </Cancel>
-        <Submit type='submit'>{tLkOg('editEvent.further')}</Submit>
+        <Submit type='submit'>{tLkOg('editEvent.save')}</Submit>
       </EventFormFooter>
     </Form>
   )

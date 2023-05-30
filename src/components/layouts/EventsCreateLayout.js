@@ -47,12 +47,12 @@ export const createEventEditingSteps = ({ eventId, tLkOg }) => {
       ctxKey: 'participantCategories',
       path: eventId ? `/lk-og/profile/events/edit/${eventId}/participant-categories` : null,
     },
-    // {
-    //   title: tLkOg('brackets.brackets_creation'),
-    //   href: `/lk-og/profile/events/edit/[id]/brackets`,
-    //   ctxKey: 'brackets',
-    //   path: eventId ? `/lk-og/profile/events/edit/${eventId}/brackets` : null,
-    // },
+    {
+      title: tLkOg('mat.matAndSchedule'),
+      href: `/lk-og/profile/events/edit/[id]/mats`,
+      ctxKey: 'mats',
+      path: eventId ? `/lk-og/profile/events/edit/${eventId}/mats` : null,
+    },
     {
       title: tLkOg('contacts.contacts'),
       href: `/lk-og/profile/events/edit/[id]/contacts`,
@@ -85,6 +85,12 @@ function EventsCreateLayout({ onToggleSidebar, children, onDraft }) {
   )
 
   const readySteps = useMemo(() => steps(eventId), [eventId])
+
+  const handleOnClickLink = ({ access, path }) => {
+    if (access && path) {
+      routerPush(path)
+    }
+  }
 
   return (
     <div>
@@ -124,19 +130,21 @@ function EventsCreateLayout({ onToggleSidebar, children, onDraft }) {
                   active={href === pathname}
                 />
               )
+            const isLinkCurrentPage = asPath === path
+
             return (
               <Step key={`eventCreateSteps_${title}_${i}`}>
-                <ActiveLink
-                  disabled
-                  // href={path && path ? path : asPath}
-                  href={ctxStep[ctxKey]?.access && path ? path : asPath}
-                  activeClassName={ctxStep[ctxKey]?.access && path ? 'activeECLink' : ''}
+                <div
+                  onClick={() =>
+                    handleOnClickLink({ access: ctxStep[ctxKey]?.access, path, asPath })
+                  }
+                  className={`step-inner-wrapper ${
+                    !(ctxStep[ctxKey]?.access && path) ? 'disabled' : ''
+                  } ${isLinkCurrentPage ? 'activeECLink' : ''}`}
                 >
-                  <a>
-                    {icon}
-                    <span>{title}</span>
-                  </a>
-                </ActiveLink>
+                  {icon}
+                  <span>{title}</span>
+                </div>
               </Step>
             )
           })}
@@ -165,7 +173,6 @@ const MainWrapper = styled.div`
 
 const Form = styled.div`
   min-height: calc(100% - 96px);
-  padding: 32px;
 `
 
 const PageHeader = styled.div`
@@ -191,16 +198,20 @@ const StepsWrapper = styled.div`
 `
 
 const Step = styled.div`
-  a {
+  cursor: pointer;
+
+  & .step-inner-wrapper {
     height: 96px;
     display: grid;
     grid-template: 1fr/ 26px auto;
     justify-items: center;
     grid-column-gap: 24px;
     padding: 0 8%;
+
     &.activeECLink {
       background: rgba(109, 78, 234, 0.07);
     }
+
     &:hover {
       background: rgba(109, 78, 234, 0.07);
     }
@@ -212,6 +223,12 @@ const Step = styled.div`
       color: #ffffff;
       align-self: center;
       justify-self: flex-start;
+    }
+
+    &.disabled {
+      &:hover {
+        background: linear-gradient(0deg, rgba(235, 87, 87, 0.07), rgba(235, 87, 87, 0.07)), #141519;
+      }
     }
   }
 `

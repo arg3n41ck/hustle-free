@@ -1,145 +1,99 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import useQuery from '../../../../hooks/useQuery'
-import { fetchCountries } from '../../../../redux/components/countriesAndCities'
-import {
-  fetchBracketsByParams,
-  fetchBracketsFightsByParams,
-  fetchParticipantAthletes,
-  setSelectedBracket,
-  clearBF,
-} from '../../../../redux/components/eventBrackets'
-import { fetchParticipantCategories } from '../../../../redux/components/participantsCategories'
-import { getEnabledLevels } from '../Categories/EventCategories'
-import Filters from '../Participants/Filters'
-import BracketModal from './BracketModal/BracketModal'
-import BracketPCDropdown from './BracketPCDropdown'
+import { fetchDaysByParams, fetchMatsWithBrackets } from '../../../../redux/components/daysAndMats'
+import { Autocomplete, TextField } from '@mui/material'
+import { useTranslation } from 'next-i18next'
+import MatsWithBrackets from './MatsWithBrackets/MatsWithBrackets'
+import { theme } from '../../../../styles/theme'
 
 function EventBrackets() {
   const {
     query: { id: eventId },
-    push: routerPush,
   } = useRouter()
-  const query = useQuery()
+  const [selectedDay, setSelectedDay] = useState(null)
+  const [editingMatActive, setEditingMatActive] = useState(false)
+  const { t: tEventDetail } = useTranslation('eventDetail')
 
-  const { data: eventParticipants } = useSelector(
-    (state) => state.participantCategories.participantCategories,
-  )
-  const {
-    brackets: { data: brackets },
-    bracket,
-  } = useSelector((state) => state.brackets)
+  const { days, matsWithBrackets } = useSelector((state) => state.daysAndMats)
 
-  const [levels, setLevels] = useState([])
   const dispatch = useDispatch()
 
-  useEffect(async () => {
-    dispatch(fetchParticipantCategories(query))
-  }, [query])
-
   useEffect(() => {
-    dispatch(fetchBracketsByParams(query))
-    dispatch(fetchCountries())
+    eventId && dispatch(fetchDaysByParams({ event: eventId }))
   }, [eventId])
 
-  useEffect(() => {
-    setLevels(getEnabledLevels(eventParticipants))
-  }, [eventParticipants])
-
-  useEffect(() => {
-    query.set('event', eventId)
-  }, [eventId])
-
-  useEffect(() => {
-    if (bracket?.id) {
-      dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: bracket?.bracketType }))
-      dispatch(
-        fetchParticipantAthletes({
-          participation_category: bracket?.participationCategory,
-        }),
-      )
+  const refreshMatList = useCallback(() => {
+    if (selectedDay?.id && eventId) {
+      dispatch(fetchMatsWithBrackets({ event_id: eventId, day_id: selectedDay.id || '' }))
     }
-  }, [bracket])
+  }, [eventId, selectedDay])
 
-  const filterHandler = ({ target: { name, value } }) => {
-    if (!!value) {
-      query.set(name, value)
-    } else {
-      name && query.delete(name)
+  useEffect(() => {
+    refreshMatList()
+  }, [eventId, selectedDay])
+
+  useEffect(() => {
+    if (days?.data?.length && !selectedDay) {
+      setSelectedDay(days.data[0])
     }
-    routerPush(`/events/${eventId}/brackets/?${query}`)
-  }
-
-  const bracketsPC = useMemo(() => {
-    return (
-      brackets?.length &&
-      eventParticipants?.length &&
-      brackets.map((bracket) => {
-        const bracketPC = eventParticipants.find(({ id }) => id === bracket.participationCategory)
-        return {
-          ...bracket,
-          participationCategory: bracketPC,
-        }
-      })
-    )
-  }, [brackets, eventParticipants])
+  }, [days])
 
   return (
-    <MainWrapper style={{ minHeight: !!bracketsPC?.length ? '100vh' : 'unset' }}>
-      <Filters levels={levels} onFilter={filterHandler} />
-      <AnimatePresence>
-        {!!bracket?.id && (
-          <BracketsWrapper
-            initial={{ height: 0 }}
-            animate={{
-              height: 'unset',
-              transition: { delay: 0.5, duration: 0.4 },
+    <MainWrapper style={{ minHeight: '100vh' }}>
+      <TopHeader>
+        <FilterByDaysWrapper>
+          <p>День</p>
+          <Autocomplete
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                padding: '20px 68px 20px 20px',
+              },
+              '& .MuiAutocomplete-endAdornment': {
+                right: '20px !important',
+              },
             }}
-            exit={{
-              height: 0,
-              transition: { delay: 0.4, duration: 0.5 },
-            }}
-          >
-            <BracketModal
-              selectedBracket={bracket}
-              onClose={() => {
-                dispatch(clearBF())
-                dispatch(setSelectedBracket(null))
-              }}
-            />
-          </BracketsWrapper>
-        )}
-      </AnimatePresence>
-      <AnimatePresence>
-        {!!bracketsPC?.length && !bracket && (
-          <BracketsWrapper
-            initial={{ height: 0 }}
-            animate={{
-              height: 'unset',
-              transition: { delay: 0.2, duration: 0.3 },
-            }}
-            exit={{
-              height: 0,
-              transition: { delay: 0.4, duration: 0.5 },
-            }}
-          >
-            <PCWrapper>
-              {bracketsPC
-                .filter(({ participationCategory }) => participationCategory)
-                .map((bracket) => (
-                  <BracketPCDropdown
-                    key={`bracket_${bracket.id}`}
-                    bracket={bracket}
-                    onSelectBracket={(value) => dispatch(setSelectedBracket(value))}
-                  />
-                ))}
-            </PCWrapper>
-          </BracketsWrapper>
-        )}
-      </AnimatePresence>
+            onChange={(_, value) => value && setSelectedDay(value)}
+            options={days.data.map((option) => option)}
+            value={selectedDay}
+            disableClearable
+            isOptionEqualToValue={() => days.data.some((day) => day?.id === selectedDay?.id)}
+            noOptionsText={tEventDetail('event.participants.filters.nothingFound')}
+            getOptionLabel={(option) => option.name}
+            fullWidth
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                sx={{
+                  width: '100%',
+                }}
+                fullWidth
+                placeholder={'Выбрать день'}
+              />
+            )}
+          />
+        </FilterByDaysWrapper>
+        <EditButton
+          className={`${editingMatActive ? 'disabled' : ''}`}
+          onClick={() => setEditingMatActive(!editingMatActive)}
+        >
+          {editingMatActive ? 'Завершить редактирование' : 'Редактировать'}
+        </EditButton>
+      </TopHeader>
+
+      <MatsWrapper>
+        {!!matsWithBrackets?.data?.length
+          ? matsWithBrackets.data.map((mat) => (
+              <MatsWithBrackets
+                key={mat?.id}
+                refreshMatList={refreshMatList}
+                matWithBrackets={mat}
+                editingMatActive={editingMatActive}
+              />
+            ))
+          : `В выбранном дне нет матов, выберите другой день`}
+      </MatsWrapper>
     </MainWrapper>
   )
 }
@@ -150,12 +104,74 @@ const MainWrapper = styled.div`
   position: relative;
 `
 
-const BracketsWrapper = styled(motion.div)`
-  top: 0;
-  z-index: 12;
+const TopHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 48px;
 
-  overflow-y: auto;
-  overflow-x: hidden;
+  grid-gap: 16px;
+
+  ${theme.mqMax('md')} {
+    flex-direction: column;
+  }
 `
 
-const PCWrapper = styled.div``
+const FilterByDaysWrapper = styled.div`
+  max-width: 450px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 12px;
+
+  ${theme.mqMax('md')} {
+    max-width: unset;
+    align-self: flex-start;
+  }
+
+  & > p {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+    color: #f2f2f2;
+  }
+`
+
+const EditButton = styled.button`
+  height: min-content;
+  background: #6d4eea;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+
+  &.disabled {
+    background: #828282;
+    color: #bdbdbd;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`
+
+const MatsWrapper = styled.div`
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: 1fr;
+  flex-wrap: wrap;
+
+  ${theme.mqMin('md')} {
+    display: grid;
+    grid-gap: 32px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (min-width: 1300px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`

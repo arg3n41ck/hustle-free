@@ -21,30 +21,35 @@ function EdMainLayout({ event, children }) {
       title: tEventDetail('event.EDMainLayout.info'),
       link: `/events/${event.id}`,
       icon: <EDInfoIcon />,
+      exact: true,
     },
     {
       id: 'ed_categoty',
       title: tEventDetail('event.EDMainLayout.categories'),
       link: `/events/${event.id}/categories`,
       icon: <EDCategIcon />,
+      exact: true,
     },
     {
       id: 'ed_participants',
       title: `${tEventDetail('event.EDMainLayout.participants')} (${event.participantsCount || 0})`,
       link: `/events/${event.id}/participants`,
       icon: <EDParticipantIcon />,
+      exact: true,
     },
     {
       id: 'ed_grid',
-      title: tEventDetail('event.EDMainLayout.grid'),
+      title: tEventDetail('event.EDMainLayout.brackets'),
       link: `/events/${event.id}/brackets`,
       icon: <EDGridIcon />,
+      exact: false,
     },
     {
       id: 'ed_results',
       title: tEventDetail('event.EDMainLayout.results'),
       link: `/events/${event.id}/results`,
       icon: <EDResultsIcon />,
+      exact: true,
     },
   ])
 
@@ -53,9 +58,9 @@ function EdMainLayout({ event, children }) {
       <EdGeneralInfo event={event} />
       <ChildWrapper>
         <NavigationUl>
-          {links.map(({ id, title, link, icon }) => (
+          {links.map(({ id, title, link, icon, exact }) => (
             <li key={id}>
-              <ActiveLink activeClassName='activeEDLink' href={link}>
+              <ActiveLink activeClassName='activeEDLink' exact={exact} href={link}>
                 <a>
                   {icon}
                   <p>{title}</p>
@@ -115,6 +120,7 @@ const ChildWrapper = styled.div`
         justify-content: center;
         border-bottom: 8px solid transparent;
         grid-gap: 16px;
+        padding: 0 10px;
 
         &.activeEDLink {
           border-bottom: 8px solid #6d4eea !important;
@@ -127,8 +133,10 @@ const ChildWrapper = styled.div`
         }
 
         p {
+          width: fit-content;
           font-size: 20px;
-          line-height: 32px;
+          line-height: 20px;
+          text-align: center;
 
           color: #f2f2f2;
         }
@@ -145,14 +153,14 @@ const ChildWrapper = styled.div`
         }
 
         ${theme.mqMax('md')} {
-          min-width: 70px;
+          padding: 0 5px;
           & svg {
             height: 24px;
             width: 24px;
           }
           p {
-            font-size: 10px;
-            line-height: 12px;
+            font-size: 8px;
+            line-height: 8px;
           }
         }
       }

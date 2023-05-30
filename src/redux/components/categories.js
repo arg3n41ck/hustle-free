@@ -35,7 +35,22 @@ export const categoriesSlice = createSlice({
       count: 0,
       isLoading: false,
       categories: [],
+    },
+    levels: {
+      error: null,
+      count: 0,
+      isLoading: false,
       levels: [],
+    },
+  },
+  reducers: {
+    setCatData: (state, action) => {
+      state.categories.categories = action.payload
+      state.categories.count = action.payload.count ?? action.payload.length
+    },
+    setLevelData: (state, action) => {
+      state.levels.levels = action.payload
+      state.levels.count = action.payload.count ?? action.payload.length
     },
   },
   extraReducers: (builder) => {
@@ -54,26 +69,28 @@ export const categoriesSlice = createSlice({
       categories.categories = []
     })
 
-    builder.addCase(fetchLevel.pending, ({ categories }) => {
-      categories.isLoading = true
+    builder.addCase(fetchLevel.pending, ({ levels }) => {
+      levels.isLoading = true
     })
-    builder.addCase(fetchLevel.fulfilled, ({ categories }, action) => {
-      categories.isLoading = false
-      categories.levels = action.payload
-      categories.count = action.payload.count ?? action.payload.length
-      categories.error = null
+    builder.addCase(fetchLevel.fulfilled, ({ levels }, action) => {
+      levels.isLoading = false
+      levels.levels = action.payload
+      levels.count = action.payload.count ?? action.payload.length
+      levels.error = null
     })
-    builder.addCase(fetchLevel.rejected, ({ categories }, action) => {
-      categories.isLoading = false
-      categories.error = action.payload
-      categories.categories = []
+    builder.addCase(fetchLevel.rejected, ({ levels }, action) => {
+      levels.isLoading = false
+      levels.error = action.payload
+      levels.categories = []
     })
   },
 })
 
+export const { getCatFromSSR } = categoriesSlice.actions
+
 export const categoriesSelector = createSelector(
   (state) => state.categories.categories.categories,
-  (state) => state.categories.categories.levels,
+  (state) => state.categories.levels.levels,
   (categories, levels) => [categories, levels],
 )
 

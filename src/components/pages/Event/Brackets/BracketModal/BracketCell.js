@@ -10,8 +10,7 @@ import BracketCellFighter from './BracketCellFighter'
 
 export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes }) {
   const { id, fighters, parents, borderDirection } = cell
-  const [, , participantAthletes] = useSelector(selectBrackets)
-  const bracket = useSelector((state) => state.brackets.bracket)
+  const [, , participantAthletes, , bracket] = useSelector(selectBrackets)
   const dispatch = useDispatch()
 
   const getFighterDetails = useCallback(

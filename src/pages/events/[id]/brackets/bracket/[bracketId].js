@@ -1,17 +1,25 @@
 import React, { useEffect, useMemo } from 'react'
-import styled from 'styled-components'
-import { theme } from '../../../../../styles/theme'
-import BracketHeaderInfo from './BracketHeaderInfo'
-import BracketsRobin from './BracketsRobin'
-import BracketsThreeMan from './BracketsThreeMan'
-import { useSelector } from 'react-redux'
-import { selectBrackets } from '../../../../../redux/components/eventBrackets'
-import FullScreenLoader from '../../../../ui/FullScreenLoader'
-import BracketResultTable from './BracketResultTable'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  fetchBracket,
+  fetchBracketsFightsByParams,
+  fetchParticipantAthletes,
+  selectBrackets,
+} from '../../../../../redux/components/eventBrackets'
+import EdMainLayout from '../../../../../components/pages/Event/EDMainLayout'
 import { useRouter } from 'next/router'
-import BracketBranched from './BracketBranched'
+import styled from 'styled-components'
+import BracketBranched from '../../../../../components/pages/Event/Brackets/BracketModal/BracketBranched'
+import BracketsThreeMan from '../../../../../components/pages/Event/Brackets/BracketModal/BracketsThreeMan'
+import BracketsRobin from '../../../../../components/pages/Event/Brackets/BracketModal/BracketsRobin'
+import $api from '../../../../../services/axios'
+import { theme } from '../../../../../styles/theme'
+import BracketHeaderInfo from '../../../../../components/pages/Event/Brackets/BracketModal/BracketHeaderInfo'
+import BracketResultTable from '../../../../../components/pages/Event/Brackets/BracketModal/BracketResultTable'
+import FullScreenLoader from '../../../../../components/ui/FullScreenLoader'
 
-export const bracketTypes = {
+export const bracketComponentByTypes = {
   1: {
     id: 1,
     name: 'SEWithoutBF',
@@ -56,16 +64,40 @@ export const bracketTypes = {
   },
 }
 
-export default function BracketModal({ selectedBracket, onClose }) {
-  const [, bracketsFights, participantAthletes] = useSelector(selectBrackets)
-  const { pathname } = useRouter()
+function Bracket({ event }) {
+  const {
+    query: { bracketId },
+    back,
+  } = useRouter()
+  const [, bracketsFights, participantAthletes, , bracket] = useSelector(selectBrackets)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    bracketId && dispatch(fetchBracket({ bracketId }))
+  }, [bracketId])
+
+  useEffect(() => {
+    if (bracket?.bracketType && bracketId) {
+      dispatch(fetchBracketsFightsByParams({ bracket: bracketId, type: bracket?.bracketType }))
+      dispatch(
+        fetchParticipantAthletes({
+          participation_category: bracket?.participationCategory,
+        }),
+      )
+    }
+  }, [bracket])
+
+  console.log({ bracket })
+
   const { typeTitle, BracketWrapperByType } = useMemo(() => {
-    const selectedBrType = selectedBracket && bracketTypes?.[selectedBracket.bracketType]
+    console.log(bracket, bracketComponentByTypes?.[bracket?.bracketType])
+    const selectedBrType = bracket && bracketComponentByTypes?.[bracket?.bracketType]
     return {
       typeTitle: selectedBrType && selectedBrType?.title,
       BracketWrapperByType: (props) => selectedBrType && selectedBrType?.component(props),
     }
-  }, [selectedBracket])
+  }, [bracket])
 
   const fightersCount = useMemo(() => {
     return participantAthletes.data?.length
@@ -73,29 +105,43 @@ export default function BracketModal({ selectedBracket, onClose }) {
       : 0
   }, [participantAthletes])
 
-  useEffect(() => {
-    pathname !== '/events/[id]/brackets' && onClose()
-  }, [pathname])
-
   return (
-    <>
+    <EdMainLayout event={event}>
       <ContentWrapper>
         <HeaderWrapper>
-          <Back onClick={onClose}>
+          <Back onClick={back}>
             {arrowBack}
             <span>назад</span>
           </Back>
-          <Title>{selectedBracket?.title}</Title>
+          <Title>{bracket?.title}</Title>
         </HeaderWrapper>
         <BracketHeaderInfo title={typeTitle} allParticipants={fightersCount?.length || 0} />
         <BracketWrapper>{BracketWrapperByType && <BracketWrapperByType />}</BracketWrapper>
-        {+(selectedBracket?.bracketType || 0) !== 7 && (
-          <BracketResultTable bracketId={selectedBracket?.id} />
-        )}
+        {+(bracket?.bracketType || 0) !== 7 && <BracketResultTable bracketId={bracket?.id} />}
       </ContentWrapper>
       <FullScreenLoader open={bracketsFights.isLoading} />
-    </>
+    </EdMainLayout>
   )
+}
+
+export default Bracket
+
+export async function getServerSideProps(context) {
+  const { query, locale } = context
+  const { data } = await $api.get(`/events/events/${query.id}/`)
+  return {
+    props: {
+      event: data,
+      ...(await serverSideTranslations(locale, [
+        'header',
+        'common',
+        'eventDetail',
+        'lkTm',
+        'lkOg',
+        'footer',
+      ])),
+    }, // will be passed to the page component as props
+  }
 }
 
 const ContentWrapper = styled.div`

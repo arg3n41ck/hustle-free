@@ -7,7 +7,6 @@ import { theme } from '../../../../styles/theme'
 
 const TeamItem = ({ team, index }) => {
   const { t: tEventDetail } = useTranslation('eventDetail')
-  console.log({ team })
   const mxMd = useMediaQuery('(max-width: 620px)')
 
   return (

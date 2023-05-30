@@ -1,13 +1,16 @@
 import React from 'react'
-import EdMainLayout from '../../../components/pages/Event/EDMainLayout'
-import $api from '../../../services/axios'
+import EdMainLayout from '../../../../components/pages/Event/EDMainLayout'
+import $api from '../../../../services/axios'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import EventBrackets from '../../../components/pages/Event/Brackets/EventBrackets'
+import EventBrackets from '../../../../components/pages/Event/Brackets/EventBrackets'
+import BracketsWrapper from '../../../../components/pages/Event/Brackets/BracketsWrapper/BracketsWrapper'
 
 function Brackets({ event }) {
   return (
     <EdMainLayout event={event}>
-      <EventBrackets />
+      <BracketsWrapper>
+        <EventBrackets />
+      </BracketsWrapper>
     </EdMainLayout>
   )
 }

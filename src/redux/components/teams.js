@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import $api from '../../services/axios'
+import { removeDuplicateObjectFromArray } from '../../helpers/helpers'
 
 export const fetchAthleteTeams = createAsyncThunk(
   'teams/teams',
@@ -39,6 +40,19 @@ export const fetchTeam = createAsyncThunk(
   },
 )
 
+export const fetchEventTeams = createAsyncThunk(
+  'teams/fetchEventTeams',
+  async (params, { rejectWithValue }) => {
+    try {
+      const { data } = await $api.get(`/events/team_events/`, params)
+      const _teams = data.map(({ team }) => team)
+      return removeDuplicateObjectFromArray(_teams, 'id')
+    } catch (e) {
+      return rejectWithValue(e.response.data)
+    }
+  },
+)
+
 export const getIsUserInTeam = createAsyncThunk(
   'teams/getIsUserInTeam',
   async ({ teamId }, { rejectWithValue }) => {
@@ -70,6 +84,11 @@ export const teamsSlice = createSlice({
         status: null,
         isLoading: false,
       },
+    },
+    eventTeams: {
+      error: null,
+      isLoading: false,
+      data: [],
     },
   },
   extraReducers: (builder) => {
@@ -115,6 +134,20 @@ export const teamsSlice = createSlice({
       team.isLoading = false
       team.error = action.payload
       team.team = null
+    })
+
+    builder.addCase(fetchEventTeams.pending, ({ eventTeams }) => {
+      eventTeams.isLoading = true
+    })
+    builder.addCase(fetchEventTeams.fulfilled, ({ eventTeams }, action) => {
+      eventTeams.isLoading = false
+      eventTeams.data = action.payload
+      eventTeams.error = null
+    })
+    builder.addCase(fetchEventTeams.rejected, ({ eventTeams }, action) => {
+      eventTeams.isLoading = false
+      eventTeams.error = action.payload
+      eventTeams.eventTeams = null
     })
 
     builder.addCase(getIsUserInTeam.pending, ({ team: { userStatusInTeam } }) => {

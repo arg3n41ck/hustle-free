@@ -58,6 +58,7 @@ const Wrapper = styled.div`
   border-radius: 24px;
   background: #1b1c22;
   display: flex;
+  overflow: hidden;
 
   ${theme.mqMax('md')} {
     border: none;

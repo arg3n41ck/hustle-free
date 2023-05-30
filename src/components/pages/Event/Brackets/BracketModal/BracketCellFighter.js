@@ -7,7 +7,7 @@ import {
   fetchBracketsFightsByParams,
   selectBrackets,
 } from '../../../../../redux/components/eventBrackets'
-import { BF_DND_ACCEPT_TYPE, getFighterPlace } from './bracketsUtils'
+import { BF_DND_ACCEPT_TYPE, getFighterPlace } from '../bracketsUtils'
 import BracketWin from './BracketWin'
 import { useDrag, useDrop } from 'react-dnd'
 import $api from '../../../../../services/axios'
@@ -32,8 +32,7 @@ const replaceBFCell = async (fromBF, toBF, draggedPr, hoverPr) => {
 
 export default function BracketCellFighter({ cell, fighter, onWin, opponent, orientation }) {
   const { id: bfId, fighters, winner, disabled, fightNumber, place: cellPlace } = cell
-  const [, bracketsFights, , bracketsResults] = useSelector(selectBrackets)
-  const bracket = useSelector((state) => state.brackets.bracket)
+  const [, bracketsFights, , bracketsResults, bracket] = useSelector(selectBrackets)
   const dragNDropRef = useRef(null)
   const dispatch = useDispatch()
   const fighterPlace = useMemo(() => {
@@ -72,19 +71,6 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
       if (!item?.fighterId || !fighter?.id || item.bfId === bfId || winner) {
         return
       }
-
-      // const hoveredRect = dragNDropRef.current.getBoundingClientRect()
-      // const hoverMiddleY = (hoveredRect.bottom - hoveredRect.top) / 2
-      // const mousePosition = monitor.getClientOffset()
-      // const hoverClientY = mousePosition.y - hoveredRect.top
-
-      // if (item.bfId < bfId && hoverClientY < hoverMiddleY) {
-      //   return
-      // }
-
-      // if (item.bfId > bfId && hoverClientY > hoverMiddleY) {
-      //   return
-      // }
 
       await replaceBFCell(item.bfId, bfId, item.fighterId, fighter?.id || null).then(() => {
         dispatch(fetchBracketsFightsByParams({ bracket: bracket?.id, type: bracket?.bracketType }))
@@ -141,9 +127,9 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
         </FighterTexts>
       </UserInfoPart>
       {!!fighterPlace && <PlaceBlock place={fighterPlace}>{fighterPlace}</PlaceBlock>}
-      {!disabled && !!fighter && fighters?.length === 2 && opponent !== winner && (
+      {/* {!disabled && !!fighter && fighters?.length === 2 && opponent !== winner && (
         <BracketWin bfId={bfId} fighter={fighter.id} winner={winner} onWin={onWin} />
-      )}
+      )} */}
     </FighterWrapper>
   )
 }
