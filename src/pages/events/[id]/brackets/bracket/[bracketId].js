@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  fetchBracketsByParams,
+  fetchBracket,
   fetchBracketsFightsByParams,
   fetchParticipantAthletes,
   selectBrackets,
@@ -19,7 +19,7 @@ import BracketHeaderInfo from '../../../../../components/pages/Event/Brackets/Br
 import BracketResultTable from '../../../../../components/pages/Event/Brackets/BracketModal/BracketResultTable'
 import FullScreenLoader from '../../../../../components/ui/FullScreenLoader'
 
-export const bracketTypes = {
+export const bracketComponentByTypes = {
   1: {
     id: 1,
     name: 'SEWithoutBF',
@@ -66,16 +66,16 @@ export const bracketTypes = {
 
 function Bracket({ event }) {
   const {
-    query: { id: eventId, bracketId },
+    query: { bracketId },
     back,
   } = useRouter()
-  const [bracket, bracketsFights, participantAthletes] = useSelector(selectBrackets)
+  const [, bracketsFights, participantAthletes, , bracket] = useSelector(selectBrackets)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchBracketsByParams({ event: eventId }))
-  }, [eventId])
+    bracketId && dispatch(fetchBracket({ bracketId }))
+  }, [bracketId])
 
   useEffect(() => {
     if (bracket?.bracketType && bracketId) {
@@ -88,8 +88,11 @@ function Bracket({ event }) {
     }
   }, [bracket])
 
+  console.log({ bracket })
+
   const { typeTitle, BracketWrapperByType } = useMemo(() => {
-    const selectedBrType = bracket && bracketTypes?.[bracket.bracketType]
+    console.log(bracket, bracketComponentByTypes?.[bracket?.bracketType])
+    const selectedBrType = bracket && bracketComponentByTypes?.[bracket?.bracketType]
     return {
       typeTitle: selectedBrType && selectedBrType?.title,
       BracketWrapperByType: (props) => selectedBrType && selectedBrType?.component(props),
@@ -102,8 +105,6 @@ function Bracket({ event }) {
       : 0
   }, [participantAthletes])
 
-  console.log({ BracketWrapperByType })
-
   return (
     <EdMainLayout event={event}>
       <ContentWrapper>
@@ -115,7 +116,7 @@ function Bracket({ event }) {
           <Title>{bracket?.title}</Title>
         </HeaderWrapper>
         <BracketHeaderInfo title={typeTitle} allParticipants={fightersCount?.length || 0} />
-        {/* <BracketWrapper>{BracketWrapperByType && <BracketWrapperByType />}</BracketWrapper> */}
+        <BracketWrapper>{BracketWrapperByType && <BracketWrapperByType />}</BracketWrapper>
         {+(bracket?.bracketType || 0) !== 7 && <BracketResultTable bracketId={bracket?.id} />}
       </ContentWrapper>
       <FullScreenLoader open={bracketsFights.isLoading} />

@@ -82,6 +82,11 @@ const ContentText = styled.p`
   color: #ffffff;
   margin: 0;
 
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    line-height: 16px;
+  }
+
   &.empty {
     display: flex;
     align-items: center;
@@ -96,12 +101,20 @@ const BracketWrapper = styled.div`
   grid-template: 1fr / auto 88px 80px;
   border-bottom: 1px solid #1b1c22;
 
+  @media screen and (max-width: 768px) {
+    grid-template: 1fr / auto 64px 72px;
+  }
+
   &.dndActive {
     grid-template: 1fr / min-content auto 88px 80px;
   }
   & > ${ContentText} {
     padding: 16px;
     border-right: 1px solid #1b1c22;
+
+    @media screen and (max-width: 768px) {
+      padding: 8px;
+    }
 
     &:last-child {
       border-right: none;

@@ -21,7 +21,7 @@ function EventBrackets() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchDaysByParams({ event: eventId }))
+    eventId && dispatch(fetchDaysByParams({ event: eventId }))
   }, [eventId])
 
   const refreshMatList = useCallback(() => {
@@ -152,6 +152,10 @@ const EditButton = styled.button`
   &.disabled {
     background: #828282;
     color: #bdbdbd;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
   }
 `
 

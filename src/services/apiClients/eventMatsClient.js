@@ -3,7 +3,7 @@ import $api from '../axios'
 export class EventMatsClient {
   async getEventDays(params) {
     try {
-      return await $api.get(`/mats/event_days/`, params)
+      return await $api.get(`/mats/event_days/`, { params })
     } catch (error) {
       throw error
     }

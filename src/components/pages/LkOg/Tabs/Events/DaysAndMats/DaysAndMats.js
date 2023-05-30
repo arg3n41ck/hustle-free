@@ -22,8 +22,8 @@ export default function DaysAndMats() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchDaysByParams({ event: eventId }))
-  }, [])
+    eventId && dispatch(fetchDaysByParams({ event: eventId }))
+  }, [eventId])
 
   return (
     <div>

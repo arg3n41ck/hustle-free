@@ -17,6 +17,10 @@ export default function MatDetailHeader({ dayStartTime, name, fightsFinished, fi
 const Header = styled.div`
   display: flex;
   grid-gap: 32px;
+
+  @media screen and (max-width: 768px) {
+    grid-gap: 24px;
+  }
 `
 
 const MatDetails = styled.p`
@@ -25,5 +29,9 @@ const MatDetails = styled.p`
   font-size: 24px;
   line-height: 32px;
   color: #f2f2f2;
-  padding-right: 32px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 `

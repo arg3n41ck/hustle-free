@@ -84,6 +84,10 @@ export const DNDIconWrapper = styled.button`
   align-self: center;
   justify-self: center;
   padding: 16px 0 16px 16px;
+
+  @media screen and (max-width: 768px) {
+    padding: 8px 0 8px 8px;
+  }
 `
 
 const EmptyText = styled.div`
@@ -101,6 +105,10 @@ const ContentHead = styled.div`
   grid-template: 1fr / auto 88px 80px;
   border-bottom: 1px solid #1b1c22;
 
+  @media screen and (max-width: 768px) {
+    grid-template: 1fr / auto 64px 72px;
+  }
+
   & > p {
     font-weight: 400;
     font-size: 14px;
@@ -111,6 +119,12 @@ const ContentHead = styled.div`
 
     &:last-child {
       border-right: none;
+    }
+
+    @media screen and (max-width: 768px) {
+      font-size: 12px;
+      line-height: 16px;
+      padding: 8px;
     }
   }
 `

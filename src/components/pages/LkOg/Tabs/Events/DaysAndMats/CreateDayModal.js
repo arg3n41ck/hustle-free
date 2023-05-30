@@ -49,14 +49,11 @@ function CreateDayModal({ open, onClose, editDayId = null, initialValues = null 
 
       try {
         if (editDayId) {
-          await eventMatsClient
-            .editDay(editDayId, body)
-            .then(() => dispatch(fetchDaysByParams({ event: eventId })))
+          await eventMatsClient.editDay(editDayId, body)
         } else {
-          await eventMatsClient
-            .createDay(body)
-            .then(() => dispatch(fetchDaysByParams({ event: eventId })))
+          await eventMatsClient.createDay(body)
         }
+        eventId && dispatch(fetchDaysByParams({ event: eventId }))
 
         formik.resetForm()
         onClose()

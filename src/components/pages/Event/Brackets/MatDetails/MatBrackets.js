@@ -2,7 +2,7 @@ import React from 'react'
 import BracketRow from './BracketRow'
 import styled from 'styled-components'
 
-export default function MatBrackets({ brackets, selectedBracket, onSelect }) {
+export default function MatBrackets({ brackets, selectedBracket, onSelect, bracketFights }) {
   return (
     <Wrapper>
       <Header>
@@ -18,11 +18,12 @@ export default function MatBrackets({ brackets, selectedBracket, onSelect }) {
               selected={selectedBracket === bracket?.id}
               onSelect={onSelect}
               bracket={bracket}
+              bracketFights={bracketFights}
             />
           )
         })
       ) : (
-        <NoBR>Нет категорий в выбранной мате</NoBR>
+        <NoBR>Нет категорий в выбранном мате</NoBR>
       )}
     </Wrapper>
   )
@@ -30,9 +31,18 @@ export default function MatBrackets({ brackets, selectedBracket, onSelect }) {
 
 const Wrapper = styled.div`
   height: min-content;
-  border: 1px solid #333333;
-  background: #141519;
-  border-radius: 8px;
+
+  @media screen and (min-width: 768px) {
+    border: 1px solid #333333;
+    border-radius: 8px;
+    background: #141519;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 12px;
+  }
 `
 
 const Header = styled.div`
@@ -41,6 +51,11 @@ const Header = styled.div`
 
   background: #1b1c22;
   border-bottom: 1px solid #1b1c22;
+  @media screen and (max-width: 768px) {
+    grid-template: 1fr / auto 64px 50px;
+    border: none;
+    border-radius: 8px;
+  }
 `
 
 const Title = styled.p`
@@ -58,6 +73,12 @@ const Title = styled.p`
   align-items: center;
   border-right: 1px solid #333333;
   color: #bdbdbd;
+
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    line-height: 20px;
+    padding: 8px;
+  }
 `
 
 const Col = styled.div`
@@ -77,6 +98,12 @@ const Col = styled.div`
 
   &:last-child {
     border-right: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    line-height: 16px;
+    padding: 8px;
   }
 `
 

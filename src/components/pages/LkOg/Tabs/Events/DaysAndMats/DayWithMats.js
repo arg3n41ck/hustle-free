@@ -56,10 +56,10 @@ export default function DayWithMats({
           }
         })
         .then(() => {
-          dispatch(fetchDaysByParams({ event: eventId }))
+          eventId && dispatch(fetchDaysByParams({ event: eventId }))
         })
     }
-  }, [day])
+  }, [day, eventId])
 
   const handleDeleteDay = useCallback(async () => {
     if (day?.id) {

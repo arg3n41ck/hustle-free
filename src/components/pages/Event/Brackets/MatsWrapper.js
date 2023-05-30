@@ -41,6 +41,10 @@ const MatWrapper = styled.div`
   border-radius: 8px;
   background: #141519;
 
+  @media screen and (max-width: 768px) {
+    grid-template: 44px auto 44px / 1fr;
+  }
+
   &:hover {
     ${DNDIconWrapper} {
       path {
@@ -58,6 +62,10 @@ const Header = styled.div`
   border-radius: 8px 8px 0 0;
   border-bottom: 1px solid #1b1c22;
   padding: 16px;
+
+  @media screen and (max-width: 768px) {
+    padding: 12px;
+  }
 `
 
 const MatTitle = styled.button`
@@ -69,6 +77,11 @@ const MatTitle = styled.button`
 
   &:hover {
     color: #6d4eea;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    line-height: 20px;
   }
 `
 
@@ -83,6 +96,11 @@ const ContentText = styled.p`
   line-height: 24px;
   color: #ffffff;
   margin: 0;
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `
 
 const Footer = styled.div`
@@ -93,5 +111,8 @@ const Footer = styled.div`
 
   & > ${ContentText} {
     padding: 16px;
+    @media screen and (max-width: 768px) {
+      padding: 12px;
+    }
   }
 `

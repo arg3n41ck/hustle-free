@@ -25,10 +25,6 @@ export default function Mat({ mat, day, onSelectToEditMat }) {
     drop: async (item) => {
       const { mat: dragMat } = item
       const hoverMat = mat
-      console.log({
-        dragMat,
-        hoverMat,
-      })
       await eventMatsClient.editMat(dragMat?.id, { order: hoverMat?.order })
       await eventMatsClient.editMat(hoverMat?.id, { order: dragMat?.order })
       dispatch(fetchDaysByParams({ event: eventId }))

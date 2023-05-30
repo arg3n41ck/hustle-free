@@ -5,6 +5,7 @@ import MatDetailHeader from './MatDetailHeader'
 import MatBrackets from './MatBrackets'
 import styled from 'styled-components'
 import BracketFights from './BracketFights'
+import { useMediaQuery } from '@mui/material'
 
 const eventMatsClient = new EventMatsClient()
 
@@ -17,6 +18,7 @@ export default function MatDetails() {
   const [fightsFinished, setFightsFinished] = useState(0)
   const [selectedBracket, setSelectedBracket] = useState(null)
   const [bracketFights, setBracketFights] = useState(null)
+  const lg = useMediaQuery('(min-width: 768px)')
 
   useEffect(() => {
     if (matId) {
@@ -42,7 +44,7 @@ export default function MatDetails() {
     if (selectedBracket) {
       eventMatsClient
         .getMatBracketDetails(selectedBracket)
-        .then(({ data }) => setBracketFights(data?.fights))
+        .then(({ data }) => setBracketFights(data))
     }
   }, [selectedBracket])
 
@@ -65,11 +67,9 @@ export default function MatDetails() {
           brackets={matDetails?.brackets}
           selectedBracket={selectedBracket}
           onSelect={(bracketId) => setSelectedBracket(bracketId)}
-        />
-        <BracketFights
-          bracket={matDetails?.brackets.find((br) => br?.id == selectedBracket)}
           bracketFights={bracketFights}
         />
+        {lg && <BracketFights bracketFights={bracketFights} />}
       </InnerWrapper>
     </MainWrapper>
   )
@@ -81,7 +81,11 @@ const MainWrapper = styled.div`
   grid-row-gap: 32px;
 `
 const InnerWrapper = styled.div`
-  display: grid;
-  grid-template: 1fr / 1fr 1fr;
-  grid-gap: 32px;
+  display: flex;
+  flex-direction: column;
+  @media screen and (min-width: 768px) {
+    display: grid;
+    grid-template: 1fr / 1fr 1fr;
+    grid-gap: 32px;
+  }
 `

@@ -90,7 +90,12 @@ export const bracketsSlice = createSlice({
       isLoading: false,
       data: [],
     },
-    bracket: null,
+    bracket: {
+      error: null,
+      isLoading: false,
+      data: null,
+      id: null,
+    },
     participantAthletes: {
       error: null,
       isLoading: false,
@@ -206,6 +211,20 @@ export const bracketsSlice = createSlice({
       bracketsResults.error = action.payload
       bracketsResults.data = null
     })
+    // BRACKET
+    builder.addCase(fetchBracket.pending, ({ bracket }) => {
+      bracket.isLoading = true
+    })
+    builder.addCase(fetchBracket.fulfilled, ({ bracket }, action) => {
+      bracket.isLoading = false
+      bracket.data = action.payload
+      bracket.error = null
+    })
+    builder.addCase(fetchBracket.rejected, ({ bracket }, action) => {
+      bracket.isLoading = false
+      bracket.error = action.payload
+      bracket.data = null
+    })
   },
 })
 
@@ -216,11 +235,13 @@ export const selectBrackets = createSelector(
   (state) => state.brackets.bracketsFights,
   (state) => state.brackets.participantAthletes,
   (state) => state.brackets.bracketsResults,
-  (brackets, bracketsFights, participantAthletes, bracketsResults) => [
+  (state) => state.brackets.bracket,
+  (brackets, bracketsFights, participantAthletes, bracketsResults, bracket) => [
     brackets,
     bracketsFights,
     participantAthletes,
     bracketsResults,
+    bracket.data,
   ],
 )
 

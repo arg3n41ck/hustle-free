@@ -19,7 +19,7 @@ function EPFormDaysAndMats({ formik }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchDaysByParams({ event: eventId }))
+    eventId && dispatch(fetchDaysByParams({ event: eventId }))
   }, [eventId])
 
   useEffect(() => {

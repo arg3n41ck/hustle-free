@@ -9,14 +9,19 @@ import { theme } from '../../../../../styles/theme'
 import { EventMatsClient } from '../../../../../services/apiClients/eventMatsClient'
 import MatsWithFightings from './MatsWithFightings'
 import useQuery from '../../../../../hooks/useQuery'
+import { useRouter } from 'next/router'
 
 const eventMatsClient = new EventMatsClient()
 
 export default function CurrentFightings() {
+  const {
+    query: { id: eventId },
+  } = useRouter()
   const query = useQuery()
   const [currentFightings, setCurrentFightings] = useState([])
 
   useEffect(() => {
+    query.set('event_id', eventId)
     eventMatsClient.getCurrentFightings(query).then(({ data }) => setCurrentFightings(data))
   }, [query])
 
@@ -39,13 +44,7 @@ export default function CurrentFightings() {
       <MatsOuterWrapper>
         {!!currentFightings?.results?.length &&
           currentFightings.results.map((curMat) => (
-            <MatsWithFightings
-              key={curMat?.id}
-              matWithFightings={{
-                ...curMat,
-                category: `${curMat?.bracket?.categoryName} / ${curMat?.bracket?.level} / ${curMat?.bracket?.fromAge} - ${curMat?.bracket?.toAge} / ${curMat?.bracket?.fromWeight} - ${curMat?.bracket?.toWeight}`,
-              }}
-            />
+            <MatsWithFightings key={curMat?.id} matWithFightings={curMat} />
           ))}
       </MatsOuterWrapper>
     </div>

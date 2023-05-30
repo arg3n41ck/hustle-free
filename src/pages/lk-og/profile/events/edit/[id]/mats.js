@@ -2,20 +2,10 @@ import React from 'react'
 import LkLayout from '../../../../../../components/layouts/LkLayout'
 import { lkOgTabs } from '../../../../../../components/pages/LkOg/Tabs/tabConstants'
 import EventsCreateLayout from '../../../../../../components/layouts/EventsCreateLayout'
-import { useRouter } from 'next/router'
-import $api from '../../../../../../services/axios'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import DaysAndMats from '../../../../../../components/pages/LkOg/Tabs/Events/DaysAndMats/DaysAndMats'
 
-export const getSportTypeByEvent = async (eventId) => {
-  const { data } = await $api.get(`/events/events/${eventId}/`)
-  return data
-}
 function ParticipantCategories() {
-  const {
-    query: { id: eventId },
-  } = useRouter()
-
   return (
     <LkLayout tabs={lkOgTabs}>
       <EventsCreateLayout>
