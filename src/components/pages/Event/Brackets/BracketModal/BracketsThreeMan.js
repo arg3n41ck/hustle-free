@@ -9,7 +9,7 @@ export default function BracketsThreeMan() {
 
   const bfs = useMemo(() => {
     if (bracketsFights?.data?.length) {
-      return bracketsFights.data.map((cell) => cell).sort((a, b) => +a.fightNumber - +b.fightNumber)
+      return bracketsFights.data.map((cell) => cell).sort((a, b) => +a.id - +b.id)
     }
     return null
   }, [bracketsFights])
@@ -25,9 +25,7 @@ export default function BracketsThreeMan() {
           {bfs.map((bracketFight, index) => {
             const { fightParents, ...cell } = bracketFight
             const parents = fightParents.map(({ id }) => id)
-            const sortedFParents = fightParents
-              .map((par) => par)
-              .sort((a, b) => +a.fightNumber - +b.fightNumber)
+            const sortedFParents = fightParents.map((par) => par).sort((a, b) => +a.id - +b.id)
 
             const disabled = index !== 2
             return (

@@ -111,7 +111,7 @@ export const bracketsSlice = createSlice({
   },
   reducers: {
     setSelectedBracket: (state, action) => {
-      state.bracket = action.payload
+      state.bracket.data = action.payload
     },
     clearBF: (state) => {
       state.bracketsFights = {
