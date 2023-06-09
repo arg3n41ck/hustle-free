@@ -23,4 +23,5 @@ export const ScoreboardContext = React.createContext({
   submissions: [],
   onSearch: () => {},
   onWin: () => {},
+  ogAndIsMyEvent: false,
 })

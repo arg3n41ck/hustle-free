@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import {
@@ -8,10 +8,12 @@ import {
 } from '../../../../../redux/components/eventBrackets'
 import BracketCellFighter from './BracketCellFighter'
 import ScoreTooltip from './ScoreTooltip'
+import { ScoreboardContext } from '../Scoreboard/context'
 
 export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes }) {
   const { id, fighters, parents, borderDirection, fightRoundType, scoreboard } = cell
   const [, , participantAthletes, , bracket] = useSelector(selectBrackets)
+  const { ogAndIsMyEvent } = useContext(ScoreboardContext)
   const dispatch = useDispatch()
 
   const getFighterDetails = useCallback(
@@ -64,7 +66,7 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
             fighter={fighters[1] ? getFighterDetails(fighters[1]) : null}
             orientation={'second'}
           />
-          {!cell?.winner && fighters?.length === 2 && (
+          {!cell?.winner && ogAndIsMyEvent && fighters?.length === 2 && (
             <ScoreTooltip
               fightStartTime={cell?.fightStartTime}
               fightsStep={fightRoundType}

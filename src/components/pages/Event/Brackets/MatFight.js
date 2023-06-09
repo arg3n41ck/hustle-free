@@ -16,7 +16,7 @@ export default function MatFight({ fight, bracketId, nextBFStatus, category }) {
     push: routerPush,
     query: { id: eventId },
   } = useRouter()
-  const { open, onOpen } = useContext(ScoreboardContext)
+  const { open, onOpen, ogAndIsMyEvent } = useContext(ScoreboardContext)
   const lg = useMediaQuery('(min-width: 1200px)')
   const {
     id: fightId,
@@ -64,7 +64,7 @@ export default function MatFight({ fight, bracketId, nextBFStatus, category }) {
         </Details>
       </FightingContent>
       <ActionsWrapper>
-        {!winner && lg && fighters?.length === 2 && (
+        {!winner && ogAndIsMyEvent && lg && fighters?.length === 2 && (
           <Button onClick={() => !open && onOpen(scoreboard, fightId)}>Старт</Button>
         )}
         <Button onClick={() => routerPush(`/events/${eventId}/brackets/bracket/${bracketId}/`)}>

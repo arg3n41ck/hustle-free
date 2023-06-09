@@ -10,6 +10,8 @@ import { getScoreFullDateObj } from './utils'
 import { scoreTimeActTypes } from './const'
 import useDebounce from '../../../../../hooks/useDebounce'
 import { format, isBefore } from 'date-fns'
+import { selectOgEvents } from '../../../../../redux/components/user'
+import { useSelector } from 'react-redux'
 
 const scoreboardClient = new ScoreboardClient()
 
@@ -24,6 +26,9 @@ export default function ScoreboardLayout({ children }) {
   const [state, setState] = useState(initialState)
   const [, setIsLeaving] = useState(false)
   const [submissions, setSubmissions] = useState(null)
+  const {
+    query: { id: eventId },
+  } = useRouter()
   const [timerState, setTimerState] = useState({
     fightStartTime: null,
     remainTimeInSec: 0,
@@ -48,6 +53,9 @@ export default function ScoreboardLayout({ children }) {
   const [scoringLoading, setScoringLoading] = useState(false)
   const lg = useMediaQuery('(max-width: 1200px)')
   const debouncedSubmissionSearch = useDebounce(submissionSearch, 300)
+  const { user } = useSelector((state) => state.user)
+  const [ogEventsId] = useSelector(selectOgEvents)
+  const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
 
   const pullScoreboardByFighters = async (scoreboardId) => {
     try {
@@ -419,6 +427,7 @@ export default function ScoreboardLayout({ children }) {
         submissions,
         onSearch,
         onWin,
+        ogAndIsMyEvent,
       }}
     >
       <Scoreboard />
