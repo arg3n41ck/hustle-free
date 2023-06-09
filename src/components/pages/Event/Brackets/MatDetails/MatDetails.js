@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { EventMatsClient } from '../../../../../services/apiClients/eventMatsClient'
 import MatDetailHeader from './MatDetailHeader'
 import MatBrackets from './MatBrackets'
 import styled from 'styled-components'
 import BracketFights from './BracketFights'
 import { useMediaQuery } from '@mui/material'
+import { ScoreboardContext } from '../Scoreboard/context'
 
 const eventMatsClient = new EventMatsClient()
 
@@ -17,6 +18,7 @@ export default function MatDetails() {
   const [fightsTotal, setFightsTotal] = useState(0)
   const [fightsFinished, setFightsFinished] = useState(0)
   const [selectedBracket, setSelectedBracket] = useState(null)
+  const { open } = useContext(ScoreboardContext)
   const [bracketFights, setBracketFights] = useState(null)
   const lg = useMediaQuery('(min-width: 768px)')
 
@@ -38,7 +40,7 @@ export default function MatDetails() {
         }
       })
     }
-  }, [matId])
+  }, [matId, open])
 
   useEffect(() => {
     if (selectedBracket) {
@@ -46,7 +48,7 @@ export default function MatDetails() {
         .getMatBracketDetails(selectedBracket)
         .then(({ data }) => setBracketFights(data))
     }
-  }, [selectedBracket])
+  }, [selectedBracket, open])
 
   useEffect(() => {
     if (matDetails?.brackets?.length) {

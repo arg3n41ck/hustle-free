@@ -1,28 +1,43 @@
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import {
   FightStatusBeReady,
+  FightStatusFinish,
   FightStatusGoToBullPen,
   FightStatusInProgress,
 } from '../../../../assets/svg/icons'
 import { getFormattedStartTime } from './bracketsUtils'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
+import { useMediaQuery } from '@mui/material'
+import { ScoreboardContext } from './Scoreboard/context'
 
-export default function MatFight({ fight, bracketId, category }) {
+export default function MatFight({ fight, bracketId, nextBFStatus, category }) {
   const {
     push: routerPush,
     query: { id: eventId },
   } = useRouter()
-  const { status, fightNumber, prefix, fighters, fightStartTime } = fight
+  const { open, onOpen } = useContext(ScoreboardContext)
+  const lg = useMediaQuery('(min-width: 1200px)')
+  const {
+    id: fightId,
+    status,
+    fightNumber,
+    prefix,
+    fighters,
+    fightStartTime,
+    scoreboard,
+    winner,
+  } = fight
 
   const statusIcon = useMemo(() => {
-    switch (status) {
-      case 'ongoing':
-        return <FightStatusInProgress />
-      case 'beready':
-        return <FightStatusBeReady />
-      default:
-        return <FightStatusGoToBullPen />
+    if (status == 4) {
+      return <FightStatusInProgress />
+    } else if (nextBFStatus == 4) {
+      return <FightStatusBeReady />
+    } else if (status == 3) {
+      return <FightStatusFinish />
+    } else {
+      return <FightStatusGoToBullPen />
     }
   }, [status])
 
@@ -41,6 +56,7 @@ export default function MatFight({ fight, bracketId, category }) {
                 <Fighter key={`${fightNumber}-${i}`}>
                   <FullName>{fighter?.fullName}</FullName>
                   <Team>{fighter?.team}</Team>
+                  {fighter?.id === winner && <Winner>W</Winner>}
                 </Fighter>
               ))}
           </Fighters>
@@ -48,6 +64,9 @@ export default function MatFight({ fight, bracketId, category }) {
         </Details>
       </FightingContent>
       <ActionsWrapper>
+        {!winner && lg && fighters?.length === 2 && (
+          <Button onClick={() => !open && onOpen(scoreboard, fightId)}>Старт</Button>
+        )}
         <Button onClick={() => routerPush(`/events/${eventId}/brackets/bracket/${bracketId}/`)}>
           Сетка
         </Button>
@@ -62,7 +81,8 @@ const ActionsWrapper = styled.div`
   position: absolute;
   display: none;
   justify-content: flex-end;
-  grid-gap: 32px;
+  align-items: center;
+  grid-gap: 16px;
   padding: 16px;
   top: 0;
   left: 0;
@@ -222,4 +242,12 @@ const Button = styled.button`
     line-height: 18px;
     padding: 8px 14px;
   }
+`
+
+const Winner = styled.button`
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  padding: 0 10px;
+  color: #7a3fed;
 `

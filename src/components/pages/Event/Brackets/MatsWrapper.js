@@ -15,8 +15,8 @@ export default function MatsWrapper({ matId, matName, children, allFightsTotal, 
   return (
     <MatWrapper>
       <Header>
-        <MatTitle onClick={handleOpenMatDetails}>{matName}</MatTitle>
-        {dayStartTime && <ContentText>Начало {dayStartTime}</ContentText>}
+        <MatTitle>{matName}</MatTitle>
+        <DetailButton onClick={handleOpenMatDetails}>Подробнее</DetailButton>
       </Header>
       <Content>{children}</Content>
       <Footer>
@@ -75,10 +75,6 @@ const MatTitle = styled.button`
   margin: 0;
   color: #ffffff;
 
-  &:hover {
-    color: #6d4eea;
-  }
-
   @media screen and (max-width: 768px) {
     font-size: 14px;
     line-height: 20px;
@@ -115,4 +111,15 @@ const Footer = styled.div`
       padding: 12px;
     }
   }
+`
+
+const DetailButton = styled.button`
+  height: 100%;
+  background: #6d4eea;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 0 12px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
 `

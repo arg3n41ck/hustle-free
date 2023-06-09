@@ -7,9 +7,10 @@ import {
   selectBrackets,
 } from '../../../../../redux/components/eventBrackets'
 import BracketCellFighter from './BracketCellFighter'
+import ScoreTooltip from './ScoreTooltip'
 
 export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes }) {
-  const { id, fighters, parents, borderDirection } = cell
+  const { id, fighters, parents, borderDirection, fightRoundType, scoreboard } = cell
   const [, , participantAthletes, , bracket] = useSelector(selectBrackets)
   const dispatch = useDispatch()
 
@@ -29,7 +30,7 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
       }
       return fighterDetails
     },
-    [participantAthletes, fighters],
+    [participantAthletes?.data, fighters],
   )
 
   const onWin = () => {
@@ -49,6 +50,8 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
             ST: "<b>{cell?.fightStartTime}</b>"; ET: "<b>{cell?.fightEndTime}</b>"
           </FightNum> */}
 
+          <BFPrefName>{`${cell?.matPrefix} - ${cell?.fightNumber}`}</BFPrefName>
+
           <BracketCellFighter
             cell={cell}
             fighter={fighters[0] ? getFighterDetails(fighters[0]) : null}
@@ -59,10 +62,18 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
           <BracketCellFighter
             cell={cell}
             fighter={fighters[1] ? getFighterDetails(fighters[1]) : null}
-            opponent={fighters[0]?.id}
-            onWin={onWin}
             orientation={'second'}
           />
+          {!cell?.winner && fighters?.length === 2 && (
+            <ScoreTooltip
+              fightStartTime={cell?.fightStartTime}
+              fightsStep={fightRoundType}
+              scoreboard={scoreboard}
+              fightNumber={cell?.fightNumber}
+              matPrefix={cell?.matPrefix}
+              fightId={id}
+            />
+          )}
         </DragWrapper>
       </CellWrapper>
     </>
@@ -107,7 +118,7 @@ const CellWrapper = styled.div`
   &.parents {
     &::after,
     &::before {
-      width: 224px;
+      width: 246px;
       left: -32px;
     }
 
@@ -136,6 +147,12 @@ const CellWrapper = styled.div`
   &.noBorder::after,
   &.noBorder::before {
     border: none;
+  }
+
+  &:hover {
+    & .scoreboard-tooltip {
+      display: flex;
+    }
   }
 `
 
@@ -172,4 +189,26 @@ const FightNum = styled.div`
   & b {
     color: pink;
   }
+`
+
+const BFPrefName = styled.div`
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  background: #0f0f10;
+  border: 1px solid #333333;
+  border-radius: 10px;
+
+  transform: translateY(-50%);
+
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 3px 8px;
+
+  text-align: center;
+
+  color: #ffffff;
+
+  z-index: 10;
 `

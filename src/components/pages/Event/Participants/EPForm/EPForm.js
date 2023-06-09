@@ -28,7 +28,7 @@ const createBracket = async (body) => {
     return data
   } catch (e) {
     console.log(e)
-    toast.error('Походу что-то пошло не так!')
+    toast.error(`Something went wrong!!!`)
   }
 }
 
@@ -125,7 +125,7 @@ function EPForm({ onClose, open, selectedEPCDetailed, selectedEPC: selectedEPCID
       })
 
       dispatch(fetchBracketsByParams({ event: eventId }))
-      routerPush(`/events/${eventId}/brackets/`)
+      routerPush(`/events/${eventId}/brackets/?day=${values?.day}`)
       onClose()
     },
     enableReinitialize: true,

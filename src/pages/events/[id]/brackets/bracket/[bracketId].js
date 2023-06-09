@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -18,8 +18,10 @@ import { theme } from '../../../../../styles/theme'
 import BracketHeaderInfo from '../../../../../components/pages/Event/Brackets/BracketModal/BracketHeaderInfo'
 import BracketResultTable from '../../../../../components/pages/Event/Brackets/BracketModal/BracketResultTable'
 import FullScreenLoader from '../../../../../components/ui/FullScreenLoader'
+import ScoreboardLayout from '../../../../../components/pages/Event/Brackets/Scoreboard/ScoreboardLayout'
+import { ScoreboardContext } from '../../../../../components/pages/Event/Brackets/Scoreboard/context'
 
-export const bracketComponentByTypes = {
+const bracketComponentByTypes = {
   1: {
     id: 1,
     name: 'SEWithoutBF',
@@ -89,34 +91,34 @@ function Bracket({ event }) {
   }, [bracket])
 
   const { typeTitle, BracketWrapperByType } = useMemo(() => {
-    console.log(bracket, bracketComponentByTypes?.[bracket?.bracketType])
     const selectedBrType = bracket && bracketComponentByTypes?.[bracket?.bracketType]
     return {
       typeTitle: selectedBrType && selectedBrType?.title,
       BracketWrapperByType: (props) => selectedBrType && selectedBrType?.component(props),
     }
   }, [bracket])
-
   const fightersCount = useMemo(() => {
     return participantAthletes.data?.length
       ? participantAthletes.data?.filter(({ isPaid }) => isPaid)
       : 0
-  }, [participantAthletes])
+  }, [participantAthletes.data])
 
   return (
     <EdMainLayout event={event}>
-      <ContentWrapper>
-        <HeaderWrapper>
-          <Back onClick={back}>
-            {arrowBack}
-            <span>назад</span>
-          </Back>
-          <Title>{bracket?.title}</Title>
-        </HeaderWrapper>
-        <BracketHeaderInfo title={typeTitle} allParticipants={fightersCount?.length || 0} />
-        <BracketWrapper>{BracketWrapperByType && <BracketWrapperByType />}</BracketWrapper>
-        {+(bracket?.bracketType || 0) !== 7 && <BracketResultTable bracketId={bracket?.id} />}
-      </ContentWrapper>
+      <ScoreboardLayout>
+        <ContentWrapper>
+          <HeaderWrapper>
+            <Back onClick={back}>
+              {arrowBack}
+              <span>назад</span>
+            </Back>
+            <Title>{bracket?.title}</Title>
+          </HeaderWrapper>
+          <BracketHeaderInfo title={typeTitle} allParticipants={fightersCount?.length || 0} />
+          <BracketWrapper>{BracketWrapperByType && <BracketWrapperByType />}</BracketWrapper>
+          {+(bracket?.bracketType || 0) !== 7 && <BracketResultTable bracketId={bracket?.id} />}
+        </ContentWrapper>
+      </ScoreboardLayout>
       <FullScreenLoader open={bracketsFights.isLoading} />
     </EdMainLayout>
   )

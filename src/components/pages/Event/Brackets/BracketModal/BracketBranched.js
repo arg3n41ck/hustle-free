@@ -75,14 +75,20 @@ const GenerateBracketWave = ({
       }
     >
       <ChildColumn>
-        <BracketCell cellRef={cellRef} cell={{ ...cell, parents, borderDirection }} />
+        <BracketCell
+          cellRef={cellRef}
+          cell={{ ...cell, parents, borderDirection, fightRoundType: bracketFight?.fightRoundType }}
+        />
         {!!cell.children?.length && cellRef?.current && (
           <OversideBacketCellWrapper
             top={+cellRef?.current?.offsetTop + 168}
             left={cellRef?.current?.offsetLeft}
           >
             {cell.children.map((child) => (
-              <BracketCell key={`cell.children_${child?.id}`} cell={{ ...child }} />
+              <BracketCell
+                key={`cell.children_${child?.id}`}
+                cell={{ ...child, fightRoundType: bracketFight?.fightRoundType }}
+              />
             ))}
           </OversideBacketCellWrapper>
         )}

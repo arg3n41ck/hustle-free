@@ -9,7 +9,7 @@ export default function BracketResultTable({ bracketId }) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(fetchBracketResults({ bracketId }))
+    bracketId && dispatch(fetchBracketResults({ bracketId }))
   }, [bracketId])
 
   return (

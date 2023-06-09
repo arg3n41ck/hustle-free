@@ -3,11 +3,14 @@ import EdMainLayout from '../../../../../components/pages/Event/EDMainLayout'
 import MatDetails from '../../../../../components/pages/Event/Brackets/MatDetails/MatDetails'
 import $api from '../../../../../services/axios'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import ScoreboardLayout from '../../../../../components/pages/Event/Brackets/Scoreboard/ScoreboardLayout'
 
 export default function MatDetailsPage({ event }) {
   return (
     <EdMainLayout event={event}>
-      <MatDetails />
+      <ScoreboardLayout>
+        <MatDetails />
+      </ScoreboardLayout>
     </EdMainLayout>
   )
 }

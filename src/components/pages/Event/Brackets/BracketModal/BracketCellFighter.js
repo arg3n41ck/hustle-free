@@ -8,9 +8,9 @@ import {
   selectBrackets,
 } from '../../../../../redux/components/eventBrackets'
 import { BF_DND_ACCEPT_TYPE, getFighterPlace } from '../bracketsUtils'
-import BracketWin from './BracketWin'
 import { useDrag, useDrop } from 'react-dnd'
 import $api from '../../../../../services/axios'
+import BracketWin from './BracketWin'
 
 const replaceBFCell = async (fromBF, toBF, draggedPr, hoverPr) => {
   try {
@@ -30,11 +30,12 @@ const replaceBFCell = async (fromBF, toBF, draggedPr, hoverPr) => {
   }
 }
 
-export default function BracketCellFighter({ cell, fighter, onWin, opponent, orientation }) {
+export default function BracketCellFighter({ cell, fighter, orientation }) {
   const { id: bfId, fighters, winner, disabled, fightNumber, place: cellPlace } = cell
   const [, bracketsFights, , bracketsResults, bracket] = useSelector(selectBrackets)
   const dragNDropRef = useRef(null)
   const dispatch = useDispatch()
+
   const fighterPlace = useMemo(() => {
     if ([5, 6].includes(bracket?.bracketType) && fightNumber >= 8) {
       const threeManFinal = bracketsFights.data.find(({ fightNumber }) => fightNumber == 9)
@@ -45,7 +46,7 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
         } else if (fightNumber == 8 && winner !== fighter?.id) {
           return 3
         }
-      } else if (threeManFinal?.fighters?.length !== 2 && !!threeManFinal.winner) {
+      } else if (threeManFinal?.fighters?.length !== 2 && !!threeManFinal?.winner) {
         if (fightNumber === 9 && winner == fighter?.id) {
           return 1
         } else if (fightNumber === 8) {
@@ -127,9 +128,8 @@ export default function BracketCellFighter({ cell, fighter, onWin, opponent, ori
         </FighterTexts>
       </UserInfoPart>
       {!!fighterPlace && <PlaceBlock place={fighterPlace}>{fighterPlace}</PlaceBlock>}
-      {/* {!disabled && !!fighter && fighters?.length === 2 && opponent !== winner && (
-        <BracketWin bfId={bfId} fighter={fighter.id} winner={winner} onWin={onWin} />
-      )} */}
+
+      {winner === fighter?.id && <BracketWin />}
     </FighterWrapper>
   )
 }

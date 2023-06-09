@@ -22,8 +22,7 @@ function MyApp({ Component, pageProps }) {
             <RouterLoader />
             <ToastContainer
               position='top-right'
-              autoClose={2000}
-              hideProgressBar={false}
+              hideProgressBar
               newestOnTop={false}
               closeOnClick
               rtl={false}

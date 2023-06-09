@@ -5,10 +5,16 @@ import { useDrag, useDrop } from 'react-dnd'
 import styled from 'styled-components'
 import { getFormattedStartTime } from '../bracketsUtils'
 import { EventMatsClient } from '../../../../../services/apiClients/eventMatsClient'
+import { useRouter } from 'next/router'
 
 const eventMatsClient = new EventMatsClient()
 
 export default function Bracket({ refreshMatList, matId, bracket, editingMatActive }) {
+  const {
+    query: { id: eventId },
+    push: routerPush,
+  } = useRouter()
+
   const {
     id: bracketId,
     categoryName,
@@ -71,6 +77,16 @@ export default function Bracket({ refreshMatList, matId, bracket, editingMatActi
       </ContentText>
       <ContentText>{`${fightsTotal || 0}/${fightsFinished || 0}`}</ContentText>
       <ContentText>{eta ? getFormattedStartTime(eta) : '--:--'}</ContentText>
+
+      {!editingMatActive && (
+        <ActionsWrapper>
+          <BracketButton
+            onClick={() => routerPush(`/events/${eventId}/brackets/bracket/${bracketId}/`)}
+          >
+            Сетка
+          </BracketButton>
+        </ActionsWrapper>
+      )}
     </BracketWrapper>
   )
 }
@@ -96,7 +112,25 @@ const ContentText = styled.p`
   }
 `
 
+const ActionsWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: none;
+  justify-content: flex-end;
+  align-items: center;
+  grid-gap: 32px;
+  padding: 16px;
+  top: 0;
+  left: 0;
+
+  @media screen and (max-width: 768px) {
+    padding: 8px;
+  }
+`
+
 const BracketWrapper = styled.div`
+  position: relative;
   display: grid;
   grid-template: 1fr / auto 88px 80px;
   border-bottom: 1px solid #1b1c22;
@@ -121,5 +155,31 @@ const BracketWrapper = styled.div`
     }
   }
 
+  &:hover {
+    background: linear-gradient(0deg, rgba(109, 78, 234, 0.07), rgba(109, 78, 234, 0.07)), #141519;
+
+    ${ActionsWrapper} {
+      display: flex;
+    }
+  }
+
   border-bottom: 1px solid ${({ isOver }) => (isOver ? '#6d4eea' : 'transparent')};
+`
+
+const BracketButton = styled.button`
+  height: min-content;
+  background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
+  border-radius: 8px;
+  padding: 8px 14px;
+
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    line-height: 16px;
+    padding: 4px 12px;
+  }
 `

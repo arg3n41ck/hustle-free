@@ -10,7 +10,9 @@ import { format } from 'date-fns'
 import { theme } from '../../../../../styles/theme'
 
 function EPFormDaysAndMats({ formik }) {
-  const { id: eventId } = useRouter()
+  const {
+    query: { id: eventId },
+  } = useRouter()
   const { errors, touched, setFieldValue } = formik
   const [matsOptions, setMatsOptions] = useState([])
   const [selectedDay, setSelectedDay] = useState(null)

@@ -18,8 +18,14 @@ export default function BracketFights({ bracketFights }) {
       </Header>
       <BracketFightsWrapper>
         {!!bracketFights?.fights?.length
-          ? bracketFights?.fights.map((bf) => (
-              <MatFight key={bf?.id} bracketId={bracketFights?.id} fight={bf} category={category} />
+          ? bracketFights?.fights.map((bf, i) => (
+              <MatFight
+                key={bf?.id}
+                nextBFStatus={bracketFights?.fights?.[i + 1]?.status}
+                bracketId={bracketFights?.id}
+                fight={bf}
+                category={category}
+              />
             ))
           : !bracketFights?.fights?.length && <NoBF>Нет схваток в выбранной категории</NoBF>}
       </BracketFightsWrapper>

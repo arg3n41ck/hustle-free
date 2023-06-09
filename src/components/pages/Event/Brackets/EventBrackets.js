@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -7,18 +7,28 @@ import { Autocomplete, TextField } from '@mui/material'
 import { useTranslation } from 'next-i18next'
 import MatsWithBrackets from './MatsWithBrackets/MatsWithBrackets'
 import { theme } from '../../../../styles/theme'
+import useQuery from '../../../../hooks/useQuery'
 
 function EventBrackets() {
   const {
     query: { id: eventId },
+    push: routerPush,
   } = useRouter()
-  const [selectedDay, setSelectedDay] = useState(null)
+  const searchParams = useQuery()
+  const daySearchValue = searchParams.get('day') || null
   const [editingMatActive, setEditingMatActive] = useState(false)
   const { t: tEventDetail } = useTranslation('eventDetail')
 
   const { days, matsWithBrackets } = useSelector((state) => state.daysAndMats)
 
   const dispatch = useDispatch()
+
+  const selectedDay = useMemo(() => {
+    if (daySearchValue && days?.data?.length) {
+      return days.data.find((day) => day?.id == daySearchValue)
+    }
+    return null
+  }, [daySearchValue, days?.data])
 
   useEffect(() => {
     eventId && dispatch(fetchDaysByParams({ event: eventId }))
@@ -34,11 +44,16 @@ function EventBrackets() {
     refreshMatList()
   }, [eventId, selectedDay])
 
+  const onSelectDay = (day) => {
+    day?.id && searchParams.set('day', day?.id)
+    routerPush(`/events/${eventId}/brackets/?${searchParams}`)
+  }
+
   useEffect(() => {
     if (days?.data?.length && !selectedDay) {
-      setSelectedDay(days.data[0])
+      onSelectDay(days.data[0])
     }
-  }, [days])
+  }, [days?.data])
 
   return (
     <MainWrapper style={{ minHeight: '100vh' }}>
@@ -54,7 +69,7 @@ function EventBrackets() {
                 right: '20px !important',
               },
             }}
-            onChange={(_, value) => value && setSelectedDay(value)}
+            onChange={(_, value) => value && onSelectDay(value)}
             options={days.data.map((option) => option)}
             value={selectedDay}
             disableClearable
@@ -141,9 +156,9 @@ const FilterByDaysWrapper = styled.div`
 
 const EditButton = styled.button`
   height: min-content;
-  background: #6d4eea;
+  background: linear-gradient(90deg, #3f82e1 0%, #7a3fed 100%);
   color: #ffffff;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 12px 20px;
   font-weight: 600;
   font-size: 18px;
