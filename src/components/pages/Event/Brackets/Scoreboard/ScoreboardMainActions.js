@@ -26,6 +26,8 @@ export default function ScoreboardMainActions({ winner }) {
     return 'Выберите категорию'
   }, [scoreboard?.fight?.bracket])
 
+  console.log({ scoreboard })
+
   return (
     <MainWrapper>
       <div>
@@ -56,7 +58,11 @@ export default function ScoreboardMainActions({ winner }) {
                 </ActionBtn>
                 <ActionBtn
                   area='fightorder'
-                  onClick={() => routerPush(`/events/${eventId}/brackets/mats/75`)}
+                  onClick={() =>
+                    routerPush(
+                      `/events/${eventId}/brackets/mats/${scoreboard?.fight?.bracket?.mat}`,
+                    )
+                  }
                 >
                   back to fightorder
                 </ActionBtn>
@@ -67,7 +73,9 @@ export default function ScoreboardMainActions({ winner }) {
             {roundSubmission.readyToSave && (
               <ActionBtn
                 area='fightorder'
-                onClick={() => routerPush(`/events/${eventId}/brackets/mats/75`)}
+                onClick={() =>
+                  routerPush(`/events/${eventId}/brackets/mats/${scoreboard?.fight?.bracket?.mat}`)
+                }
               >
                 back to fightorder
               </ActionBtn>

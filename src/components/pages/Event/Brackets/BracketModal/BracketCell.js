@@ -63,6 +63,8 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
           />
           <BracketCellFighter
             cell={cell}
+            opponent={fighters[0]?.id}
+            onWin={onWin}
             fighter={fighters[1] ? getFighterDetails(fighters[1]) : null}
             orientation={'second'}
           />

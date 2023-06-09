@@ -30,7 +30,7 @@ const replaceBFCell = async (fromBF, toBF, draggedPr, hoverPr) => {
   }
 }
 
-export default function BracketCellFighter({ cell, fighter, orientation }) {
+export default function BracketCellFighter({ cell, fighter, opponent, orientation, onWin }) {
   const { id: bfId, fighters, winner, disabled, fightNumber, place: cellPlace } = cell
   const [, bracketsFights, , bracketsResults, bracket] = useSelector(selectBrackets)
   const dragNDropRef = useRef(null)
@@ -128,6 +128,10 @@ export default function BracketCellFighter({ cell, fighter, orientation }) {
         </FighterTexts>
       </UserInfoPart>
       {!!fighterPlace && <PlaceBlock place={fighterPlace}>{fighterPlace}</PlaceBlock>}
+
+      {!disabled && !!fighter && fighters?.length === 2 && opponent !== winner && (
+        <BracketWin bfId={bfId} fighter={fighter.id} winner={winner} onWin={onWin} />
+      )}
 
       {winner === fighter?.id && <BracketWin />}
     </FighterWrapper>
