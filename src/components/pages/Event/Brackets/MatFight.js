@@ -17,6 +17,7 @@ export default function MatFight({ fight, bracketId, nextBFStatus, category }) {
     query: { id: eventId },
   } = useRouter()
   const { open, onOpen, ogAndIsMyEvent } = useContext(ScoreboardContext)
+
   const lg = useMediaQuery('(min-width: 1200px)')
   const {
     id: fightId,

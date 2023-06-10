@@ -9,6 +9,11 @@ export const fetchBracketsByParams = createAsyncThunk(
     try {
       const { data } = await $api.get(`/brackets/brackets/`, {
         params,
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
       })
       return data
     } catch (e) {

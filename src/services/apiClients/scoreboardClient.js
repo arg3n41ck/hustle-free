@@ -3,7 +3,14 @@ import $api from '../axios'
 export class ScoreboardClient {
   async scoreboard(scoreboardId, params) {
     try {
-      return await $api.get(`/scoreboards/scoreboard/${scoreboardId}/`, { params })
+      return await $api.get(`/scoreboards/scoreboard/${scoreboardId}/`, {
+        params,
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      })
     } catch (error) {
       throw error
     }

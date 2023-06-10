@@ -85,12 +85,14 @@ export const getBracketsBySteps = async (bracketsFights) => {
   return brSteps
 }
 
-export const mapBracketsFights = (bracketsFights) => {
+export const mapBracketsFights = (bracketFightsFreezen) => {
+  const bracketsFights = [...bracketFightsFreezen]
   if (
     bracketsFights.length > 1 &&
     !bracketsFights[0]?.isLoserBracket &&
     !bracketsFights[0]?.fightParents?.length
   ) {
+    console.log({ bracketsFights })
     bracketsFights.reverse()
   }
   return bracketsFights.reduce((prev, cur, i) => {

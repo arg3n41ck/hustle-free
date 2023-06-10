@@ -395,7 +395,7 @@ export default function ScoreboardLayout({ children }) {
     if (roundSubmission.openWinWindow) {
       const timer = setTimeout(() => {
         closeScoreboard()
-      }, 10000)
+      }, 3000)
       // Clear the timeout if the component is unmounted
       return () => clearTimeout(timer)
     }

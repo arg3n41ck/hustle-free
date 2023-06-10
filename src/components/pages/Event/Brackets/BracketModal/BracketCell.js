@@ -52,7 +52,7 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
             ST: "<b>{cell?.fightStartTime}</b>"; ET: "<b>{cell?.fightEndTime}</b>"
           </FightNum> */}
 
-          <BFPrefName>{`${cell?.matPrefix} - ${cell?.fightNumber}`}</BFPrefName>
+          <BFPrefName>{`${cell?.matPrefix | 'Мат'} - ${cell?.fightNumber}`}</BFPrefName>
 
           <BracketCellFighter
             cell={cell}
@@ -165,6 +165,9 @@ const DragWrapper = styled.div`
   border-radius: 8px;
   border: 2px solid #333333;
   background: #1b1c22;
+
+  display: grid;
+  grid-template: 1fr 1fr / 1fr;
 
   &:hover {
     background: linear-gradient(0deg, rgba(109, 78, 234, 0.1), rgba(109, 78, 234, 0.1)), #141519;

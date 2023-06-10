@@ -113,13 +113,8 @@ export default function BracketCellFighter({ cell, fighter, opponent, orientatio
               <CountryFlag src={`https://flagsapi.com/${fighter?.countryCode}/flat/64.png`} />
             )}
             <FighterName>
-              {fighter
-                ? truncateString(
-                    `${fighter?.athlete?.user?.firstName} ${fighter?.athlete?.user?.lastName}`,
-                    12,
-                    true,
-                  )
-                : '?'}
+              {fighter &&
+                `${fighter?.athlete?.user?.firstName} ${fighter?.athlete?.user?.lastName}`}
             </FighterName>
           </NameFlagWrapper>
           {fighter && fighter?.team && (
@@ -164,6 +159,7 @@ const FighterWrapper = styled.div`
 
   &.first {
     border-radius: 8px 8px 0 0;
+    border-bottom: 1px solid #333333;
   }
 
   &.second {
@@ -172,14 +168,14 @@ const FighterWrapper = styled.div`
 `
 
 const UserInfoPart = styled.div`
+  height: 100%;
   display: flex;
   grid-gap: 8px;
   font-weight: 700;
   padding: 10px;
 
-  &.first {
-    border-bottom: 1px solid #333333;
-  }
+  /* &.first {
+  } */
 
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `

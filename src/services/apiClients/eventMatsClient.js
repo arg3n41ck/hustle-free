@@ -75,7 +75,13 @@ export class EventMatsClient {
 
   async getMatDetails(matId) {
     try {
-      return await $api.get(`/mats/mat_detail/${matId}/`)
+      return await $api.get(`/mats/mat_detail/${matId}/`, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      })
     } catch (error) {
       throw error
     }
@@ -83,7 +89,13 @@ export class EventMatsClient {
 
   async getMatBracketDetails(bracketId) {
     try {
-      return await $api.get(`/mats/bracket_detail/${bracketId}/`)
+      return await $api.get(`/mats/bracket_detail/${bracketId}/`, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      })
     } catch (error) {
       throw error
     }
