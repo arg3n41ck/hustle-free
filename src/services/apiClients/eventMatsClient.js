@@ -65,9 +65,9 @@ export class EventMatsClient {
     }
   }
 
-  async changeBracketOrderMat(body) {
+  async changeBracketOrderMat(bracketId, body) {
     try {
-      return await $api.patch(`/brackets/brackets/change_bracket_order_mat/`, body)
+      return await $api.patch(`/brackets/brackets/${bracketId}/change_bracket_order_mat/`, body)
     } catch (error) {
       throw error
     }

@@ -66,14 +66,11 @@ const BracketWrapper = styled.div`
     top: 0;
   }
 
-  &:hover {
+  &.selected {
+    border: 1px solid #6d4eea;
     &::after {
       width: ${({ fillPercent }) => fillPercent}%;
     }
-  }
-
-  &.selected {
-    border: 1px solid #6d4eea;
   }
 `
 

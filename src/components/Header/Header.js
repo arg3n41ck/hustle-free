@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Avatar, Box, Popover } from '@mui/material'
 import Notifications from './components/Notifications/Notifications'
@@ -28,11 +28,13 @@ const Header = () => {
   const dispatch = useDispatch()
   const { t: tHeader } = useTranslation('header')
   const { t: tCommon } = useTranslation('common')
-  const activeTabs = userAuthenticated
-    ? (user?.role === 'organizer' && lkOgTabs) ||
-      (user?.role === 'team' && lkTmTabs) ||
-      (user?.role === 'athlete' && lkAhTabs)
-    : null
+  const activeTabs = useMemo(() => {
+    userAuthenticated
+      ? (user?.role === 'organizer' && lkOgTabs) ||
+        (user?.role === 'team' && lkTmTabs) ||
+        (user?.role === 'athlete' && lkAhTabs)
+      : null
+  }, [userAuthenticated])
 
   useEffect(() => {
     setUserMenu(false)

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useContext, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import { BracketsAthAva } from '../../../../../assets/svg/icons'
@@ -11,6 +11,7 @@ import { BF_DND_ACCEPT_TYPE, getFighterPlace } from '../bracketsUtils'
 import { useDrag, useDrop } from 'react-dnd'
 import $api from '../../../../../services/axios'
 import BracketWin from './BracketWin'
+import { ScoreboardContext } from '../Scoreboard/context'
 
 const replaceBFCell = async (fromBF, toBF, draggedPr, hoverPr) => {
   try {
@@ -33,6 +34,7 @@ const replaceBFCell = async (fromBF, toBF, draggedPr, hoverPr) => {
 export default function BracketCellFighter({ cell, fighter, opponent, orientation, onWin }) {
   const { id: bfId, fighters, winner, disabled, fightNumber, place: cellPlace } = cell
   const [, bracketsFights, , bracketsResults, bracket] = useSelector(selectBrackets)
+  const { ogAndIsMyEvent } = useContext(ScoreboardContext)
   const dragNDropRef = useRef(null)
   const dispatch = useDispatch()
 
@@ -124,9 +126,13 @@ export default function BracketCellFighter({ cell, fighter, opponent, orientatio
       </UserInfoPart>
       {!!fighterPlace && <PlaceBlock place={fighterPlace}>{fighterPlace}</PlaceBlock>}
 
-      {!disabled && !!fighter && fighters?.length === 2 && opponent !== winner && (
-        <BracketWin bfId={bfId} fighter={fighter.id} winner={winner} onWin={onWin} />
-      )}
+      {ogAndIsMyEvent &&
+        !disabled &&
+        !!fighter &&
+        fighters?.length === 2 &&
+        opponent !== winner && (
+          <BracketWin bfId={bfId} fighter={fighter.id} winner={winner} onWin={onWin} />
+        )}
 
       {winner === fighter?.id && <BracketWin />}
     </FighterWrapper>

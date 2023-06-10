@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next'
 import MatsWithBrackets from './MatsWithBrackets/MatsWithBrackets'
 import { theme } from '../../../../styles/theme'
 import useQuery from '../../../../hooks/useQuery'
+import { selectOgEvents } from '../../../../redux/components/user'
 
 function EventBrackets() {
   const {
@@ -18,7 +19,9 @@ function EventBrackets() {
   const daySearchValue = searchParams.get('day') || null
   const [editingMatActive, setEditingMatActive] = useState(false)
   const { t: tEventDetail } = useTranslation('eventDetail')
-
+  const [ogEventsId] = useSelector(selectOgEvents)
+  const { user } = useSelector((state) => state.user)
+  const ogAndIsMyEvent = user?.role === 'organizer' && (ogEventsId || []).includes(+eventId)
   const { days, matsWithBrackets } = useSelector((state) => state.daysAndMats)
 
   const dispatch = useDispatch()
@@ -89,12 +92,14 @@ function EventBrackets() {
             )}
           />
         </FilterByDaysWrapper>
-        <EditButton
-          className={`${editingMatActive ? 'disabled' : ''}`}
-          onClick={() => setEditingMatActive(!editingMatActive)}
-        >
-          {editingMatActive ? 'Завершить редактирование' : 'Редактировать'}
-        </EditButton>
+        {ogAndIsMyEvent && (
+          <EditButton
+            className={`${editingMatActive ? 'disabled' : ''}`}
+            onClick={() => setEditingMatActive(!editingMatActive)}
+          >
+            {editingMatActive ? 'Завершить редактирование' : 'Редактировать'}
+          </EditButton>
+        )}
       </TopHeader>
 
       <MatsWrapper>
@@ -102,6 +107,7 @@ function EventBrackets() {
           ? matsWithBrackets.data.map((mat) => (
               <MatsWithBrackets
                 key={mat?.id}
+                ogAndIsMyEvent={ogAndIsMyEvent}
                 refreshMatList={refreshMatList}
                 matWithBrackets={mat}
                 editingMatActive={editingMatActive}

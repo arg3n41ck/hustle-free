@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { getRusBetweenDate, localStorageSetItem } from '../../../helpers/helpers'
+import { getRusBetweenDate } from '../../../helpers/helpers'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import FileUploaderBig from '../../ui/LKui/FileUploaderBig'
@@ -117,7 +117,7 @@ function EdGeneralInfo({ event }) {
   }, [user])
 
   const checkUserStatusInTeam = useCallback(() => {
-    eventId && getIsUserInEvent(eventId).then(setUserStatusInTeam)
+    userAuthenticated && eventId && getIsUserInEvent(eventId).then(setUserStatusInTeam)
   }, [eventId])
 
   useEffect(() => {

@@ -27,26 +27,33 @@ $api.interceptors.response.use(
     return config
   },
   async (error) => {
-    const refreshToken = getCookie('refresh')
-    if (error?.response?.status === 401 && error?.config?.url !== '/accounts/auth/jwt/refresh/') {
+    const originalRequest = error.config
+    if (error?.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
       try {
-        const { data } = await axios.post(`${API_URL}accounts/auth/jwt/refresh/`, {
-          refresh: getCookie('refresh'),
-        })
-        setCookie('token', data.access, 99999)
-        return axios({
-          ...error.config,
-          headers: {
-            Authorization: `Bearer ${data.access}`,
-          },
-        })
+        const refresh = getCookie('refresh')
+        if (refresh) {
+          const { status, data } = await axios.post(`${API_URL}accounts/auth/jwt/refresh/`, {
+            refresh: refresh,
+          })
+          if (status === 200) {
+            setCookie('token', data.access, 99999)
+            return axios({
+              ...error.config,
+              headers: {
+                Authorization: `Bearer ${data.access}`,
+              },
+            })
+          } else {
+            return Promise.reject(error)
+          }
+        }
       } catch (e) {
-        clearCookies()
         if (getCookie('token')) {
           location.href = '/login'
+          toast.error('Выполните авторизацию для получения полного доступа к сайту')
         }
-        refreshToken && toast.error('Выполните авторизацию для получения полного доступа к сайту')
-
+        clearCookies()
         return Promise.reject(error)
       }
     }

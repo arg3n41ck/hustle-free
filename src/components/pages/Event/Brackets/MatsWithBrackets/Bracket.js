@@ -9,7 +9,13 @@ import { useRouter } from 'next/router'
 
 const eventMatsClient = new EventMatsClient()
 
-export default function Bracket({ refreshMatList, matId, bracket, editingMatActive }) {
+export default function Bracket({
+  refreshMatList,
+  matId,
+  bracket,
+  editingMatActive,
+  ogAndIsMyEvent,
+}) {
   const {
     query: { id: eventId },
     push: routerPush,
@@ -30,6 +36,7 @@ export default function Bracket({ refreshMatList, matId, bracket, editingMatActi
   const dragNDropRef = useRef()
   const [{ isOver }, drop] = useDrop({
     accept: `MATS_BRACKET`,
+    canDrop: () => !!ogAndIsMyEvent,
     drop: async (item) => {
       const { bracket: dragBracket, matId: draggedMat } = item
       if (dragBracket?.id && matId && draggedMat && bracketId) {
@@ -53,7 +60,7 @@ export default function Bracket({ refreshMatList, matId, bracket, editingMatActi
     item: () => {
       return { type: `MATS_BRACKET`, bracket, matId }
     },
-    canDrag: () => !!editingMatActive,
+    canDrag: () => editingMatActive && ogAndIsMyEvent,
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -65,9 +72,9 @@ export default function Bracket({ refreshMatList, matId, bracket, editingMatActi
     <BracketWrapper
       isOver={isOver}
       ref={dragNDropRef}
-      className={`${editingMatActive ? 'dndActive' : ''}`}
+      className={`${ogAndIsMyEvent && editingMatActive ? 'dndActive' : ''}`}
     >
-      {editingMatActive && (
+      {editingMatActive && ogAndIsMyEvent && (
         <DNDIconWrapper>
           <DNDIcon />
         </DNDIconWrapper>

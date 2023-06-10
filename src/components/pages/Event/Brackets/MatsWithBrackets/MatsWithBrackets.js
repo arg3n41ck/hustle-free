@@ -8,7 +8,12 @@ import { EventMatsClient } from '../../../../../services/apiClients/eventMatsCli
 
 const eventMatsClient = new EventMatsClient()
 
-export default function MatsWithBrackets({ refreshMatList, matWithBrackets, editingMatActive }) {
+export default function MatsWithBrackets({
+  ogAndIsMyEvent,
+  refreshMatList,
+  matWithBrackets,
+  editingMatActive,
+}) {
   const dayStartTime = useMemo(
     () => matWithBrackets?.dayStartTime && getFormattedStartTime(matWithBrackets?.dayStartTime),
     [matWithBrackets],
@@ -28,8 +33,9 @@ export default function MatsWithBrackets({ refreshMatList, matWithBrackets, edit
 
   const [{ isOver }, drop] = useDrop({
     accept: `MATS_BRACKET`,
+    canDrop: () => !!ogAndIsMyEvent,
     drop: async ({ bracket }) => {
-      if (bracket && matWithBrackets?.id) {
+      if (bracket && matWithBrackets?.id && ogAndIsMyEvent) {
         const changingBody = {
           dragBracketId: bracket?.id,
           matId: matWithBrackets.id,
@@ -64,6 +70,7 @@ export default function MatsWithBrackets({ refreshMatList, matWithBrackets, edit
                   key={bracket.id}
                   matId={matWithBrackets?.id}
                   bracket={bracket}
+                  ogAndIsMyEvent={ogAndIsMyEvent}
                   editingMatActive={editingMatActive}
                   refreshMatList={refreshMatList}
                 />

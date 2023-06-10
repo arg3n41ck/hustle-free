@@ -26,11 +26,11 @@ const Layout = ({ children }) => {
   const router = useRouter()
 
   useEffect(() => {
-    if (getCookie('token')) {
+    if (getCookie('token') && userAuthenticated) {
       dispatch(fetchUser())
-      dispatch(fetchCountries())
-      dispatch(fetchSportTypes())
     }
+    dispatch(fetchSportTypes())
+    dispatch(fetchCountries())
   }, [cookies?.token, userAuthenticated])
 
   useEffect(() => {
