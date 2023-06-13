@@ -49,7 +49,7 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
       >
         <DragWrapper>
           {/* <FightNum>
-            ST: "<b>{cell?.fightStartTime}</b>"; ET: "<b>{cell?.fightEndTime}</b>"
+            ID: "<b>{id}</b>"
           </FightNum> */}
 
           <BFPrefName>{`${cell?.matPrefix | 'Мат'} - ${cell?.fightNumber}`}</BFPrefName>

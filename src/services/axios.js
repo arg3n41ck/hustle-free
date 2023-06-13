@@ -34,7 +34,7 @@ $api.interceptors.response.use(
         const refresh = getCookie('refresh')
         if (refresh) {
           const { status, data } = await axios.post(`${API_URL}accounts/auth/jwt/refresh/`, {
-            refresh: refresh,
+            refresh,
           })
           if (status === 200) {
             setCookie('token', data.access, 99999)

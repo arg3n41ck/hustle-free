@@ -7,6 +7,7 @@ export const fetchCategories = createAsyncThunk(
     try {
       const { data } = await $api.get(`/directories/event_part_categories/`, {
         params,
+        ...disableCacheHeadParams,
       })
       return data
     } catch (e) {

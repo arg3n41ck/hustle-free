@@ -92,7 +92,6 @@ export const mapBracketsFights = (bracketFightsFreezen) => {
     !bracketsFights[0]?.isLoserBracket &&
     !bracketsFights[0]?.fightParents?.length
   ) {
-    console.log({ bracketsFights })
     bracketsFights.reverse()
   }
   return bracketsFights.reduce((prev, cur, i) => {

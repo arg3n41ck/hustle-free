@@ -26,8 +26,6 @@ export default function ScoreboardMainActions({ winner }) {
     return 'Выберите категорию'
   }, [scoreboard?.fight?.bracket])
 
-  console.log({ scoreboard })
-
   return (
     <MainWrapper>
       <div>

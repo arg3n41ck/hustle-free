@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 import { useTranslation } from 'next-i18next'
 import { removeDuplicateObjectFromArray } from '../../../../helpers/helpers'
 import useDebounce from '../../../../hooks/useDebounce'
+import { disableCacheHeadParams } from '../../../../services/apiClients/const'
 
 const Filters = ({ levels, onFilter }) => {
   const { t: tEventDetail } = useTranslation('eventDetail')
@@ -29,6 +30,9 @@ const Filters = ({ levels, onFilter }) => {
     const { data } = await $api.get(`/events/team_events/`)
     const { data: weightData } = await $api.get(
       `/directories/event_part_categories/?event=${router?.query?.id || ''}`,
+      {
+        ...disableCacheHeadParams,
+      },
     )
     setWeights(weightData)
     dispatch(fetchCountries())

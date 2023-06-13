@@ -29,12 +29,12 @@ const Header = () => {
   const { t: tHeader } = useTranslation('header')
   const { t: tCommon } = useTranslation('common')
   const activeTabs = useMemo(() => {
-    userAuthenticated
+    return userAuthenticated
       ? (user?.role === 'organizer' && lkOgTabs) ||
-        (user?.role === 'team' && lkTmTabs) ||
-        (user?.role === 'athlete' && lkAhTabs)
+          (user?.role === 'team' && lkTmTabs) ||
+          (user?.role === 'athlete' && lkAhTabs)
       : null
-  }, [userAuthenticated])
+  }, [userAuthenticated, user])
 
   useEffect(() => {
     setUserMenu(false)
