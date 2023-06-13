@@ -1,25 +1,8 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { theme } from '../../../../../styles/theme'
-import { ScoreboardContext } from '../Scoreboard/context'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  fetchBracketsFightsByParams,
-  selectBrackets,
-} from '../../../../../redux/components/eventBrackets'
-import { useRouter } from 'next/router'
 
 export default function BracketHeaderInfo({ title, allParticipants }) {
-  const { open } = useContext(ScoreboardContext)
-  const [, , , , bracket] = useSelector(selectBrackets)
-  const {
-    query: { bracketId },
-  } = useRouter()
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(fetchBracketsFightsByParams({ bracket: bracketId, type: bracket?.bracketType }))
-  }, [open])
   return (
     <HeaderWrapper>
       <BracketText>

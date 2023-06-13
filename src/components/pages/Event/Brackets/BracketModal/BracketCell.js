@@ -48,11 +48,12 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
         gridArea={gridTemplateAreas && `cell-${id}`}
       >
         <DragWrapper>
-          {/* <FightNum>
-            ID: "<b>{id}</b>"
-          </FightNum> */}
+          <FightNum>
+            BF_ID: "<b>{id}</b>"; FTR1_ID: "<b>{fighters[0]?.id}</b>"; FTR2_ID: "
+            <b>{fighters[1]?.id}</b>"
+          </FightNum>
 
-          <BFPrefName>{`${cell?.matPrefix | 'Мат'} - ${cell?.fightNumber}`}</BFPrefName>
+          {/* <BFPrefName>{`${cell?.matPrefix | 'Мат'} - ${cell?.fightNumber}`}</BFPrefName> */}
 
           <BracketCellFighter
             cell={cell}
@@ -189,7 +190,7 @@ const FightNum = styled.div`
 
   transform: translateY(-50%);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 10px;
   padding: 5px;
   background: #000;
 

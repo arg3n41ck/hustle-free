@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -19,7 +19,6 @@ import BracketHeaderInfo from '../../../../../components/pages/Event/Brackets/Br
 import BracketResultTable from '../../../../../components/pages/Event/Brackets/BracketModal/BracketResultTable'
 import FullScreenLoader from '../../../../../components/ui/FullScreenLoader'
 import ScoreboardLayout from '../../../../../components/pages/Event/Brackets/Scoreboard/ScoreboardLayout'
-import { ScoreboardContext } from '../../../../../components/pages/Event/Brackets/Scoreboard/context'
 
 const bracketComponentByTypes = {
   1: {
@@ -88,7 +87,7 @@ function Bracket({ event }) {
         }),
       )
     }
-  }, [bracket])
+  }, [bracket, bracketId])
 
   const { typeTitle, BracketWrapperByType } = useMemo(() => {
     const selectedBrType = bracket && bracketComponentByTypes?.[bracket?.bracketType]
