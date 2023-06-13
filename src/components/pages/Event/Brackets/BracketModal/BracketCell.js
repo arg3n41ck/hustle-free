@@ -53,7 +53,7 @@ export default function BracketCell({ cellRef, cell, gridTemplateAreas, classes 
             <b>{fighters[1]?.id}</b>"
           </FightNum> */}
 
-          <BFPrefName>{`${cell?.matPrefix | 'Мат'} - ${cell?.fightNumber}`}</BFPrefName>
+          <BFPrefName>{`${cell?.matPrefix || 'Мат'} - ${cell?.fightNumber}`}</BFPrefName>
 
           <BracketCellFighter
             cell={cell}
